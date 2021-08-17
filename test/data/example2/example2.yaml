@@ -1,0 +1,9 @@
+pattern:
+  - '*.maf'
+recursive: true
+format: 'tsv'
+
+annotation:
+  - type: 'static'
+    field: 'A'
+    value: 'aaa'
