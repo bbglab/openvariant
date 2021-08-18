@@ -4,7 +4,6 @@ recursive: true
 format: 'tsv'
 
 annotation:
-
   - type: 'liftover'
     field: 'E'
     coordinateSource: 'HG_19'
@@ -12,7 +11,6 @@ annotation:
     fieldSource:
       - 'Tumor_Type'
       - 'Data'
-
   - type: 'mapping'
     field: 'F'
     mappingFile: 'test/data/ex.tsv'

@@ -4,6 +4,18 @@ recursive: true
 format: 'tsv'
 
 annotation:
-  - type: 'static'
-    field: 'A'
-    value: 'aaa'
+  - type: 'internal'
+    field: 'B'
+    fieldSource:
+      - 'Tumor_Type'
+      - 'Data'
+  - type: 'dirname'
+    field: 'C'
+    function: 'lambda x: "hg_{}".format(x.upper())'
+  - type: 'filename'
+    field: 'D'
+    function: 'lambda x: "hg_{}".format(x.lower())'
+
+excludes:
+  - field: 'R'
+    value: 'ww'

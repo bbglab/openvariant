@@ -1,5 +1,6 @@
 import logging
 import re
+from os.path import basename
 
 from typing import List
 from yaml import safe_load, YAMLError
@@ -91,19 +92,21 @@ def _check_annotation_keys(annot: dict) -> None:
 
 class Annotation:
     _builders: dict = {}
-    _path: str = None
-    _raw_annotation: dict = {}
-    _recursive: bool = False
-    _patterns: List[str] = []
-    _format: str = DEFAULT_FORMAT
-    _annotations: dict = {}
-    _excludes: dict = {}
-    _structure: dict = {}
 
     def __init__(self, path: str) -> None:
+        self._builders: dict = {}
+        self._annotations: dict = {}
+        self._structure: dict = {}
+
         self._register_builders()
         self._path = path
         self._raw_annotation = _read_annotation_file(path)
+
+        self._patterns = self._raw_annotation[AnnotationGeneralKeys.PATTERN.value]
+        self._recursive = self._raw_annotation.get(AnnotationGeneralKeys.RECURSIVE.value, True)
+        self._excludes = self._raw_annotation.get(AnnotationGeneralKeys.EXCLUDES.value, [])
+        self._format = self._raw_annotation.get(AnnotationGeneralKeys.FORMAT.value, DEFAULT_FORMAT).replace('.', '')
+
         self.check_annotation()
         self.extract_annotation()
 
@@ -122,17 +125,12 @@ class Annotation:
             logging.error(e)
 
     def extract_annotation(self) -> None:
-        self._patterns = self._raw_annotation[AnnotationGeneralKeys.PATTERN.value]
-        self._recursive = self._raw_annotation.get(AnnotationGeneralKeys.RECURSIVE.value, self._recursive)
-        self._format = self._raw_annotation.get(AnnotationGeneralKeys.FORMAT.value, self._format).replace('.', '')
-        self._excludes = self._raw_annotation.get(AnnotationGeneralKeys.EXCLUDES.value, self._excludes)
-
         for k in self._raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
             self._annotations[k[AnnotationKeys.FIELD.value]] = \
                 AnnotationTypesBuilders[k[AnnotationKeys.TYPE.value].upper()].value(k)
 
         structure_aux = self._annotations
-        structure_aux[AnnotationGeneralKeys.EXCLUDES.value] = self._excludes
+        structure_aux[AnnotationGeneralKeys.EXCLUDES.name] = self._excludes
         self._structure = {e: structure_aux for e in self._patterns}
 
     @property
@@ -158,3 +156,62 @@ class Annotation:
     @property
     def structure(self) -> dict:
         return self._structure
+
+
+def merge_annotations_structure(ann_a: dict, ann_b: dict) -> dict:
+    """
+    :param ann_a: The first annotations structure
+    :param ann_b: The second annotations structure. This annotations
+    have preference and will override A annotations if there is a conflict
+    :return: The merge of A and B annotation structure
+    """
+
+    # Clone A
+    aa = {k: dict(v) for k, v in ann_a.items()}
+
+    # Update or add B entries
+    for k, v in ann_b.items():
+        if k in aa:
+            # Update the annotations
+            for kv, vv in v.items():
+                if kv not in aa[k]:
+                    aa[k][kv] = vv
+                else:
+                    if isinstance(aa[k][kv], list):
+                        # If it's a list concat them instead of override it
+                        if len(vv) > 0:
+                            vv_list = vv if isinstance(vv, list) else [vv]
+                            aa[k][kv] = list(aa[k][kv]) + vv_list
+                    else:
+                        # Override the value
+                        if vv != {}:
+                            aa[k][kv] = vv
+        else:
+            aa[k] = {k: v for k, v in aa['global'].items()} if 'global' in aa else {}
+            aa[k].update(v)
+
+    return aa
+
+
+def process_annotations(annotations, base_path, filename):
+    # Annotate filename base annotations
+    for k in annotations:
+        value = annotations[k]
+        if isinstance(value, tuple):
+            if value[0] in [AnnotationTypes.FILENAME.name, AnnotationTypes.DIRNAME.name]:
+                name = filename if value[0] == AnnotationTypes.FILENAME.name else basename(base_path)
+                annotations[k] = value[1](name)
+
+    # Try to annotate mappings that only use already resolved annotations
+    '''
+    for k in annotations:
+        value = annotations[k]
+        if isinstance(value, tuple):
+            if value[0] == 'mapping':
+                print(value)
+                map_key = annotations[value[1]]
+                if not isinstance(map_key, tuple):
+                    annotations[k] = value[2].get(map_key, None)
+    '''
+
+    return annotations
