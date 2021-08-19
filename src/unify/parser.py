@@ -1,0 +1,87 @@
+from typing import TextIO, Generator, List
+
+from src.annotation.parser import AnnotationTypesParsers
+from src.config.config_annotation import AnnotationGeneralKeys
+
+
+def __known_headers(header, schema):
+    h_lower = header.lower()
+    return [(field, method) for valid_headers, field, method in schema if h_lower in valid_headers]
+
+
+def _head(line, schema=None, extra=None, required=None):
+    header = True
+    extra_header = []
+    inferred_header = []
+    for i, h in enumerate(line):
+        print(h)
+    '''
+        known = __known_headers(h, schema)
+        if len(known) > 0:
+            for field, method in known:
+                header.append((field, method, i))
+        extra_header.append((h, str, i))
+
+    inferred_header = len(header) == 0
+    if inferred_header:
+        # TODO Infer the header from the values of the first line
+        raise NotImplementedError("We need a header")
+
+    if extra is not None:
+
+        # TODO Check header collision
+        if isinstance(extra, list):
+            header += [h for h in extra_header if h[0] in extra]
+        else:
+            header += extra_header
+
+    if required is not None and not (set(required) <= set([h[0] for h in header])):
+        raise SyntaxError('Missing fields in file header. Required fields: {}'.format(required))
+    '''
+    return header, inferred_header
+
+
+def _base_parser(lines: TextIO, count: bool) -> Generator[int, str, None]:
+    for l_num, line in enumerate(lines, start=1):
+        # Skip empty lines
+        if len(line) == 0:
+            continue
+
+        # Skip comments
+        if line.startswith('#') and not line.startswith('#CHROM'):
+            continue
+
+        # Parse columns
+        # if not count:
+        #    line = [v.strip() for v in line.split('\t')]
+
+        yield l_num, line
+
+
+def _parse_row(ann: dict, line: List, original_header: List, path: str):
+    annotations_header = ann[AnnotationGeneralKeys.ANNOTATION.name]
+    row = []
+    for k, v in annotations_header.items():
+        row.append(AnnotationTypesParsers[v[0]].value(v, line, original_header, path))
+    return '\t'.join(row)
+
+
+def parser(file: str, ann: dict) -> Generator[str, None, None]:
+    fd = open(file, "rt")
+    header = list(ann[AnnotationGeneralKeys.ANNOTATION.name].keys())
+    original_header = None
+    for lnum, line in _base_parser(fd, False):
+
+        if original_header is None:
+            original_header = line.split()
+            row = '\t'.join(header)
+            # header, inferred_header = _head(line, ann) # , schema, extra=extra, required=required)
+        else:
+            try:
+                # row = {h[0]: h[1](line[h[2]]) for h in header}
+                row = _parse_row(ann, line.split(), original_header, file)
+            except (ValueError, IndexError) as e:
+                # logger.warning("Error parsing line %d %s (%s %s %s)", l, file, e, line, header)
+                continue
+
+        yield row

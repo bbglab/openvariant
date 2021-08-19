@@ -7,3 +7,11 @@ annotation:
   - type: 'static'
     field: 'A'
     value: 'aaa'
+  - type: 'internal'
+    field: 'B'
+    fieldSource:
+      - 'Variant_Type'
+      - 'Data'
+  - type: 'filename'
+    field: 'D'
+    function: 'lambda x: "hg_{}".format(x.lower())'

@@ -129,8 +129,8 @@ class Annotation:
             self._annotations[k[AnnotationKeys.FIELD.value]] = \
                 AnnotationTypesBuilders[k[AnnotationKeys.TYPE.value].upper()].value(k)
 
-        structure_aux = self._annotations
-        structure_aux[AnnotationGeneralKeys.EXCLUDES.name] = self._excludes
+        structure_aux = {AnnotationGeneralKeys.ANNOTATION.name: self._annotations,
+                         AnnotationGeneralKeys.EXCLUDES.name: self._excludes}
         self._structure = {e: structure_aux for e in self._patterns}
 
     @property
