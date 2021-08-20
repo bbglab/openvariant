@@ -1,6 +1,5 @@
 pattern:
   - '*.txt'
-  - '*.maf'
 recursive: true
 format: 'tsv'
 

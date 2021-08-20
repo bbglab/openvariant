@@ -1,8 +1,8 @@
-import logging
 from typing import TextIO, Generator, List
 
 from src.annotation.parser import AnnotationTypesParsers
 from src.config.config_annotation import AnnotationGeneralKeys
+from src.utils.logger import log
 
 
 def __known_headers(header, schema):
@@ -80,7 +80,7 @@ def parser(file: str, ann: dict) -> Generator[str, None, None]:
             try:
                 row = _parse_row(ann, line.split(), original_header, file)
             except (ValueError, IndexError) as e:
-                logging.warning("Error parsing line %d %s (%s %s %s)", lnum, file, e, line, header)
+                log.warning("Error parsing line %d %s (%s %s %s)", lnum, file, e, line, header)
                 continue
 
         yield row
