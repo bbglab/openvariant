@@ -1,3 +1,4 @@
+import logging
 from typing import TextIO, Generator, List
 
 from src.annotation.parser import AnnotationTypesParsers
@@ -58,12 +59,12 @@ def _base_parser(lines: TextIO, count: bool) -> Generator[int, str, None]:
         yield l_num, line
 
 
-def _parse_row(ann: dict, line: List, original_header: List, path: str):
+def _parse_row(ann: dict, line: List, original_header: List, path: str) -> str:
     annotations_header = ann[AnnotationGeneralKeys.ANNOTATION.name]
     row = []
     for k, v in annotations_header.items():
         row.append(AnnotationTypesParsers[v[0]].value(v, line, original_header, path))
-    return '\t'.join(row)
+    return '\t'.join(list(map(str, row)))
 
 
 def parser(file: str, ann: dict) -> Generator[str, None, None]:
@@ -75,13 +76,11 @@ def parser(file: str, ann: dict) -> Generator[str, None, None]:
         if original_header is None:
             original_header = line.split()
             row = '\t'.join(header)
-            # header, inferred_header = _head(line, ann) # , schema, extra=extra, required=required)
         else:
             try:
-                # row = {h[0]: h[1](line[h[2]]) for h in header}
                 row = _parse_row(ann, line.split(), original_header, file)
             except (ValueError, IndexError) as e:
-                # logger.warning("Error parsing line %d %s (%s %s %s)", l, file, e, line, header)
+                logging.warning("Error parsing line %d %s (%s %s %s)", lnum, file, e, line, header)
                 continue
 
         yield row

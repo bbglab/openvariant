@@ -8,4 +8,4 @@ if __name__ == '__main__':
         for i, x in enumerate(unify(k, r)):
             if i == 0:
                 print(x)
-            # print(x)
+            print(x)
