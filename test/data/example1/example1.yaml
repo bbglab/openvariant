@@ -1,5 +1,5 @@
 pattern:
-  - '*.txt'
+  - '.maf'
 recursive: true
 format: 'tsv'
 
@@ -14,13 +14,13 @@ annotation:
       - 'Data'
   - type: 'filename'
     field: 'D'
-    function: 'lambda x: "hg_{}".format(x.lower())'
+    function: 'lambda x: "12hg_{}".format(x.lower())'
   - type: 'dirname'
     field: 'C'
     function: 'lambda x: "hg_{}".format(x.upper())'
-  - type: 'liftover'
-    field: 'E'
-    coordinateSource: 'hg19'
-    coordinateTarget: 'hg38'
-    fieldSource:
-      - 'Variant_Type'
+  #- type: 'liftover'
+  #  field: 'E'
+  #  coordinateSource: 'hg19'
+  #  coordinateTarget: 'hg38'
+  #  fieldSource:
+  #    - 'Variant_Type'

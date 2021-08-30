@@ -1,13 +1,8 @@
 from typing import TextIO, Generator, List
 
 from src.annotation.parser import AnnotationTypesParsers
-from src.config.config_annotation import AnnotationGeneralKeys
+from src.config.config_annotation import AnnotationGeneralKeys, AnnotationFormat
 from src.utils.logger import log
-
-
-def __known_headers(header, schema):
-    h_lower = header.lower()
-    return [(field, method) for valid_headers, field, method in schema if h_lower in valid_headers]
 
 
 def _head(line, schema=None, extra=None, required=None):
@@ -59,26 +54,30 @@ def _base_parser(lines: TextIO, count: bool) -> Generator[int, str, None]:
         yield l_num, line
 
 
-def _parse_row(ann: dict, line: List, original_header: List, path: str) -> str:
+def _parse_row(ann: dict, line: List, original_header: List, path: str, format_output: str) -> str:
     annotations_header = ann[AnnotationGeneralKeys.ANNOTATION.name]
-    row = []
+    row_parser = []
     for k, v in annotations_header.items():
-        row.append(AnnotationTypesParsers[v[0]].value(v, line, original_header, path))
-    return '\t'.join(list(map(str, row)))
+        row_parser.append(AnnotationTypesParsers[v[0]].value(v, line, original_header, path))
+    return AnnotationFormat[format_output.upper()].value.join(list(map(str, row)))
 
 
-def parser(file: str, ann: dict) -> Generator[str, None, None]:
+def parser(file: str, annotation: dict, format_output: str) -> Generator[str, None, None]:
+    row = None
     fd = open(file, "rt")
-    header = list(ann[AnnotationGeneralKeys.ANNOTATION.name].keys())
+
+    header = list(annotation[AnnotationGeneralKeys.ANNOTATION.name].keys())
     original_header = None
     for lnum, line in _base_parser(fd, False):
-
         if original_header is None:
             original_header = line.split()
-            row = '\t'.join(header)
+            try:
+                row = AnnotationFormat[format_output.upper()].value.join(header)
+            except (ValueError, KeyError) as e:
+                log.warning("Error parsing header (%s)", e)
         else:
             try:
-                row = _parse_row(ann, line.split(), original_header, file)
+                row = _parse_row(annotation, line.split(), original_header, file, format_output)
             except (ValueError, IndexError) as e:
                 log.warning("Error parsing line %d %s (%s %s %s)", lnum, file, e, line, header)
                 continue

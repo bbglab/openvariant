@@ -4,7 +4,6 @@ ANNOTATION_EXTENSION = "yaml"
 DEFAULT_FORMAT = 'csv'
 
 
-
 class AnnotationGeneralKeys(Enum):
     PATTERN = 'pattern'
     RECURSIVE = 'recursive'
@@ -37,3 +36,8 @@ class AnnotationTypes(Enum):
     FILENAME = 'filename'
     LIFTOVER = 'liftover'
     MAPPING = 'mapping'
+
+
+class AnnotationFormat(Enum):
+    TSV = "\t"
+    CSV = ","

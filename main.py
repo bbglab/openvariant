@@ -8,5 +8,6 @@ if __name__ == '__main__':
     # for k, r in find_files('./test/data/example1'):
     ann = Annotation('test/data/example1/example1.yaml')
     print(ann.structure)
-    for i, x in enumerate(unify('./test/data', ann.structure)):
+    for x in unify('./test/data/', ann):
         print(x)
+        pass
