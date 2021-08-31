@@ -82,6 +82,8 @@ def unify(base_path: str, annotation: Annotation, display_header=True) -> Genera
                             yield x
             else:
                 for x in unify(file_path, annotation, display_header):
+                    display_header = False
+
                     yield x
     except PermissionError as e:
         print(e)

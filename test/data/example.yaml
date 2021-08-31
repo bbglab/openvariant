@@ -1,5 +1,6 @@
 pattern:
   - '.vcf'
+  - '.maf'
 recursive: true
 format: 'tsv'
 
@@ -8,7 +9,7 @@ annotation:
     field: 'variant'
     fieldSource:
       - 'Variant_Type'
-      - 'Data'
+      - 'INFO'
   - type: 'filename'
     field: 'DATASET'
     function: 'lambda x: "{}".format(x.lower()[:-4])'

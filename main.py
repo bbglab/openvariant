@@ -7,7 +7,6 @@ from src.unify.unify import unify
 if __name__ == '__main__':
     # for k, r in find_files('./test/data/example1'):
     ann = Annotation('test/data/example.yaml')
-    print(ann.structure)
     for x in unify('./test/data/', ann):
         print(x)
         pass
