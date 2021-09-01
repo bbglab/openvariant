@@ -1,7 +1,7 @@
 from enum import Enum
 
 ANNOTATION_EXTENSION = "yaml"
-DEFAULT_FORMAT = 'csv'
+DEFAULT_FORMAT = 'TSV'
 
 
 class AnnotationGeneralKeys(Enum):

@@ -1,5 +1,6 @@
+import csv
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, isdir
 import re
 from typing import Generator, TextIO, List
 
@@ -16,7 +17,7 @@ def _base_parser(lines: TextIO) -> Generator[int, str, None]:
             continue
 
         # Skip comments
-        if (line.startswith('#') or line.startswith('##') or line.startswith('browser') or line.startswith('track') ) \
+        if (line.startswith('#') or line.startswith('##') or line.startswith('browser') or line.startswith('track')) \
                 and not line.startswith('#CHROM'):
             continue
 
@@ -61,7 +62,7 @@ def _check_extension(ext: str, path: str) -> re.Match:
     return rext.search(path)
 
 
-def unify(base_path: str, annotation: Annotation, display_header=True) -> Generator[str, None, None]:
+def _unify(base_path: str, annotation: Annotation, display_header=True) -> Generator[str, None, None]:
     an = annotation.structure
     format_output = annotation.format
     if isfile(base_path):
@@ -70,20 +71,45 @@ def unify(base_path: str, annotation: Annotation, display_header=True) -> Genera
                 for x in _parser(base_path, ann, format_output, display_header):
                     display_header = False
                     yield x
+    else:
+        try:
+            for file in listdir(base_path):
+                file_path = join(base_path, file)
+                if isfile(file_path):
+                    for ext, ann in an.items():
+                        if _check_extension(ext, file_path):
+                            for x in _parser(file_path, ann, format_output, display_header):
+                                display_header = False
+                                yield x
+                else:
+                    for x in _unify(file_path, annotation, display_header):
+                        display_header = False
 
-    try:
-        for file in listdir(base_path):
-            file_path = join(base_path, file)
-            if isfile(file_path):
-                for ext, ann in an.items():
-                    if _check_extension(ext, file_path):
-                        for x in _parser(file_path, ann, format_output, display_header):
-                            display_header = False
-                            yield x
-            else:
-                for x in unify(file_path, annotation, display_header):
-                    display_header = False
+                        yield x
+        except PermissionError as e:
+            print(e)
 
-                    yield x
-    except PermissionError as e:
-        print(e)
+
+class Variant:
+
+    def __init__(self, path: str, ann: Annotation) -> None:
+        self._path: str = path
+        self._annotation: Annotation = ann
+        self._generator: Generator[str, None, None] = _unify(path, ann)
+
+    def read(self, display_header=True) -> Generator[str, None, None]:
+        for i, line in enumerate(self._generator):
+            if display_header and i == 0:
+                yield line
+            elif i != 0:
+                yield line
+
+    def save(self, file_path: str, display_header=True):
+        if isdir(file_path):
+            raise ValueError("The path must be a file.")
+        with open(file_path, "w") as file:
+            writer = csv.writer(file, delimiter=AnnotationFormat[self._annotation.format.upper()].value)
+            for line in self.read(display_header):
+                writer.writerow(line.split())
+            file.close()
+

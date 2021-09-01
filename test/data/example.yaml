@@ -1,8 +1,6 @@
 pattern:
-  - '.vcf'
   - '.maf'
 recursive: true
-format: 'tsv'
 
 annotation:
   - type: 'internal'
