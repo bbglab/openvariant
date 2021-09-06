@@ -4,17 +4,22 @@ recursive: true
 format: 'tsv'
 
 annotation:
-  - type: 'liftover'
-    field: 'E'
-    coordinateSource: 'HG_19'
-    coordinateTarget: 'HG_38'
+  - type: 'internal'
+    field: 'variant'
     fieldSource:
-      - 'Tumor_Type'
-      - 'Data'
-  - type: 'mapping'
-    field: 'F'
-    mappingFile: 'test/data/ex.tsv'
-    mappingField: 'DONOR'
+      - 'Variant_Type'
+      - 'INFO'
+  #- type: 'liftover'
+  #  field: 'E'
+  #  coordinateSource: 'HG19'
+  #  coordinateTarget: 'HG38'
+  #  fieldSource:
+  #    - 'Tumor_Type'
+  #    - 'Data'
+  #- type: 'mapping'
+  #  field: 'F'
+  #  mappingFile: 'test/data/ex.tsv'
+  #  mappingField: 'DONOR'
 
 excludes:
   - field: 'G'

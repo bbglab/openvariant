@@ -1,5 +1,5 @@
 pattern:
-  - '.maf'
+  - '*.maf'
 recursive: true
 format: 'tsv'
 
@@ -13,7 +13,7 @@ annotation:
     field: 'DATASET'
     function: 'lambda x: "{}".format(x.lower()[:-4])'
   - type: 'dirname'
-    field: 'PROJECT'
+    field: 'P'
     function: 'lambda x: "{}".format(x.upper())'
   #- type: 'liftover'
   #  field: 'E'

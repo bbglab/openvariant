@@ -1,11 +1,17 @@
-from src.annotation.annotation import Annotation
-from src.utils.logger import log
+import functools
+import os
+from multiprocessing import Pool
 
-from src.finder.find import find_files
-from src.variant.variant import Variant
+from tqdm import tqdm
+
+from src.annotation.annotation import Annotation
+from src.task.count import count
+
+from src.task.find import find_files
 
 if __name__ == '__main__':
     # for k, r in find_files('./test/data/example1'):
-    ann = Annotation('test/data/example.yaml')
-    result = Variant('./test/data/example1/ACC.maf', ann)
-    result.save("results.tsv")
+    count('test/data/example.yaml', './test/data/')
+
+# for x in result.read():
+#    print(x)

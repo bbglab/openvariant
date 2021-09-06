@@ -1,5 +1,5 @@
 pattern:
-  - '.maf'
+  - '*.maf'
 recursive: true
 
 annotation:
@@ -20,3 +20,7 @@ annotation:
   #  coordinateTarget: 'hg38'
   #  fieldSource:
   #    - 'Variant_Type'
+
+excludes:
+  - field: 'R'
+    value: 'ww'

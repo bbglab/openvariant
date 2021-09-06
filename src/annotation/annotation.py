@@ -1,8 +1,9 @@
+import copy
 import logging
 import re
-from os.path import basename
+from os.path import basename, dirname, isfile
 
-from typing import List
+from typing import List, Union
 from yaml import safe_load, YAMLError
 
 from src.annotation.builder import AnnotationTypesBuilders
@@ -95,43 +96,74 @@ class Annotation:
 
     def __init__(self, path: str) -> None:
         self._builders: dict = {}
-        self._annotations: dict = {}
-        self._structure: dict = {}
 
         self._register_builders()
         self._path = path
-        self._raw_annotation = _read_annotation_file(path)
+        raw_annotation = _read_annotation_file(path)
+        _check_general_keys(raw_annotation)
+        for annot in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value):
+            _check_annotation_keys(annot)
 
-        self._patterns = self._raw_annotation[AnnotationGeneralKeys.PATTERN.value]
-        self._recursive = self._raw_annotation.get(AnnotationGeneralKeys.RECURSIVE.value, True)
-        self._excludes = self._raw_annotation.get(AnnotationGeneralKeys.EXCLUDES.value, [])
-        self._format = self._raw_annotation.get(AnnotationGeneralKeys.FORMAT.value, DEFAULT_FORMAT).replace('.', '')
+        self._patterns = raw_annotation[AnnotationGeneralKeys.PATTERN.value]
+        self._recursive = raw_annotation.get(AnnotationGeneralKeys.RECURSIVE.value, True)
+        self._excludes = raw_annotation.get(AnnotationGeneralKeys.EXCLUDES.value, [])
+        self._format = raw_annotation.get(AnnotationGeneralKeys.FORMAT.value, DEFAULT_FORMAT).replace('.', '')
 
-        self.check_annotation()
-        self.extract_annotation()
+        self._annotations: dict = {}
+        for k in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
+            self._annotations[k[AnnotationKeys.FIELD.value]] = \
+                AnnotationTypesBuilders[k[AnnotationKeys.TYPE.value].upper()].value(k)
 
     def _register_builders(self) -> None:
         for b in AnnotationTypes:
             self._builders[b.value] = AnnotationTypesBuilders[b.name].value
 
+    '''
     def check_annotation(self) -> bool:
         try:
-            _check_general_keys(self._raw_annotation)
-            if AnnotationGeneralKeys.ANNOTATION.value in self._raw_annotation:
-                for annot in self._raw_annotation[AnnotationGeneralKeys.ANNOTATION.value]:
-                    _check_annotation_keys(annot)
+            for annot in self._annotations:
+                _check_annotation_keys(self._annotations[annot])
             return True
         except Exception as e:
             logging.error(e)
+    '''
 
-    def extract_annotation(self) -> None:
-        for k in self._raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
-            self._annotations[k[AnnotationKeys.FIELD.value]] = \
-                AnnotationTypesBuilders[k[AnnotationKeys.TYPE.value].upper()].value(k)
+    def transform_dirname_filename(self, filename: str, base_path: str):
+        # NOTE: Try to annotate mappings that only use already resolved annotations
+        '''
+        for k in annotations:
+            value = annotations[k]
+            if isinstance(value, tuple):
+                if value[0] == 'mapping':
+                    print(value)
+                    map_key = annotations[value[1]]
+                    if not isinstance(map_key, tuple):
+                        annotations[k] = value[2].get(map_key, None)
+        '''
 
-        structure_aux = {AnnotationGeneralKeys.ANNOTATION.name: self._annotations,
-                         AnnotationGeneralKeys.EXCLUDES.name: self._excludes}
-        self._structure = {e: structure_aux for e in self._patterns}
+        for ka in self._annotations:
+            name = None
+            if self._annotations[ka][0] == AnnotationTypes.FILENAME.name:
+                name = filename
+            elif self._annotations[ka][0] == AnnotationTypes.DIRNAME.name:
+                if isfile(base_path):
+                    name = basename(dirname(base_path))
+                else:
+                    name = basename(base_path)
+
+            if (self._annotations[ka][0] == AnnotationTypes.FILENAME.name or
+                self._annotations[ka][0] == AnnotationTypes.DIRNAME.name) \
+                    and callable(self._annotations[ka][1]):
+                self._annotations[ka] = (self._annotations[ka][0], self._annotations[ka][1](name))
+
+    def set_patterns(self, patterns: List[str]) -> None:
+        self._patterns = patterns
+
+    def set_excludes(self, excludes: List) -> None:
+        self._excludes = excludes
+
+    def set_annotations(self, annotations) -> None:
+        self._annotations = annotations
 
     @property
     def recursive(self) -> bool:
@@ -150,68 +182,65 @@ class Annotation:
         return self._annotations
 
     @property
-    def excludes(self) -> dict:
+    def excludes(self) -> List:
         return self._excludes
 
     @property
     def structure(self) -> dict:
-        return self._structure
+
+        structure_aux = {AnnotationGeneralKeys.ANNOTATION.name: self._annotations,
+                         AnnotationGeneralKeys.EXCLUDES.name: self._excludes}
+        return {e: structure_aux for e in self._patterns}
 
 
-def merge_annotations_structure(ann_a: dict, ann_b: dict) -> dict:
+def merge_annotations_structure(ann_a: Annotation, ann_b: Annotation) -> Annotation:
     """
-    :param ann_a: The first annotations structure
-    :param ann_b: The second annotations structure. This annotations
-    have preference and will override A annotations if there is a conflict
-    :return: The merge of A and B annotation structure
+    :param ann_a: The first Annotation. This annotation
+    has preference and will override B annotation if there is a conflict
+    :param ann_b: The second Annotation.
+    :return: The merge of A and B annotation
     """
+    if ann_a is None:
+        return copy.deepcopy(ann_b)
+    elif ann_b is None:
+        return copy.deepcopy(ann_a)
 
-    # Clone A
-    aa = {k: dict(v) for k, v in ann_a.items()}
+    ann_aa = copy.deepcopy(ann_a)
 
-    # Update or add B entries
-    for k, v in ann_b.items():
+    # TODO: CHECK NO REPEATED
+    ann_aa.set_patterns(list(set(ann_aa.patterns).union(set(ann_b.patterns))))
+
+    excludes_total = ann_aa.excludes
+
+    for k in ann_b.excludes:
+        if k not in excludes_total:
+            excludes_total.append(k)
+
+    ann_aa.set_excludes(excludes_total)
+
+    aa = {k: v for k, v in ann_aa.annotations.items()}
+    for k, v in ann_b.annotations.items():
         if k in aa:
+            pass
             # Update the annotations
-            for kv, vv in v.items():
-                if kv not in aa[k]:
-                    aa[k][kv] = vv
-                else:
-                    if isinstance(aa[k][kv], list):
-                        # If it's a list concat them instead of override it
-                        if len(vv) > 0:
-                            vv_list = vv if isinstance(vv, list) else [vv]
-                            aa[k][kv] = list(aa[k][kv]) + vv_list
-                    else:
-                        # Override the value
-                        if vv != {}:
-                            aa[k][kv] = vv
+            # if v[0] == aa[k]:
+
+            # for kv, vv in v.items():
+            #    if kv not in bb[k]:
+            #        bb[k][kv] = vv
+            #    else:
+            #        if isinstance(bb[k][kv], list):
+            #            # If it's a list concat them instead of override it
+            #            if len(vv) > 0:
+            #                vv_list = vv if isinstance(vv, list) else [vv]
+            #                bb[k][kv] = list(bb[k][kv]) + vv_list
+            #        else:
+            #            # Override the value
+            #            if vv != {}:
+            #                bb[k][kv] = vv
         else:
-            aa[k] = {k: v for k, v in aa['global'].items()} if 'global' in aa else {}
-            aa[k].update(v)
+            aa[k] = v
 
-    return aa
+    ann_aa.set_annotations(aa)
 
-
-def process_annotations(annotations, base_path, filename):
-    # Annotate filename base annotations
-    for k in annotations:
-        value = annotations[k]
-        if isinstance(value, tuple):
-            if value[0] in [AnnotationTypes.FILENAME.name, AnnotationTypes.DIRNAME.name]:
-                name = filename if value[0] == AnnotationTypes.FILENAME.name else basename(base_path)
-                annotations[k] = value[1](name)
-
-    # Try to annotate mappings that only use already resolved annotations
-    '''
-    for k in annotations:
-        value = annotations[k]
-        if isinstance(value, tuple):
-            if value[0] == 'mapping':
-                print(value)
-                map_key = annotations[value[1]]
-                if not isinstance(map_key, tuple):
-                    annotations[k] = value[2].get(map_key, None)
-    '''
-
-    return annotations
+    return ann_aa

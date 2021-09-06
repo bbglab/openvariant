@@ -4,6 +4,7 @@ from os.path import basename, dirname, normpath
 from typing import Tuple, Any, List, Optional, Union, Callable
 
 from pyliftover import LiftOver
+from liftover import get_lifter
 
 
 def _static_parser(x: Tuple[str, Any], line: List, original_header: List, path: str) -> str:
@@ -22,14 +23,12 @@ def _internal_parser(x: Tuple[str, List], line: List, original_header: List, pat
     return value
 
 
-def _filename_parser(x: Tuple[str, Callable], line: List, original_header: List, path: str) -> str:
-    name = basename(path)
-    return x[1](name)
+def _filename_parser(x: Tuple[str, str], line: List, original_header: List, path: str) -> str:
+    return x[1]
 
 
-def _dirname_parser(x: Tuple[str, Callable], line: List, original_header: List, path: str) -> str:
-    name = basename(dirname(path))
-    return x[1](name)
+def _dirname_parser(x: Tuple[str, str], line: List, original_header: List, path: str) -> str:
+    return x[1]
 
 
 def _liftover_parser(x: Tuple[str, str, str, str], line: List, original_header: List, path: str) -> str:
@@ -38,11 +37,20 @@ def _liftover_parser(x: Tuple[str, str, str, str], line: List, original_header: 
         value = line[original_header.index(y)] if y in original_header else None
         if value is not None:
             break
-    lo = LiftOver(x[1], x[2])
+    # lo = LiftOver(x[1], x[2])
+    lo = get_lifter(x[1].lower(), x[2].lower())
     if not str(value).startswith("chr"):
-        result = lo.convert_coordinate("chr" + str(value), 1000000)
+        try:
+            result = lo[value, 1000000]
+        except KeyError as e:
+            result = None
+        # lo.convert_coordinate("chr" + str(value), 1000000)
     else:
-        result = lo.convert_coordinate(value, 1000000)
+        try:
+            result = lo[value[3:], 1000000]
+        except KeyError as e:
+            result = None
+        # result = lo.convert_coordinate(value, 1000000)
     if result is None:
         return ""
     return result[0][3]

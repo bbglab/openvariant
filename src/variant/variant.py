@@ -7,6 +7,7 @@ from typing import Generator, TextIO, List
 from src.annotation.annotation import Annotation
 from src.annotation.parser import AnnotationTypesParsers
 from src.config.config_annotation import AnnotationFormat, AnnotationGeneralKeys
+from src.task.find import find_files
 from src.utils.logger import log
 
 
@@ -58,7 +59,7 @@ def _parser(file: str, annotation: dict, format_output: str, display_header=True
 
 
 def _check_extension(ext: str, path: str) -> re.Match:
-    rext = re.compile(ext + "$")
+    rext = re.compile(ext[-1:] + "$")
     return rext.search(path)
 
 
@@ -84,7 +85,6 @@ def _unify(base_path: str, annotation: Annotation, display_header=True) -> Gener
                 else:
                     for x in _unify(file_path, annotation, display_header):
                         display_header = False
-
                         yield x
         except PermissionError as e:
             print(e)
@@ -113,3 +113,41 @@ class Variant:
                 writer.writerow(line.split())
             file.close()
 
+    '''
+    def __preprocess_chunk(self, file, chunk):
+        return join(dirname(file), "bgvariants", "preprocess", basename(file), "c{:06d}.bgvars.xz".format(chunk))
+    '''
+
+    def _selection_input(self):
+        selection = []
+        print(self._path)
+        for i in find_files(self._path, self._annotation):
+            print(i)
+            selection += [(i, self._annotation)]
+        return selection
+
+    '''
+    def count(self):
+        selection = self._selection_input()
+        with Pool(os.cpu_count()) as pool:
+            task = functools.partial(run)
+            map_method = pool.imap_unordered if len(selection) > 1 else map
+
+            total = 0
+            groups = {}
+            for c, g in tqdm(
+                    map_method(task, selection),
+                    total=len(selection),
+                    desc="Counting variants".rjust(40),
+                    disable=(len(selection) < 2)
+            ):
+                # Update groups
+                if g is not None:
+                    for k, v in g.items():
+                        val = groups.get(k, 0)
+                        groups[k] = val + v
+
+                total += c
+        print(total)
+        return total
+        '''
