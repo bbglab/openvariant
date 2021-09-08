@@ -4,6 +4,7 @@ ANNOTATION_EXTENSION = "yaml"
 DEFAULT_FORMAT = 'TSV'
 DEFAULT_RECURSIVE = False
 
+
 class AnnotationGeneralKeys(Enum):
     PATTERN = 'pattern'
     RECURSIVE = 'recursive'

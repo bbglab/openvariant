@@ -11,7 +11,7 @@ annotation:
       - 'Data'
   - type: 'dirname'
     field: 'C'
-    function: 'lambda x: "hg_{}".format(x.upper())'
+    function: 'lambda x: "{}".format(x.upper()[-1])'
   - type: 'filename'
     field: 'D'
     function: 'lambda x: "hg_{}".format(x.lower())'

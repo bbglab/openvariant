@@ -7,7 +7,6 @@ from typing import Generator, TextIO, List
 from src.annotation.annotation import Annotation
 from src.annotation.parser import AnnotationTypesParsers
 from src.config.config_annotation import AnnotationFormat, AnnotationGeneralKeys
-from src.task.find import find_files
 from src.utils.logger import log
 
 
@@ -30,7 +29,8 @@ def _parse_row(ann: dict, line: List, original_header: List, path: str, format_o
     row_parser = []
     for k, v in annotations_header.items():
         row_parser.append(AnnotationTypesParsers[v[0]].value(v, line, original_header, path))
-    return AnnotationFormat[format_output.upper()].value.join(list(map(str, row_parser)))
+    line = AnnotationFormat[format_output.upper()].value.join(list(map(str, row_parser)))
+    return line
 
 
 def _parser(file: str, annotation: dict, format_output: str, display_header=True) -> Generator[str, None, None]:
@@ -63,31 +63,8 @@ def _check_extension(ext: str, path: str) -> re.Match:
     return rext.search(path)
 
 
-def _unify(base_path: str, annotation: Annotation, display_header=True) -> Generator[str, None, None]:
-    an = annotation.structure
-    format_output = annotation.format
-    if isfile(base_path):
-        for ext, ann in an.items():
-            if _check_extension(ext, base_path):
-                for x in _parser(base_path, ann, format_output, display_header):
-                    display_header = False
-                    yield x
-    else:
-        try:
-            for file in listdir(base_path):
-                file_path = join(base_path, file)
-                if isfile(file_path):
-                    for ext, ann in an.items():
-                        if _check_extension(ext, file_path):
-                            for x in _parser(file_path, ann, format_output, display_header):
-                                display_header = False
-                                yield x
-                else:
-                    for x in _unify(file_path, annotation, display_header):
-                        display_header = False
-                        yield x
-        except PermissionError as e:
-            print(e)
+def _extract_header(annotation: Annotation):
+    return list(annotation.annotations.keys())
 
 
 class Variant:
@@ -95,7 +72,34 @@ class Variant:
     def __init__(self, path: str, ann: Annotation) -> None:
         self._path: str = path
         self._annotation: Annotation = ann
-        self._generator: Generator[str, None, None] = _unify(path, ann)
+        self._header: List[str] = _extract_header(ann)
+        self._generator: Generator[str, None, None] = self._unify(path, ann)
+
+    def _unify(self, base_path: str, annotation: Annotation, display_header=True) -> Generator[str, None, None]:
+        an = annotation.structure
+        format_output = annotation.format
+        if isfile(base_path):
+            for ext, ann in an.items():
+                if _check_extension(ext, base_path):
+                    for x in _parser(base_path, ann, format_output, display_header):
+                        display_header = False
+                        yield x
+        else:
+            try:
+                for file in listdir(base_path):
+                    file_path = join(base_path, file)
+                    if isfile(file_path):
+                        for ext, ann in an.items():
+                            if _check_extension(ext, file_path):
+                                for x in _parser(file_path, ann, format_output, display_header):
+                                    display_header = False
+                                    yield x
+                    else:
+                        for x in self._unify(file_path, annotation, display_header):
+                            display_header = False
+                            yield x
+            except PermissionError as e:
+                print(e)
 
     def read(self, display_header=True) -> Generator[str, None, None]:
         for i, line in enumerate(self._generator):
@@ -113,41 +117,10 @@ class Variant:
                 writer.writerow(line.split())
             file.close()
 
-    '''
-    def __preprocess_chunk(self, file, chunk):
-        return join(dirname(file), "bgvariants", "preprocess", basename(file), "c{:06d}.bgvars.xz".format(chunk))
-    '''
+    @property
+    def path(self):
+        return self._path
 
-    def _selection_input(self):
-        selection = []
-        print(self._path)
-        for i in find_files(self._path, self._annotation):
-            print(i)
-            selection += [(i, self._annotation)]
-        return selection
-
-    '''
-    def count(self):
-        selection = self._selection_input()
-        with Pool(os.cpu_count()) as pool:
-            task = functools.partial(run)
-            map_method = pool.imap_unordered if len(selection) > 1 else map
-
-            total = 0
-            groups = {}
-            for c, g in tqdm(
-                    map_method(task, selection),
-                    total=len(selection),
-                    desc="Counting variants".rjust(40),
-                    disable=(len(selection) < 2)
-            ):
-                # Update groups
-                if g is not None:
-                    for k, v in g.items():
-                        val = groups.get(k, 0)
-                        groups[k] = val + v
-
-                total += c
-        print(total)
-        return total
-        '''
+    @property
+    def header(self):
+        return self._header

@@ -3,6 +3,12 @@ pattern:
 recursive: true
 
 annotation:
+  - type: 'static'
+    field: 'v'
+    value: 'vvvv'
+  - type: 'static'
+    field: 'v'
+    value: 'vvvv'
   - type: 'internal'
     field: 'variant'
     fieldSource:
@@ -13,7 +19,7 @@ annotation:
     function: 'lambda x: "{}".format(x.lower()[:-4])'
   - type: 'dirname'
     field: 'PROJECT'
-    function: 'lambda x: "{}".format(x.upper())'
+    function: 'lambda x: "{}".format(x.upper()[-1])'
   #- type: 'liftover'
   #  field: 'E'
   #  coordinateSource: 'hg19'
