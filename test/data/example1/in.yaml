@@ -1,0 +1,8 @@
+pattern:
+  - '*.maf'
+recursive: true
+
+annotation:
+  - type: 'static'
+    field: 'g'
+    value: 'ggggg'

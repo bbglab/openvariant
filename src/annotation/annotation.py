@@ -129,7 +129,7 @@ class Annotation:
     '''
 
     def transform_dirname_filename(self, filename: str, base_path: str):
-        # NOTE: Try to annotate mappings that only use already resolved annotations
+        # TODO: Try to annotate mappings that only use already resolved annotations
         '''
         for k in annotations:
             value = annotations[k]
@@ -220,7 +220,8 @@ def merge_annotations_structure(ann_a: Annotation, ann_b: Annotation) -> Annotat
 
     aa = {k: v for k, v in ann_aa.annotations.items()}
     for k, v in ann_b.annotations.items():
-        if k in aa:
+
+        if k in list(aa.keys()):
             pass
             # Update the annotations
             # if v[0] == aa[k]:
@@ -242,5 +243,4 @@ def merge_annotations_structure(ann_a: Annotation, ann_b: Annotation) -> Annotat
             aa[k] = v
 
     ann_aa.set_annotations(aa)
-
     return ann_aa

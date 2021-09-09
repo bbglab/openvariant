@@ -41,15 +41,14 @@ def find_files(base_path: str, annotation: Annotation) -> Generator[str, Annotat
             for file_name in listdir(base_path):
                 file_path = join(base_path, file_name)
                 if isfile(file_path):
-                    local_annotation = None
+                    local_annotation = global_annotation
                     for annotation_file in glob.iglob(join(base_path, "*.{}".format(ANNOTATION_EXTENSION))):
                         ann = Annotation(annotation_file)
                         recursive = DEFAULT_RECURSIVE if global_annotation.recursive is None \
                             else global_annotation.recursive
                         if recursive:
-                            local_annotation = merge_annotations_structure(global_annotation, ann)
+                            local_annotation = merge_annotations_structure(local_annotation, ann)
 
-                    local_annotation = merge_annotations_structure(local_annotation, global_annotation)
                     for f, a in find_files(file_path, local_annotation):
                         yield f, a
                 else:
