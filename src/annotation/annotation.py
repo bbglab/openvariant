@@ -59,11 +59,11 @@ def _check_annotation_keys(annot: dict) -> None:
         raise KeyError(f"'{AnnotationKeys.FIELD.value}' key not found or is not a str.")
 
     # Field source key
-    if (annot[AnnotationKeys.TYPE.value] == AnnotationTypes.INTERNAL.value or
-        annot[AnnotationKeys.TYPE.value] == AnnotationTypes.LIFTOVER.value) and \
-            AnnotationKeys.FIELD_SOURCE.value in annot and \
-            not all(isinstance(x, str) for x in annot[AnnotationKeys.FIELD_SOURCE.value]):
-        raise KeyError(f"'{AnnotationKeys.FIELD_SOURCE.value}' key not found or is not a list of str.")
+    # if (annot[AnnotationKeys.TYPE.value] == AnnotationTypes.INTERNAL.value or
+    #    annot[AnnotationKeys.TYPE.value] == AnnotationTypes.LIFTOVER.value) and \
+    #        AnnotationKeys.FIELD_SOURCE.value in annot and \
+    #        not all(isinstance(x, str) for x in annot[AnnotationKeys.FIELD_SOURCE.value]):
+    #    raise KeyError(f"'{AnnotationKeys.FIELD_SOURCE.value}' key not found or is not a list of str.")
 
     # Dirname and filename key
     if (annot[AnnotationKeys.TYPE.value] == AnnotationTypes.DIRNAME.value or
@@ -73,22 +73,22 @@ def _check_annotation_keys(annot: dict) -> None:
         raise ValueError(f"'{AnnotationKeys.FUNCTION.value}' value is not an appropriated lambda function.")
 
     # Coordinate key
-    if annot[AnnotationKeys.TYPE.value] == AnnotationTypes.LIFTOVER.value and \
-            ((
-                     AnnotationKeys.COORDINATE_SOURCE.value not in annot and AnnotationKeys.COORDINATE_TARGET.value not in annot) or
-             (not isinstance(annot[AnnotationKeys.COORDINATE_SOURCE.value], str) and
-              not isinstance(annot[AnnotationKeys.COORDINATE_TARGET.value], str))):
-        raise KeyError(f"'{AnnotationKeys.COORDINATE.value}' key not found or is not a str.")
+    # if annot[AnnotationKeys.TYPE.value] == AnnotationTypes.LIFTOVER.value and \
+    #        ((
+    #                 AnnotationKeys.COORDINATE_SOURCE.value not in annot and AnnotationKeys.COORDINATE_TARGET.value not in annot) or
+    #         (not isinstance(annot[AnnotationKeys.COORDINATE_SOURCE.value], str) and
+    #          not isinstance(annot[AnnotationKeys.COORDINATE_TARGET.value], str))):
+    #    raise KeyError(f"'{AnnotationKeys.COORDINATE.value}' key not found or is not a str.")
 
     # Mapping keys
-    if annot[AnnotationKeys.TYPE.value] == AnnotationTypes.MAPPING.value and \
-            (AnnotationKeys.MAPPING_FILE.value not in annot or
-             AnnotationKeys.MAPPING_FIELD.value not in annot or
-             not isinstance(annot[AnnotationKeys.MAPPING_FILE.value], str) or
-             not isinstance(annot[AnnotationKeys.MAPPING_FIELD.value], str)):
-        raise KeyError(
-            f"'{AnnotationKeys.MAPPING_FIELD.value}' or '{AnnotationKeys.MAPPING_FILE.value}' key not found or are not "
-            f"a str.")
+    # if annot[AnnotationKeys.TYPE.value] == AnnotationTypes.MAPPING.value and \
+    #        (AnnotationKeys.MAPPING_FILE.value not in annot or
+    #         AnnotationKeys.MAPPING_FIELD.value not in annot or
+    #         not isinstance(annot[AnnotationKeys.MAPPING_FILE.value], str) or
+    #         not isinstance(annot[AnnotationKeys.MAPPING_FIELD.value], str)):
+    #    raise KeyError(
+    #        f"'{AnnotationKeys.MAPPING_FIELD.value}' or '{AnnotationKeys.MAPPING_FILE.value}' key not found or are not "
+    #        f"a str.")
 
 
 class Annotation:
@@ -128,29 +128,16 @@ class Annotation:
             logging.error(e)
     '''
 
-    def transform_dirname_filename(self, filename: str, base_path: str):
-        # TODO: Try to annotate mappings that only use already resolved annotations
-        '''
-        for k in annotations:
-            value = annotations[k]
-            if isinstance(value, tuple):
-                if value[0] == 'mapping':
-                    print(value)
-                    map_key = annotations[value[1]]
-                    if not isinstance(map_key, tuple):
-                        annotations[k] = value[2].get(map_key, None)
-        '''
-
+    def transform_dirname_filename(self, base_path: str):
         for ka in self._annotations:
             name = None
             if self._annotations[ka][0] == AnnotationTypes.FILENAME.name:
-                name = filename
+                name = basename(base_path)
             elif self._annotations[ka][0] == AnnotationTypes.DIRNAME.name:
                 if isfile(base_path):
                     name = basename(dirname(base_path))
                 else:
                     name = basename(base_path)
-
             if (self._annotations[ka][0] == AnnotationTypes.FILENAME.name or
                 self._annotations[ka][0] == AnnotationTypes.DIRNAME.name) \
                     and callable(self._annotations[ka][1]):

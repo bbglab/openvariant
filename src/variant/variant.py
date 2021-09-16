@@ -1,3 +1,4 @@
+import copy
 import csv
 from os import listdir
 from os.path import isfile, join, isdir
@@ -25,10 +26,13 @@ def _base_parser(lines: TextIO) -> Generator[int, str, None]:
 
 
 def _parse_row(ann: dict, line: List, original_header: List, path: str, format_output: str) -> str:
-    annotations_header = ann[AnnotationGeneralKeys.ANNOTATION.name]
+    annotations = ann[AnnotationGeneralKeys.ANNOTATION.name]
     row_parser = []
-    for k, v in annotations_header.items():
-        row_parser.append(AnnotationTypesParsers[v[0]].value(v, line, original_header, path))
+    for k, v in annotations.items():
+        try:
+            row_parser.append(AnnotationTypesParsers[v[0]].value(v, line, original_header, path))
+        except IndexError:
+            print(k, v)
     line = AnnotationFormat[format_output.upper()].value.join(list(map(str, row_parser)))
     return line
 
@@ -47,12 +51,12 @@ def _parser(file: str, annotation: dict, format_output: str, display_header=True
                     continue
                 row = AnnotationFormat[format_output.upper()].value.join(header)
             except (ValueError, KeyError) as e:
-                log.warning("Error parsing header (%s)", e)
+                log.error(f"Error parsing header {e}")
         else:
             try:
                 row = _parse_row(annotation, line.split(), original_header, file, format_output)
             except (ValueError, IndexError) as e:
-                log.warning("Error parsing line %d %s (%s %s %s)", lnum, file, e, line, header)
+                log.error(f"Error parsing line {lnum} {file} ({e, line, header})")
                 continue
 
         yield row
@@ -79,6 +83,8 @@ class Variant:
         an = annotation.structure
         format_output = annotation.format
         if isfile(base_path):
+            #annotation_aux.transform_dirname_filename(base_path)
+            #an = annotation_aux.structure
             for ext, ann in an.items():
                 if _check_extension(ext, base_path):
                     for x in _parser(base_path, ann, format_output, display_header):
@@ -89,9 +95,13 @@ class Variant:
                 for file in listdir(base_path):
                     file_path = join(base_path, file)
                     if isfile(file_path):
+                        #annotation_aux.transform_dirname_filename(file_path)
+                        #an = annotation_aux.structure
                         for ext, ann in an.items():
                             if _check_extension(ext, file_path):
+
                                 for x in _parser(file_path, ann, format_output, display_header):
+                                    #print(x)
                                     display_header = False
                                     yield x
                     else:

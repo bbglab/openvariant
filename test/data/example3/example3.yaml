@@ -9,7 +9,7 @@ annotation:
     fieldSource:
       - 'Variant_Type'
       - 'INFO'
-  #- type: 'liftover'
+  #- type: 'plugin'
   #  field: 'E'
   #  coordinateSource: 'HG19'
   #  coordinateTarget: 'HG38'

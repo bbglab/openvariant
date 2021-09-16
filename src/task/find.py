@@ -21,7 +21,7 @@ def _get_annotation_file(annotation: Annotation, file_name: str, file_path: str,
 
     # Process filename and dirname annotations
     if ann is not None and pattern_matches > 0:  # and __where_match(file_annotations, where=where):
-        ann.transform_dirname_filename(file_name, base_path)
+        ann.transform_dirname_filename(base_path)
         yield file_path, ann
 
 
@@ -48,7 +48,6 @@ def find_files(base_path: str, annotation: Annotation) -> Generator[str, Annotat
                             else global_annotation.recursive
                         if recursive:
                             local_annotation = merge_annotations_structure(local_annotation, ann)
-
                     for f, a in find_files(file_path, local_annotation):
                         yield f, a
                 else:

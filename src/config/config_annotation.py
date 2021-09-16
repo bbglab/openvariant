@@ -16,13 +16,14 @@ class AnnotationGeneralKeys(Enum):
 class AnnotationKeys(Enum):
     TYPE = 'type'
     FIELD = 'field'
+    PLUGIN = 'plugin'
     VALUE = 'value'
     FIELD_SOURCE = 'fieldSource'
     FUNCTION = 'function'
-    COORDINATE_SOURCE = 'coordinateSource'
-    COORDINATE_TARGET = 'coordinateTarget'
-    MAPPING_FILE = 'mappingFile'
-    MAPPING_FIELD = 'mappingField'
+    # COORDINATE_SOURCE = 'coordinateSource'
+    # COORDINATE_TARGET = 'coordinateTarget'
+    # MAPPING_FILE = 'mappingFile'
+    # MAPPING_FIELD = 'mappingField'
 
 
 class ExcludesKeys(Enum):
@@ -35,8 +36,8 @@ class AnnotationTypes(Enum):
     INTERNAL = 'internal'
     DIRNAME = 'dirname'
     FILENAME = 'filename'
-    LIFTOVER = 'liftover'
-    MAPPING = 'mapping'
+    PLUGIN = 'plugin'
+    # MAPPING = 'mapping'
 
 
 class AnnotationFormat(Enum):

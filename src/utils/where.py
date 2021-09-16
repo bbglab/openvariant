@@ -28,18 +28,6 @@ where_stmts = {
 
 where_stmts_reverse = {v: k for k, v in where_stmts.items()}
 
-'''
-def _dequote(s):
-    """
-    If a string has single or double quotes around it, remove them.
-    Make sure the pair of quotes match.
-    If a matching pair of quotes is not found, return the string unchanged.
-    """
-    if (s[0] == s[-1]) and s.startswith(("'", '"')):
-        return s[1:-1]
-    return s
-'''
-
 
 def parse_where(where: str) -> List[dict]:
     if where is None:

@@ -1,32 +1,19 @@
 pattern:
   - '*.maf'
-recursive: true
+recursive: false
+
+plugin:
+  - liftover
 
 annotation:
-  - type: 'static'
-    field: 'v'
-    value: 'vvvv'
-  - type: 'static'
-    field: 'v'
-    value: 'vvvv'
-  - type: 'internal'
-    field: 'variant'
-    fieldSource:
-      - 'Variant_Type'
-      - 'INFO'
   - type: 'filename'
     field: 'DATASET'
     function: 'lambda x: "{}".format(x.lower()[:-4])'
   - type: 'dirname'
     field: 'PROJECT'
-    function: 'lambda x: "{}".format(x.upper()[-1])'
-  #- type: 'liftover'
-  #  field: 'E'
-  #  coordinateSource: 'hg19'
-  #  coordinateTarget: 'hg38'
-  #  fieldSource:
-  #    - 'Variant_Type'
-
-excludes:
-  - field: 'R'
-    value: 'ww'
+    function: 'lambda x: "{}".format(x.lower())'
+  - type: 'plugin'
+    field: 'A'
+    fieldSource:
+      - 'Start_Position'
+    plugin: 'liftover'

@@ -3,18 +3,10 @@ from functools import partial
 from os.path import basename, dirname, normpath
 from typing import Tuple, Any, List, Optional, Union, Callable
 
-from pyliftover import LiftOver
-from liftover import get_lifter
 
-
-def _static_parser(x: Tuple[str, Any], line: List, original_header: List, path: str) -> str:
-    return x[1]
-
-
-def _internal_parser(x: Tuple[str, List], line: List, original_header: List, path: str) -> \
-        Optional[Union[int, str, float]]:
+def _get_text_by_field(x: List, line: List, original_header: List):
     value = None
-    for y in x[1]:
+    for y in x:
         value = line[original_header.index(y)] if y in original_header else None
         if value is not None:
             break
@@ -23,37 +15,30 @@ def _internal_parser(x: Tuple[str, List], line: List, original_header: List, pat
     return value
 
 
-def _filename_parser(x: Tuple[str, str], line: List, original_header: List, path: str) -> str:
+def _static_parser(x: Tuple[str, Any], line: List, original_header: List, path: str) -> str:
     return x[1]
 
 
-def _dirname_parser(x: Tuple[str, str], line: List, original_header: List, path: str) -> str:
-    return x[1]
+def _internal_parser(x: Tuple[str, List], line: List, original_header: List, path: str) -> \
+        Optional[Union[int, str, float]]:
+    return _get_text_by_field(x[1], line, original_header)
 
 
-def _liftover_parser(x: Tuple[str, str, str, str], line: List, original_header: List, path: str) -> str:
-    value = None
-    for y in x[3]:
-        value = line[original_header.index(y)] if y in original_header else None
-        if value is not None:
-            break
-    # lo = LiftOver(x[1], x[2])
-    lo = get_lifter(x[1].lower(), x[2].lower())
-    if not str(value).startswith("chr"):
-        try:
-            result = lo[value, 1000000]
-        except KeyError as e:
-            result = None
-        # lo.convert_coordinate("chr" + str(value), 1000000)
-    else:
-        try:
-            result = lo[value[3:], 1000000]
-        except KeyError as e:
-            result = None
-        # result = lo.convert_coordinate(value, 1000000)
-    if result is None:
-        return ""
-    return result[0][3]
+def _filename_parser(x: Tuple[str, Union[Callable, str]], line: List, original_header: List, path: str) -> str:
+    if isinstance(x[1], str):
+        return x[1]
+    return x[1](basename(path))
+
+
+def _dirname_parser(x: Tuple[str, Union[Callable, str]], line: List, original_header: List, path: str) -> str:
+    if isinstance(x[1], str):
+        return x[1]
+    return x[1](basename(dirname(path)))
+
+
+def _plugin_parser(x: Tuple[str, List, Callable], line: List, original_header: List, path: str) -> str:
+    value = _get_text_by_field(x[1], line, original_header)
+    return x[2](value)
 
 
 class AnnotationTypesParsers(Enum):
@@ -61,7 +46,7 @@ class AnnotationTypesParsers(Enum):
     INTERNAL = partial(_internal_parser)
     FILENAME = partial(_filename_parser)
     DIRNAME = partial(_dirname_parser)
-    LIFTOVER = partial(_liftover_parser)
+    PLUGIN = partial(_plugin_parser)
     '''
     MAPPING = partial(_mapping_builder)
     '''
