@@ -15,7 +15,7 @@ annotation:
   - type: 'dirname'
     field: 'P'
     function: 'lambda x: "{}".format(x.upper())'
-  #- type: 'plugin'
+  #- type: 'plugins'
   #  field: 'E'
   #  coordinateSource: 'hg19'
   #  coordinateTarget: 'hg38'

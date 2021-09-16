@@ -28,10 +28,10 @@ def _filename_builder(x: dict) -> Tuple[str, Callable]:
 
 def _plugin_builder(x: dict) -> Tuple[str, List, Callable]:
     try:
-        mod = importlib.import_module(f".{x[AnnotationTypes.PLUGIN.value]}", package="plugin")
+        mod = importlib.import_module(f".{x[AnnotationTypes.PLUGIN.value]}", package="plugins")
         func = getattr(mod, x[AnnotationTypes.PLUGIN.value])
     except ModuleNotFoundError:
-        raise ModuleNotFoundError(f"Enable to found 'plugin.{x[AnnotationTypes.PLUGIN.value]}' module.")
+        raise ModuleNotFoundError(f"Enable to found 'plugins.{x[AnnotationTypes.PLUGIN.value]}' module.")
     return AnnotationTypes.PLUGIN.name, x[AnnotationKeys.FIELD_SOURCE.value], func
 
 

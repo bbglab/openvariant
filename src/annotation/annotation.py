@@ -59,11 +59,10 @@ def _check_annotation_keys(annot: dict) -> None:
         raise KeyError(f"'{AnnotationKeys.FIELD.value}' key not found or is not a str.")
 
     # Field source key
-    # if (annot[AnnotationKeys.TYPE.value] == AnnotationTypes.INTERNAL.value or
-    #    annot[AnnotationKeys.TYPE.value] == AnnotationTypes.LIFTOVER.value) and \
-    #        AnnotationKeys.FIELD_SOURCE.value in annot and \
-    #        not all(isinstance(x, str) for x in annot[AnnotationKeys.FIELD_SOURCE.value]):
-    #    raise KeyError(f"'{AnnotationKeys.FIELD_SOURCE.value}' key not found or is not a list of str.")
+    if annot[AnnotationKeys.TYPE.value] == AnnotationTypes.INTERNAL.value and \
+            AnnotationKeys.FIELD_SOURCE.value in annot and \
+            not all(isinstance(x, str) for x in annot[AnnotationKeys.FIELD_SOURCE.value]):
+        raise KeyError(f"'{AnnotationKeys.FIELD_SOURCE.value}' key not found or is not a list of str.")
 
     # Dirname and filename key
     if (annot[AnnotationKeys.TYPE.value] == AnnotationTypes.DIRNAME.value or
@@ -71,14 +70,6 @@ def _check_annotation_keys(annot: dict) -> None:
             AnnotationKeys.FUNCTION.value in annot and \
             re.compile("lambda[' ']+[a-zA-Z0-9]+[' ']*:[' ']*.*").search(annot[AnnotationKeys.FUNCTION.value]) is None:
         raise ValueError(f"'{AnnotationKeys.FUNCTION.value}' value is not an appropriated lambda function.")
-
-    # Coordinate key
-    # if annot[AnnotationKeys.TYPE.value] == AnnotationTypes.LIFTOVER.value and \
-    #        ((
-    #                 AnnotationKeys.COORDINATE_SOURCE.value not in annot and AnnotationKeys.COORDINATE_TARGET.value not in annot) or
-    #         (not isinstance(annot[AnnotationKeys.COORDINATE_SOURCE.value], str) and
-    #          not isinstance(annot[AnnotationKeys.COORDINATE_TARGET.value], str))):
-    #    raise KeyError(f"'{AnnotationKeys.COORDINATE.value}' key not found or is not a str.")
 
     # Mapping keys
     # if annot[AnnotationKeys.TYPE.value] == AnnotationTypes.MAPPING.value and \

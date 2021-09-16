@@ -1,4 +1,3 @@
-import copy
 import csv
 from os import listdir
 from os.path import isfile, join, isdir
@@ -32,7 +31,7 @@ def _parse_row(ann: dict, line: List, original_header: List, path: str, format_o
         try:
             row_parser.append(AnnotationTypesParsers[v[0]].value(v, line, original_header, path))
         except IndexError:
-            print(k, v)
+            row_parser.append(float('nan'))
     line = AnnotationFormat[format_output.upper()].value.join(list(map(str, row_parser)))
     return line
 
@@ -83,8 +82,6 @@ class Variant:
         an = annotation.structure
         format_output = annotation.format
         if isfile(base_path):
-            #annotation_aux.transform_dirname_filename(base_path)
-            #an = annotation_aux.structure
             for ext, ann in an.items():
                 if _check_extension(ext, base_path):
                     for x in _parser(base_path, ann, format_output, display_header):
@@ -95,13 +92,10 @@ class Variant:
                 for file in listdir(base_path):
                     file_path = join(base_path, file)
                     if isfile(file_path):
-                        #annotation_aux.transform_dirname_filename(file_path)
-                        #an = annotation_aux.structure
                         for ext, ann in an.items():
                             if _check_extension(ext, file_path):
 
                                 for x in _parser(file_path, ann, format_output, display_header):
-                                    #print(x)
                                     display_header = False
                                     yield x
                     else:

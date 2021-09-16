@@ -108,8 +108,8 @@ dmypy.json
 # IntelliJ
 out/
 
-# mpeltonen/sbt-idea plugin
+# mpeltonen/sbt-idea plugins
 .idea_modules/
 
-# JIRA plugin
+# JIRA plugins
 atlassian-ide-plugin.xml

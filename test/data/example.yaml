@@ -17,3 +17,6 @@ annotation:
     fieldSource:
       - 'Start_Position'
     plugin: 'liftover'
+  - type: 'static'
+    field: 'v'
+    value: 'VvV'
