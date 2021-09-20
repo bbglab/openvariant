@@ -8,31 +8,8 @@ from tqdm import tqdm
 from src.annotation.annotation import Annotation
 from src.task.find import find_files
 from src.utils.logger import log
-from src.utils.where import parse_where, WhereAttributesKeys, where_stmts_reverse, WhereStatementKeys
+from src.utils.where import parse_where, skip
 from src.variant.variant import Variant
-
-
-def _skip(row: str, header: List[str], where: List[dict]) -> bool:
-    if where is None or len(where) == 0:
-        return False
-
-    row_items = row.split()
-
-    filter_wh = False
-    for k in where:
-        try:
-            i = header.index(k[WhereAttributesKeys.FIELD.value])
-            data_value = f"\"{row_items[i]}\"" if isinstance(row_items[i], str) and not row_items[
-                i].isnumeric() else str(row_items[i])
-
-            filter_wh = eval(str(k[WhereAttributesKeys.VALUE.value]) + ' ' +
-                             str(where_stmts_reverse[
-                                     k[WhereAttributesKeys.OPERATION.value]]) + ' ' + data_value)
-            if filter_wh or k[WhereAttributesKeys.OPERATION.value] == WhereStatementKeys.NOEQUAL.value:
-                return not filter_wh
-        except (KeyError, ValueError):
-            return True
-    return filter_wh
 
 
 def count_task(selection: Tuple[str, Annotation], group_by: str, where: str) -> Tuple[int, Union[dict, None]]:
@@ -44,7 +21,7 @@ def count_task(selection: Tuple[str, Annotation], group_by: str, where: str) -> 
     header = result.header
     if group_by is None:
         for r in result.read(False):
-            if _skip(r, header, where_clauses):
+            if skip(r, header, where_clauses):
                 continue
 
             i += 1
@@ -53,7 +30,7 @@ def count_task(selection: Tuple[str, Annotation], group_by: str, where: str) -> 
         groups = {}
         key_not_found = False
         for r in result.read(False):
-            if _skip(r, header, where_clauses):
+            if skip(r, header, where_clauses):
                 continue
             try:
                 val = r.split()[header.index(group_by)]
