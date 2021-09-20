@@ -9,6 +9,7 @@ class AnnotationGeneralKeys(Enum):
     PATTERN = 'pattern'
     RECURSIVE = 'recursive'
     FORMAT = 'format'
+    PLUGIN = 'plugin'
     ANNOTATION = 'annotation'
     EXCLUDES = 'excludes'
 

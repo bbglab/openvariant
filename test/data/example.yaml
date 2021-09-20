@@ -2,8 +2,8 @@ pattern:
   - '*.maf'
 recursive: false
 
-plugin:
-  - liftover
+#plugin:
+#  - liftover
 
 annotation:
   - type: 'filename'
@@ -12,11 +12,13 @@ annotation:
   - type: 'dirname'
     field: 'PROJECT'
     function: 'lambda x: "{}".format(x.lower())'
+
   - type: 'plugin'
+    plugin: 'liftover'
     field: 'A'
     fieldSource:
       - 'Start_Position'
-    plugin: 'liftover'
+
   - type: 'static'
     field: 'v'
     value: 'VvV'

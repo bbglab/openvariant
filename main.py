@@ -7,10 +7,10 @@ if __name__ == '__main__':
     annotation = Annotation('test/data/example.yaml')
 
     result = Variant('./test/data/example1', annotation)
-    result.save('res.tsv')
-    #for x in result.read():
-    #    print(x)
-    #    pass
+    #result.save('res.tsv')
+    for x in result.read():
+        print(x)
+        pass
 
     #for f, ann in find_files('./test/data/example1', annotation):
     #    print(f, ann.annotations)

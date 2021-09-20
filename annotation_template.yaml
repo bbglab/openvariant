@@ -1,0 +1,55 @@
+pattern: #  List of file patterns to match with the current annotation; required
+  - string
+  - string
+  - ...
+recursive: boolean # Explore annotations recursively to all subdirectories; default: False
+format: string # Output format "tsv" or "csv"; default: "tsv"
+
+annotation: # Columns to parse
+  # Required attributes in each element:
+  # 'type': Describe the type of field that will be parsed.
+  # Could be: static, internal, filename, dirname, mapping, plugin
+  # 'field': The name of the column that will be parsed
+
+  # The value will be parsed to all the rows of the output file
+  - type: 'static'
+    field: string
+    value: string | number # Value that it will be written to the output file; required
+
+  # The values of `fieldSource` columns that appears on the input files will
+  # be extracted and parsed as values in the outfile
+  - type: 'internal'
+    field: string
+    fieldSource: # Columns to look for in the input files; required
+      - string
+      - string
+      - ...
+
+  # Annotation based on the filename of the input file
+  - type: 'filename'
+    field: string
+    function: string # function to apply to filename; optional
+
+  # Annotation based on the dirname that input file is located
+  - type: 'dirname'
+    field: string
+    function: string #  function to apply to dirname; optional
+
+  - type: 'mapping'
+    field: string
+    mappingFile: string
+    mappingField: string
+
+  # Apply plugin in the columns described on the `fieldSource` attribute of input files.
+  - type: 'plugin'
+    plugin: string # Plugin to apply, located into 'plugin' folder
+    field: string
+    fieldSource:
+      - string
+      - string
+      - ...
+
+exclude: # List of field and value that allows to filter out all the rows that have specific value; optional
+  - field: string # Field to apply the exclusion
+    value: string # Value that will be discarded
+  - ...

@@ -1,0 +1,41 @@
+pattern:
+  - '*.maf'
+  - '*.vcf'
+recursive: true
+format: 'tsv'
+
+
+annotation:
+  - type: 'static'
+    field: 'A'
+    value: 'A_value'
+
+  - type: 'internal'
+    field: 'B'
+    fieldSource:
+      - 'Tumor_Sample_UUID'
+      - 'ID'
+
+  - type: 'filename'
+    field: 'C'
+    function: 'lambda x: "{}".format(x.lower()[:-4])'
+
+  - type: 'dirname'
+    field: 'D'
+    function: 'lambda x: "{}".format(x.lower())'
+
+  - type: 'plugin'
+    plugin: 'plugin_name'
+    field: 'E'
+    fieldSource:
+      - 'Start_Position'
+      - 'ID'
+
+
+excludes:
+  - field: 'B'
+    value: '1234'
+  - field: 'C'
+    value: 'ACC'
+
+

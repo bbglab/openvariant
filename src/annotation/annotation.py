@@ -39,6 +39,16 @@ def _check_general_keys(annot: dict) -> None:
             annot[AnnotationGeneralKeys.FORMAT.value], str):
         raise KeyError(f"'{AnnotationGeneralKeys.FORMAT.value}' key is not a string.")
 
+    # Plugin key
+    if AnnotationGeneralKeys.PLUGIN.value in annot and not all(
+            isinstance(x, str) for x in annot[AnnotationGeneralKeys.PLUGIN.value]):
+        raise KeyError(f"'{AnnotationGeneralKeys.PLUGIN.value}' key is not a list of strings.")
+
+    # Annotations key
+    if AnnotationGeneralKeys.ANNOTATION.value in annot and not isinstance(annot[AnnotationGeneralKeys.ANNOTATION.value],
+                                                                          list):
+        raise KeyError(f"'{AnnotationGeneralKeys.ANNOTATION.value}' key is not a list.")
+
     # Excludes key
     if AnnotationGeneralKeys.EXCLUDES.value in annot and \
             (not all(ExcludesKeys.FIELD.value in x and ExcludesKeys.VALUE.value in x
@@ -59,7 +69,8 @@ def _check_annotation_keys(annot: dict) -> None:
         raise KeyError(f"'{AnnotationKeys.FIELD.value}' key not found or is not a str.")
 
     # Field source key
-    if annot[AnnotationKeys.TYPE.value] == AnnotationTypes.INTERNAL.value and \
+    if (annot[AnnotationKeys.TYPE.value] == AnnotationTypes.INTERNAL.value or
+        annot[AnnotationKeys.TYPE.value] == AnnotationTypes.PLUGIN.value) and \
             AnnotationKeys.FIELD_SOURCE.value in annot and \
             not all(isinstance(x, str) for x in annot[AnnotationKeys.FIELD_SOURCE.value]):
         raise KeyError(f"'{AnnotationKeys.FIELD_SOURCE.value}' key not found or is not a list of str.")
@@ -70,6 +81,15 @@ def _check_annotation_keys(annot: dict) -> None:
             AnnotationKeys.FUNCTION.value in annot and \
             re.compile("lambda[' ']+[a-zA-Z0-9]+[' ']*:[' ']*.*").search(annot[AnnotationKeys.FUNCTION.value]) is None:
         raise ValueError(f"'{AnnotationKeys.FUNCTION.value}' value is not an appropriated lambda function.")
+
+    # Plugin key
+    if annot[AnnotationKeys.TYPE.value] == AnnotationTypes.PLUGIN.value and \
+            AnnotationKeys.PLUGIN.value not in annot:
+        raise KeyError(f"'{AnnotationKeys.PLUGIN.value}' key not found.")
+
+    if annot[AnnotationKeys.TYPE.value] == AnnotationTypes.PLUGIN.value and \
+            (AnnotationKeys.PLUGIN.value in annot and not isinstance(annot[AnnotationKeys.PLUGIN.value], str)):
+        raise ValueError(f"'{AnnotationKeys.PLUGIN.value}' is not a str.")
 
     # Mapping keys
     # if annot[AnnotationKeys.TYPE.value] == AnnotationTypes.MAPPING.value and \
@@ -108,16 +128,6 @@ class Annotation:
     def _register_builders(self) -> None:
         for b in AnnotationTypes:
             self._builders[b.value] = AnnotationTypesBuilders[b.name].value
-
-    '''
-    def check_annotation(self) -> bool:
-        try:
-            for annot in self._annotations:
-                _check_annotation_keys(self._annotations[annot])
-            return True
-        except Exception as e:
-            logging.error(e)
-    '''
 
     def transform_dirname_filename(self, base_path: str):
         for ka in self._annotations:
