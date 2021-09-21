@@ -16,6 +16,6 @@ annotation:
     field: 'D'
     function: 'lambda x: "hg_{}".format(x.lower())'
 
-excludes:
+exclude:
   - field: 'R'
     value: 'ww'

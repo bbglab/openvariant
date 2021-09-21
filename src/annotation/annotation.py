@@ -50,11 +50,11 @@ def _check_general_keys(annot: dict) -> None:
         raise KeyError(f"'{AnnotationGeneralKeys.ANNOTATION.value}' key is not a list.")
 
     # Excludes key
-    if AnnotationGeneralKeys.EXCLUDES.value in annot and \
+    if AnnotationGeneralKeys.EXCLUDE.value in annot and \
             (not all(ExcludesKeys.FIELD.value in x and ExcludesKeys.VALUE.value in x
-                     for x in annot[AnnotationGeneralKeys.EXCLUDES.value]) or not all(
-                isinstance(x[ExcludesKeys.FIELD.value], str) for x in annot[AnnotationGeneralKeys.EXCLUDES.value])):
-        raise KeyError(f"'{AnnotationGeneralKeys.EXCLUDES.value}' key in bad format.")
+                     for x in annot[AnnotationGeneralKeys.EXCLUDE.value]) or not all(
+                isinstance(x[ExcludesKeys.FIELD.value], str) for x in annot[AnnotationGeneralKeys.EXCLUDE.value])):
+        raise KeyError(f"'{AnnotationGeneralKeys.EXCLUDE.value}' key in bad format.")
 
 
 def _check_annotation_keys(annot: dict) -> None:
@@ -112,12 +112,12 @@ class Annotation:
         self._path = path
         raw_annotation = _read_annotation_file(path)
         _check_general_keys(raw_annotation)
-        for annot in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value):
+        for annot in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
             _check_annotation_keys(annot)
 
         self._patterns = raw_annotation[AnnotationGeneralKeys.PATTERN.value]
         self._recursive = raw_annotation.get(AnnotationGeneralKeys.RECURSIVE.value, True)
-        self._excludes = raw_annotation.get(AnnotationGeneralKeys.EXCLUDES.value, [])
+        self._excludes = raw_annotation.get(AnnotationGeneralKeys.EXCLUDE.value, [])
         self._format = raw_annotation.get(AnnotationGeneralKeys.FORMAT.value, DEFAULT_FORMAT).replace('.', '')
 
         self._annotations: dict = {}
@@ -177,7 +177,7 @@ class Annotation:
     def structure(self) -> dict:
 
         structure_aux = {AnnotationGeneralKeys.ANNOTATION.name: self._annotations,
-                         AnnotationGeneralKeys.EXCLUDES.name: self._excludes}
+                         AnnotationGeneralKeys.EXCLUDE.name: self._excludes}
         return {e: structure_aux for e in self._patterns}
 
 
@@ -195,7 +195,6 @@ def merge_annotations_structure(ann_a: Annotation, ann_b: Annotation) -> Annotat
 
     ann_aa = copy.deepcopy(ann_a)
 
-    # TODO: CHECK NO REPEATED
     ann_aa.set_patterns(list(set(ann_aa.patterns).union(set(ann_b.patterns))))
 
     excludes_total = ann_aa.excludes
@@ -208,26 +207,7 @@ def merge_annotations_structure(ann_a: Annotation, ann_b: Annotation) -> Annotat
 
     aa = {k: v for k, v in ann_aa.annotations.items()}
     for k, v in ann_b.annotations.items():
-
-        if k in list(aa.keys()):
-            pass
-            # Update the annotations
-            # if v[0] == aa[k]:
-
-            # for kv, vv in v.items():
-            #    if kv not in bb[k]:
-            #        bb[k][kv] = vv
-            #    else:
-            #        if isinstance(bb[k][kv], list):
-            #            # If it's a list concat them instead of override it
-            #            if len(vv) > 0:
-            #                vv_list = vv if isinstance(vv, list) else [vv]
-            #                bb[k][kv] = list(bb[k][kv]) + vv_list
-            #        else:
-            #            # Override the value
-            #            if vv != {}:
-            #                bb[k][kv] = vv
-        else:
+        if k not in list(aa.keys()):
             aa[k] = v
 
     ann_aa.set_annotations(aa)

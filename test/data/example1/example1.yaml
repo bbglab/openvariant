@@ -21,3 +21,7 @@ annotation:
   #  coordinateTarget: 'hg38'
   #  fieldSource:
   #    - 'Variant_Type'
+
+exclude:
+  - field: 'vfrrffr'
+    value: 'VvVf'

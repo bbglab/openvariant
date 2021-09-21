@@ -11,7 +11,7 @@ class AnnotationGeneralKeys(Enum):
     FORMAT = 'format'
     PLUGIN = 'plugin'
     ANNOTATION = 'annotation'
-    EXCLUDES = 'excludes'
+    EXCLUDE = 'exclude'
 
 
 class AnnotationKeys(Enum):

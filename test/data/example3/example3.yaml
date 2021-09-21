@@ -21,6 +21,6 @@ annotation:
   #  mappingFile: 'test/data/ex.tsv'
   #  mappingField: 'DONOR'
 
-excludes:
+exclude:
   - field: 'G'
     value: 0

@@ -2,16 +2,13 @@ pattern:
   - '*.maf'
 recursive: false
 
-#plugin:
-#  - liftover
-
 annotation:
   - type: 'filename'
     field: 'DATASET'
     function: 'lambda x: "{}".format(x.lower()[:-4])'
   - type: 'dirname'
     field: 'PROJECT'
-    function: 'lambda x: "{}".format(x.lower())'
+    function: 'lambda x: "{} hola".format(x.lower())'
 
   #- type: 'plugin'
   #  plugin: 'liftover'
@@ -22,3 +19,7 @@ annotation:
   - type: 'static'
     field: 'v'
     value: 'VvV'
+
+exclude:
+  - field: 'vfrrffr'
+    value: 'VvVf'
