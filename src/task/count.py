@@ -20,8 +20,8 @@ def count_task(selection: Tuple[str, Annotation], group_by: str, where: str) -> 
 
     header = result.header
     if group_by is None:
-        for r in result.read(False):
-            if skip(r, header, where_clauses):
+        for r in result.read():
+            if skip(r, where_clauses):
                 continue
 
             i += 1
@@ -29,11 +29,11 @@ def count_task(selection: Tuple[str, Annotation], group_by: str, where: str) -> 
     else:
         groups = {}
         key_not_found = False
-        for r in result.read(False):
-            if skip(r, header, where_clauses):
+        for r in result.read():
+            if skip(r, where_clauses):
                 continue
             try:
-                val = r.split()[header.index(group_by)]
+                val = list(r.values())[header.index(group_by)]
                 val_count = groups.get(val, 0)
                 groups[val] = val_count + 1
                 i += 1

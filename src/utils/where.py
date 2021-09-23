@@ -50,22 +50,19 @@ def parse_where(where: str) -> List[dict]:
     return where_clauses
 
 
-def skip(row: str, header: List[str], where: List[dict]) -> bool:
+def skip(row: dict, where: List[dict]) -> bool:
     if where is None or len(where) == 0:
         return False
 
-    row_items = row.split()
     filter_wh = False
     for k in where:
         try:
-            i = header.index(k[WhereAttributesKeys.FIELD.value])
-            data_value = f"\"{row_items[i]}\"" if isinstance(row_items[i], str) and not row_items[
-                i].isnumeric() else str(row_items[i])
+            value = row[k[WhereAttributesKeys.FIELD.value]]
+            data_value = f"\"{value}\"" if isinstance(value, str) and not value.isnumeric() else str(value)
             filter_wh = eval(str(k[WhereAttributesKeys.VALUE.value]) + ' ' +
                              str(where_stmts_reverse[
                                      k[WhereAttributesKeys.OPERATION.value]]) + ' ' + data_value)
-            if filter_wh or k[WhereAttributesKeys.OPERATION.value] == WhereStatementKeys.NOEQUAL.value:
-                return not filter_wh
+            return not filter_wh
         except (KeyError, ValueError):
             return True
     return filter_wh

@@ -7,6 +7,7 @@ from typing import Generator, TextIO, List
 from src.annotation.annotation import Annotation
 from src.annotation.parser import AnnotationTypesParsers
 from src.config.config_annotation import AnnotationFormat, AnnotationGeneralKeys, ExcludesKeys
+from src.utils.format_line import format_line
 from src.utils.logger import log
 
 
@@ -115,17 +116,13 @@ class Variant:
                 return False
         return False
 
-    def _format_line(self, line) -> str:
-        return AnnotationFormat[self._annotation.format.upper()].value.join(line)
-
-    def read(self, display_header=True) -> Generator[str, None, None]:
+    def read(self) -> Generator[dict, None, None]:
         for i, line in enumerate(self._generator):
-            if display_header and i == 0:
-                yield line
-            elif i != 0:
+            if i != 0:
                 if self._apply_exclude(line):
                     continue
-                yield self._format_line(line)
+                line_dict = {h: line[i] for i, h in enumerate(self._header)}
+                yield line_dict
 
     def save(self, file_path: str, display_header=True):
         if isdir(file_path):
@@ -142,9 +139,17 @@ class Variant:
             file.close()
 
     @property
-    def path(self):
+    def path(self) -> str:
         return self._path
 
     @property
-    def header(self):
+    def header(self) -> List[str]:
         return self._header
+
+    @property
+    def generator(self) -> Generator[List[str], None, None]:
+        return self._generator
+
+    @property
+    def annotation(self) -> Annotation:
+        return self._annotation
