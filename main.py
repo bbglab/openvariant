@@ -17,9 +17,9 @@ if __name__ == '__main__':
     #for f, ann in find_files('./test/data/example1', annotation):
     #    print(f, ann.excludes)
 
-    print(count('./test/data/example1/', 'test/data/example.yaml', where="A == 99955985", quite=True))
+    #print(count('./test/data/example1/', 'test/data/example.yaml', where="A == 99955985", quite=True))
     #cat('./test/data/example1/', 'test/data/example.yaml', where="A != \"acc\"")
 
-    #x = list(sub_group_by('./test/data/example1', annotation, "A"))
-    #print(x[0])
+    for key, group in group_by('./test/data/example1', annotation, "DATASET"):
+        print(key, group)
     #print(group_by(x))
