@@ -20,6 +20,7 @@ def _read_annotation_file(path: str) -> dict:
             return safe_load(stream)
         except YAMLError as exc:
             logging.error(exc)
+        stream.close()
 
 
 def _check_general_keys(annot: dict) -> None:

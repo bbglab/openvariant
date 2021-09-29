@@ -36,11 +36,6 @@ def _plugin_builder(x: dict) -> Tuple[str, List, Callable]:
 
 
 '''
-def _liftover_builder(x: dict) -> Tuple[str, str, str, str]:
-    return AnnotationTypes.LIFTOVER.name, x[AnnotationKeys.COORDINATE_SOURCE.value], \
-           x[AnnotationKeys.COORDINATE_TARGET.value], x[AnnotationKeys.FIELD_SOURCE.value]
-
-
 def _mapping_builder(x: dict) -> Tuple[str, List]:
     values: List = []
     with open(x[AnnotationKeys.MAPPING_FILE.value]) as f:

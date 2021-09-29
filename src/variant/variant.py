@@ -7,7 +7,6 @@ from typing import Generator, TextIO, List
 from src.annotation.annotation import Annotation
 from src.annotation.parser import AnnotationTypesParsers
 from src.config.config_annotation import AnnotationFormat, AnnotationGeneralKeys, ExcludesKeys
-from src.utils.format_line import format_line
 from src.utils.logger import log
 
 
@@ -60,6 +59,7 @@ def _parser(file: str, annotation: dict, format_output: str, display_header=True
                 continue
 
         yield row
+    fd.close()
 
 
 def _check_extension(ext: str, path: str) -> re.Match:
