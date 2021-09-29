@@ -1,0 +1,14 @@
+pattern:
+  - '*.maf'
+recursive: false
+format: 'CSV'
+
+annotation:
+  - type: 'internal'
+    field: 'A'
+    fieldSource:
+      - 'Start_Position'
+
+  - type: 'filename'
+    field: 'DATASET'
+    function: 'lambda x: "{}".format(x.lower()[:-4])'

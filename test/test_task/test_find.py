@@ -1,17 +1,26 @@
 import unittest
+from os import getcwd
 
+from src.annotation.annotation import Annotation
+from src.task.find import find_files
+
+
+# TestFind: assuming that `test_annotation` works fine
 
 class TestFind(unittest.TestCase):
 
-    # Normal group by functionality
     def test_find_files(self):
-        pass
+        res_expect = ['test/data/example2/KICH.maf', 'test/data/example2/LAML.maf', 'test/data/example1/ACC.maf',
+                      'test/data/example1/CHOL.maf', 'test/data/example3/MESO.maf', 'test/data/example3/UCS.maf']
 
-    def test_invalid_annotation_find_files(self):
-        pass
+        annotation = Annotation('test/data/example.yaml')
+        res = [f for f, a in list(find_files('test/data', annotation))]
+        self.assertEqual(res, res_expect)
 
     def test_invalid_find_files(self):
-        pass
+        annotation = Annotation('test/data/example.yaml')
+        with self.assertRaises(FileNotFoundError):
+            set([f for f, a in list(find_files('test/data/no-exist', annotation))])
 
 
 if __name__ == '__main__':
