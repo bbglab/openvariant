@@ -12,7 +12,7 @@ from src.utils.where import parse_where, skip
 from src.variant.variant import Variant
 
 
-def count_task(selection: Tuple[str, Annotation], group_by: str, where: str) -> Tuple[int, Union[dict, None]]:
+def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) -> Tuple[int, Union[dict, None]]:
     where_clauses = parse_where(where)
     i = 0
     input_file, input_annotations = selection
@@ -23,12 +23,11 @@ def count_task(selection: Tuple[str, Annotation], group_by: str, where: str) -> 
         for r in result.read():
             if skip(r, where_clauses):
                 continue
-
             i += 1
         return i, None
     else:
         groups = {}
-        key_not_found = False
+        # key_not_found = False
         for r in result.read():
             if skip(r, where_clauses):
                 continue
@@ -38,9 +37,11 @@ def count_task(selection: Tuple[str, Annotation], group_by: str, where: str) -> 
                 groups[val] = val_count + 1
                 i += 1
             except ValueError:
-                key_not_found = True
-        if key_not_found:
-            log.warn(f"Not found '{group_by}' key in {result.path}")
+                pass
+                # key_not_found = True
+
+        # if key_not_found:
+        #    log.warn(f"Not found '{group_by}' key in {result.path}")
 
         return i, groups
 
@@ -55,7 +56,7 @@ def count(base_path: str, annotation_path: str, group_by=None, where=None, cores
 
     with Pool(cores) as pool:
         groups = {}
-        task = functools.partial(count_task, group_by=group_by, where=where)
+        task = functools.partial(_count_task, group_by=group_by, where=where)
         map_method = pool.imap_unordered if len(selection) > 1 else map
         total = 0
         for c, g in tqdm(map_method(task, selection),

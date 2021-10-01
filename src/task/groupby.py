@@ -57,8 +57,9 @@ def group_by_task(selection, where=None) -> Tuple[str, List]:
     return group_key, output
 
 
-def group_by(base_path: str, annotation: Annotation, key_by: str, cores=cpu_count(), where=None, quite=False) -> \
+def group_by(base_path: str, annotation_path: str, key_by: str, where=None, cores=cpu_count(), quite=False) -> \
         Generator[str, List, None]:
+    annotation = Annotation(annotation_path)
     selection = list(group(base_path, annotation, key_by))
 
     with Pool(cores) as pool:

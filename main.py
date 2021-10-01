@@ -17,8 +17,12 @@ if __name__ == '__main__':
     #for f, ann in find_files('./test/data/example1', annotation):
     #    print(f, ann.excludes)
 
-    print([f for f,a in list(find_files('./test/data/grr', annotation))])
-    #print(count('./test/data/', 'test/data/count_test.yaml', where="DATASET != \"acc\"", quite=True))
+    #print([f for f,a in list(find_files('./test/data/grr', annotation))])
+    #print(count('./test/data/', 'test/data/task_test.yaml', group_by="NO_EXIST",quite=True))
+    print("example1 < example2", "example1" < "example2")
+    for f, a in list(group_by('./test/data/', 'test/data/task_test.yaml', 'DATASET', where="NOT_EXIST = \"not_exist\"", quite=True)):
+        print(f, not len(a) == 0)
+    #print(count('./tes-t/data/', 'test/data/count_test.yaml', where="DATASET != \"acc\"", quite=True))
     #print(count('./test/data/example1/', 'test/data/example.yaml', quite=True))
     #cat('./test/data/example1/', 'test/data/example.yaml', where="A != \"acc\"")
 

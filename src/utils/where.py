@@ -29,6 +29,7 @@ where_stmts = {
 where_stmts_reverse = {v: k for k, v in where_stmts.items()}
 
 
+# FIXME: Need an AST for where conditions also check the order
 def parse_where(where: str) -> List[dict]:
     if where is None:
         return []
@@ -59,9 +60,12 @@ def skip(row: dict, where: List[dict]) -> bool:
         try:
             value = row[k[WhereAttributesKeys.FIELD.value]]
             data_value = f"\"{value}\"" if isinstance(value, str) and not value.isnumeric() else str(value)
-            filter_wh = eval(str(k[WhereAttributesKeys.VALUE.value]) + ' ' +
-                             str(where_stmts_reverse[
-                                     k[WhereAttributesKeys.OPERATION.value]]) + ' ' + data_value)
+            filter_wh = eval(data_value + ' ' +
+                             str(where_stmts_reverse[k[WhereAttributesKeys.OPERATION.value]]) + ' ' +
+                             str(k[WhereAttributesKeys.VALUE.value]))
+            # print(str(k[WhereAttributesKeys.VALUE.value]) + ' ' +
+            #                 str(where_stmts_reverse[
+            #                         k[WhereAttributesKeys.OPERATION.value]]) + ' ' + data_value)
             return not filter_wh
         except (KeyError, ValueError):
             return True
