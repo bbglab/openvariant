@@ -24,16 +24,17 @@ annotation: # Columns to parse
       - string
       - string
       - ...
+    function: string # Function to apply to internal value; optional
 
   # Annotation based on the filename of the input file
   - type: 'filename'
     field: string
-    function: string # function to apply to filename; optional
+    function: string # Function to apply to filename; optional
 
   # Annotation based on the dirname that input file is located
   - type: 'dirname'
     field: string
-    function: string #  function to apply to dirname; optional
+    function: string #  Function to apply to dirname; optional
 
   - type: 'mapping'
     field: string

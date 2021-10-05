@@ -15,6 +15,7 @@ annotation:
     fieldSource:
       - 'Tumor_Sample_UUID'
       - 'ID'
+    function: "lambda x: '-' if x in ['-', '0', '-1'] else '+' if x in ['+', '1', '+1'] else None"
 
   - type: 'filename'
     field: 'C'

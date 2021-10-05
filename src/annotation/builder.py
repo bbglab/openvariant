@@ -10,8 +10,10 @@ def _static_builder(x: dict) -> Tuple[str, Any]:
     return AnnotationTypes.STATIC.name, x[AnnotationKeys.VALUE.value]
 
 
-def _internal_builder(x: dict) -> Tuple[str, List]:
-    return AnnotationTypes.INTERNAL.name, x[AnnotationKeys.FIELD_SOURCE.value]
+def _internal_builder(x: dict) -> Tuple[str, List, Callable]:
+    return AnnotationTypes.INTERNAL.name, x[AnnotationKeys.FIELD_SOURCE.value], (lambda y: y) \
+        if AnnotationKeys.FUNCTION.value not in x or len(x[AnnotationKeys.FUNCTION.value]) == 2 \
+        else eval(x[AnnotationKeys.FUNCTION.value])
 
 
 def _dirname_builder(x: dict) -> Tuple[str, Callable]:
@@ -22,7 +24,7 @@ def _dirname_builder(x: dict) -> Tuple[str, Callable]:
 
 def _filename_builder(x: dict) -> Tuple[str, Callable]:
     return AnnotationTypes.FILENAME.name, \
-           (lambda y: y) if x[AnnotationKeys.FUNCTION.value] is None or len(x[AnnotationKeys.FUNCTION.value]) == 2 \
+           (lambda y: y) if AnnotationKeys.FUNCTION.value not in x or len(x[AnnotationKeys.FUNCTION.value]) == 2 \
                else eval(x[AnnotationKeys.FUNCTION.value])
 
 

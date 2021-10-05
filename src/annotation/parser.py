@@ -4,10 +4,12 @@ from os.path import basename, dirname, normpath
 from typing import Tuple, Any, List, Optional, Union, Callable
 
 
-def _get_text_by_field(x: List, line: List, original_header: List):
+def _get_text_by_field(x: List, line: List, original_header: List, func: Callable):
     value = None
     for y in x:
         value = line[original_header.index(y)] if y in original_header else None
+        if value is not None:
+            value = func(value) if func is not None else value
         if value is not None:
             break
     if value is None:
@@ -19,9 +21,9 @@ def _static_parser(x: Tuple[str, Any], line: List, original_header: List, path: 
     return x[1]
 
 
-def _internal_parser(x: Tuple[str, List], line: List, original_header: List, path: str) -> \
+def _internal_parser(x: Tuple[str, List, Callable], line: List, original_header: List, path: str) -> \
         Optional[Union[int, str, float]]:
-    return _get_text_by_field(x[1], line, original_header)
+    return _get_text_by_field(x[1], line, original_header, x[2])
 
 
 def _filename_parser(x: Tuple[str, Union[Callable, str]], line: List, original_header: List, path: str) -> str:

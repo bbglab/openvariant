@@ -21,11 +21,3 @@ annotation:
   #  field: 'A'
   #  fieldSource:
   #    - 'Start_Position'
-
-  - type: 'static'
-    field: 'v'
-    value: 'VvV'
-
-exclude:
-  - field: 'vfrrffr'
-    value: 'VvVf'

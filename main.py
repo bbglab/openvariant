@@ -6,7 +6,18 @@ from src.task.groupby import group_by
 from src.variant.variant import Variant
 
 if __name__ == '__main__':
-    annotation = Annotation('test/data/example.yaml')
+    annotation = Annotation('test/data/example_X.yaml')
+    #print(annotation.annotations)
+
+    result = Variant('./test/data/', annotation)
+    for r in result.read():
+        print(r)
+
+
+    #result = Variant('./test/data/', annotation)
+    #for r in result.read():
+    #    a, dataset, project = (r["A"], r["DATASET"], r["PROJECT"])
+    #    print(a, "-", dataset, "-", project)
 
     #result = Variant('./test/data/example1', annotation)
     #for x in result.read():
@@ -18,10 +29,9 @@ if __name__ == '__main__':
     #    print(f, ann.excludes)
 
     #print([f for f,a in list(find_files('./test/data/grr', annotation))])
-    #print(count('./test/data/', 'test/data/task_test.yaml', group_by="NO_EXIST",quite=True))
-    print("example1 < example2", "example1" < "example2")
-    for f, a in list(group_by('./test/data/', 'test/data/task_test.yaml', 'DATASET', where="NOT_EXIST = \"not_exist\"", quite=True)):
-        print(f, not len(a) == 0)
+    #print(count('./test/data/', 'test/data/example_X.yaml', quite=True))
+    #for f, a in list(group_by('./test/data/', 'test/data/task_test.yaml', 'DATASET', where="NOT_EXIST = \"not_exist\"", quite=True)):
+    #    print(f, not len(a) == 0)
     #print(count('./tes-t/data/', 'test/data/count_test.yaml', where="DATASET != \"acc\"", quite=True))
     #print(count('./test/data/example1/', 'test/data/example.yaml', quite=True))
     #cat('./test/data/example1/', 'test/data/example.yaml', where="A != \"acc\"")
@@ -29,3 +39,4 @@ if __name__ == '__main__':
     #for key, group in group_by('./test/data/example1', annotation, "DATASET"):
     #    print(key, group)
     #print(group_by(x))
+
