@@ -1,9 +1,8 @@
 import copy
 import logging
 import re
-from os.path import basename, dirname, isfile
 
-from typing import List, Union
+from typing import List
 from yaml import safe_load, YAMLError
 
 from src.annotation.builder import AnnotationTypesBuilders
@@ -130,20 +129,20 @@ class Annotation:
         for b in AnnotationTypes:
             self._builders[b.value] = AnnotationTypesBuilders[b.name].value
 
-    def transform_dirname_filename(self, base_path: str):
-        for ka in self._annotations:
-            name = None
-            if self._annotations[ka][0] == AnnotationTypes.FILENAME.name:
-                name = basename(base_path)
-            elif self._annotations[ka][0] == AnnotationTypes.DIRNAME.name:
-                if isfile(base_path):
-                    name = basename(dirname(base_path))
-                else:
-                    name = basename(base_path)
-            if (self._annotations[ka][0] == AnnotationTypes.FILENAME.name or
-                self._annotations[ka][0] == AnnotationTypes.DIRNAME.name) \
-                    and callable(self._annotations[ka][1]):
-                self._annotations[ka] = (self._annotations[ka][0], self._annotations[ka][1](name))
+    #def transform_dirname_filename(self, base_path: str):
+    #    for ka in self._annotations:
+    #        name = None
+    #        if self._annotations[ka][0] == AnnotationTypes.FILENAME.name:
+    #            name = basename(base_path)
+    #        elif self._annotations[ka][0] == AnnotationTypes.DIRNAME.name:
+    #            if isfile(base_path):
+    #                name = basename(dirname(base_path))
+    #            else:
+    #                name = basename(base_path)
+    #        if (self._annotations[ka][0] == AnnotationTypes.FILENAME.name or
+    #            self._annotations[ka][0] == AnnotationTypes.DIRNAME.name) \
+    #                and callable(self._annotations[ka][1]):
+    #            self._annotations[ka] = (self._annotations[ka][0], self._annotations[ka][1](name))
 
     def set_patterns(self, patterns: List[str]) -> None:
         self._patterns = patterns

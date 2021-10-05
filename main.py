@@ -6,13 +6,14 @@ from src.task.groupby import group_by
 from src.variant.variant import Variant
 
 if __name__ == '__main__':
-    annotation = Annotation('test/data/example_X.yaml')
+    #annotation = Annotation('test/data/example_X.yaml')
     #print(annotation.annotations)
 
-    result = Variant('./test/data/', annotation)
-    for r in result.read():
-        print(r)
+    #result = Variant('./test/data/', annotation)
+    #for r in result.read():
+    #    print(r)
 
+    #print(count('./test/data/', 'test/data/task_test.yaml', where="DATASET == \"acc\"", quite=True))
 
     #result = Variant('./test/data/', annotation)
     #for r in result.read():
@@ -36,7 +37,7 @@ if __name__ == '__main__':
     #print(count('./test/data/example1/', 'test/data/example.yaml', quite=True))
     #cat('./test/data/example1/', 'test/data/example.yaml', where="A != \"acc\"")
 
-    #for key, group in group_by('./test/data/example1', annotation, "DATASET"):
-    #    print(key, group)
+    for key, group in group_by('./test/data/', './test/data/example.yaml', "PROJECT", quite=True):
+        print(key, len(group))
     #print(group_by(x))
 

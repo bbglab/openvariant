@@ -7,7 +7,6 @@ from tqdm import tqdm
 
 from src.annotation.annotation import Annotation
 from src.task.find import find_files
-from src.utils.logger import log
 from src.utils.where import parse_where, skip
 from src.variant.variant import Variant
 
@@ -38,10 +37,6 @@ def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) ->
                 i += 1
             except ValueError:
                 pass
-                # key_not_found = True
-
-        # if key_not_found:
-        #    log.warn(f"Not found '{group_by}' key in {result.path}")
 
         return i, groups
 

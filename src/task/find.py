@@ -1,7 +1,7 @@
 import glob
 from fnmatch import fnmatch
 from os import listdir
-from os.path import isfile, join, basename, isdir
+from os.path import isfile, join, basename
 from typing import Generator
 from copy import deepcopy
 
@@ -21,7 +21,6 @@ def _get_annotation_file(annotation: Annotation, file_name: str, file_path: str,
 
     # Process filename and dirname annotations
     if ann is not None and pattern_matches > 0:  # and __where_match(file_annotations, where=where):
-        ann.transform_dirname_filename(base_path)
         yield file_path, ann
 
 

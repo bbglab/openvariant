@@ -6,26 +6,36 @@ from typing import List, Tuple, Callable, Any
 from src.config.config_annotation import AnnotationTypes, AnnotationKeys
 
 
+class Builder:
+    func: str = None
+
+    def __init__(self, func: str) -> None:
+        self.func = func
+
+    def __call__(self, x: Any) -> Any:
+        return eval(self.func)(x)
+
+
 def _static_builder(x: dict) -> Tuple[str, Any]:
     return AnnotationTypes.STATIC.name, x[AnnotationKeys.VALUE.value]
 
 
-def _internal_builder(x: dict) -> Tuple[str, List, Callable]:
-    return AnnotationTypes.INTERNAL.name, x[AnnotationKeys.FIELD_SOURCE.value], (lambda y: y) \
+def _internal_builder(x: dict) -> Tuple[str, List, Builder]:
+    return AnnotationTypes.INTERNAL.name, x[AnnotationKeys.FIELD_SOURCE.value], Builder("(lambda y: y)") \
         if AnnotationKeys.FUNCTION.value not in x or len(x[AnnotationKeys.FUNCTION.value]) == 2 \
-        else eval(x[AnnotationKeys.FUNCTION.value])
+        else Builder(x[AnnotationKeys.FUNCTION.value])
 
 
-def _dirname_builder(x: dict) -> Tuple[str, Callable]:
-    return AnnotationTypes.DIRNAME.name, (lambda y: y) \
+def _dirname_builder(x: dict) -> Tuple[str, Builder]:
+    return AnnotationTypes.DIRNAME.name, Builder("(lambda y: y)") \
         if x[AnnotationKeys.FUNCTION.value] is None or len(x[AnnotationKeys.FUNCTION.value]) == 2 \
-        else eval(x[AnnotationKeys.FUNCTION.value])
+        else Builder(x[AnnotationKeys.FUNCTION.value])
 
 
-def _filename_builder(x: dict) -> Tuple[str, Callable]:
-    return AnnotationTypes.FILENAME.name, \
-           (lambda y: y) if AnnotationKeys.FUNCTION.value not in x or len(x[AnnotationKeys.FUNCTION.value]) == 2 \
-               else eval(x[AnnotationKeys.FUNCTION.value])
+def _filename_builder(x: dict) -> Tuple[str, Builder]:
+    return AnnotationTypes.FILENAME.name, Builder("(lambda y: y)") \
+        if AnnotationKeys.FUNCTION.value not in x or len(x[AnnotationKeys.FUNCTION.value]) == 2 \
+        else Builder(x[AnnotationKeys.FUNCTION.value])
 
 
 def _plugin_builder(x: dict) -> Tuple[str, List, Callable]:
