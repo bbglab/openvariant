@@ -1,3 +1,5 @@
+:warning:  **Package under developing**: Can be subjected to any critic change!
+
 # OpenVariant
 
 Run test:
