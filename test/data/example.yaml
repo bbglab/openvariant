@@ -16,8 +16,8 @@ annotation:
     field: 'PROJECT'
     function: 'lambda x: "{} hola".format(x.lower())'
 
-  #- type: 'plugin'
-  #  plugin: 'liftover'
-  #  field: 'A'
-  #  fieldSource:
-  #    - 'Start_Position'
+  - type: 'plugin'
+    plugin: 'liftover'
+    field: 'A'
+    fieldSource:
+      - 'Start_Position'
