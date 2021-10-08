@@ -1,6 +1,6 @@
 from typing import List
 
-from src.config.config_annotation import AnnotationFormat
+from openvariant.config.config_annotation import AnnotationFormat
 
 
 def format_line(line: List[str], out_format: str) -> str:

@@ -6,11 +6,11 @@ from typing import Set, Generator, List, Tuple
 
 from tqdm import tqdm
 
-from src.annotation.annotation import Annotation
-from src.task.find import find_files
-from src.utils.logger import log
-from src.utils.where import skip, parse_where
-from src.variant.variant import Variant
+from openvariant.annotation.annotation import Annotation
+from openvariant.task.find import find_files
+from openvariant.utils.logger import log
+from openvariant.utils.where import skip, parse_where
+from openvariant.variant.variant import Variant
 
 
 def _get_unique_values(file_path, annotation, key) -> Set:

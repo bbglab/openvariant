@@ -5,10 +5,10 @@ from typing import Tuple, Union, List
 
 from tqdm import tqdm
 
-from src.annotation.annotation import Annotation
-from src.task.find import find_files
-from src.utils.where import parse_where, skip
-from src.variant.variant import Variant
+from openvariant.annotation.annotation import Annotation
+from openvariant.task.find import find_files
+from openvariant.utils.where import parse_where, skip
+from openvariant.variant.variant import Variant
 
 
 def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) -> Tuple[int, Union[dict, None]]:

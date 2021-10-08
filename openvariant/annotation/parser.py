@@ -3,7 +3,7 @@ from functools import partial
 from os.path import basename, dirname
 from typing import Tuple, Any, List, Optional, Union, Callable
 
-from src.annotation.builder import Builder
+from openvariant.annotation.builder import Builder
 
 
 def _get_text_by_field(x: List, line: List, original_header: List, func: Builder or None):

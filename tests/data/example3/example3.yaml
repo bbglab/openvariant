@@ -18,7 +18,7 @@ annotation:
   #    - 'Data'
   #- type: 'mapping'
   #  field: 'F'
-  #  mappingFile: 'test/data/ex.tsv'
+  #  mappingFile: 'tests/data/ex.tsv'
   #  mappingField: 'DONOR'
 
 exclude:

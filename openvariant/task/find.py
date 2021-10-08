@@ -5,9 +5,9 @@ from os.path import isfile, join, basename
 from typing import Generator
 from copy import deepcopy
 
-from src.annotation.annotation import Annotation, merge_annotations_structure
+from openvariant.annotation.annotation import Annotation, merge_annotations_structure
 
-from src.config.config_annotation import ANNOTATION_EXTENSION, DEFAULT_RECURSIVE
+from openvariant.config.config_annotation import ANNOTATION_EXTENSION, DEFAULT_RECURSIVE
 
 
 def _get_annotation_file(annotation: Annotation, file_name: str, file_path: str, base_path: str) -> \

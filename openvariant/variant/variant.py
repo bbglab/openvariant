@@ -4,10 +4,10 @@ from os.path import isfile, join, isdir
 import re
 from typing import Generator, TextIO, List
 
-from src.annotation.annotation import Annotation
-from src.annotation.parser import AnnotationTypesParsers
-from src.config.config_annotation import AnnotationFormat, AnnotationGeneralKeys, ExcludesKeys
-from src.utils.logger import log
+from openvariant.annotation.annotation import Annotation
+from openvariant.annotation.parser import AnnotationTypesParsers
+from openvariant.config.config_annotation import AnnotationFormat, AnnotationGeneralKeys, ExcludesKeys
+from openvariant.utils.logger import log
 
 
 def _base_parser(lines: TextIO) -> Generator[int, str, None]:

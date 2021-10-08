@@ -3,7 +3,7 @@ from enum import Enum
 from functools import partial
 from typing import List, Tuple, Callable, Any
 
-from src.config.config_annotation import AnnotationTypes, AnnotationKeys
+from openvariant.config.config_annotation import AnnotationTypes, AnnotationKeys
 
 
 class Builder:

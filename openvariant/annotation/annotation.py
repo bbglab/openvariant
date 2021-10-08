@@ -5,12 +5,12 @@ import re
 from typing import List
 from yaml import safe_load, YAMLError
 
-from src.annotation.builder import AnnotationTypesBuilders
-from src.config.config_annotation import (AnnotationGeneralKeys,
-                                          AnnotationKeys,
-                                          AnnotationTypes,
-                                          ExcludesKeys,
-                                          DEFAULT_FORMAT)
+from openvariant.annotation.builder import AnnotationTypesBuilders
+from openvariant.config.config_annotation import (AnnotationGeneralKeys,
+                                                  AnnotationKeys,
+                                                  AnnotationTypes,
+                                                  ExcludesKeys,
+                                                  DEFAULT_FORMAT)
 
 
 def _read_annotation_file(path: str) -> dict:

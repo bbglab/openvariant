@@ -1,7 +1,7 @@
-from src.annotation.annotation import Annotation
-from src.utils.format_line import format_line
-from src.utils.where import parse_where, skip
-from src.variant.variant import Variant
+from openvariant.annotation.annotation import Annotation
+from openvariant.utils.format_line import format_line
+from openvariant.utils.where import parse_where, skip
+from openvariant.variant.variant import Variant
 
 
 def cat(base_path: str, annotation_path: str, where=None) -> None:
