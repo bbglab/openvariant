@@ -2,8 +2,10 @@
 
 # OpenVariant
 
-Run test:
+## Install
 
 ```bash
-python3 -m unittest discover -s tests
+pip install open-variant
 ```
+
+Check [examples](./examples) for any kind of interest on how to use this package.  
