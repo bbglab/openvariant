@@ -1,7 +1,7 @@
 import functools
 from multiprocessing import Pool
 from os import cpu_count
-from typing import Tuple, Union, List
+from typing import Tuple, Union
 
 from tqdm import tqdm
 

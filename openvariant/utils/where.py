@@ -31,7 +31,7 @@ where_stmts_reverse = {v: k for k, v in where_stmts.items()}
 
 # FIXME: Need an AST for where conditions also check the order
 def parse_where(where: str) -> List[dict]:
-    if where is None:
+    if where is None or where == ():
         return []
     where_clauses = []
     w_clauses = where.split(",")
@@ -63,9 +63,6 @@ def skip(row: dict, where: List[dict]) -> bool:
             filter_wh = eval(data_value + ' ' +
                              str(where_stmts_reverse[k[WhereAttributesKeys.OPERATION.value]]) + ' ' +
                              str(k[WhereAttributesKeys.VALUE.value]))
-            # print(str(k[WhereAttributesKeys.VALUE.value]) + ' ' +
-            #                 str(where_stmts_reverse[
-            #                         k[WhereAttributesKeys.OPERATION.value]]) + ' ' + data_value)
             return not filter_wh
         except (KeyError, ValueError):
             return True
