@@ -3,43 +3,45 @@ pattern:
   - '*.vcf'
 recursive: true
 format: 'tsv'
+delimiter: 't'
 
 
 annotation:
   - type: 'static'
-    field: 'A'
-    value: 'A_value'
+    field: 'by_OpenVariant'
+    value: 'True'
 
   - type: 'internal'
-    field: 'B'
+    field: 'CHROMOSOME'
     fieldSource:
-      - 'Tumor_Sample_UUID'
-      - 'ID'
-    function: "lambda x: '-' if x in ['-', '0', '-1'] else '+' if x in ['+', '1', '+1'] else None"
+      - 'Chromosome'
+      - 'Chr'
+      - 'Chrom'
+      - 'Chromosome_Name'
+      - '#chrom'
+    function: "lambda c: c.upper().replace('CHR', '').replace('23', 'X').replace('24', 'Y')"
 
   - type: 'filename'
-    field: 'C'
+    field: 'DATASET'
     function: 'lambda x: "{}".format(x.lower()[:-4])'
 
   - type: 'dirname'
-    field: 'D'
+    field: 'PROJECT'
     function: 'lambda x: "{}".format(x.lower())'
 
   - type: 'plugin'
-    plugin: 'plugin_name'
-    field: 'E'
+    plugin: 'liftover'
+    field: 'POSITION_HG38'
     fieldSource:
       - 'Start_Position'
-      - 'ID'
-
 
 excludes:
-  - field: 'B'
-    value: '1234'
+  - field: 'DATASET'
+    value: 'laml'
+
+  - field: 'DATASET'
+    value: 'ucs'
 
 
-
-  - field: 'C'
-    value: 'ACC'
 
 

@@ -3,13 +3,14 @@ from enum import Enum
 ANNOTATION_EXTENSION = "yaml"
 DEFAULT_FORMAT = 'TSV'
 DEFAULT_RECURSIVE = False
+DEFAULT_DELIMITER = 'T'
 
 
 class AnnotationGeneralKeys(Enum):
     PATTERN = 'pattern'
     RECURSIVE = 'recursive'
     FORMAT = 'format'
-    PLUGIN = 'plugin'
+    DELIMITER = 'delimiter'
     ANNOTATION = 'annotation'
     EXCLUDE = 'exclude'
 
@@ -39,6 +40,11 @@ class AnnotationTypes(Enum):
     FILENAME = 'filename'
     PLUGIN = 'plugin'
     # MAPPING = 'mapping'
+
+
+class AnnotationDelimiter(Enum):
+    T = "\t"
+    C = ","
 
 
 class AnnotationFormat(Enum):

@@ -6,19 +6,25 @@ from typing import Generator, TextIO, List
 
 from openvariant.annotation.annotation import Annotation
 from openvariant.annotation.parser import AnnotationTypesParsers
-from openvariant.config.config_annotation import AnnotationFormat, AnnotationGeneralKeys, ExcludesKeys
+from openvariant.config.config_annotation import AnnotationFormat, AnnotationGeneralKeys, ExcludesKeys, \
+    AnnotationDelimiter
 from openvariant.utils.logger import log
 
 
-def _base_parser(lines: TextIO) -> Generator[int, str, None]:
-    for l_num, line in enumerate(lines, start=1):
+def _base_parser(lines: TextIO, delimiter: str) -> Generator[int, str, None]:
+    try:
+        read_tsv = csv.reader(lines, delimiter=AnnotationDelimiter[delimiter].value)
+    except KeyError:
+        raise KeyError(f"'{delimiter}' key not found.")
+    for l_num, line in enumerate(read_tsv):  # lines, start=1):
         # Skip empty lines
         if len(line) == 0:
             continue
 
         # Skip comments
-        if (line.startswith('#') or line.startswith('##') or line.startswith('browser') or line.startswith('track')) \
-                and not line.startswith('#CHROM'):
+        if (line[0].startswith('#') or line[0].startswith('##') or line[0].startswith('browser') or line[0].startswith(
+                'track')) \
+                and not line[0].startswith('#CHROM'):
             continue
 
         yield l_num, line
@@ -29,22 +35,23 @@ def _parse_row(ann: dict, line: List, original_header: List, path: str, format_o
     row_parser = []
     for k, v in annotations.items():
         try:
-            row_parser.append(AnnotationTypesParsers[v[0]].value(v, line, original_header, path))
+            value = AnnotationTypesParsers[v[0]].value(v, line, original_header, path)
+            row_parser.append(value)
         except IndexError:
             row_parser.append(float('nan'))
 
     return list(map(str, row_parser))
 
 
-def _parser(file: str, annotation: dict, format_output: str, display_header=True) -> Generator[List[str], None, None]:
+def _parser(file: str, annotation: dict, format_output: str, delimiter: str, display_header=True) -> Generator[List[str], None, None]:
     row = None
     fd = open(file, "rt")
 
     header = list(annotation[AnnotationGeneralKeys.ANNOTATION.name].keys())
     original_header = None
-    for lnum, line in _base_parser(fd):
+    for lnum, line in _base_parser(fd, delimiter):
         if original_header is None:
-            original_header = line.split()
+            original_header = line
             try:
                 if not display_header:
                     continue
@@ -53,7 +60,7 @@ def _parser(file: str, annotation: dict, format_output: str, display_header=True
                 log.error(f"Error parsing header {e}")
         else:
             try:
-                row = _parse_row(annotation, line.split(), original_header, file, format_output)
+                row = _parse_row(annotation, line, original_header, file, format_output)
             except (ValueError, IndexError) as e:
                 log.error(f"Error parsing line {lnum} {file} ({e, line, header})")
                 continue
@@ -85,7 +92,7 @@ class Variant:
         if isfile(base_path):
             for ext, ann in an.items():
                 if _check_extension(ext, base_path):
-                    for x in _parser(base_path, ann, format_output, display_header):
+                    for x in _parser(base_path, ann, format_output, annotation.delimiter, display_header):
                         display_header = False
                         yield x
         else:
@@ -95,7 +102,7 @@ class Variant:
                     if isfile(file_path):
                         for ext, ann in an.items():
                             if _check_extension(ext, file_path):
-                                for x in _parser(file_path, ann, format_output, display_header):
+                                for x in _parser(file_path, ann, format_output, annotation.delimiter, display_header):
                                     display_header = False
                                     yield x
                     else:

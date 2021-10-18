@@ -11,7 +11,7 @@ def cat(base_path: str, annotation_path: str, where=None) -> None:
     result = Variant(base_path, ann)
     header = result.header
     print(format_line(header, result.annotation.format))
-    for r in result.read():
+    for i, r in enumerate(result.read()):
         if skip(r, where_clauses):
             continue
         print(format_line(list(r.values()), result.annotation.format))

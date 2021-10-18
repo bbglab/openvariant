@@ -10,7 +10,7 @@ from openvariant.config.config_annotation import (AnnotationGeneralKeys,
                                                   AnnotationKeys,
                                                   AnnotationTypes,
                                                   ExcludesKeys,
-                                                  DEFAULT_FORMAT)
+                                                  DEFAULT_FORMAT, DEFAULT_DELIMITER)
 
 
 def _read_annotation_file(path: str) -> dict:
@@ -39,10 +39,10 @@ def _check_general_keys(annot: dict) -> None:
             annot[AnnotationGeneralKeys.FORMAT.value], str):
         raise KeyError(f"'{AnnotationGeneralKeys.FORMAT.value}' key is not a string.")
 
-    # Plugin key
-    if AnnotationGeneralKeys.PLUGIN.value in annot and not all(
-            isinstance(x, str) for x in annot[AnnotationGeneralKeys.PLUGIN.value]):
-        raise KeyError(f"'{AnnotationGeneralKeys.PLUGIN.value}' key is not a list of strings.")
+    # Delimiter key
+    if AnnotationGeneralKeys.DELIMITER.value in annot and not isinstance(
+            annot[AnnotationGeneralKeys.DELIMITER.value], str):
+        raise KeyError(f"'{AnnotationGeneralKeys.DELIMITER.value}' key is not a string.")
 
     # Annotations key
     if AnnotationGeneralKeys.ANNOTATION.value in annot and not isinstance(annot[AnnotationGeneralKeys.ANNOTATION.value],
@@ -117,6 +117,7 @@ class Annotation:
 
         self._patterns = raw_annotation[AnnotationGeneralKeys.PATTERN.value]
         self._recursive = raw_annotation.get(AnnotationGeneralKeys.RECURSIVE.value, True)
+        self._delimiter = raw_annotation.get(AnnotationGeneralKeys.DELIMITER.value, DEFAULT_DELIMITER).upper()
         self._excludes = raw_annotation.get(AnnotationGeneralKeys.EXCLUDE.value, [])
         self._format = raw_annotation.get(AnnotationGeneralKeys.FORMAT.value, DEFAULT_FORMAT).replace('.', '')
 
@@ -164,6 +165,10 @@ class Annotation:
     @property
     def format(self) -> str:
         return self._format
+
+    @property
+    def delimiter(self) -> str:
+        return self._delimiter
 
     @property
     def annotations(self) -> dict:

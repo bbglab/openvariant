@@ -15,7 +15,7 @@ def _get_text_by_field(x: List, line: List, original_header: List, func: Builder
         if value is not None:
             break
     if value is None:
-        return ""
+        return float('nan')
     return value
 
 
@@ -25,20 +25,24 @@ def _static_parser(x: Tuple[str, Any], line: List, original_header: List, path: 
 
 def _internal_parser(x: Tuple[str, List, Builder], line: List, original_header: List, path: str) -> \
         Optional[Union[int, str, float]]:
+    #print(x[1], line, original_header, x[2])
     return _get_text_by_field(x[1], line, original_header, x[2])
 
 
 def _filename_parser(x: Tuple[str, Builder], line: List, original_header: List, path: str) -> str:
-    return x[1](basename(path))
+    value = x[1](basename(path))
+    return value if value is not None else float('nan')
 
 
 def _dirname_parser(x: Tuple[str, Builder], line: List, original_header: List, path: str) -> str:
-    return x[1](basename(dirname(path)))
+    value = x[1](basename(dirname(path)))
+    return value if value is not None else float('nan')
 
 
 def _plugin_parser(x: Tuple[str, List, Callable], line: List, original_header: List, path: str) -> str:
     value = _get_text_by_field(x[1], line, original_header, None)
-    return x[2](value)
+    value = x[2](value)
+    return value if value is not None else float('nan')
 
 
 class AnnotationTypesParsers(Enum):
