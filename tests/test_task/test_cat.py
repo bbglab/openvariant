@@ -28,7 +28,3 @@ class TestCat(unittest.TestCase):
 
     def test_cat_invalid_where(self):
         pass
-
-
-if __name__ == '__main__':
-    unittest.main()

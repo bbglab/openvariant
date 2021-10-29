@@ -22,7 +22,3 @@ class TestVariant(unittest.TestCase):
 
     def test_variant_annotation(self):
         pass
-
-
-if __name__ == '__main__':
-    unittest.main()

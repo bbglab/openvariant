@@ -1,4 +1,6 @@
 import csv
+import gzip
+import lzma
 from os import listdir
 from os.path import isfile, join, isdir
 import re
@@ -9,6 +11,16 @@ from openvariant.annotation.parser import AnnotationTypesParsers
 from openvariant.config.config_annotation import AnnotationFormat, AnnotationGeneralKeys, ExcludesKeys, \
     AnnotationDelimiter
 from openvariant.utils.logger import log
+
+
+def _open_file(file_path: str, mode='rt') -> TextIO:
+    open_method = open
+    if file_path.endswith('gz') or file_path.endswith('bgz'):
+        open_method = gzip.open
+    elif file_path.endswith('xz'):
+        open_method = lzma.open
+
+    return open_method(file_path, mode)
 
 
 def _base_parser(lines: TextIO, delimiter: str) -> Generator[int, str, None]:
@@ -43,9 +55,10 @@ def _parse_row(ann: dict, line: List, original_header: List, path: str, format_o
     return list(map(str, row_parser))
 
 
-def _parser(file: str, annotation: dict, format_output: str, delimiter: str, display_header=True) -> Generator[List[str], None, None]:
+def _parser(file: str, annotation: dict, format_output: str, delimiter: str, display_header=True) -> Generator[
+    List[str], None, None]:
     row = None
-    fd = open(file, "rt")
+    fd = _open_file(file, "rt")
 
     header = list(annotation[AnnotationGeneralKeys.ANNOTATION.name].keys())
     original_header = None

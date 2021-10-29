@@ -1,0 +1,21 @@
+pattern = '*.vcf.gz'
+
+recursive = True
+
+[annotations]
+
+PLATFORM = WGS
+GENOMEREF = "hg38"
+SETNAME = "('dirname','(.*)')"
+#SAMPLE = "('mapping', 'SETNAME', 'metadata.tsv', 'File_ID', 'Tumor_Sample_ID')"
+DONOR = "('mapping', 'SETNAME', 'metadata.tsv', 'File_ID', 'Case_ID')"
+#DONOR =  "('internal', 'ID')"
+SAMPLE = "('filename','([^.*]+)\.wgs.CaVEMan.raw_somatic_mutation.vcf.gz')"
+CANCER = BLY
+DATASET = "CGCI_{PLATFORM}_{CANCER}_2020"
+FILTERS = "('internal','FILTER')"
+
+[excludes]
+
+FILTERS = '!PASS'
+

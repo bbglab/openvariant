@@ -9,7 +9,3 @@ class TestVariantSave(unittest.TestCase):
 
     def test_variant_save_invalid(self):
         pass
-
-
-if __name__ == '__main__':
-    unittest.main()

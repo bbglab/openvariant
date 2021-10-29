@@ -36,7 +36,7 @@ def cat(input_path, where, annotations):
 
 @click.command(short_help='Count number of variants')
 @click.argument('input_path', type=click.Path(exists=True), nargs=-1)
-@click.option('--where', '-w', multiple=True, type=click.STRING)
+@click.option('--where', '-w', multiple=False, type=click.STRING)
 @click.option('--groupby', '-g', type=click.STRING)
 @click.option('--cores', help='Maximum processes to run in parallel.', type=click.INT, default=cpu_count())
 @click.option('--quite', '-q', help="Don't show the progress, only the total count.", is_flag=True)

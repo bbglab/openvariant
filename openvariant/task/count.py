@@ -51,7 +51,7 @@ def count(base_path: str, annotation_path: str, group_by=None, where=None, cores
 
     with Pool(cores) as pool:
         groups = {}
-        task = functools.partial(_count_task, group_by=group_by, where=where[0])
+        task = functools.partial(_count_task, group_by=group_by, where=where)
         map_method = pool.imap_unordered if len(selection) > 1 else map
         total = 0
         for c, g in tqdm(map_method(task, selection),

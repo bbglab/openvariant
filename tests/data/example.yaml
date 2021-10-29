@@ -1,23 +1,17 @@
 pattern:
-  - '*.maf'
-recursive: false
+  - '*.tsv.gz'
+recursive: true
 format: 'CSV'
 
 annotation:
   - type: 'internal'
-    field: 'A'
+    field: 'MUTATION ID'
     fieldSource:
-      - 'Start_Position'
+      - 'icgc_mutation_id'
 
   - type: 'filename'
     field: 'DATASET'
-    function: 'lambda x: "{}".format(x.lower()[:-4])'
+    function: 'lambda x: "{}".format(x.lower()[:-3])'
   - type: 'dirname'
     field: 'PROJECT'
-    function: 'lambda x: "{} hola".format(x.lower())'
-
-  - type: 'plugin'
-    plugin: 'liftover'
-    field: 'A'
-    fieldSource:
-      - 'Start_Position'
+    function: 'lambda x: "{}".format(x.upper())'

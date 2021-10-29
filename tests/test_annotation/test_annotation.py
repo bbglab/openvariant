@@ -35,9 +35,5 @@ class TestAnnotation(unittest.TestCase):
     def test_annotation_set_annotation(self):
         pass
 
-    def test_annotation_tranform_dirname_filename(self):
-        pass
-
-
-if __name__ == '__main__':
-    unittest.main()
+    #def test_annotation_transform_dirname_filename(self):
+    #    pass
