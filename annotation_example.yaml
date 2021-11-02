@@ -25,10 +25,12 @@ annotation:
   - type: 'filename'
     field: 'DATASET'
     function: 'lambda x: "{}".format(x.lower()[:-4])'
+    regex: '[a-zA-Z0-9]*.'
 
   - type: 'dirname'
     field: 'PROJECT'
     function: 'lambda x: "{}".format(x.lower())'
+    regex: '(*.)'
 
   - type: 'plugin'
     plugin: 'liftover'

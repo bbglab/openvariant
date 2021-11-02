@@ -31,11 +31,13 @@ annotation: # Columns to parse
   - type: 'filename'
     field: string
     function: string # Function to apply to filename; optional
+    regex: string # Regular expression to apply to filename, after function; optional
 
   # Annotation based on the dirname that input file is located
   - type: 'dirname'
     field: string
     function: string # Function to apply to dirname; optional
+    regex: string # Regular expression to apply to dirname, after function; optional
 
   # Mapping annotation allows to use a mapping file to add a new column base on a many-to-one relation
   - type: 'mapping'
