@@ -22,10 +22,9 @@ class AnnotationKeys(Enum):
     VALUE = 'value'
     FIELD_SOURCE = 'fieldSource'
     FUNCTION = 'function'
-    # COORDINATE_SOURCE = 'coordinateSource'
-    # COORDINATE_TARGET = 'coordinateTarget'
-    # MAPPING_FILE = 'mappingFile'
-    # MAPPING_FIELD = 'mappingField'
+    FILE_MAPPING = 'fileMapping'
+    FIELD_MAPPING = 'fieldMapping'
+    FIELD_VALUE = 'fieldValue'
 
 
 class ExcludesKeys(Enum):
@@ -39,7 +38,7 @@ class AnnotationTypes(Enum):
     DIRNAME = 'dirname'
     FILENAME = 'filename'
     PLUGIN = 'plugin'
-    # MAPPING = 'mapping'
+    MAPPING = 'mapping'
 
 
 class AnnotationDelimiter(Enum):

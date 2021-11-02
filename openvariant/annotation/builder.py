@@ -1,3 +1,6 @@
+import csv
+import glob
+import gzip
 import importlib
 from enum import Enum
 from functools import partial
@@ -47,15 +50,17 @@ def _plugin_builder(x: dict) -> Tuple[str, List, Callable]:
     return AnnotationTypes.PLUGIN.name, x[AnnotationKeys.FIELD_SOURCE.value], func
 
 
-'''
-def _mapping_builder(x: dict) -> Tuple[str, List]:
-    values: List = []
-    with open(x[AnnotationKeys.MAPPING_FILE.value]) as f:
-        for r in csv.DictReader(f, delimiter='\t'):
-            val = r[x[AnnotationKeys.MAPPING_FIELD.value]]
-            values.append(val)
-    return AnnotationTypes.MAPPING.name, values
-'''
+def _mapping_builder(x: dict) -> Tuple[str, List, dict]:
+    values: dict = {}
+    mapping_files = x[AnnotationKeys.FILE_MAPPING.value]
+    for mapping_file in glob.glob('**/' + mapping_files, recursive=True):
+        open_method = gzip.open if mapping_file.endswith('gz') else open
+        with open_method(mapping_file, "rt") as fd:
+            for r in csv.DictReader(fd, delimiter='\t'):
+                field = r[x[AnnotationKeys.FIELD_MAPPING.value]]
+                val = r[x[AnnotationKeys.FIELD_VALUE.value]]
+                values[field] = val
+    return AnnotationTypes.MAPPING.name, x[AnnotationKeys.FIELD_SOURCE.value], values
 
 
 class AnnotationTypesBuilders(Enum):
@@ -64,4 +69,4 @@ class AnnotationTypesBuilders(Enum):
     DIRNAME = partial(_dirname_builder)
     FILENAME = partial(_filename_builder)
     PLUGIN = partial(_plugin_builder)
-    # MAPPING = partial(_mapping_builder)
+    MAPPING = partial(_mapping_builder)

@@ -125,6 +125,7 @@ class Annotation:
         for k in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
             self._annotations[k[AnnotationKeys.FIELD.value]] = \
                 AnnotationTypesBuilders[k[AnnotationKeys.TYPE.value].upper()].value(k)
+        print(self._annotations)
 
     def _register_builders(self) -> None:
         for b in AnnotationTypes:
