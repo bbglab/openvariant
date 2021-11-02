@@ -35,12 +35,18 @@ annotation: # Columns to parse
   # Annotation based on the dirname that input file is located
   - type: 'dirname'
     field: string
-    function: string #  Function to apply to dirname; optional
+    function: string # Function to apply to dirname; optional
 
+  # Mapping annotation allows to use a mapping file to add a new column base on a many-to-one relation
   - type: 'mapping'
     field: string
-    mappingFile: string
-    mappingField: string
+    fieldSource: # Fields to look and map in the input file; required
+      - string
+      - string
+      - ...
+    fieldMapping: string # Field to map in the mapping file; required
+    fileMapping: string # File name to make the mapping; required
+    fieldValue: string # Field of the final output value; required
 
   # Apply plugin in the columns described on the `fieldSource` attribute of input files.
   - type: 'plugin'
@@ -50,6 +56,7 @@ annotation: # Columns to parse
       - string
       - string
       - ...
+
 
 exclude: # List of field and value that allows to filter out all the rows that have specific value; optional
   - field: string # Field to apply the exclusion

@@ -1,6 +1,7 @@
 pattern:
   - '*.maf'
   - '*.vcf'
+  - '*.tsv.gz'
 recursive: true
 format: 'tsv'
 delimiter: 't'
@@ -34,6 +35,16 @@ annotation:
     field: 'POSITION_HG38'
     fieldSource:
       - 'Start_Position'
+
+  - type: 'mapping'
+    field: 'MUTATION_REF'
+    fieldSource:
+      - 'MutationID'
+      - 'id'
+      - 'Mutation_Id'
+    fieldMapping: 'MUTATION_ID'
+    fileMapping: 'metadata_mutation.tsv'
+    fieldValue: 'REFERENCE'
 
 excludes:
   - field: 'DATASET'

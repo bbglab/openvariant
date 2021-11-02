@@ -92,14 +92,17 @@ def _check_annotation_keys(annot: dict) -> None:
         raise ValueError(f"'{AnnotationKeys.PLUGIN.value}' is not a str.")
 
     # Mapping keys
-    # if annot[AnnotationKeys.TYPE.value] == AnnotationTypes.MAPPING.value and \
-    #        (AnnotationKeys.MAPPING_FILE.value not in annot or
-    #         AnnotationKeys.MAPPING_FIELD.value not in annot or
-    #         not isinstance(annot[AnnotationKeys.MAPPING_FILE.value], str) or
-    #         not isinstance(annot[AnnotationKeys.MAPPING_FIELD.value], str)):
-    #    raise KeyError(
-    #        f"'{AnnotationKeys.MAPPING_FIELD.value}' or '{AnnotationKeys.MAPPING_FILE.value}' key not found or are not "
-    #        f"a str.")
+    if annot[AnnotationKeys.TYPE.value] == AnnotationTypes.MAPPING.value and \
+            (AnnotationKeys.FIELD_SOURCE.value not in annot or
+             AnnotationKeys.FIELD_MAPPING.value not in annot or
+             AnnotationKeys.FILE_MAPPING.value not in annot or
+             AnnotationKeys.FIELD_VALUE.value not in annot or
+             not isinstance(annot[AnnotationKeys.FIELD_SOURCE.value], list) or
+             not isinstance(annot[AnnotationKeys.FIELD_MAPPING.value], str) or
+             not isinstance(annot[AnnotationKeys.FILE_MAPPING.value], str) or
+             not isinstance(annot[AnnotationKeys.FIELD_VALUE.value], str)):
+        raise KeyError(
+            f"'{AnnotationTypes.MAPPING.value}' not annotated well.")
 
 
 class Annotation:
@@ -125,7 +128,6 @@ class Annotation:
         for k in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
             self._annotations[k[AnnotationKeys.FIELD.value]] = \
                 AnnotationTypesBuilders[k[AnnotationKeys.TYPE.value].upper()].value(k)
-        print(self._annotations)
 
     def _register_builders(self) -> None:
         for b in AnnotationTypes:
