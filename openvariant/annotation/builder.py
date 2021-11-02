@@ -1,4 +1,5 @@
 import csv
+import re
 import glob
 import gzip
 import importlib
@@ -29,16 +30,24 @@ def _internal_builder(x: dict) -> Tuple[str, List, Builder]:
         else Builder(x[AnnotationKeys.FUNCTION.value])
 
 
-def _dirname_builder(x: dict) -> Tuple[str, Builder]:
-    return AnnotationTypes.DIRNAME.name, Builder("(lambda y: y)") \
-        if x[AnnotationKeys.FUNCTION.value] is None or len(x[AnnotationKeys.FUNCTION.value]) == 2 \
+def _get_dirname_filename_attributes(x: dict) -> Tuple[Builder, re.Pattern]:
+    func_apply = Builder("(lambda y: y)") if AnnotationKeys.FUNCTION.value not in x \
         else Builder(x[AnnotationKeys.FUNCTION.value])
+    regex_apply = re.compile('(.*)') if AnnotationKeys.REGEX.value not in x \
+        else re.compile(x[AnnotationKeys.REGEX.value])
+    return func_apply, regex_apply
 
 
-def _filename_builder(x: dict) -> Tuple[str, Builder]:
-    return AnnotationTypes.FILENAME.name, Builder("(lambda y: y)") \
-        if AnnotationKeys.FUNCTION.value not in x or len(x[AnnotationKeys.FUNCTION.value]) == 2 \
-        else Builder(x[AnnotationKeys.FUNCTION.value])
+def _dirname_builder(x: dict) -> Tuple[str, Builder, re.Pattern]:
+    func_apply, regex_apply = _get_dirname_filename_attributes(x)
+
+    return AnnotationTypes.FILENAME.name, func_apply, regex_apply
+
+
+def _filename_builder(x: dict) -> Tuple[str, Builder, re.Pattern]:
+    func_apply, regex_apply = _get_dirname_filename_attributes(x)
+
+    return AnnotationTypes.FILENAME.name, func_apply, regex_apply
 
 
 def _plugin_builder(x: dict) -> Tuple[str, List, Callable]:

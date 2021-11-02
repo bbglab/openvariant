@@ -22,6 +22,7 @@ class AnnotationKeys(Enum):
     VALUE = 'value'
     FIELD_SOURCE = 'fieldSource'
     FUNCTION = 'function'
+    REGEX = 'regex'
     FILE_MAPPING = 'fileMapping'
     FIELD_MAPPING = 'fieldMapping'
     FIELD_VALUE = 'fieldValue'

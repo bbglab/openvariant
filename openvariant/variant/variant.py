@@ -55,8 +55,8 @@ def _parse_row(ann: dict, line: List, original_header: List, path: str, format_o
     return list(map(str, row_parser))
 
 
-def _parser(file: str, annotation: dict, format_output: str, delimiter: str, display_header=True) -> Generator[
-    List[str], None, None]:
+def _parser(file: str, annotation: dict, format_output: str, delimiter: str, display_header=True) -> \
+        Generator[List[str], None, None]:
     row = None
     fd = _open_file(file, "rt")
 

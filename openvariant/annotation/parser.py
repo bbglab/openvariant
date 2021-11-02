@@ -1,3 +1,4 @@
+import re
 from enum import Enum
 from functools import partial
 from os.path import basename, dirname
@@ -29,13 +30,15 @@ def _internal_parser(x: Tuple[str, List, Builder], line: List, original_header: 
     return _get_text_by_field(x[1], line, original_header, x[2])
 
 
-def _filename_parser(x: Tuple[str, Builder], line: List, original_header: List, path: str) -> str:
-    value = x[1](basename(path))
+def _filename_parser(x: Tuple[str, Builder, re.Pattern], line: List, original_header: List, path: str) -> str:
+    func_result = x[1](basename(path))
+    value = x[2].findall(func_result)[0]
     return value if value is not None else float('nan')
 
 
-def _dirname_parser(x: Tuple[str, Builder], line: List, original_header: List, path: str) -> str:
-    value = x[1](basename(dirname(path)))
+def _dirname_parser(x: Tuple[str, Builder, re.Pattern], line: List, original_header: List, path: str) -> str:
+    func_result = x[1](basename(dirname(path)))
+    value = x[2].findall(func_result)[0]
     return value if value is not None else float('nan')
 
 
