@@ -132,8 +132,14 @@ class Variant:
     def _apply_exclude(self, line: dict) -> bool:
         for exclude in self._annotation.excludes:
             try:
-                if line[exclude[ExcludesKeys.FIELD.value]] == str(exclude[ExcludesKeys.VALUE.value]):
-                    return True
+                value_line = line[exclude[ExcludesKeys.FIELD.value]]
+                value_exclude = str(exclude[ExcludesKeys.VALUE.value])
+                if value_exclude.startswith("!"):
+                    if value_line != value_exclude[1::]:
+                        return True
+                else:
+                    if value_line == value_exclude:
+                        return True
             except (KeyError, ValueError):
                 return False
         return False
@@ -168,7 +174,7 @@ class Variant:
         return self._header
 
     @property
-    def generator(self) -> Generator[List[str], None, None]:
+    def generator(self) -> Generator[dict, None, None]:
         return self._generator
 
     @property
