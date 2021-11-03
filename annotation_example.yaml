@@ -48,7 +48,7 @@ annotation:
     fileMapping: 'metadata_mutation.tsv'
     fieldValue: 'REFERENCE'
 
-excludes:
+exclude:
   - field: 'DATASET'
     value: 'laml'
 

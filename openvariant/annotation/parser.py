@@ -26,7 +26,6 @@ def _static_parser(x: Tuple[str, Any], line: List, original_header: List, path: 
 
 def _internal_parser(x: Tuple[str, List, Builder], line: List, original_header: List, path: str) -> \
         Optional[Union[int, str, float]]:
-    # print(x[1], line, original_header, x[2])
     return _get_text_by_field(x[1], line, original_header, x[2])
 
 

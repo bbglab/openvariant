@@ -42,7 +42,7 @@ def _base_parser(lines: TextIO, delimiter: str) -> Generator[int, str, None]:
         yield l_num, line
 
 
-def _parse_row(ann: dict, line: List, original_header: List, path: str, format_output: str) -> List[str]:
+def _parse_row(ann: dict, line: List, header: List, original_header: List, path: str) -> dict:
     annotations = ann[AnnotationGeneralKeys.ANNOTATION.name]
     row_parser = []
     for k, v in annotations.items():
@@ -52,11 +52,15 @@ def _parse_row(ann: dict, line: List, original_header: List, path: str, format_o
         except IndexError:
             row_parser.append(float('nan'))
 
-    return list(map(str, row_parser))
+    row_parser = list(map(str, row_parser))
+    line_dict = {h: row_parser[i] for i, h in enumerate(header)}
+    for k, v in line_dict.items():
+        line_dict[k] = v.format(**line_dict)
+    return line_dict
 
 
 def _parser(file: str, annotation: dict, format_output: str, delimiter: str, display_header=True) -> \
-        Generator[List[str], None, None]:
+        Generator[dict, None, None]:
     row = None
     fd = _open_file(file, "rt")
 
@@ -73,7 +77,7 @@ def _parser(file: str, annotation: dict, format_output: str, delimiter: str, dis
                 log.error(f"Error parsing header {e}")
         else:
             try:
-                row = _parse_row(annotation, line, original_header, file, format_output)
+                row = _parse_row(annotation, line, header, original_header, file)
             except (ValueError, IndexError) as e:
                 log.error(f"Error parsing line {lnum} {file} ({e, line, header})")
                 continue
@@ -97,9 +101,9 @@ class Variant:
         self._path: str = path
         self._annotation: Annotation = ann
         self._header: List[str] = _extract_header(ann)
-        self._generator: Generator[List[str], None, None] = self._unify(path, ann)
+        self._generator: Generator[dict, None, None] = self._unify(path, ann)
 
-    def _unify(self, base_path: str, annotation: Annotation, display_header=True) -> Generator[List[str], None, None]:
+    def _unify(self, base_path: str, annotation: Annotation, display_header=True) -> Generator[dict, None, None]:
         an = annotation.structure
         format_output = annotation.format
         if isfile(base_path):
@@ -125,12 +129,10 @@ class Variant:
             except PermissionError as e:
                 print(e)
 
-    def _apply_exclude(self, line: List[str]) -> bool:
+    def _apply_exclude(self, line: dict) -> bool:
         for exclude in self._annotation.excludes:
             try:
-                i = self._header.index(exclude[ExcludesKeys.FIELD.value])
-
-                if str(exclude[ExcludesKeys.VALUE.value]) == line[i]:
+                if line[exclude[ExcludesKeys.FIELD.value]] == str(exclude[ExcludesKeys.VALUE.value]):
                     return True
             except (KeyError, ValueError):
                 return False
@@ -141,8 +143,7 @@ class Variant:
             if i != 0:
                 if self._apply_exclude(line):
                     continue
-                line_dict = {h: line[i] for i, h in enumerate(self._header)}
-                yield line_dict
+                yield line
 
     def save(self, file_path: str, display_header=True):
         if isdir(file_path):
