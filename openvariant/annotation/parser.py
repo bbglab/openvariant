@@ -1,13 +1,14 @@
 import re
 from enum import Enum
 from functools import partial
+from math import isnan
 from os.path import basename, dirname
 from typing import Tuple, Any, List, Optional, Union, Callable
 
 from openvariant.annotation.builder import Builder
 
 
-def _get_text_by_field(x: List, line: List, original_header: List, func: Builder or None):
+def _get_text_from_header(x: List, line: List, original_header: List, func: Builder or None):
     value = None
     for y in x:
         value = line[original_header.index(y)] if y in original_header else None
@@ -26,7 +27,7 @@ def _static_parser(x: Tuple[str, Any], line: List, original_header: List, path: 
 
 def _internal_parser(x: Tuple[str, List, Builder], line: List, original_header: List, path: str) -> \
         Optional[Union[int, str, float]]:
-    return _get_text_by_field(x[1], line, original_header, x[2])
+    return _get_text_from_header(x[1], line, original_header, x[2])
 
 
 def _filename_parser(x: Tuple[str, Builder, re.Pattern], line: List, original_header: List, path: str) -> str:
@@ -42,17 +43,26 @@ def _dirname_parser(x: Tuple[str, Builder, re.Pattern], line: List, original_hea
 
 
 def _plugin_parser(x: Tuple[str, List, Callable], line: List, original_header: List, path: str) -> str:
-    value = _get_text_by_field(x[1], line, original_header, None)
+    value = _get_text_from_header(x[1], line, original_header, None)
     value = x[2](value)
     return value if value is not None else float('nan')
 
 
-def _mapping_parser(x: Tuple[str, List, dict], line: List, original_header: List, path: str) -> str:
-    value = _get_text_by_field(x[1], line, original_header, None)
-    try:
-        value = x[2][value]
-    except KeyError:
-        raise ModuleNotFoundError(f"Enable to found '{value}' in the mapping file.")
+def _mapping_parser(x: Tuple[str, List, dict], line: List, original_header: List, path: str, dict_line: dict) \
+        -> str or float:
+    value = None
+    for field in x[1]:
+        value = line[original_header.index(field)] if field in original_header else None
+        if value is None:
+            try:
+                value = dict_line[field]
+                value = dict_line[value]
+            except KeyError:
+                pass
+                #raise KeyError(f"Enable to found '{field}' in the mapping file.")
+        if value is not None:
+            break
+
     return value if value is not None else float('nan')
 
 

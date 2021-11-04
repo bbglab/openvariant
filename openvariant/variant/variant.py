@@ -9,7 +9,7 @@ from typing import Generator, TextIO, List
 from openvariant.annotation.annotation import Annotation
 from openvariant.annotation.parser import AnnotationTypesParsers
 from openvariant.config.config_annotation import AnnotationFormat, AnnotationGeneralKeys, ExcludesKeys, \
-    AnnotationDelimiter
+    AnnotationDelimiter, AnnotationTypes
 from openvariant.utils.logger import log
 
 
@@ -45,18 +45,27 @@ def _base_parser(lines: TextIO, delimiter: str) -> Generator[int, str, None]:
 def _parse_row(ann: dict, line: List, header: List, original_header: List, path: str) -> dict:
     annotations = ann[AnnotationGeneralKeys.ANNOTATION.name]
     row_parser = []
+    remain_annotation = {}
     for k, v in annotations.items():
         try:
-            value = AnnotationTypesParsers[v[0]].value(v, line, original_header, path)
+            value = float('nan')
+            if v[0] != AnnotationTypes.MAPPING.name:
+                value = AnnotationTypesParsers[v[0]].value(v, line, original_header, path)
+            else:
+                remain_annotation[k] = v
             row_parser.append(value)
         except IndexError:
             row_parser.append(float('nan'))
 
     row_parser = list(map(str, row_parser))
-    line_dict = {h: row_parser[i] for i, h in enumerate(header)}
-    for k, v in line_dict.items():
-        line_dict[k] = v.format(**line_dict)
-    return line_dict
+    dict_line = {h: row_parser[i] for i, h in enumerate(header)}
+    for k, v in dict_line.items():
+        dict_line[k] = v.format(**dict_line)
+
+    for k, v in remain_annotation.items():
+        dict_line[k] = AnnotationTypesParsers[v[0]].value(v, line, original_header, path, dict_line)
+
+    return dict_line
 
 
 def _parser(file: str, annotation: dict, format_output: str, delimiter: str, display_header=True) -> \
