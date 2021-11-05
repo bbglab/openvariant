@@ -55,8 +55,8 @@ def _mapping_parser(x: Tuple[str, List, dict], line: List, original_header: List
         value = line[original_header.index(field)] if field in original_header else None
         if value is None:
             try:
-                value = dict_line[field]
-                value = dict_line[value]
+                k = dict_line[field]
+                value = x[2][k]
             except KeyError:
                 pass
                 #raise KeyError(f"Enable to found '{field}' in the mapping file.")
