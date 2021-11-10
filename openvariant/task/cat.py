@@ -14,4 +14,4 @@ def cat(base_path: str, annotation_path: str, where=None) -> None:
     for i, r in enumerate(result.read()):
         if skip(r, where_clauses):
             continue
-        print(format_line(list(r.values()), result.annotation.format))
+        print(format_line(list(map(str, r.values())), result.annotation.format))

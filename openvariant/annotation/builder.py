@@ -24,10 +24,15 @@ def _static_builder(x: dict) -> Tuple[str, Any]:
     return AnnotationTypes.STATIC.name, x[AnnotationKeys.VALUE.value]
 
 
-def _internal_builder(x: dict) -> Tuple[str, List, Builder]:
+def _internal_builder(x: dict) -> Tuple[str, List, Builder, str]:
+    try:
+        value = x[AnnotationKeys.VALUE.value]
+    except KeyError:
+        value = float('nan')
+
     return AnnotationTypes.INTERNAL.name, x[AnnotationKeys.FIELD_SOURCE.value], Builder("(lambda y: y)") \
         if AnnotationKeys.FUNCTION.value not in x or len(x[AnnotationKeys.FUNCTION.value]) == 2 \
-        else Builder(x[AnnotationKeys.FUNCTION.value])
+        else Builder(x[AnnotationKeys.FUNCTION.value]), value
 
 
 def _get_dirname_filename_attributes(x: dict) -> Tuple[Builder, re.Pattern]:
@@ -41,7 +46,7 @@ def _get_dirname_filename_attributes(x: dict) -> Tuple[Builder, re.Pattern]:
 def _dirname_builder(x: dict) -> Tuple[str, Builder, re.Pattern]:
     func_apply, regex_apply = _get_dirname_filename_attributes(x)
 
-    return AnnotationTypes.FILENAME.name, func_apply, regex_apply
+    return AnnotationTypes.DIRNAME.name, func_apply, regex_apply
 
 
 def _filename_builder(x: dict) -> Tuple[str, Builder, re.Pattern]:
@@ -62,7 +67,7 @@ def _plugin_builder(x: dict) -> Tuple[str, List, Callable]:
 def _mapping_builder(x: dict) -> Tuple[str, List, dict]:
     values: dict = {}
     mapping_files = x[AnnotationKeys.FILE_MAPPING.value]
-    for mapping_file in glob.glob('**/' + mapping_files, recursive=True):
+    for mapping_file in glob.glob('**/' + mapping_files, recursive=True)[:1]:
         open_method = gzip.open if mapping_file.endswith('gz') else open
         with open_method(mapping_file, "rt") as fd:
             for r in csv.DictReader(fd, delimiter='\t'):

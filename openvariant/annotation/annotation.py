@@ -68,12 +68,19 @@ def _check_annotation_keys(annot: dict) -> None:
     if AnnotationKeys.FIELD.value not in annot or not isinstance(annot[AnnotationKeys.FIELD.value], str):
         raise KeyError(f"'{AnnotationKeys.FIELD.value}' key not found or is not a str.")
 
+    # Value key
+    #if (annot[AnnotationKeys.TYPE.value] == AnnotationTypes.STATIC.value or
+    #    annot[AnnotationKeys.TYPE.value] == AnnotationTypes.INTERNAL.value) and \
+    #        not isinstance(annot[AnnotationKeys.VALUE.value], str):
+    #    raise KeyError(f"'{AnnotationKeys.VALUE.value}' key not found or is not a str.")
+
     # Field source key
     if (annot[AnnotationKeys.TYPE.value] == AnnotationTypes.INTERNAL.value or
-        annot[AnnotationKeys.TYPE.value] == AnnotationTypes.PLUGIN.value) and \
+        annot[AnnotationKeys.TYPE.value] == AnnotationTypes.PLUGIN.value or
+        annot[AnnotationKeys.TYPE.value] == AnnotationTypes.MAPPING.value) and \
             AnnotationKeys.FIELD_SOURCE.value in annot and \
-            not all(isinstance(x, str) for x in annot[AnnotationKeys.FIELD_SOURCE.value]):
-        raise KeyError(f"'{AnnotationKeys.FIELD_SOURCE.value}' key not found or is not a list of str.")
+            not isinstance(annot[AnnotationKeys.FIELD_SOURCE.value], list):
+        raise KeyError(f"'{AnnotationKeys.FIELD_SOURCE.value}' key not found or is not a list.")
 
     # Dirname and filename key
     if (annot[AnnotationKeys.TYPE.value] == AnnotationTypes.DIRNAME.value or

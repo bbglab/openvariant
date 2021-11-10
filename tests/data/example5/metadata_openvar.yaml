@@ -1,0 +1,46 @@
+pattern:
+  - '*.vcf.gz'
+recursive: true
+format: 'TSV'
+
+annotation:
+  - type: 'static'
+    field: 'PLATAFORM'
+    value: 'WSG'
+
+  - type: 'static'
+    field: 'GENOMEREF'
+    value: 'hg38'
+
+  - type: 'dirname'
+    field: 'SETNAME'
+    regex: '(.*)'
+
+  - type: 'mapping'
+    field: 'DONOR'
+    fieldSource:
+      - 'SETNAME'
+    fieldMapping: 'File_ID'
+    fileMapping: 'metadata_5.tsv'
+    fieldValue: 'Case_ID'
+
+  - type: 'filename'
+    field: 'SAMPLE'
+    regex: '([^.*]+)\.wgs.CaVEMan.raw_somatic_mutation.vcf.gz'
+
+  - type: 'static'
+    field: 'CANCER'
+    value: 'BLY'
+
+  - type: 'static'
+    field: 'DATASET'
+    value: 'CGCI_{PLATAFORM}_{CANCER}_2020'
+
+  - type: 'internal'
+    field: 'FILTERS'
+    fieldSource:
+      - 'FILTER'
+
+exclude:
+  - field: 'FILTERS'
+    value: '!PASS'

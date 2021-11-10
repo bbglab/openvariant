@@ -1,0 +1,54 @@
+pattern:
+  - '*.tsv.gz'
+recursive: false
+format: 'TSV'
+
+annotation:
+  - type: 'static'
+    field: 'GENOMEREF'
+    value: 'hg19'
+
+  - type: 'internal'
+    field: 'SAMPLE'
+    fieldSource:
+      - 'icgc_specimen_id'
+
+  - type: 'mapping'
+    field: 'PLATFORM'
+    fieldSource:
+      - 'SAMPLE'
+    fieldMapping: 'icgc_specimen_id'
+    fileMapping: 'metadata_7.tsv'
+    fieldValue: 'sequencing_strategy'
+
+  - type: 'mapping'
+    field: 'CANCER'
+    fieldSource:
+      - 'SAMPLE'
+    fieldMapping: 'icgc_specimen_id'
+    fileMapping: 'metadata_7.tsv'
+    fieldValue: 'cancer_type'
+
+  - type: 'mapping'
+    field: 'DONOR'
+    fieldSource:
+      - 'SAMPLE'
+    fieldMapping: 'icgc_specimen_id'
+    fileMapping: 'metadata_7.tsv'
+    fieldValue: 'icgc_donor_id'
+
+  - type: 'mapping'
+    field: 'PROJECT'
+    fieldSource:
+      - 'SAMPLE'
+    fieldMapping: 'icgc_specimen_id'
+    fileMapping: 'metadata_7.tsv'
+    fieldValue: 'dataset'
+
+  - type: 'static'
+    field: 'DATASET'
+    value: 'ICGC_{PLATFORM}_{CANCER}_{PROJECT}_2019'
+
+exclude:
+  - field: 'DONOR'
+    value: ''

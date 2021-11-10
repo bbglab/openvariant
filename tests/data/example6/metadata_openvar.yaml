@@ -1,0 +1,67 @@
+pattern:
+  - '*.vcf.gz'
+  - '*.maf.gz'
+recursive: true
+format: 'TSV'
+
+annotation:
+  - type: 'static'
+    field: 'GENOMEREF'
+    value: 'hg38'
+
+  - type: 'dirname'
+    field: 'SETNAME'
+    regex: '(.*)'
+
+  - type: 'mapping'
+    field: 'SAMPLE'
+    fieldSource:
+      - 'SETNAME'
+    fieldMapping: 'File ID'
+    fileMapping: 'metadata_6.tsv'
+    fieldValue: 'Sample ID'
+
+  - type: 'mapping'
+    field: 'DONOR'
+    fieldSource:
+      - 'SETNAME'
+    fieldMapping: 'File ID'
+    fileMapping: 'metadata_6.tsv'
+    fieldValue: 'Case ID'
+
+  - type: 'mapping'
+    field: 'CANCER'
+    fieldSource:
+      - 'SETNAME'
+    fieldMapping: 'File ID'
+    fileMapping: 'metadata_6.tsv'
+    fieldValue: 'cancer_type'
+
+  - type: 'mapping'
+    field: 'YEAR'
+    fieldSource:
+      - 'SETNAME'
+    fieldMapping: 'File ID'
+    fileMapping: 'metadata_6.tsv'
+    fieldValue: 'year'
+
+  - type: 'mapping'
+    field: 'PLATFORM'
+    fieldSource:
+      - 'SETNAME'
+    fieldMapping: 'File ID'
+    fileMapping: 'metadata_6.tsv'
+    fieldValue: 'platform'
+
+  - type: 'static'
+    field: 'DATASET'
+    value: 'CPTAC_{PLATFORM}_{CANCER}_{YEAR}'
+
+  - type: 'internal'
+    field: 'FILTERS'
+    fieldSource:
+      - 'FILTER'
+
+exclude:
+  - field: 'FILTERS'
+    value: '!PASS'

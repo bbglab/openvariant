@@ -25,9 +25,26 @@ def _static_parser(x: Tuple[str, Any], line: List, original_header: List, path: 
     return x[1]
 
 
-def _internal_parser(x: Tuple[str, List, Builder], line: List, original_header: List, path: str) -> \
+def _internal_parser(x: Tuple[str, List, Builder, str], line: List, original_header: List, path: str) -> \
         Optional[Union[int, str, float]]:
-    return _get_text_from_header(x[1], line, original_header, x[2])
+    for y in x[1]:
+        if isinstance(y, list):
+            dict_field = {}
+            for field in y:
+                value = line[original_header.index(field)] if field in original_header else None
+                if value is not None:
+                    dict_field[field] = value
+                    continue
+                if value is None:
+                    dict_field[field] = str(float('nan'))
+            try:
+                return x[3].format(**dict_field)
+            except KeyError:
+                continue
+        if isinstance(y, str):
+            return _get_text_from_header(x[1], line, original_header, x[2])
+
+    return float('nan')
 
 
 def _filename_parser(x: Tuple[str, Builder, re.Pattern], line: List, original_header: List, path: str) -> str:
@@ -63,7 +80,7 @@ def _mapping_parser(x: Tuple[str, List, dict], line: List, original_header: List
         if value is not None:
             break
 
-    return value if value is not None else float('nan')
+    return value if value is not None else str(float('nan'))
 
 
 class AnnotationTypesParsers(Enum):

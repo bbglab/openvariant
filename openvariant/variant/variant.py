@@ -59,11 +59,12 @@ def _parse_row(ann: dict, line: List, header: List, original_header: List, path:
 
     row_parser = list(map(str, row_parser))
     dict_line = {h: row_parser[i] for i, h in enumerate(header)}
-    for k, v in dict_line.items():
-        dict_line[k] = v.format(**dict_line)
 
     for k, v in remain_annotation.items():
         dict_line[k] = AnnotationTypesParsers[v[0]].value(v, line, original_header, path, dict_line)
+
+    for k, v in dict_line.items():
+        dict_line[k] = v.format(**dict_line)
 
     return dict_line
 

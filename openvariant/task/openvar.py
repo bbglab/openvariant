@@ -53,7 +53,7 @@ def count(input_path, where, groupby, cores, quite, annotations):
 
 @click.command(short_help='Groupby and run script')
 @click.argument('input_files', type=click.Path(exists=True), nargs=1)
-# @click.option('--script', '-s', type=click.STRING)
+@click.option('--script', '-s', type=click.STRING)
 # @click.option('--columns', '-c', multiple=True, type=click.STRING, help="Extra columns to add")
 @click.option('--where', '-w', multiple=True, type=click.STRING)
 @click.option('--groupby', '-g', type=click.STRING)
@@ -61,11 +61,15 @@ def count(input_path, where, groupby, cores, quite, annotations):
 @click.option('--quite', '-q', help="Don't show the progress, only the total count.", is_flag=True)
 @click.option('--annotations', '-a', type=click.Path(exists=True))
 # @click.option('--headers', help='Send header as first row', is_flag=True)
-def groupby(input_files, where, groupby, cores, quite, annotations):
-    for group_key, r in group_by_task(input_files, annotations, key_by=groupby, where=where, cores=cores, quite=quite):
-        print("{}".format(group_key))
-        for line in r:
-            print(' '.join(line))
+def groupby(input_files, script, where, groupby, cores, quite, annotations):
+    for group_key, group_result in group_by_task(input_files, annotations, script, key_by=groupby, where=where, cores=cores, quite=quite):
+        for r in group_result:
+            print(f"{group_key}\t{r}")
+
+    #for group_key, r in group_by_task(input_files, script, annotations, key_by=groupby, where=where, cores=cores, quite=quite):
+    #    print("{}".format(group_key))
+    #    for line in r:
+    #        print(' '.join(line))
 
 
 cli.add_command(cat)
