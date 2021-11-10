@@ -21,9 +21,10 @@ annotation: # Columns to parse
   # be extracted and parsed as values in the outfile
   - type: 'internal'
     field: string
+    value: string # Format of the column value; optional
     fieldSource: # Columns to look for in the input files; required
-      - string
-      - string
+      - string or list
+      - string or list
       - ...
     function: string # Function to apply to internal value; optional
 

@@ -22,6 +22,12 @@ annotation:
       - '#chrom'
     function: "lambda c: c.upper().replace('CHR', '').replace('23', 'X').replace('24', 'Y')"
 
+  - type: 'internal'
+    field: 'SAMPLE'
+    value: '{icgc_sample_id}_{icgc_specimen_id}'
+    fieldSource:
+      - ['icgc_sample_id','icgc_specimen_id']
+
   - type: 'filename'
     field: 'DATASET'
     function: 'lambda x: "{}".format(x.lower()[:-4])'
