@@ -1,8 +1,7 @@
 import re
 from enum import Enum
 from functools import partial
-from math import isnan
-from os.path import basename, dirname
+from os.path import basename, dirname, abspath
 from typing import Tuple, Any, List, Optional, Union, Callable
 
 from openvariant.annotation.builder import Builder
@@ -12,8 +11,10 @@ def _get_text_from_header(x: List, line: List, original_header: List, func: Buil
     value = None
     for y in x:
         value = line[original_header.index(y)] if y in original_header else None
-        if value is not None:
+        try:
             value = func(value) if func is not None else value
+        except AttributeError:
+            value = None
         if value is not None:
             break
     if value is None:
@@ -54,7 +55,7 @@ def _filename_parser(x: Tuple[str, Builder, re.Pattern], line: List, original_he
 
 
 def _dirname_parser(x: Tuple[str, Builder, re.Pattern], line: List, original_header: List, path: str) -> str:
-    func_result = x[1](basename(dirname(path)))
+    func_result = x[1](basename(dirname(abspath(path))))
     value = x[2].findall(func_result)[0]
     return value if value is not None else float('nan')
 

@@ -2,6 +2,7 @@ import csv
 import ctypes
 import gzip
 import lzma
+from fnmatch import fnmatch
 from os import listdir
 from os.path import isfile, join, isdir
 import re
@@ -32,6 +33,7 @@ def _base_parser(lines: TextIO, delimiter: str) -> Generator[int, str, None]:
     for l_num, line in enumerate(read_tsv):  # lines, start=1):
         # Skip empty lines
         if len(line) == 0:
+            print(line)
             continue
 
         # Skip comments
@@ -84,22 +86,28 @@ def _parser(file: str, annotation: dict, format_output: str, delimiter: str, dis
                 if not display_header:
                     continue
                 row = header
+
             except (ValueError, KeyError) as e:
                 log.error(f"Error parsing header {e}")
         else:
             try:
                 row = _parse_row(annotation, line, header, original_header, file)
             except (ValueError, IndexError) as e:
-                log.error(f"Error parsing line {lnum} {file} ({e, line, header})")
+                log.error(f"Error parsing line: {lnum} {file}")
                 continue
 
         yield row
     fd.close()
 
 
-def _check_extension(ext: str, path: str) -> re.Match:
-    rext = re.compile(ext[-1:] + "$")
-    return rext.search(path)
+def _check_extension(ext: str, path: str) -> bool:
+    match: bool = True
+    if ext[0] == '*':
+        match = fnmatch(path, ext)
+    else:
+        reg_apply = re.compile(ext + '$')
+        match = len(reg_apply.findall(path)) != 0
+    return match
 
 
 def _extract_header(annotation: Annotation):
