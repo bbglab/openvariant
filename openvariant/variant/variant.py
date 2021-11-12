@@ -1,4 +1,5 @@
 import csv
+import ctypes
 import gzip
 import lzma
 from os import listdir
@@ -108,6 +109,7 @@ def _extract_header(annotation: Annotation):
 class Variant:
 
     def __init__(self, path: str, ann: Annotation) -> None:
+        csv.field_size_limit(int(ctypes.c_ulong(-1).value // 2))
         self._path: str = path
         self._annotation: Annotation = ann
         self._header: List[str] = _extract_header(ann)
