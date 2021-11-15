@@ -72,7 +72,8 @@ def group_by_task(selection, where=None, key_by=None, script='') -> Tuple[str, L
 
                     try:
                         if row[key_by] == group_key:
-                            process.stdin.write("{}\n".format("\t".join([str(row.get(h, "")) for h in result.header])).encode())
+                            process.stdin.write("{}\n".format("\t".join([str(row.get(h, "")) for h in result.header]))
+                                                .encode())
                     except KeyError:
                         pass
 

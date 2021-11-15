@@ -1,0 +1,65 @@
+#Sample Identifier	Patient Identifier	Oncotree Code	Cancer Type	Cancer Type Detailed
+#A unique sample identifier.	Identifier to uniquely specify a patient.	Oncotree Code	Disease type	Cancer Type Detailed
+#STRING	STRING	STRING	STRING	STRING
+#SAMPLE	PATIENT	SAMPLE	SAMPLE	SAMPLE
+#1	1	1	1	1
+SAMPLE_ID	PATIENT_ID	ONCOTREE_CODE	CANCER_TYPE	CANCER_TYPE_DETAILED
+DFCI_DLBCL_Goe01	DFCI_DLBCL_Goe01	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DFCI_DLBCL_Goe05	DFCI_DLBCL_Goe05	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DFCI_DLBCL_Goe16	DFCI_DLBCL_Goe16	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-LS3271	DLBCL-LS3271	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-LS4054	DLBCL-LS4054	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-LS4323	DLBCL-LS4323	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-LS4394	DLBCL-LS4394	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-LS4592	DLBCL-LS4592	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-LS4593	DLBCL-LS4593	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-LS4616	DLBCL-LS4616	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-LS4618	DLBCL-LS4618	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-LS4619	DLBCL-LS4619	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls1065	DLBCL-Ls1065	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls1098	DLBCL-Ls1098	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls1395	DLBCL-Ls1395	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls148	DLBCL-Ls148	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls1546	DLBCL-Ls1546	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls1583	DLBCL-Ls1583	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls1620	DLBCL-Ls1620	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls1668	DLBCL-Ls1668	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls1683	DLBCL-Ls1683	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls1757	DLBCL-Ls1757	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls1899	DLBCL-Ls1899	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls1921	DLBCL-Ls1921	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls2089	DLBCL-Ls2089	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls2154	DLBCL-Ls2154	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls2245	DLBCL-Ls2245	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls2258	DLBCL-Ls2258	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls2264	DLBCL-Ls2264	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls2305	DLBCL-Ls2305	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls2328	DLBCL-Ls2328	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls2357	DLBCL-Ls2357	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls2367	DLBCL-Ls2367	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls2590	DLBCL-Ls2590	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls2596	DLBCL-Ls2596	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls297	DLBCL-Ls297	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls2978	DLBCL-Ls2978	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls3200	DLBCL-Ls3200	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls3204	DLBCL-Ls3204	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls3245	DLBCL-Ls3245	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls3309	DLBCL-Ls3309	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls3387	DLBCL-Ls3387	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls3499	DLBCL-Ls3499	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls3615	DLBCL-Ls3615	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls3749	DLBCL-Ls3749	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls378	DLBCL-Ls378	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls3808	DLBCL-Ls3808	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls3809	DLBCL-Ls3809	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls3820	DLBCL-Ls3820	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls3866	DLBCL-Ls3866	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls4085	DLBCL-Ls4085	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls420	DLBCL-Ls420	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls762	DLBCL-Ls762	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls843	DLBCL-Ls843	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-Ls951	DLBCL-Ls951	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-MAYO_DLBCL_234	DLBCL-MAYO_DLBCL_234	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-MAYO_DLBCL_5613	DLBCL-MAYO_DLBCL_5613	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+DLBCL-MAYO_DLBCL_7359	DLBCL-MAYO_DLBCL_7359	DLBCL	Non-Hodgkin Lymphoma	Diffuse Large B-Cell Lymphoma
+

@@ -1,0 +1,76 @@
+pattern:
+  - '.txt'
+
+recursive: False
+format: 'tsv'
+delimiter: 't'
+
+annotation:
+  - type: 'internal'
+    field: 'CHROMOSOME'
+    fieldSource:
+      - 'Chromosome'
+      - 'Chr'
+      - 'Chrom'
+      - 'Chromosome_Name'
+      - '#chrom'
+      - '#CHROM'
+    function: "lambda c: c.upper().replace('CHR', '').replace('23', 'X').replace('24', 'Y')"
+
+  - type: 'internal'
+    field: 'POSITION'
+    fieldSource:
+      - 'Position'
+      - 'Start'
+      - 'Start_Position'
+      - 'Pos'
+      - 'Chromosome_Start'
+      - 'POS'
+
+  - type: 'internal'
+    field: 'STRAND'
+    fieldSource:
+      - 'Strand'
+      - 'Chromosome_Strand'
+      - ''
+    function: "lambda s: '-' if s in ['-', '0', '-1'] else '+' if s in ['+', '1', '+1'] else '+'"
+
+  - type: 'internal'
+    field: 'REF'
+    fieldSource:
+      - 'Ref'
+      - 'Reference_Allele'
+      - 'Reference'
+      - 'Reference_Genome_Allele'
+      - 'REF'
+
+  - type: 'internal'
+    field: 'ALT'
+    fieldSource:
+      - 'Alt'
+      - 'Tumor_Seq_Allele2'
+      - 'Variant'
+      - 'Alternative'
+      - 'Mutated_To_Allele'
+      - 'ALT'
+
+  - type: 'internal'
+    field: 'DONOR'
+    fieldSource:
+      - 'Tumor_Sample_Barcode'
+
+  - type: 'static'
+    field: 'CANCER'
+    value: 'PRAD'
+
+  - type: 'static'
+    field: 'PLATFORM'
+    value: 'WXS'
+
+  - type: 'static'
+    field: 'GENOMEREF'
+    value: 'hg19'
+
+  - type: 'dirname'
+    field: 'DATASET'
+    function: 'lambda d: "CBIOP_{{PLATFORM}}_{}".format(d.upper())'

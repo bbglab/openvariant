@@ -6,6 +6,10 @@ recursive: true
 format: 'tsv'
 delimiter: 't'
 
+columns:
+  - 'by_OpenVariant'
+  - 'SAMPLE'
+  - 'MUTATION_REF'
 
 annotation:
   - type: 'static'

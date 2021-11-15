@@ -2,6 +2,7 @@ from enum import Enum
 
 ANNOTATION_EXTENSION = "yaml"
 DEFAULT_FORMAT = 'TSV'
+DEFAULT_COLUMNS = []
 DEFAULT_RECURSIVE = False
 DEFAULT_DELIMITER = 'T'
 
@@ -11,6 +12,7 @@ class AnnotationGeneralKeys(Enum):
     RECURSIVE = 'recursive'
     FORMAT = 'format'
     DELIMITER = 'delimiter'
+    COLUMNS = 'columns'
     ANNOTATION = 'annotation'
     EXCLUDE = 'exclude'
 

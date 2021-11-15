@@ -4,7 +4,12 @@ pattern: #  List of file patterns to match with the current annotation; required
   - ...
 recursive: boolean # Explore annotations recursively to all subdirectories; default: False
 format: string # Output format "tsv" or "csv"; default: "tsv"
-delimiter: string # Delimiter of input files: t - tabular, c - coma; default: "t",
+delimiter: string # Delimiter of input files: t - tabular, c - coma; default: "t"
+
+columns: # A list of columns that we want as an output; optional
+  - string
+  - string
+  - ...
 
 annotation: # Columns to parse
   # Required attributes in each element:

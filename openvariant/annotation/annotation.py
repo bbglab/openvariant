@@ -10,7 +10,9 @@ from openvariant.config.config_annotation import (AnnotationGeneralKeys,
                                                   AnnotationKeys,
                                                   AnnotationTypes,
                                                   ExcludesKeys,
-                                                  DEFAULT_FORMAT, DEFAULT_DELIMITER)
+                                                  DEFAULT_FORMAT,
+                                                  DEFAULT_DELIMITER,
+                                                  DEFAULT_COLUMNS)
 
 
 def _read_annotation_file(path: str) -> dict:
@@ -69,7 +71,7 @@ def _check_annotation_keys(annot: dict) -> None:
         raise KeyError(f"'{AnnotationKeys.FIELD.value}' key not found or is not a str.")
 
     # Value key
-    #if (annot[AnnotationKeys.TYPE.value] == AnnotationTypes.STATIC.value or
+    # if (annot[AnnotationKeys.TYPE.value] == AnnotationTypes.STATIC.value or
     #    annot[AnnotationKeys.TYPE.value] == AnnotationTypes.INTERNAL.value) and \
     #        not isinstance(annot[AnnotationKeys.VALUE.value], str):
     #    raise KeyError(f"'{AnnotationKeys.VALUE.value}' key not found or is not a str.")
@@ -128,32 +130,26 @@ class Annotation:
         self._patterns = raw_annotation[AnnotationGeneralKeys.PATTERN.value]
         self._recursive = raw_annotation.get(AnnotationGeneralKeys.RECURSIVE.value, True)
         self._delimiter = raw_annotation.get(AnnotationGeneralKeys.DELIMITER.value, DEFAULT_DELIMITER).upper()
-        self._excludes = raw_annotation.get(AnnotationGeneralKeys.EXCLUDE.value, [])
+        self._columns = raw_annotation.get(AnnotationGeneralKeys.COLUMNS.value, DEFAULT_COLUMNS)
+
         self._format = raw_annotation.get(AnnotationGeneralKeys.FORMAT.value, DEFAULT_FORMAT).replace('.', '')
+        self._excludes = raw_annotation.get(AnnotationGeneralKeys.EXCLUDE.value, [])
 
         self._annotations: dict = {}
         for k in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
             self._annotations[k[AnnotationKeys.FIELD.value]] = \
                 AnnotationTypesBuilders[k[AnnotationKeys.TYPE.value].upper()].value(k)
 
+        self._check_columns()
+
     def _register_builders(self) -> None:
         for b in AnnotationTypes:
             self._builders[b.value] = AnnotationTypesBuilders[b.name].value
 
-    #def transform_dirname_filename(self, base_path: str):
-    #    for ka in self._annotations:
-    #        name = None
-    #        if self._annotations[ka][0] == AnnotationTypes.FILENAME.name:
-    #            name = basename(base_path)
-    #        elif self._annotations[ka][0] == AnnotationTypes.DIRNAME.name:
-    #            if isfile(base_path):
-    #                name = basename(dirname(base_path))
-    #            else:
-    #                name = basename(base_path)
-    #        if (self._annotations[ka][0] == AnnotationTypes.FILENAME.name or
-    #            self._annotations[ka][0] == AnnotationTypes.DIRNAME.name) \
-    #                and callable(self._annotations[ka][1]):
-    #            self._annotations[ka] = (self._annotations[ka][0], self._annotations[ka][1](name))
+    def _check_columns(self) -> None:
+        for col in self._columns:
+            if col not in self._annotations:
+                raise KeyError(f"'{col}' column unable to be found.")
 
     def set_patterns(self, patterns: List[str]) -> None:
         self._patterns = patterns
@@ -179,6 +175,10 @@ class Annotation:
     @property
     def delimiter(self) -> str:
         return self._delimiter
+
+    @property
+    def columns(self) -> List:
+        return self._columns
 
     @property
     def annotations(self) -> dict:

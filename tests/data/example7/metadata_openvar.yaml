@@ -3,6 +3,11 @@ pattern:
 recursive: false
 format: 'TSV'
 
+columns:
+  - 'SAMPLE'
+  - 'CANCER'
+  - 'DATASET'
+
 annotation:
   - type: 'static'
     field: 'GENOMEREF'

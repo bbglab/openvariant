@@ -72,7 +72,7 @@ def _parse_row(ann: dict, line: List, header: List, original_header: List, path:
     return dict_line
 
 
-def _parser(file: str, annotation: dict, format_output: str, delimiter: str, display_header=True) -> \
+def _parser(file: str, annotation: dict, delimiter: str, columns: List, display_header=True) -> \
         Generator[dict, None, None]:
     row = None
     fd = _open_file(file, "rt")
@@ -92,6 +92,12 @@ def _parser(file: str, annotation: dict, format_output: str, delimiter: str, dis
         else:
             try:
                 row = _parse_row(annotation, line, header, original_header, file)
+                row_aux = {}
+                if columns is not []:
+                    for col in columns:
+                        row_aux[col] = row[col]
+                    row = row_aux
+
             except (ValueError, IndexError) as e:
                 log.error(f"Error parsing line: {lnum} {file}")
                 continue
@@ -129,7 +135,7 @@ class Variant:
         if isfile(base_path):
             for ext, ann in an.items():
                 if _check_extension(ext, base_path):
-                    for x in _parser(base_path, ann, format_output, annotation.delimiter, display_header):
+                    for x in _parser(base_path, ann, annotation.delimiter, annotation.columns, display_header):
                         display_header = False
                         yield x
         else:
@@ -139,7 +145,8 @@ class Variant:
                     if isfile(file_path):
                         for ext, ann in an.items():
                             if _check_extension(ext, file_path):
-                                for x in _parser(file_path, ann, format_output, annotation.delimiter, display_header):
+                                for x in _parser(file_path, ann, annotation.delimiter, annotation.columns,
+                                                 display_header):
                                     display_header = False
                                     yield x
                     else:
