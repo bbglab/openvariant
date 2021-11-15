@@ -8,9 +8,9 @@ class TestGroupBy(unittest.TestCase):
 
     # Normal group by functionality
     def test_group_by(self):
-        res_expect = ['kich', 'chol', 'meso', 'laml', 'acc', 'ucs']
-        res = [g for g, v in list(group_by(f'{os.getcwd()}/tests/data/', f'{os.getcwd()}/tests/data/task_test.yaml',
-                                           None, key_by='DATASET', quite=True))]
+        res_expect = {'chol', 'kich', 'meso', 'laml', 'acc', 'ucs'}
+        res = set([g for g, v in list(group_by(f'{os.getcwd()}/tests/data/', f'{os.getcwd()}/tests/data/task_test.yaml',
+                                           None, key_by='DATASET', quite=True))])
         self.assertEqual(res, res_expect)
 
     def test_invalid_group_by(self):
