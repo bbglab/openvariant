@@ -93,7 +93,7 @@ def _parser(file: str, annotation: dict, delimiter: str, columns: List, display_
             try:
                 row = _parse_row(annotation, line, header, original_header, file)
                 row_aux = {}
-                if columns is not []:
+                if len(columns) != 0:
                     for col in columns:
                         row_aux[col] = row[col]
                     row = row_aux
@@ -131,7 +131,6 @@ class Variant:
 
     def _unify(self, base_path: str, annotation: Annotation, display_header=True) -> Generator[dict, None, None]:
         an = annotation.structure
-        format_output = annotation.format
         if isfile(base_path):
             for ext, ann in an.items():
                 if _check_extension(ext, base_path):

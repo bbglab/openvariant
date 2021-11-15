@@ -62,46 +62,50 @@ def group_by_task(selection, where=None, key_by=None, script='') -> Tuple[str, L
         return group_key, output
 
     else:
-        process = Popen(script, shell=True, stdin=PIPE, stdout=PIPE, env={"GROUP_KEY": 'None' if group_key is None else group_key})
-        try:
-            for value in group_values:
-                result = Variant(value[0], value[1])
-                for row in result.read():
-                    if skip(row, where_clauses):
-                        continue
+        with Popen(script, shell=True, stdin=PIPE, stdout=PIPE,
+                        env={"GROUP_KEY": 'None' if group_key is None else group_key}) as process:
+            try:
+                for value in group_values:
 
-                    try:
-                        if row[key_by] == group_key:
-                            process.stdin.write("{}\n".format("\t".join([str(row.get(h, "")) for h in result.header]))
-                                                .encode())
-                    except KeyError:
-                        pass
+                    result = Variant(value[0], value[1])
+                    for row in result.read():
+                        if skip(row, where_clauses):
+                            continue
 
-                    process.stdin.flush()
-                process.stdin.close()
-        except BrokenPipeError:
-            pass
+                        try:
+                            if row[key_by] == group_key:
+                                process.stdin.write("{}\n".format("\t".join([str(row.get(h, ""))
+                                                                             for h in result.header])).encode())
 
+                                process.stdin.flush()
+                        except KeyError:
+                            pass
 
-        try:
-            while True:
-                out = process.stdout.readline().decode().strip()
-                if out == "":
-                    break
-                output.append(out)
-            process.stdout.close()
-        except BrokenPipeError:
-            pass
+                    process.stdin.close()
+            except BrokenPipeError:
+                pass
+
+            try:
+                while True:
+                    out = process.stdout.readline().decode().strip()
+                    if out == "":
+                        break
+                    output.append(out)
+                process.stdout.close()
+            except BrokenPipeError:
+                pass
         return group_key, output
 
 
-def group_by(base_path: str, annotation_path: str, script: str or None, key_by: str, where=None, cores=cpu_count(), quite=False) -> \
+def group_by(base_path: str, annotation_path: str, script: str or None, key_by: str, where=None, cores=cpu_count(),
+             quite=False) -> \
         Generator[str, List, None]:
     annotation = Annotation(annotation_path)
     selection = list(group(base_path, annotation, key_by))
 
     with Pool(cores) as pool:
-        task = partial(group_by_task, where=where, key_by=key_by, script=script) #, where=where_parsed, columns=columns, print_headers=headers)
+        task = partial(group_by_task, where=where, key_by=key_by,
+                       script=script)  # , where=where_parsed, columns=columns, print_headers=headers)
         map_method = map if cores == 1 or len(selection) <= 1 else pool.imap_unordered
 
         for group_key, group_result in tqdm(
