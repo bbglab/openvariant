@@ -63,7 +63,7 @@ def group_by_task(selection, where=None, key_by=None, script='') -> Tuple[str, L
 
     else:
         with Popen(script, shell=True, stdin=PIPE, stdout=PIPE,
-                        env={"GROUP_KEY": 'None' if group_key is None else group_key}) as process:
+                   env={"GROUP_KEY": 'None' if group_key is None else group_key}) as process:
             try:
                 for value in group_values:
 
@@ -80,8 +80,6 @@ def group_by_task(selection, where=None, key_by=None, script='') -> Tuple[str, L
                                 process.stdin.flush()
                         except KeyError:
                             pass
-
-                    process.stdin.close()
             except BrokenPipeError:
                 pass
 
@@ -91,7 +89,6 @@ def group_by_task(selection, where=None, key_by=None, script='') -> Tuple[str, L
                     if out == "":
                         break
                     output.append(out)
-                process.stdout.close()
             except BrokenPipeError:
                 pass
         return group_key, output
