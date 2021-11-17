@@ -64,35 +64,35 @@ def group_by_task(selection, where=None, key_by=None, script='') -> Tuple[str, L
     else:
         process = Popen(script, shell=True, stdin=PIPE, stdout=PIPE,
                    env={"GROUP_KEY": 'None' if group_key is None else group_key})
-            try:
-                for value in group_values:
+        try:
+            for value in group_values:
 
-                    result = Variant(value[0], value[1])
-                    for row in result.read():
-                        if skip(row, where_clauses):
-                            continue
+                result = Variant(value[0], value[1])
+                for row in result.read():
+                    if skip(row, where_clauses):
+                        continue
 
-                        try:
-                            if row[key_by] == group_key:
-                                process.stdin.write("{}\n".format("\t".join([str(row.get(h, ""))
-                                                                             for h in result.header])).encode())
+                    try:
+                        if row[key_by] == group_key:
+                            process.stdin.write("{}\n".format("\t".join([str(row.get(h, ""))
+                                                                         for h in result.header])).encode())
 
-                                process.stdin.flush()
-                        except KeyError:
-                            pass
-                process.stdin.close()
-            except BrokenPipeError:
-                pass
+                            process.stdin.flush()
+                    except KeyError:
+                        pass
+            process.stdin.close()
+        except BrokenPipeError:
+            pass
 
-            try:
-                while True:
-                    out = process.stdout.readline().decode().strip()
-                    if out == "":
-                        break
-                    output.append(out)
-                process.stdout.close()
-            except BrokenPipeError:
-                pass
+        try:
+            while True:
+                out = process.stdout.readline().decode().strip()
+                if out == "":
+                    break
+                output.append(out)
+            process.stdout.close()
+        except BrokenPipeError:
+            pass
         return group_key, output
 
 
