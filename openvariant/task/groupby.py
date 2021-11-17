@@ -51,12 +51,12 @@ def group_by_task(selection, where=None, key_by=None, script='') -> Tuple[str, L
         try:
             for value in group_values:
                 result = Variant(value[0], value[1])
+                columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
                 for row in result.read():
                     if skip(row, where_clauses):
                         continue
-
                     if row[key_by] == group_key:
-                        output.append("{}".format("\t".join([str(row.get(h, "")) for h in result.header])))
+                        output.append("{}".format("\t".join([str(row.get(h, "")) for h in columns])))
         except BrokenPipeError:
             pass
         return group_key, output
@@ -66,8 +66,8 @@ def group_by_task(selection, where=None, key_by=None, script='') -> Tuple[str, L
                    env={"GROUP_KEY": 'None' if group_key is None else group_key})
         try:
             for value in group_values:
-
                 result = Variant(value[0], value[1])
+                columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
                 for row in result.read():
                     if skip(row, where_clauses):
                         continue
@@ -75,7 +75,7 @@ def group_by_task(selection, where=None, key_by=None, script='') -> Tuple[str, L
                     try:
                         if row[key_by] == group_key:
                             process.stdin.write("{}\n".format("\t".join([str(row.get(h, ""))
-                                                                         for h in result.header])).encode())
+                                                                         for h in columns])).encode())
 
                             process.stdin.flush()
                     except KeyError:
