@@ -14,12 +14,12 @@ from openvariant.utils.where import skip, parse_where
 from openvariant.variant.variant import Variant
 
 
-def _get_unique_values(file_path, annotation, key) -> Set:
+def _get_unique_values(file_path: str, annotation: Annotation, key: str) -> Set:
     values = set()
     result = Variant(file_path, annotation)
 
     try:
-        for r in result.read():
+        for r in result.read(key):
             values.add(r[key])
     except KeyError:
         log.warn(f"'{key}' key not found in '{file_path}' file")
@@ -52,7 +52,7 @@ def group_by_task(selection, where=None, key_by=None, script='') -> Tuple[str, L
             for value in group_values:
                 result = Variant(value[0], value[1])
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
-                for row in result.read():
+                for row in result.read(key_by):
                     if skip(row, where_clauses):
                         continue
                     if row[key_by] == group_key:
@@ -68,15 +68,13 @@ def group_by_task(selection, where=None, key_by=None, script='') -> Tuple[str, L
             for value in group_values:
                 result = Variant(value[0], value[1])
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
-                for row in result.read():
+                for row in result.read(key_by):
                     if skip(row, where_clauses):
                         continue
-
                     try:
                         if row[key_by] == group_key:
                             process.stdin.write("{}\n".format("\t".join([str(row.get(h, ""))
                                                                          for h in columns])).encode())
-
                             process.stdin.flush()
                     except KeyError:
                         pass
