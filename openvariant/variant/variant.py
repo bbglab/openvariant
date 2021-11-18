@@ -93,6 +93,7 @@ def _parser(file: str, annotation: dict, delimiter: str, columns: List, group_by
             try:
                 row = _parse_row(annotation, line, header, original_header, file)
                 row_aux = {}
+                print('---', group_by)
                 if len(columns) != 0:
                     if group_by is not None and group_by not in columns:
                         row_aux[group_by] = row[group_by]
@@ -101,7 +102,7 @@ def _parser(file: str, annotation: dict, delimiter: str, columns: List, group_by
 
                     row = row_aux
 
-            except (ValueError, IndexError) as e:
+            except (ValueError, IndexError, KeyError):
                 log.error(f"Error parsing line: {lnum} {file}")
                 continue
 
@@ -130,7 +131,6 @@ class Variant:
         self._path: str = path
         self._annotation: Annotation = ann
         self._header: List[str] = _extract_header(ann)
-        #self._generator: Generator[dict, None, None] =
 
     def _unify(self, base_path: str, annotation: Annotation, group_by=None, display_header=True) -> Generator[dict, None, None]:
         an = annotation.structure
