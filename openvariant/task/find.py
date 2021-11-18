@@ -12,7 +12,6 @@ from openvariant.config.config_annotation import ANNOTATION_EXTENSION, DEFAULT_R
 
 def _get_annotation_file(annotation: Annotation or None, file_name: str, file_path: str, base_path: str) -> \
         Generator[str, Annotation, None]:
-
     if annotation is None:
         for annotation_file in glob.iglob(join(dirname(abspath(base_path)), "*.{}".format(ANNOTATION_EXTENSION))):
             annotation = Annotation(annotation_file)
@@ -29,13 +28,7 @@ def _get_annotation_file(annotation: Annotation or None, file_name: str, file_pa
         yield file_path, ann
 
 
-def find_files(base_path: str, annotation: Annotation = None) -> Generator[str, Annotation, None]:
-
-    #if annotation is None or base_path is None:
-    #    raise ValueError('Annotation or path is missing')
-
-    global_annotation = annotation
-
+def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Generator[str, Annotation, None]:
     if isfile(base_path):
         for f, a in _get_annotation_file(annotation, basename(base_path), base_path, base_path):
             yield f, a
@@ -46,18 +39,24 @@ def find_files(base_path: str, annotation: Annotation = None) -> Generator[str, 
             for file_name in listdir(base_path):
                 file_path = join(base_path, file_name)
                 if isfile(file_path):
-                    #local_annotation = global_annotation
-                    for annotation_file in glob.iglob(join(base_path, "*.{}".format(ANNOTATION_EXTENSION))):
-                        annotation = Annotation(annotation_file)
-                        #recursive = DEFAULT_RECURSIVE if global_annotation.recursive is None \
-                        #    else global_annotation.recursive
-                        #if recursive:
-                        #    local_annotation = merge_annotations_structure(local_annotation, ann)
-                    for f, a in find_files(file_path, annotation):
+                    # local_annotation = global_annotation
+                    if not fix:
+                        for annotation_file in glob.iglob(join(base_path, "*.{}".format(ANNOTATION_EXTENSION))):
+                            annotation = Annotation(annotation_file)
+                            # recursive = DEFAULT_RECURSIVE if global_annotation.recursive is None \
+                            #    else global_annotation.recursive
+                            # if recursive:
+                            #    local_annotation = merge_annotations_structure(local_annotation, ann)
+                    for f, a in _find_files(file_path, annotation, fix):
                         yield f, a
                 else:
                     # Search subfolders
-                    for f, a in find_files(file_path, annotation):
+                    for f, a in _find_files(file_path, annotation, fix):
                         yield f, a
         except PermissionError as e:
             print(e)
+
+
+def find_files(base_path: str, annotation_path: str or None) -> Generator[str, Annotation, None]:
+    annotation, fix = (Annotation(annotation_path), True) if annotation_path is not None else (None, False)
+    return _find_files(base_path, annotation, fix)

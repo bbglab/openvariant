@@ -12,9 +12,11 @@ from openvariant.variant.variant import Variant
 
 
 def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) -> Tuple[int, Union[dict, None]]:
+
     where_clauses = parse_where(where)
     i = 0
     input_file, input_annotations = selection
+
     result = Variant(input_file, input_annotations)
 
     header = result.header
@@ -41,12 +43,11 @@ def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) ->
         return i, groups
 
 
-def count(base_path: str, annotation_path: str, group_by=None, where=None, cores=cpu_count(), quite=False) -> \
+def count(base_path: str, annotation_path: str or None, group_by=None, where=None, cores=cpu_count(), quite=False) -> \
         Tuple[int, Union[None, dict]]:
-    ann = Annotation(annotation_path)
 
     selection = []
-    for k, a in find_files(base_path, ann):
+    for k, a in find_files(base_path, annotation_path):
         selection += [(k, a)]
 
     with Pool(cores) as pool:

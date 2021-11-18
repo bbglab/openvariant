@@ -26,9 +26,9 @@ def _get_unique_values(file_path: str, annotation: Annotation, key: str) -> Set:
     return values
 
 
-def group(base_path: str, annotation: Annotation, key_by: str) -> Generator[str, List, None]:
+def group(base_path: str, annotation_path: str or None, key_by: str) -> Generator[str, List, None]:
     results = defaultdict(list)
-    for file, ann in find_files(base_path, annotation):
+    for file, ann in find_files(base_path, annotation_path):
         by_value = ann.annotations.get(key_by, None)
 
         if isinstance(by_value, tuple):
@@ -94,11 +94,10 @@ def group_by_task(selection, where=None, key_by=None, script='') -> Tuple[str, L
         return group_key, output
 
 
-def group_by(base_path: str, annotation_path: str, script: str or None, key_by: str, where=None, cores=cpu_count(),
+def group_by(base_path: str, annotation_path: str or None, script: str or None, key_by: str, where=None, cores=cpu_count(),
              quite=False) -> \
         Generator[str, List, None]:
-    annotation = Annotation(annotation_path)
-    selection = list(group(base_path, annotation, key_by))
+    selection = list(group(base_path, annotation_path, key_by))
 
     with Pool(cores) as pool:
         task = partial(group_by_task, where=where, key_by=key_by,
