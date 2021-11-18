@@ -13,8 +13,9 @@ def cat(base_path: str, annotation_path: str or None, where: str = None, header_
             print(format_line(header, result.annotation.format))
             header_show = False
         for i, r in enumerate(result.read()):
-            if skip(r, where_clauses):
-                continue
-            print(format_line(list(map(str, r.values())), result.annotation.format))
+            if isinstance(r, dict):
+                if skip(r, where_clauses):
+                    continue
+                print(format_line(list(map(str, r.values())), result.annotation.format))
 
 

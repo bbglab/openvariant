@@ -49,6 +49,7 @@ def _parse_row(ann: dict, line: List, header: List, original_header: List, path:
     annotations = ann[AnnotationGeneralKeys.ANNOTATION.name]
     row_parser = []
     remain_annotation = {}
+    print(annotations)
     for k, v in annotations.items():
         try:
             value = float('nan')
@@ -62,7 +63,7 @@ def _parse_row(ann: dict, line: List, header: List, original_header: List, path:
 
     row_parser = list(map(str, row_parser))
     dict_line = {h: row_parser[i] for i, h in enumerate(header)}
-
+    print(dict_line)
     for k, v in remain_annotation.items():
         dict_line[k] = AnnotationTypesParsers[v[0]].value(v, line, original_header, path, dict_line)
 
@@ -93,7 +94,7 @@ def _parser(file: str, annotation: dict, delimiter: str, columns: List, group_by
             try:
                 row = _parse_row(annotation, line, header, original_header, file)
                 row_aux = {}
-                print('---', group_by)
+                print(row)
                 if len(columns) != 0:
                     if group_by is not None and group_by not in columns:
                         row_aux[group_by] = row[group_by]
