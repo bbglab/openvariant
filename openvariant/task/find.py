@@ -18,10 +18,11 @@ def _get_annotation_file(annotation: Annotation or None, file_name: str, file_pa
 
     ann = None
     pattern_matches = 0
-    for pattern in annotation.patterns:
-        if fnmatch(file_name, pattern):
-            pattern_matches += 1
-            ann = deepcopy(annotation)
+    if annotation is not None:
+        for pattern in annotation.patterns:
+            if fnmatch(file_name, pattern):
+                pattern_matches += 1
+                ann = deepcopy(annotation)
 
     # Process filename and dirname annotations
     if ann is not None and pattern_matches > 0:  # and __where_match(file_annotations, where=where):
