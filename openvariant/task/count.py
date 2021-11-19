@@ -29,16 +29,16 @@ def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) ->
     else:
         groups = {}
         # key_not_found = False
-        for r in result.read():
+        for r in result.read(group_by):
             if skip(r, where_clauses):
                 continue
             try:
-                val = list(r.values())[header.index(group_by)]
+                val = r[group_by]
                 val_count = groups.get(val, 0)
                 groups[val] = val_count + 1
                 i += 1
-            except ValueError:
-                pass
+            except (ValueError, KeyError):
+                raise KeyError(f'Unable to find {group_by} key')
 
         return i, groups
 

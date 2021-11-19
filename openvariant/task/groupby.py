@@ -42,7 +42,7 @@ def group(base_path: str, annotation_path: str or None, key_by: str) -> Generato
         yield key, group_select
 
 
-def group_by_task(selection, where=None, key_by=None, script='') -> Tuple[str, List]:
+def group_by_task(selection, where=None, key_by=None, script='', header=False) -> Tuple[str, List]:
     where_clauses = parse_where(where)
     group_key, group_values = selection
 
@@ -51,7 +51,11 @@ def group_by_task(selection, where=None, key_by=None, script='') -> Tuple[str, L
         try:
             for value in group_values:
                 result = Variant(value[0], value[1])
+
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
+                if header:
+                    output.append("{}".format("\t".join(columns)))
+                    header = False
                 for row in result.read(key_by):
                     if skip(row, where_clauses):
                         continue
@@ -95,13 +99,13 @@ def group_by_task(selection, where=None, key_by=None, script='') -> Tuple[str, L
 
 
 def group_by(base_path: str, annotation_path: str or None, script: str or None, key_by: str, where=None, cores=cpu_count(),
-             quite=False) -> \
+             quite=False, header: bool = False) -> \
         Generator[str, List, None]:
     selection = list(group(base_path, annotation_path, key_by))
 
     with Pool(cores) as pool:
         task = partial(group_by_task, where=where, key_by=key_by,
-                       script=script)  # , where=where_parsed, columns=columns, print_headers=headers)
+                       script=script, header=header)  # , where=where_parsed, columns=columns, print_headers=headers)
         map_method = map if cores == 1 or len(selection) <= 1 else pool.imap_unordered
 
         for group_key, group_result in tqdm(
