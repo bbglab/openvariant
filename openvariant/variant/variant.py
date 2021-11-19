@@ -49,12 +49,12 @@ def _parse_row(ann: dict, line: List, header: List, original_header: List, path:
     annotations = ann[AnnotationGeneralKeys.ANNOTATION.name]
     row_parser = []
     remain_annotation = {}
-    annot_pluguins = []
+    annot_plugins = []
     for k, v in annotations.items():
         try:
             value = float('nan')
             if v[0] == AnnotationTypes.PLUGIN.name:
-                annot_pluguins.append(v)
+                annot_plugins.append(v)
             elif v[0] != AnnotationTypes.MAPPING.name:
                 value = AnnotationTypesParsers[v[0]].value(v, line, original_header, path)
             else:
@@ -66,14 +66,17 @@ def _parse_row(ann: dict, line: List, header: List, original_header: List, path:
     row_parser = list(map(str, row_parser))
     dict_line = {h: row_parser[i] for i, h in enumerate(header)}
 
-    for v in annot_pluguins:
+    for v in annot_plugins:
         dict_line = AnnotationTypesParsers[v[0]].value(v, line, original_header, path, dict_line)
 
     for k, v in remain_annotation.items():
         dict_line[k] = AnnotationTypesParsers[v[0]].value(v, line, original_header, path, dict_line)
 
-    for k, v in dict_line.items():
-        dict_line[k] = v.format(**dict_line)
+    try:
+        for k, v in dict_line.items():
+            dict_line[k] = v.format(**dict_line)
+    except AttributeError as e:
+        raise AttributeError(f'Parsing annotations error for {dict_line}: {e}')
 
     return dict_line
 
