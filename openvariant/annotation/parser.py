@@ -7,7 +7,7 @@ from typing import Tuple, Any, List, Optional, Union, Callable
 from openvariant.annotation.builder import Builder
 
 
-def _get_text_from_header(x: List, line: List, original_header: List, func: Builder or None):
+def _get_text_from_header(x: List, line: List, original_header: List, func: Builder or None) -> float or str:
     value = None
     for y in x:
         value = line[original_header.index(y)] if y in original_header else None
@@ -26,8 +26,7 @@ def _static_parser(x: Tuple[str, Any], line: List, original_header: List, path: 
     return x[1]
 
 
-def _internal_parser(x: Tuple[str, List, Builder, str], line: List, original_header: List, path: str) -> \
-        Optional[Union[int, str, float]]:
+def _internal_parser(x: Tuple[str, List, Builder, str], line: List, original_header: List, path: str) -> str:
     for y in x[1]:
         if isinstance(y, list):
             dict_field = {}
@@ -39,35 +38,36 @@ def _internal_parser(x: Tuple[str, List, Builder, str], line: List, original_hea
                 if value is None:
                     dict_field[field] = str(float('nan'))
             try:
-                return x[3].format(**dict_field)
+                return str(x[3].format(**dict_field))
             except KeyError:
                 continue
         if isinstance(y, str):
-            return _get_text_from_header(x[1], line, original_header, x[2])
+            return str(_get_text_from_header(x[1], line, original_header, x[2]))
 
-    return float('nan')
+    return str(float('nan'))
 
 
 def _filename_parser(x: Tuple[str, Builder, re.Pattern], line: List, original_header: List, path: str) -> str:
     func_result = x[1](basename(path))
     value = x[2].findall(func_result)[0]
-    return value if value is not None else float('nan')
+    return value if str(value) is not None else str(float('nan'))
 
 
 def _dirname_parser(x: Tuple[str, Builder, re.Pattern], line: List, original_header: List, path: str) -> str:
     func_result = x[1](basename(dirname(abspath(path))))
     value = x[2].findall(func_result)[0]
-    return value if value is not None else float('nan')
+    return value if str(value) is not None else str(float('nan'))
 
 
-def _plugin_parser(x: Tuple[str, List, Callable], line: List, original_header: List, path: str) -> str:
-    value = _get_text_from_header(x[1], line, original_header, None)
-    value = x[2](value)
-    return value if value is not None else float('nan')
+def _plugin_parser(x: Tuple[str, List, Callable], line: List, original_header: List, path: str, dict_line: dict) -> dict:
+    value = x[2](dict_line)
+    #if len(x[1]) != 0:
+    #    value = _get_text_from_header(x[1], line, original_header, None)
+    return value if str(value) is not None else str(float('nan'))
 
 
 def _mapping_parser(x: Tuple[str, List, dict], line: List, original_header: List, path: str, dict_line: dict) \
-        -> str or float:
+        -> str:
     value = None
     for field in x[1]:
         value = line[original_header.index(field)] if field in original_header else None
@@ -81,7 +81,7 @@ def _mapping_parser(x: Tuple[str, List, dict], line: List, original_header: List
         if value is not None:
             break
 
-    return value if value is not None else str(float('nan'))
+    return value if str(value) is not None else str(float('nan'))
 
 
 class AnnotationTypesParsers(Enum):

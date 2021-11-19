@@ -49,10 +49,13 @@ def _parse_row(ann: dict, line: List, header: List, original_header: List, path:
     annotations = ann[AnnotationGeneralKeys.ANNOTATION.name]
     row_parser = []
     remain_annotation = {}
+    annot_pluguins = []
     for k, v in annotations.items():
         try:
             value = float('nan')
-            if v[0] != AnnotationTypes.MAPPING.name:
+            if v[0] == AnnotationTypes.PLUGIN.name:
+                annot_pluguins.append(v)
+            elif v[0] != AnnotationTypes.MAPPING.name:
                 value = AnnotationTypesParsers[v[0]].value(v, line, original_header, path)
             else:
                 remain_annotation[k] = v
@@ -62,6 +65,10 @@ def _parse_row(ann: dict, line: List, header: List, original_header: List, path:
 
     row_parser = list(map(str, row_parser))
     dict_line = {h: row_parser[i] for i, h in enumerate(header)}
+
+    for v in annot_pluguins:
+        dict_line = AnnotationTypesParsers[v[0]].value(v, line, original_header, path, dict_line)
+
     for k, v in remain_annotation.items():
         dict_line[k] = AnnotationTypesParsers[v[0]].value(v, line, original_header, path, dict_line)
 

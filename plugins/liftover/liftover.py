@@ -1,9 +1,9 @@
 #from liftover import get_lifter
 
 
-def liftover(text: str) -> str:
+def liftover(row: dict) -> str:
     #converter = get_lifter('hg19', 'hg38')
     #chrom = '1'
     #pos = int(text)
 
-    return text #converter[chrom][pos][0][1]
+    return 'lifover' #converter[chrom][pos][0][1]

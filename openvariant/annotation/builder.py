@@ -62,7 +62,8 @@ def _plugin_builder(x: dict, base_path: str) -> Tuple[str, List, Callable]:
         func = getattr(mod, x[AnnotationTypes.PLUGIN.value])
     except ModuleNotFoundError:
         raise ModuleNotFoundError(f"Enable to found 'plugins.{x[AnnotationTypes.PLUGIN.value]}' module.")
-    return AnnotationTypes.PLUGIN.name, x[AnnotationKeys.FIELD_SOURCE.value], func
+    field_sources = x[AnnotationKeys.FIELD_SOURCE.value] if AnnotationKeys.FIELD_SOURCE.value in x else []
+    return AnnotationTypes.PLUGIN.name,  field_sources, func
 
 
 def _mapping_builder(x: dict, path: str) -> Tuple[str, List, dict]:
