@@ -38,7 +38,7 @@ def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) ->
                 groups[val] = val_count + 1
                 i += 1
             except (ValueError, KeyError):
-                raise KeyError(f'Unable to find {group_by} key')
+                pass
 
         return i, groups
 
