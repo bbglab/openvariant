@@ -60,10 +60,10 @@ annotation: # Columns to parse
   - type: 'plugin'
     plugin: string # Plugin to apply, located into 'plugin' folder
     field: string
-    fieldSource:
-      - string
-      - string
-      - ...
+    #fieldSource: # Under development; NOT TO USE
+    #  - string
+    #  - string
+    #  - ...
 
 
 exclude: # List of field and value that allows to filter out all the rows that have specific value; optional

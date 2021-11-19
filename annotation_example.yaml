@@ -43,10 +43,8 @@ annotation:
     regex: '(*.)'
 
   - type: 'plugin'
-    plugin: 'liftover'
-    field: 'POSITION_HG38'
-    fieldSource:
-      - 'Start_Position'
+    plugin: 'alteration_type'
+    field: 'ALT_TYPE'
 
   - type: 'mapping'
     field: 'MUTATION_REF'
