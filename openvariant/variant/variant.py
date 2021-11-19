@@ -100,8 +100,8 @@ def _parser(file: str, annotation: dict, delimiter: str, columns: List, group_by
 
                     row = row_aux
 
-            except (ValueError, IndexError, KeyError):
-                log.error(f"Error parsing line: {lnum} {file}")
+            except (ValueError, IndexError, KeyError) as e:
+                log.error(f"Error parsing line: {lnum} {file}: {e}")
                 continue
 
         yield row
@@ -150,7 +150,7 @@ class Variant:
                                     display_header = False
                                     yield x
                     else:
-                        for x in self._unify(file_path, annotation, display_header):
+                        for x in self._unify(file_path, annotation, display_header=display_header):
                             display_header = False
                             yield x
             except PermissionError as e:
@@ -172,7 +172,7 @@ class Variant:
         return False
 
     def read(self, group_key=None) -> Generator[dict, None, None]:
-        for i, line in enumerate(self._unify(self._path, self._annotation, group_key)):
+        for i, line in enumerate(self._unify(self._path, self._annotation, group_by=group_key)):
             if i != 0:
                 if self._apply_exclude(line):
                     continue

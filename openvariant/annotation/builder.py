@@ -5,6 +5,7 @@ import gzip
 import importlib
 from enum import Enum
 from functools import partial
+from os.path import dirname
 from typing import List, Tuple, Callable, Any
 
 from openvariant.config.config_annotation import AnnotationTypes, AnnotationKeys
@@ -20,11 +21,11 @@ class Builder:
         return eval(self.func)(x)
 
 
-def _static_builder(x: dict) -> Tuple[str, Any]:
+def _static_builder(x: dict, base_path: str) -> Tuple[str, Any]:
     return AnnotationTypes.STATIC.name, x[AnnotationKeys.VALUE.value]
 
 
-def _internal_builder(x: dict) -> Tuple[str, List, Builder, str]:
+def _internal_builder(x: dict, base_path: str) -> Tuple[str, List, Builder, str]:
     try:
         value = x[AnnotationKeys.VALUE.value]
     except KeyError:
@@ -43,19 +44,19 @@ def _get_dirname_filename_attributes(x: dict) -> Tuple[Builder, re.Pattern]:
     return func_apply, regex_apply
 
 
-def _dirname_builder(x: dict) -> Tuple[str, Builder, re.Pattern]:
+def _dirname_builder(x: dict, base_path: str) -> Tuple[str, Builder, re.Pattern]:
     func_apply, regex_apply = _get_dirname_filename_attributes(x)
 
     return AnnotationTypes.DIRNAME.name, func_apply, regex_apply
 
 
-def _filename_builder(x: dict) -> Tuple[str, Builder, re.Pattern]:
+def _filename_builder(x: dict, base_path: str) -> Tuple[str, Builder, re.Pattern]:
     func_apply, regex_apply = _get_dirname_filename_attributes(x)
 
     return AnnotationTypes.FILENAME.name, func_apply, regex_apply
 
 
-def _plugin_builder(x: dict) -> Tuple[str, List, Callable]:
+def _plugin_builder(x: dict, base_path: str) -> Tuple[str, List, Callable]:
     try:
         mod = importlib.import_module(f".{x[AnnotationTypes.PLUGIN.value]}", package="plugins")
         func = getattr(mod, x[AnnotationTypes.PLUGIN.value])
@@ -64,10 +65,10 @@ def _plugin_builder(x: dict) -> Tuple[str, List, Callable]:
     return AnnotationTypes.PLUGIN.name, x[AnnotationKeys.FIELD_SOURCE.value], func
 
 
-def _mapping_builder(x: dict) -> Tuple[str, List, dict]:
+def _mapping_builder(x: dict, path: str) -> Tuple[str, List, dict]:
     values: dict = {}
     mapping_files = x[AnnotationKeys.FILE_MAPPING.value]
-    for mapping_file in glob.glob('**/' + mapping_files, recursive=True)[:1]:
+    for mapping_file in list(glob.iglob(dirname(path) + '/**/' + mapping_files, recursive=True))[:1]:
         open_method = gzip.open if mapping_file.endswith('gz') else open
         with open_method(mapping_file, "rt") as fd:
             for r in csv.DictReader(fd, delimiter='\t'):

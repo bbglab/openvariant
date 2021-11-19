@@ -138,7 +138,7 @@ class Annotation:
         self._annotations: dict = {}
         for k in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
             self._annotations[k[AnnotationKeys.FIELD.value]] = \
-                AnnotationTypesBuilders[k[AnnotationKeys.TYPE.value].upper()].value(k)
+                AnnotationTypesBuilders[k[AnnotationKeys.TYPE.value].upper()].value(k, self._path)
 
         self._check_columns()
 
