@@ -13,6 +13,7 @@ from openvariant.config.config_annotation import ANNOTATION_EXTENSION, DEFAULT_R
 def _get_annotation_file(annotation: Annotation or None, file_name: str, file_path: str, base_path: str) -> \
         Generator[str, Annotation, None]:
     if annotation is None:
+        print(dirname(abspath(base_path)))
         for annotation_file in glob.iglob(join(dirname(abspath(base_path)), "*.{}".format(ANNOTATION_EXTENSION))):
             annotation = Annotation(annotation_file)
 
@@ -30,8 +31,9 @@ def _get_annotation_file(annotation: Annotation or None, file_name: str, file_pa
 
 
 def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Generator[str, Annotation, None]:
-    print(basename(base_path), base_path)
+    print(basename(base_path), base_path, isfile(base_path))
     if isfile(base_path):
+        print(annotation)
         for f, a in _get_annotation_file(annotation, basename(base_path), base_path, base_path):
             yield f, a
 
@@ -43,6 +45,7 @@ def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Ge
                 if isfile(file_path):
                     # local_annotation = global_annotation
                     if not fix:
+                        print(list(glob.iglob(join(base_path, "*.{}".format(ANNOTATION_EXTENSION)))))
                         for annotation_file in glob.iglob(join(base_path, "*.{}".format(ANNOTATION_EXTENSION))):
                             annotation = Annotation(annotation_file)
                             # recursive = DEFAULT_RECURSIVE if global_annotation.recursive is None \
