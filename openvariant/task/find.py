@@ -30,6 +30,7 @@ def _get_annotation_file(annotation: Annotation or None, file_name: str, file_pa
 
 
 def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Generator[str, Annotation, None]:
+    print(basename(base_path), base_path)
     if isfile(base_path):
         for f, a in _get_annotation_file(annotation, basename(base_path), base_path, base_path):
             yield f, a
