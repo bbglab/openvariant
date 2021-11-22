@@ -47,12 +47,12 @@ def alteration_type(row: dict) -> dict:
             alt_type = "indel"
         else:
             if l_alt > 1:
-                alt_type = "mnp"
+                alt_type = "mnv"
             else:
                 if '-' in row['REF'] or '-' in row['ALT']:
                     alt_type = "indel"
                 else:
-                    alt_type = "snp"
+                    alt_type = "snv"
         if alt_type == "indel":
             row['POSITION'], row['REF'], row['ALT'] = _indel_postprocess(row['POSITION'], row['REF'], row['ALT'])
             
