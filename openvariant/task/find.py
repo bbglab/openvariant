@@ -58,6 +58,8 @@ def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Ge
                     for f, a in _find_files(file_path, annotation, fix):
                         yield f, a
                 else:
+                    for annotation_file in glob.iglob(join(base_path, "*.{}".format(ANNOTATION_EXTENSION))):
+                        annotation = Annotation(annotation_file)
                     # Search subfolders
                     for f, a in _find_files(file_path, annotation, fix):
                         yield f, a
