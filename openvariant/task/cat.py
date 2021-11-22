@@ -6,6 +6,7 @@ from openvariant.variant.variant import Variant
 
 def cat(base_path: str, annotation_path: str or None, where: str = None, header_show: bool = True) -> None:
     for file, annotation in find_files(base_path, annotation_path):
+        print(file, annotation.annotations)
         where_clauses = parse_where(where)
         result = Variant(base_path, annotation)
         header = result.header if len(annotation.columns) == 0 else annotation.columns

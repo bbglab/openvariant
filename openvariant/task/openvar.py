@@ -21,7 +21,7 @@ def cli(debug):
 # @click.option('--columns', '-c', multiple=True, type=click.STRING, help="Extra columns to add")
 @click.option('--where', '-w', multiple=True, type=click.STRING, default=None, help="Filter expression. ie: "
                                                                                     "CHROMOSOME == 4")
-@click.option('--annotations', '-a', default=None, type=click.Path(exists=True))
+@click.option('--annotations', '-a', default=None)
 @click.option('--header', help="Show the result header", is_flag=True)
 def cat(input_path: str, where: str, annotations: str or None, header: bool):
     cat_task(input_path, annotations, where, header)
