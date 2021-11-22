@@ -55,7 +55,6 @@ def group_by_task(selection, where=None, key_by=None, script='', header=False) -
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
                 if header:
                     output.append("{}".format("\t".join(columns)))
-                    header = False
                 for row in result.read(key_by):
                     if skip(row, where_clauses):
                         continue
@@ -72,12 +71,16 @@ def group_by_task(selection, where=None, key_by=None, script='', header=False) -
             for value in group_values:
                 result = Variant(value[0], value[1])
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
+
+                if header:
+                    process.stdin.write("{}\n".format("\t".join(columns)).encode())
+                    process.stdin.flush()
                 for row in result.read(key_by):
                     if skip(row, where_clauses):
                         continue
                     try:
                         if row[key_by] == group_key:
-                            process.stdin.write("{}\n".format("\t".join([str(row.get(h, ""))
+                            process.stdin.write("{}\n".format("\t ".join([str(row.get(h, ""))
                                                                          for h in columns])).encode())
                             process.stdin.flush()
                     except KeyError:

@@ -39,6 +39,7 @@ class TestGroupBy(unittest.TestCase):
                                   'DATASET', where="DATASET != \"acc\"", quite=True)):
             res_groups.add(g)
             if g == 'acc':
+
                 self.assertListEqual(v, [])
             else:
                 self.assertNotEqual(v, [])
