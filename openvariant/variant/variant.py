@@ -111,8 +111,7 @@ def _parser(file: str, annotation: dict, delimiter: str, columns: List, group_by
                     row = row_aux
 
             except (ValueError, IndexError, KeyError) as e:
-                log.error(f"Error parsing line: {lnum} {file}: {e}")
-                continue
+                raise ValueError(f"Error parsing line: {lnum} {file}: {e}")
 
         yield row
     fd.close()

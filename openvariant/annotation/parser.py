@@ -2,7 +2,7 @@ import re
 from enum import Enum
 from functools import partial
 from os.path import basename, dirname, abspath
-from typing import Tuple, Any, List, Optional, Union, Callable
+from typing import Tuple, Any, List, Callable
 
 from openvariant.annotation.builder import Builder
 

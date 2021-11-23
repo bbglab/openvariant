@@ -4,7 +4,6 @@ import click as click
 
 from openvariant.task.cat import cat as cat_task
 from openvariant.task.count import count as count_task
-
 from openvariant.task.groupby import group_by as group_by_task
 
 

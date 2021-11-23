@@ -2,13 +2,13 @@ from collections import defaultdict
 from functools import partial
 from multiprocessing import Pool
 from os import cpu_count
-from subprocess import PIPE, Popen, check_output
+from subprocess import PIPE, Popen
 from typing import Set, Generator, List, Tuple
 
 from tqdm import tqdm
 
 from openvariant.annotation.annotation import Annotation
-from openvariant.task.find import find_files
+from openvariant.find.find import find_files
 from openvariant.utils.logger import log
 from openvariant.utils.where import skip, parse_where
 from openvariant.variant.variant import Variant
@@ -42,7 +42,7 @@ def group(base_path: str, annotation_path: str or None, key_by: str) -> Generato
         yield key, group_select
 
 
-def group_by_task(selection, where=None, key_by=None, script='', header=False) -> Tuple[str, List]:
+def _group_by_task(selection, where=None, key_by=None, script='', header=False) -> Tuple[str, List]:
     where_clauses = parse_where(where)
     group_key, group_values = selection
 
@@ -107,7 +107,7 @@ def group_by(base_path: str, annotation_path: str or None, script: str or None, 
     selection = list(group(base_path, annotation_path, key_by))
 
     with Pool(cores) as pool:
-        task = partial(group_by_task, where=where, key_by=key_by,
+        task = partial(_group_by_task, where=where, key_by=key_by,
                        script=script, header=header)  # , where=where_parsed, columns=columns, print_headers=headers)
         map_method = map if cores == 1 or len(selection) <= 1 else pool.imap_unordered
 

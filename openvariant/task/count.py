@@ -6,7 +6,7 @@ from typing import Tuple, Union
 from tqdm import tqdm
 
 from openvariant.annotation.annotation import Annotation
-from openvariant.task.find import find_files
+from openvariant.find.find import find_files
 from openvariant.utils.where import parse_where, skip
 from openvariant.variant.variant import Variant
 
