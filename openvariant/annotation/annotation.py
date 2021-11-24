@@ -195,7 +195,7 @@ class Annotation:
                          AnnotationGeneralKeys.EXCLUDE.name: self._excludes}
         return {e: structure_aux for e in self._patterns}
 
-
+'''
 def merge_annotations_structure(ann_a: Annotation, ann_b: Annotation) -> Annotation:
     """
     :param ann_a: The first Annotation. This annotation
@@ -227,3 +227,4 @@ def merge_annotations_structure(ann_a: Annotation, ann_b: Annotation) -> Annotat
 
     ann_aa.set_annotations(aa)
     return ann_aa
+'''

@@ -54,12 +54,14 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
 
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
                 if header:
-                    output.append("{}".format("\t".join(columns)))
+                    line = "\t".join([str(h).strip() for h in columns])
+                    output.append(f"{line}")
                 for row in result.read(key_by):
                     if skip(row, where_clauses):
                         continue
                     if row[key_by] == group_key:
-                        output.append("{}".format("\t".join([str(row.get(h, "")) for h in columns])))
+                        line = "\t".join([str(row[h]).strip() for h in columns])
+                        output.append(f"{line}")
         except BrokenPipeError:
             pass
         return group_key, output
@@ -73,15 +75,16 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
 
                 if header:
-                    process.stdin.write("{}\n".format("\t".join(columns)).encode())
+                    line = "\t".join([str(h).strip() for h in columns])
+                    process.stdin.write(f"{line}\n".encode())
                     process.stdin.flush()
                 for row in result.read(key_by):
                     if skip(row, where_clauses):
                         continue
                     try:
                         if row[key_by] == group_key:
-                            process.stdin.write("{}\n".format("\t ".join([str(row.get(h, ""))
-                                                                         for h in columns])).encode())
+                            line = "\t".join([str(row[h]).strip() for h in columns])
+                            process.stdin.write(f"{line}\n".encode())
                             process.stdin.flush()
                     except KeyError:
                         pass
