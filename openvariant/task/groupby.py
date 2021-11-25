@@ -56,6 +56,7 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
                 if header:
                     line = "\t".join([str(h).strip() for h in columns])
                     output.append(f"{line}")
+                    header = False
                 for row in result.read(key_by):
                     if skip(row, where_clauses):
                         continue
@@ -78,6 +79,7 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
                     line = "\t".join([str(h).strip() for h in columns])
                     process.stdin.write(f"{line}\n".encode())
                     process.stdin.flush()
+                    header = False
                 for row in result.read(key_by):
                     if skip(row, where_clauses):
                         continue
