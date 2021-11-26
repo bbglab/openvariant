@@ -21,11 +21,16 @@ class Builder:
         return eval(self.func)(x)
 
 
-def _static_builder(x: dict, base_path: str) -> Tuple[str, Any]:
-    return AnnotationTypes.STATIC.name, x[AnnotationKeys.VALUE.value]
+def _static_builder(x: dict, base_path: str = None) -> Tuple[str, Any]:
+    try:
+        value = x[AnnotationKeys.VALUE.value]
+    except KeyError:
+        raise KeyError('Static annotation is wrong specified.')
+    return AnnotationTypes.STATIC.name, value
 
 
-def _internal_builder(x: dict, base_path: str) -> Tuple[str, List, Builder, str]:
+def _internal_builder(x: dict, base_path: str = None) -> Tuple[str, List, Builder, str]:
+    #print(x)
     try:
         value = x[AnnotationKeys.VALUE.value]
     except KeyError:

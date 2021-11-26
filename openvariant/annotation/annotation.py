@@ -1,4 +1,3 @@
-import copy
 import logging
 import re
 
@@ -12,7 +11,7 @@ from openvariant.config.config_annotation import (AnnotationGeneralKeys,
                                                   ExcludesKeys,
                                                   DEFAULT_FORMAT,
                                                   DEFAULT_DELIMITER,
-                                                  DEFAULT_COLUMNS)
+                                                  DEFAULT_COLUMNS, AnnotationFormat, AnnotationDelimiter)
 
 
 def _read_annotation_file(path: str) -> dict:
@@ -37,25 +36,34 @@ def _check_general_keys(annot: dict) -> None:
         raise KeyError(f"'{AnnotationGeneralKeys.RECURSIVE.value}' key is not a boolean.")
 
     # Format key
-    if AnnotationGeneralKeys.FORMAT.value in annot and not isinstance(
-            annot[AnnotationGeneralKeys.FORMAT.value], str):
+    if AnnotationGeneralKeys.FORMAT.value in annot and \
+            (not isinstance(annot[AnnotationGeneralKeys.FORMAT.value], str) or
+             annot[AnnotationGeneralKeys.FORMAT.value].upper() not in [e.name for e in AnnotationFormat]):
         raise KeyError(f"'{AnnotationGeneralKeys.FORMAT.value}' key is not a string.")
 
     # Delimiter key
-    if AnnotationGeneralKeys.DELIMITER.value in annot and not isinstance(
-            annot[AnnotationGeneralKeys.DELIMITER.value], str):
-        raise KeyError(f"'{AnnotationGeneralKeys.DELIMITER.value}' key is not a string.")
+    if AnnotationGeneralKeys.DELIMITER.value in annot and (not isinstance(
+            annot[AnnotationGeneralKeys.DELIMITER.value], str) or
+                                                           annot[AnnotationGeneralKeys.DELIMITER.value] not in [e.name
+                                                                                                                for e in
+                                                                                                                AnnotationDelimiter]):
+        raise KeyError(f"'{AnnotationGeneralKeys.DELIMITER.value}' key is not valid or not a string.")
+
+    # Columns key
+    if AnnotationGeneralKeys.COLUMNS.value in annot and \
+            not isinstance(annot[AnnotationGeneralKeys.COLUMNS.value], list):
+        raise KeyError(f"'{AnnotationGeneralKeys.COLUMNS.value}' key is not a list.")
 
     # Annotations key
-    if AnnotationGeneralKeys.ANNOTATION.value in annot and not isinstance(annot[AnnotationGeneralKeys.ANNOTATION.value],
-                                                                          list):
+    if AnnotationGeneralKeys.ANNOTATION.value in annot and \
+            not isinstance(annot[AnnotationGeneralKeys.ANNOTATION.value], list):
         raise KeyError(f"'{AnnotationGeneralKeys.ANNOTATION.value}' key is not a list.")
 
     # Excludes key
     if AnnotationGeneralKeys.EXCLUDE.value in annot and \
-            (not all(ExcludesKeys.FIELD.value in x and ExcludesKeys.VALUE.value in x
-                     for x in annot[AnnotationGeneralKeys.EXCLUDE.value]) or not all(
-                isinstance(x[ExcludesKeys.FIELD.value], str) for x in annot[AnnotationGeneralKeys.EXCLUDE.value])):
+            (not isinstance(annot[AnnotationGeneralKeys.EXCLUDE.value], list) or
+             not all([ExcludesKeys.FIELD.value in x and ExcludesKeys.VALUE.value in x
+                      for x in annot[AnnotationGeneralKeys.EXCLUDE.value]])):
         raise KeyError(f"'{AnnotationGeneralKeys.EXCLUDE.value}' key in bad format.")
 
 
@@ -127,7 +135,8 @@ class Annotation:
         for annot in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
             _check_annotation_keys(annot)
 
-        self._patterns = raw_annotation[AnnotationGeneralKeys.PATTERN.value]
+        patterns = raw_annotation[AnnotationGeneralKeys.PATTERN.value]
+        self._patterns = patterns if isinstance(patterns, List) else [patterns]
         self._recursive = raw_annotation.get(AnnotationGeneralKeys.RECURSIVE.value, True)
         self._delimiter = raw_annotation.get(AnnotationGeneralKeys.DELIMITER.value, DEFAULT_DELIMITER).upper()
         self._columns = raw_annotation.get(AnnotationGeneralKeys.COLUMNS.value, DEFAULT_COLUMNS)
@@ -149,20 +158,11 @@ class Annotation:
     def _check_columns(self) -> None:
         for col in self._columns:
             if col not in self._annotations:
-                raise KeyError(f"'{col}' column unable to be found.")
+                raise KeyError(f"'{col}' column unable to find.")
 
-    def set_patterns(self, patterns: List[str]) -> None:
-        self._patterns = patterns
-
-    def set_excludes(self, excludes: List) -> None:
-        self._excludes = excludes
-
-    def set_annotations(self, annotations) -> None:
-        self._annotations = annotations
-
-    @property
-    def recursive(self) -> bool:
-        return self._recursive
+    # @property
+    # def recursive(self) -> bool:
+    #    return self._recursive
 
     @property
     def patterns(self) -> List[str]:
@@ -194,6 +194,7 @@ class Annotation:
         structure_aux = {AnnotationGeneralKeys.ANNOTATION.name: self._annotations,
                          AnnotationGeneralKeys.EXCLUDE.name: self._excludes}
         return {e: structure_aux for e in self._patterns}
+
 
 '''
 def merge_annotations_structure(ann_a: Annotation, ann_b: Annotation) -> Annotation:

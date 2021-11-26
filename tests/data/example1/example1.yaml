@@ -4,6 +4,9 @@ recursive: true
 format: 'tsv'
 
 annotation:
+  - type: 'static'
+    field: 'HEHE'
+    value: 1234
   - type: 'internal'
     field: 'variant'
     fieldSource:

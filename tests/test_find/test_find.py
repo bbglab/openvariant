@@ -8,31 +8,28 @@ from openvariant.find.find import find_files
 class TestFind(unittest.TestCase):
 
     def test_find_files(self):
-        f_expect = {f'{os.getcwd()}/tests/data/example2/KICH.maf', f'{os.getcwd()}/tests/data/example2/LAML.maf',
-                    f'{os.getcwd()}/tests/data/example1/ACC.maf', f'{os.getcwd()}/tests/data/example1/CHOL.maf',
-                    f'{os.getcwd()}/tests/data/example3/MESO.maf', f'{os.getcwd()}/tests/data/example3/UCS.maf'}
+        f_expect = {f'{os.getcwd()}/tests/data/example1/ACC.maf', f'{os.getcwd()}/tests/data/example1/CHOL.maf'}
 
-        res_list = find_files(f'{os.getcwd()}/tests/data')
+        res_list = find_files(f'{os.getcwd()}/tests/data/example1')
         f_res, a_res = zip(*list(res_list))
 
         self.assertEqual(set(f_res), f_expect)
         self.assertIsInstance(list(a_res), List)
 
     def test_with_annotation_find_files(self):
-        res_expect = {f'{os.getcwd()}/tests/data/example2/KICH.maf', f'{os.getcwd()}/tests/data/example2/LAML.maf',
-                      f'{os.getcwd()}/tests/data/example1/ACC.maf', f'{os.getcwd()}/tests/data/example1/CHOL.maf',
-                      f'{os.getcwd()}/tests/data/example3/MESO.maf', f'{os.getcwd()}/tests/data/example3/UCS.maf'}
+        res_expect = {f'{os.getcwd()}/tests/data/example1/ACC.maf', f'{os.getcwd()}/tests/data/example1/CHOL.maf'}
 
         res = set(
-            [f for f, a in list(find_files(f'{os.getcwd()}/tests/data', f'{os.getcwd()}/tests/data/example.yaml'))])
+            [f for f, a in list(find_files(f'{os.getcwd()}/tests/data/example1',
+                                           f'{os.getcwd()}/tests/data/example1/example1.yaml'))])
         self.assertEqual(res, res_expect)
 
     def test_invalid_find_files(self):
         with self.assertRaises(FileNotFoundError):
-            set([f for f, a in list(find_files(f'{os.getcwd()}/tests/data/no-exist',
-                                               f'{os.getcwd()}/tests/data/example.yaml'))])
+            set([f for f, a in list(find_files(f'{os.getcwd()}/tests/data/example1/no-exist',
+                                               f'{os.getcwd()}/tests/data/example1/example1.yaml'))])
 
     def test_invalid_annotation_find_files(self):
         with self.assertRaises(FileNotFoundError):
-            set([f for f, a in list(find_files(f'{os.getcwd()}/tests/data/',
-                                               f'{os.getcwd()}/tests/data/no_exist.yaml'))])
+            set([f for f, a in list(find_files(f'{os.getcwd()}/tests/data/example1',
+                                               f'{os.getcwd()}/tests/data/example1/no_exist.yaml'))])

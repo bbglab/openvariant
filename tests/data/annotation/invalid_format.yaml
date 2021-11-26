@@ -2,6 +2,7 @@ pattern:
   - '*.maf'
   - '*.vcf.gz'
 recursive: false
+format: 'INVALID'
 
 annotation:
   - type: 'internal'

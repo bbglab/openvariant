@@ -1,7 +1,6 @@
-pattern:
-  - '*.maf'
-  - '*.vcf.gz'
+pattern: '*.vcf.gz'
 recursive: false
+format: 'CSV'
 
 annotation:
   - type: 'internal'

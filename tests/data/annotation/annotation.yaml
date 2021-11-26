@@ -1,0 +1,49 @@
+pattern:
+  - '*.maf'
+  - '*.vcf.gz'
+recursive: false
+format: 'CSV'
+delimiter: 'C'
+
+columns:
+  - 'PLATFORM'
+  - 'DATASET'
+
+annotation:
+  - type: 'static'
+    field: 'PLATFORM'
+    value: 'WSG'
+
+  - type: 'internal'
+    field: 'POSITION'
+    fieldSource:
+      - 'Position'
+      - 'Start_Position'
+
+  - type: 'filename'
+    field: 'DATASET'
+    function: 'lambda x: "{}".format(x.lower()[:-4])'
+
+  - type: 'dirname'
+    field: 'PROJECT'
+    function: 'lambda x: "{}".format(x.lower())'
+
+  - type: 'plugin'
+    plugin: 'alteration_type'
+    field: 'ALT_TYPE'
+
+  - type: 'mapping'
+    field: 'MUTATION_REF'
+    fieldSource:
+      - 'MutationID'
+      - 'Mutation_Id'
+    fieldMapping: 'MUTATION_ID'
+    fileMapping: 'metadata_mutation.tsv'
+    fieldValue: 'REFERENCE'
+
+exclude:
+  - field: 'MUTATION_REF'
+    value: 1234
+
+  - field: 'DATASET'
+    value: 'ucs'
