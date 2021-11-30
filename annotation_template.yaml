@@ -60,7 +60,7 @@ annotation: # Columns to parse
   - type: 'plugin'
     plugin: string # Plugin to apply, located into 'plugin' folder
     field: string
-    #fieldSource: # Under development; NOT TO USE
+    #fieldSource: # UNDER DEVELOPMENT
     #  - string
     #  - string
     #  - ...

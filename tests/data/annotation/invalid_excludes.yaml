@@ -27,15 +27,6 @@ annotation:
     plugin: 'alteration_type'
     field: 'ALT_TYPE'
 
-  - type: 'mapping'
-    field: 'MUTATION_REF'
-    fieldSource:
-      - 'MutationID'
-      - 'Mutation_Id'
-    fieldMapping: 'MUTATION_ID'
-    fileMapping: 'metadata_mutation.tsv'
-    fieldValue: 'REFERENCE'
-
 exclude:
   - field: 'MUTATION_REF'
 

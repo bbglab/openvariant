@@ -21,7 +21,26 @@ class Builder:
         return eval(self.func)(x)
 
 
-def _static_builder(x: dict, base_path: str = None) -> Tuple[str, Any]:
+StaticBuilder = Tuple[str, float or int or str]
+InternalBuilder = Tuple[str, List, Builder, str]
+DirnameBuilder = Tuple[str, Builder, re.Pattern]
+FilenameBuilder = Tuple[str, Builder, re.Pattern]
+PluginBuilder = Tuple[str, List, Callable]
+MappingBuilder = Tuple[str, List, dict]
+
+
+def _get_dirname_filename_attributes(x: dict) -> Tuple[Builder, re.Pattern]:
+    func_apply = Builder("(lambda y: y)") if AnnotationKeys.FUNCTION.value not in x \
+        else Builder(x[AnnotationKeys.FUNCTION.value])
+    try:
+        regex_apply = re.compile('(.*)') if AnnotationKeys.REGEX.value not in x or x[AnnotationKeys.REGEX.value] is None \
+            else re.compile(x[AnnotationKeys.REGEX.value])
+    except re.error as e:
+        raise re.error(f'Wrong regex pattern: {e}')
+    return func_apply, regex_apply
+
+
+def _static_builder(x: dict, base_path: str = None) -> StaticBuilder:
     try:
         value = x[AnnotationKeys.VALUE.value]
     except KeyError:
@@ -29,58 +48,56 @@ def _static_builder(x: dict, base_path: str = None) -> Tuple[str, Any]:
     return AnnotationTypes.STATIC.name, value
 
 
-def _internal_builder(x: dict, base_path: str = None) -> Tuple[str, List, Builder, str]:
-    #print(x)
+def _internal_builder(x: dict, base_path: str = None) -> InternalBuilder:
     try:
         value = x[AnnotationKeys.VALUE.value]
     except KeyError:
         value = float('nan')
 
     return AnnotationTypes.INTERNAL.name, x[AnnotationKeys.FIELD_SOURCE.value], Builder("(lambda y: y)") \
-        if AnnotationKeys.FUNCTION.value not in x or len(x[AnnotationKeys.FUNCTION.value]) == 2 \
-        else Builder(x[AnnotationKeys.FUNCTION.value]), value
+        if AnnotationKeys.FUNCTION.value not in x or x[AnnotationKeys.FUNCTION.value] is None or \
+        len(x[AnnotationKeys.FUNCTION.value]) == 2 else Builder(x[AnnotationKeys.FUNCTION.value]), value
 
 
-def _get_dirname_filename_attributes(x: dict) -> Tuple[Builder, re.Pattern]:
-    func_apply = Builder("(lambda y: y)") if AnnotationKeys.FUNCTION.value not in x \
-        else Builder(x[AnnotationKeys.FUNCTION.value])
-    regex_apply = re.compile('(.*)') if AnnotationKeys.REGEX.value not in x \
-        else re.compile(x[AnnotationKeys.REGEX.value])
-    return func_apply, regex_apply
-
-
-def _dirname_builder(x: dict, base_path: str) -> Tuple[str, Builder, re.Pattern]:
+def _dirname_builder(x: dict, base_path: str = None) -> DirnameBuilder:
     func_apply, regex_apply = _get_dirname_filename_attributes(x)
 
     return AnnotationTypes.DIRNAME.name, func_apply, regex_apply
 
 
-def _filename_builder(x: dict, base_path: str) -> Tuple[str, Builder, re.Pattern]:
+def _filename_builder(x: dict, base_path: str = None) -> FilenameBuilder:
     func_apply, regex_apply = _get_dirname_filename_attributes(x)
 
     return AnnotationTypes.FILENAME.name, func_apply, regex_apply
 
 
-def _plugin_builder(x: dict, base_path: str) -> Tuple[str, List, Callable]:
+def _plugin_builder(x: dict, base_path: str = None) -> PluginBuilder:
     try:
         mod = importlib.import_module(f".{x[AnnotationTypes.PLUGIN.value]}", package="plugins")
         func = getattr(mod, x[AnnotationTypes.PLUGIN.value])
     except ModuleNotFoundError:
-        raise ModuleNotFoundError(f"Enable to found 'plugins.{x[AnnotationTypes.PLUGIN.value]}' module.")
+        raise ModuleNotFoundError(f"Unable to found '{x[AnnotationTypes.PLUGIN.value]}' plugin.")
     field_sources = x[AnnotationKeys.FIELD_SOURCE.value] if AnnotationKeys.FIELD_SOURCE.value in x else []
-    return AnnotationTypes.PLUGIN.name,  field_sources, func
+    return AnnotationTypes.PLUGIN.name, field_sources, func
 
 
-def _mapping_builder(x: dict, path: str) -> Tuple[str, List, dict]:
+def _mapping_builder(x: dict, path: str) -> MappingBuilder:
     values: dict = {}
     mapping_files = x[AnnotationKeys.FILE_MAPPING.value]
-    for mapping_file in list(glob.iglob(dirname(path) + '/**/' + mapping_files, recursive=True))[:1]:
-        open_method = gzip.open if mapping_file.endswith('gz') else open
-        with open_method(mapping_file, "rt") as fd:
-            for r in csv.DictReader(fd, delimiter='\t'):
-                field = r[x[AnnotationKeys.FIELD_MAPPING.value]]
-                val = r[x[AnnotationKeys.FIELD_VALUE.value]]
-                values[field] = val
+    files = list(glob.iglob(dirname(path) + '/**/' + mapping_files, recursive=True))
+    if len(files) == 0:
+        raise FileNotFoundError(f'Unable to find \'{mapping_files}\' file')
+    try:
+        for mapping_file in files:
+            open_method = gzip.open if mapping_file.endswith('gz') else open
+            with open_method(mapping_file, "rt") as fd:
+                for r in csv.DictReader(fd, delimiter='\t'):
+                    field = r[x[AnnotationKeys.FIELD_MAPPING.value]]
+                    val = r[x[AnnotationKeys.FIELD_VALUE.value]]
+                    values[field] = val
+            break
+    except TypeError:
+        raise TypeError("Unable to parse mapping annotation")
     return AnnotationTypes.MAPPING.name, x[AnnotationKeys.FIELD_SOURCE.value], values
 
 

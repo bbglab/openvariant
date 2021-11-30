@@ -94,7 +94,8 @@ def _check_annotation_keys(annot: dict) -> None:
 
     # Dirname and filename key
     if (annot[AnnotationKeys.TYPE.value] == AnnotationTypes.DIRNAME.value or
-        annot[AnnotationKeys.TYPE.value] == AnnotationTypes.FILENAME.value) and \
+        annot[AnnotationKeys.TYPE.value] == AnnotationTypes.FILENAME.value or
+        annot[AnnotationKeys.TYPE.value] == AnnotationTypes.INTERNAL.value) and \
             AnnotationKeys.FUNCTION.value in annot and \
             re.compile("lambda[' ']+[a-zA-Z0-9]+[' ']*:[' ']*.*").search(annot[AnnotationKeys.FUNCTION.value]) is None:
         raise ValueError(f"'{AnnotationKeys.FUNCTION.value}' value is not an appropriated lambda function.")
