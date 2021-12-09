@@ -6,9 +6,9 @@ import importlib
 from enum import Enum
 from functools import partial
 from os.path import dirname
-from typing import List, Tuple, Callable, Any
+from typing import Tuple, Any, List, Callable
 
-from openvariant.config.config_annotation import AnnotationTypes, AnnotationKeys
+from openvariant.config.config_annotation import AnnotationKeys, AnnotationTypes
 
 
 class Builder:
@@ -22,7 +22,7 @@ class Builder:
 
 
 StaticBuilder = Tuple[str, float or int or str]
-InternalBuilder = Tuple[str, List, Builder, str]
+InternalBuilder = Tuple[str, List, Builder, str or float]
 DirnameBuilder = Tuple[str, Builder, re.Pattern]
 FilenameBuilder = Tuple[str, Builder, re.Pattern]
 PluginBuilder = Tuple[str, List, Callable]
@@ -56,7 +56,7 @@ def _internal_builder(x: dict, base_path: str = None) -> InternalBuilder:
 
     return AnnotationTypes.INTERNAL.name, x[AnnotationKeys.FIELD_SOURCE.value], Builder("(lambda y: y)") \
         if AnnotationKeys.FUNCTION.value not in x or x[AnnotationKeys.FUNCTION.value] is None or \
-        len(x[AnnotationKeys.FUNCTION.value]) == 2 else Builder(x[AnnotationKeys.FUNCTION.value]), value
+           len(x[AnnotationKeys.FUNCTION.value]) == 2 else Builder(x[AnnotationKeys.FUNCTION.value]), value
 
 
 def _dirname_builder(x: dict, base_path: str = None) -> DirnameBuilder:

@@ -1,10 +1,11 @@
 import re
 from enum import Enum
 from functools import partial
-from os.path import basename, dirname, abspath
-from typing import Tuple, Any, List, Callable
+from os.path import basename, dirname, abspath, isfile, isdir
+from typing import List
 
-from openvariant.annotation.builder import Builder
+from openvariant.annotation.builder import Builder, StaticBuilder, InternalBuilder, FilenameBuilder, DirnameBuilder, \
+    PluginBuilder, MappingBuilder
 
 
 def _get_text_from_header(x: List, line: List, original_header: List, func: Builder or None) -> float or str:
@@ -22,52 +23,88 @@ def _get_text_from_header(x: List, line: List, original_header: List, func: Buil
     return value
 
 
-def _static_parser(x: Tuple[str, Any], line: List, original_header: List, path: str) -> str:
-    return str(x[1])
+def _static_parser(x: StaticBuilder, line: List = None, original_header: List = None, path: str = None) -> str:
+    return str(x[1]) if x[1] is not None else str(float('nan'))
 
 
-def _internal_parser(x: Tuple[str, List, Builder, str], line: List, original_header: List, path: str) -> str:
-    for y in x[1]:
-        if isinstance(y, list):
-            dict_field = {}
-            for field in y:
-                value = line[original_header.index(field)] if field in original_header else None
-                if value is not None:
-                    dict_field[field] = value
+def _internal_parser(x: InternalBuilder, line: List = None, original_header: List = None, path: str = None) -> str:
+    try:
+        for y in x[1]:
+            if isinstance(y, list):
+                dict_field = {}
+                for field in y:
+                    value = line[original_header.index(field)] if field in original_header else None
+                    if value is not None:
+                        dict_field[field] = value
+                        continue
+                    if value is None:
+                        dict_field[field] = str(float('nan'))
+                try:
+                    return str(x[3].format(**dict_field))
+                except KeyError:
                     continue
-                if value is None:
-                    dict_field[field] = str(float('nan'))
-            try:
-                return str(x[3].format(**dict_field))
-            except KeyError:
-                continue
-        if isinstance(y, str):
-            return str(_get_text_from_header(x[1], line, original_header, x[2]))
+            if isinstance(y, str):
+                return str(_get_text_from_header(x[1], line, original_header, x[2]))
+    except TypeError:
+        raise TypeError(f'Unable to parser {x[0]} annotation')
+    except SyntaxError:
+        raise SyntaxError(f'Unable to parser function lambda on {x[0]} annotation')
 
     return str(float('nan'))
 
 
-def _filename_parser(x: Tuple[str, Builder, re.Pattern], line: List, original_header: List, path: str) -> str:
-    func_result = x[1](basename(path))
-    value = x[2].findall(func_result)[0]
+def _filename_parser(x: FilenameBuilder, line: List = None, original_header: List = None, path: str = None) -> str:
+
+    try:
+        if isdir(path):
+            raise FileNotFoundError('Unable to find a filename')
+
+        func_result = x[1](basename(path))
+        value = x[2].findall(func_result)[0]
+    except TypeError:
+        raise TypeError(f'Unable to parser {x[0]} annotation')
+    except SyntaxError:
+        raise SyntaxError(f'Unable to parser function lambda on {x[0]} annotation')
+    except (re.error, IndexError):
+        raise re.error(f'Wrong regex pattern on {x[0]} annotation')
+
     return str(value) if value is not None else str(float('nan'))
 
 
-def _dirname_parser(x: Tuple[str, Builder, re.Pattern], line: List, original_header: List, path: str) -> str:
-    func_result = x[1](basename(dirname(abspath(path))))
-    value = x[2].findall(func_result)[0]
+def _dirname_parser(x: DirnameBuilder, line: List = None, original_header: List = None, path: str = None) -> str:
+    try:
+        if isdir(path):
+            raise FileNotFoundError('Unable to find a dirname')
+
+        func_result = x[1](basename(dirname(abspath(path))))
+        value = x[2].findall(func_result)[0]
+    except TypeError:
+        raise TypeError(f'Unable to parser {x[0]} annotation')
+    except SyntaxError:
+        raise SyntaxError(f'Unable to parser function lambda on {x[0]} annotation')
+    except (re.error, IndexError):
+        raise re.error(f'Wrong regex pattern on {x[0]} annotation')
+
     return str(value) if value is not None else str(float('nan'))
 
 
-def _plugin_parser(x: Tuple[str, List, Callable], line: List, original_header: List, path: str, dict_line: dict) -> dict:
-    value = x[2](dict_line)
+def _plugin_parser(x: PluginBuilder, line: List = None, original_header: List = None, path: str = None,
+                   dict_line: dict = None) -> dict:
+    try:
+        if dict_line is None:
+            dict_line = {}
+        value = x[2](dict_line)
+    except KeyError as e:
+        raise KeyError(f'Something went wrong on the plugin: {e}')
     #if len(x[1]) != 0:
     #    value = _get_text_from_header(x[1], line, original_header, None)
     return value if value is not None else str(float('nan'))
 
 
-def _mapping_parser(x: Tuple[str, List, dict], line: List, original_header: List, path: str, dict_line: dict) \
+def _mapping_parser(x: MappingBuilder, line: List = None, original_header: List = None, path: str = None, dict_line: dict = None) \
         -> str:
+    if x[1] is None or x[2] is None or line is None or original_header is None or dict_line is None:
+        raise ValueError('Unable to make mapping.')
     value = None
     for field in x[1]:
         value = line[original_header.index(field)] if field in original_header else None

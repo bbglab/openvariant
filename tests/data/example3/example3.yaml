@@ -9,17 +9,6 @@ annotation:
     fieldSource:
       - 'Variant_Type'
       - 'INFO'
-  #- type: 'plugins'
-  #  field: 'E'
-  #  coordinateSource: 'HG19'
-  #  coordinateTarget: 'HG38'
-  #  fieldSource:
-  #    - 'Tumor_Type'
-  #    - 'Data'
-  #- type: 'mapping'
-  #  field: 'F'
-  #  mappingFile: 'tests/data/ex.tsv'
-  #  mappingField: 'DONOR'
 
 exclude:
   - field: 'G'

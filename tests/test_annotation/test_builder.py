@@ -156,7 +156,7 @@ class TestBuilder(unittest.TestCase):
     def test_builder_mapping(self):
         mapping_dict = {'type': 'mapping', 'field': 'CANCER_TYPE', 'fieldSource': ['donor_id', 'id', 'Donor_Id'],
                         'fieldMapping': 'icgc_donor_id', 'fileMapping': 'metadata.tsv', 'fieldValue': 'cancer_type'}
-        annotation_path = f'{os.getcwd()}/tests/data/builder'
+        annotation_path = f'{os.getcwd()}/tests/data/builder/metadata.yaml'
 
         expect_mapping = {'DO48316': 'ESCA', 'DO48318': 'ESCA', 'DO48312': 'ESCA', 'DO50633': 'EWS'}
 
@@ -170,7 +170,7 @@ class TestBuilder(unittest.TestCase):
     def test_builder_invalid_mapping(self):
         mapping_dict = {'type': 'mapping', 'field': 'CANCER_TYPE', 'fieldSource': None,
                         'fieldMapping': None, 'fileMapping': None, 'fieldValue': None}
-        annotation_path = f'{os.getcwd()}/tests/data/builder'
+        annotation_path = f'{os.getcwd()}/tests/data/builder/metadata.yaml'
 
         with self.assertRaises(TypeError):
             AnnotationTypesBuilders[AnnotationTypes.MAPPING.name].value(mapping_dict, annotation_path)
@@ -178,8 +178,8 @@ class TestBuilder(unittest.TestCase):
     def test_builder_invalid_file_mapping(self):
         mapping_dict = {'type': 'mapping', 'field': 'CANCER_TYPE', 'fieldSource': ['donor_id', 'id', 'Donor_Id'],
                         'fieldMapping': 'icgc_donor_id', 'fileMapping': 'no_exist.tsv', 'fieldValue': 'cancer_type'}
-        annotation_path = f'{os.getcwd()}/tests/data/builder'
-        
+        annotation_path = f'{os.getcwd()}/tests/data/builder/metadata.yaml'
+
         with self.assertRaises(FileNotFoundError):
             AnnotationTypesBuilders[AnnotationTypes.MAPPING.name].value(mapping_dict, annotation_path)
 
