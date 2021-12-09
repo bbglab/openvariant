@@ -42,7 +42,7 @@ def group(base_path: str, annotation_path: str or None, key_by: str) -> Generato
         yield key, group_select
 
 
-def _group_by_task(selection, where=None, key_by=None, script='', header=False) -> Tuple[str, List]:
+def _group_by_task(selection, where=None, key_by=None, script='', header=False) -> Tuple[str, List, bool]:
     where_clauses = parse_where(where)
     group_key, group_values = selection
 
@@ -65,7 +65,7 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
                         output.append(f"{line}")
         except BrokenPipeError:
             pass
-        return group_key, output
+        return group_key, output, False
 
     else:
         process = Popen(script, shell=True, stdin=PIPE, stdout=PIPE,
@@ -103,12 +103,11 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
             process.stdout.close()
         except BrokenPipeError:
             pass
-        return group_key, output
+        return group_key, output, True
 
 
-def group_by(base_path: str, annotation_path: str or None, script: str or None, key_by: str, where=None, cores=cpu_count(),
-             quite=False, header: bool = False) -> \
-        Generator[str, List, None]:
+def group_by(base_path: str, annotation_path: str or None, script: str or None, key_by: str, where=None,
+             cores=cpu_count(), quite=False, header: bool = False) -> Generator[str, List, bool]:
     selection = list(group(base_path, annotation_path, key_by))
 
     with Pool(cores) as pool:
@@ -116,10 +115,10 @@ def group_by(base_path: str, annotation_path: str or None, script: str or None, 
                        script=script, header=header)  # , where=where_parsed, columns=columns, print_headers=headers)
         map_method = map if cores == 1 or len(selection) <= 1 else pool.imap_unordered
 
-        for group_key, group_result in tqdm(
+        for group_key, group_result, command in tqdm(
                 map_method(task, selection),
                 total=len(selection),
                 desc="Computing groups".rjust(40),
                 disable=(len(selection) < 2 or quite)
         ):
-            yield group_key, group_result
+            yield group_key, group_result, command

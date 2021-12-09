@@ -81,7 +81,22 @@ def _parse_row(ann: dict, line: List, header: List, original_header: List, path:
     return dict_line
 
 
-def _parser(file: str, annotation: dict, delimiter: str, columns: List, group_by=None, display_header=True) -> \
+def _apply_exclude(line: dict, excludes: List) -> bool:
+    for exclude in excludes:
+        try:
+            value_line = line[exclude[ExcludesKeys.FIELD.value]]
+            value_exclude = str(exclude[ExcludesKeys.VALUE.value])
+            if value_exclude.startswith("!"):
+                if value_line != value_exclude[1::]:
+                    return True
+            else:
+                if value_line == value_exclude:
+                    return True
+        except (KeyError, ValueError):
+            return False
+    return False
+
+def _parser(file: str, annotation: dict, delimiter: str, columns: List, excludes: List, group_by=None, display_header=True) -> \
         Generator[dict, None, None]:
     row = None
     fd = _open_file(file, "rt")
@@ -101,7 +116,11 @@ def _parser(file: str, annotation: dict, delimiter: str, columns: List, group_by
         else:
             try:
                 row = _parse_row(annotation, line, header, original_header, file)
+
                 row_aux = {}
+                if _apply_exclude(row, excludes):
+                    continue
+
                 if len(columns) != 0:
                     if group_by is not None and group_by not in columns:
                         row_aux[group_by] = row[group_by]
@@ -144,7 +163,8 @@ class Variant:
         if isfile(base_path):
             for ext, ann in an.items():
                 if _check_extension(ext, base_path):
-                    for x in _parser(base_path, ann, annotation.delimiter, annotation.columns, group_by, display_header):
+                    for x in _parser(base_path, ann, annotation.delimiter, annotation.columns, annotation.excludes,
+                                     group_by, display_header):
                         display_header = False
                         yield x
         else:
@@ -154,8 +174,8 @@ class Variant:
                     if isfile(file_path):
                         for ext, ann in an.items():
                             if _check_extension(ext, file_path):
-                                for x in _parser(file_path, ann, annotation.delimiter, annotation.columns, group_by,
-                                                 display_header):
+                                for x in _parser(file_path, ann, annotation.delimiter, annotation.columns, annotation.excludes,
+                                                 group_by, display_header):
                                     display_header = False
                                     yield x
                     else:
@@ -165,26 +185,9 @@ class Variant:
             except PermissionError as e:
                 print(e)
 
-    def _apply_exclude(self, line: dict) -> bool:
-        for exclude in self._annotation.excludes:
-            try:
-                value_line = line[exclude[ExcludesKeys.FIELD.value]]
-                value_exclude = str(exclude[ExcludesKeys.VALUE.value])
-                if value_exclude.startswith("!"):
-                    if value_line != value_exclude[1::]:
-                        return True
-                else:
-                    if value_line == value_exclude:
-                        return True
-            except (KeyError, ValueError):
-                return False
-        return False
-
     def read(self, group_key=None) -> Generator[dict, None, None]:
         for i, line in enumerate(self._unify(self._path, self._annotation, group_by=group_key)):
             if i != 0:
-                if self._apply_exclude(line):
-                    continue
                 yield line
 
     def save(self, file_path: str, display_header=True):
@@ -196,8 +199,6 @@ class Variant:
                 if display_header and i == 0:
                     writer.writerow(line)
                 elif i != 0:
-                    if self._apply_exclude(line):
-                        continue
                     writer.writerow(line)
             file.close()
 
