@@ -42,12 +42,10 @@ def _check_general_keys(annot: dict) -> None:
         raise KeyError(f"'{AnnotationGeneralKeys.FORMAT.value}' key is not a string.")
 
     # Delimiter key
-    if AnnotationGeneralKeys.DELIMITER.value in annot and (not isinstance(
-            annot[AnnotationGeneralKeys.DELIMITER.value], str) or
-                                                           annot[AnnotationGeneralKeys.DELIMITER.value] not in [e.name
-                                                                                                                for e in
-                                                                                                                AnnotationDelimiter]):
-        raise KeyError(f"'{AnnotationGeneralKeys.DELIMITER.value}' key is not valid or not a string.")
+    if AnnotationGeneralKeys.DELIMITER.value in annot and \
+            (not isinstance(annot[AnnotationGeneralKeys.DELIMITER.value], str) or
+             annot[AnnotationGeneralKeys.DELIMITER.value].upper() not in [e.name for e in AnnotationDelimiter]):
+        raise KeyError(f"'{AnnotationGeneralKeys.DELIMITER.value}' key is not valid or is not a string.")
 
     # Columns key
     if AnnotationGeneralKeys.COLUMNS.value in annot and \

@@ -14,25 +14,24 @@ def cli(debug):
     pass
 
 
-@click.command(short_help='Concatenate files to standard input')
+@click.command(name="cat", short_help='Concatenate files to standard input')
 @click.argument('input_path', type=click.Path(exists=True), default='.')
-@click.option('--where', '-w', type=click.STRING, default=None, help="Filter expression. ie: "
-                                                                     "CHROMOSOME == 4")
+@click.option('--where', '-w', type=click.STRING, default=None, help="Filter expression. eg: CHROMOSOME == 4")
 @click.option('--annotations', '-a', default=None)
 @click.option('--header', help="Show the result header", is_flag=True)
-def cat(input_path: str, where: str, annotations: str or None, header: bool):
+def cat(input_path: str, where: str or None, annotations: str or None, header: bool):
     cat_task(input_path, annotations, where, header)
 
 
-@click.command(short_help='Number of rows that matches a specified criterion')
+@click.command(name="count", short_help='Number of rows that matches a specified criterion')
 @click.argument('input_path', type=click.Path(exists=True), default='.')
 @click.option('--where', '-w', multiple=False, type=click.STRING)
-@click.option('--groupby', '-g', type=click.STRING)
+@click.option('--group_by', '-g', type=click.STRING)
+@click.option('--annotations', '-a', default=None, type=click.Path(exists=True))
 @click.option('--cores', help='Maximum processes to run in parallel.', type=click.INT, default=cpu_count())
 @click.option('--quite', '-q', help="Don't show the progress, only the total count.", is_flag=True)
-@click.option('--annotations', '-a', default=None, type=click.Path(exists=True))
-def count(input_path: str, where: str, groupby: str, cores: int, quite: bool, annotations: str or None):
-    result = count_task(input_path, annotations, group_by=groupby, where=where, cores=cores, quite=quite)
+def count(input_path: str, where: str, group_by: str, cores: int, quite: bool, annotations: str or None) -> None:
+    result = count_task(input_path, annotations, group_by=group_by, where=where, cores=cores, quite=quite)
 
     if len(result[1]) > 0:
         for k, v in sorted(result[1].items(), key=lambda res: res[1]):
@@ -41,16 +40,16 @@ def count(input_path: str, where: str, groupby: str, cores: int, quite: bool, an
     print("TOTAL\t{}".format(result[0]))
 
 
-@click.command(short_help='Groups rows that have the same values into summary rows')
+@click.command(name="orderby", short_help='Groups rows that have the same values into summary rows')
 @click.argument('input_path', type=click.Path(exists=True), default='.')
-@click.option('--script', '-s', type=click.STRING)
-@click.option('--where', '-w', type=click.STRING)
-@click.option('--group_by', '-g', type=click.STRING)
-@click.option('--cores', help='Maximum processes to run in parallel.', type=click.INT, default=cpu_count())
-@click.option('--quite', '-q', help="Don't show the progress, only the total count.", is_flag=True)
-@click.option('--annotations', '-a', default=None, type=click.Path(exists=True))
 @click.option('--header', help='Send header as first row', is_flag=True)
 @click.option('--show', help='Show group by each row', is_flag=True)
+@click.option('--group_by', '-g', type=click.STRING)
+@click.option('--where', '-w', type=click.STRING)
+@click.option('--script', '-s', type=click.STRING)
+@click.option('--annotations', '-a', default=None, type=click.Path(exists=True))
+@click.option('--cores', help='Maximum processes to run in parallel.', type=click.INT, default=cpu_count())
+@click.option('--quite', '-q', help="Don't show the progress, only the total count.", is_flag=True)
 def groupby(input_path: str, script: str, where: str, group_by: str, cores: int, quite: bool, annotations: str,
             header: bool, show: bool):
     for group_key, group_result, command in group_by_task(input_path, annotations, script, key_by=group_by, where=where,
