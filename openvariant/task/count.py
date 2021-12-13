@@ -19,7 +19,6 @@ def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) ->
 
     result = Variant(input_file, input_annotations)
 
-    header = result.header
     if group_by is None:
         for r in result.read():
             if skip(r, where_clauses):

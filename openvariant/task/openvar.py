@@ -28,7 +28,7 @@ def cat(input_path: str, where: str or None, annotations: str or None, header: b
 @click.option('--where', '-w', multiple=False, type=click.STRING)
 @click.option('--group_by', '-g', type=click.STRING)
 @click.option('--annotations', '-a', default=None, type=click.Path(exists=True))
-@click.option('--cores', help='Maximum processes to run in parallel.', type=click.INT, default=cpu_count())
+@click.option('--cores', '-c', help='Maximum processes to run in parallel.', type=click.INT, default=cpu_count())
 @click.option('--quite', '-q', help="Don't show the progress, only the total count.", is_flag=True)
 def count(input_path: str, where: str, group_by: str, cores: int, quite: bool, annotations: str or None) -> None:
     result = count_task(input_path, annotations, group_by=group_by, where=where, cores=cores, quite=quite)
@@ -40,7 +40,7 @@ def count(input_path: str, where: str, group_by: str, cores: int, quite: bool, a
     print("TOTAL\t{}".format(result[0]))
 
 
-@click.command(name="orderby", short_help='Groups rows that have the same values into summary rows')
+@click.command(name="groupby", short_help='Groups rows that have the same values into summary rows')
 @click.argument('input_path', type=click.Path(exists=True), default='.')
 @click.option('--header', help='Send header as first row', is_flag=True)
 @click.option('--show', help='Show group by each row', is_flag=True)
@@ -48,7 +48,7 @@ def count(input_path: str, where: str, group_by: str, cores: int, quite: bool, a
 @click.option('--where', '-w', type=click.STRING)
 @click.option('--script', '-s', type=click.STRING)
 @click.option('--annotations', '-a', default=None, type=click.Path(exists=True))
-@click.option('--cores', help='Maximum processes to run in parallel.', type=click.INT, default=cpu_count())
+@click.option('--cores', '-c', help='Maximum processes to run in parallel.', type=click.INT, default=cpu_count())
 @click.option('--quite', '-q', help="Don't show the progress, only the total count.", is_flag=True)
 def groupby(input_path: str, script: str, where: str, group_by: str, cores: int, quite: bool, annotations: str,
             header: bool, show: bool):

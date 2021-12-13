@@ -33,10 +33,10 @@ class TestCountCommand(unittest.TestCase):
 
     def test_count_command_no_exist_group_by(self):
         runner = CliRunner()
-        result = runner.invoke(count, [f'{getcwd()}/tests/data/example1', '--group_by', 'NO_EXIST'])
+        result = runner.invoke(count, [f'{getcwd()}/tests/data/example1', '--group_by', 'NO_EXIST', '-q'])
 
         self.assertEqual(result.exit_code, 0)
-        self.assertNotEqual(result.output, 'TOTAL	0')
+        self.assertEqual(result.output, 'TOTAL\t0\n')
 
     def test_count_command_invalid_group_by(self):
         runner = CliRunner()
@@ -69,6 +69,18 @@ class TestCountCommand(unittest.TestCase):
     def test_count_command_invalid_annotation(self):
         runner = CliRunner()
         result = runner.invoke(count, [f'{getcwd()}/tests/data/example1', '--annotations'])
+
+        self.assertEqual(result.exit_code, 2)
+
+    def test_count_command_no_exist_cores(self):
+        runner = CliRunner()
+        result = runner.invoke(count, [f'{getcwd()}/tests/data/example1', '--cores', 'NO_EXIST'])
+
+        self.assertEqual(result.exit_code, 2)
+
+    def test_count_command_invalid_cores(self):
+        runner = CliRunner()
+        result = runner.invoke(count, [f'{getcwd()}/tests/data/example1', '--cores'])
 
         self.assertEqual(result.exit_code, 2)
 

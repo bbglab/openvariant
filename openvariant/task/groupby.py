@@ -68,8 +68,11 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
         return group_key, output, False
 
     else:
-        process = Popen(script, shell=True, stdin=PIPE, stdout=PIPE,
-                   env={"GROUP_KEY": 'None' if group_key is None else group_key})
+        try:
+            process = Popen(script, shell=True, stdin=PIPE, stdout=PIPE,
+                            env={"GROUP_KEY": 'None' if group_key is None else group_key})
+        except ProcessLookupError:
+            raise ChildProcessError('dedededed')
         try:
             for value in group_values:
                 result = Variant(value[0], value[1])
@@ -106,8 +109,8 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
         return group_key, output, True
 
 
-def group_by(base_path: str, annotation_path: str or None, script: str or None, key_by: str, where=None,
-             cores=cpu_count(), quite=False, header: bool = False) -> Generator[str, List, bool]:
+def group_by(base_path: str, annotation_path: str or None, script: str or None, key_by: str, where: str or None = None,
+             cores=cpu_count(), quite=False, header: bool = False) -> Generator[Tuple[str, List, bool], None, None]:
     selection = list(group(base_path, annotation_path, key_by))
 
     with Pool(cores) as pool:
