@@ -86,7 +86,7 @@ def _mapping_builder(x: dict, path: str) -> MappingBuilder:
     mapping_files = x[AnnotationKeys.FILE_MAPPING.value]
     files = list(glob.iglob(dirname(path) + '/**/' + mapping_files, recursive=True))
     if len(files) == 0:
-        raise FileNotFoundError(f'Unable to find \'{mapping_files}\' file')
+        raise FileNotFoundError(f'Unable to find \'{mapping_files}\' file in \'{path}\'')
     try:
         for mapping_file in files:
             open_method = gzip.open if mapping_file.endswith('gz') else open
