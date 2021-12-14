@@ -96,7 +96,9 @@ def _apply_exclude(line: dict, excludes: List) -> bool:
             return False
     return False
 
-def _parser(file: str, annotation: dict, delimiter: str, columns: List, excludes: List, group_by=None, display_header=True) -> \
+
+def _parser(file: str, annotation: dict, delimiter: str, columns: List, excludes: List, group_by=None,
+            display_header=True) -> \
         Generator[dict, None, None]:
     row = None
     fd = _open_file(file, "rt")
@@ -137,7 +139,6 @@ def _parser(file: str, annotation: dict, delimiter: str, columns: List, excludes
 
 
 def _check_extension(ext: str, path: str) -> bool:
-    match: bool = True
     if ext[0] == '*':
         match = fnmatch(path, ext)
     else:
@@ -153,12 +154,16 @@ def _extract_header(annotation: Annotation):
 class Variant:
 
     def __init__(self, path: str, ann: Annotation) -> None:
+        if path is None or path == '' or ann is None:
+            raise ValueError('Invalid path or wrong Annotation')
+
         csv.field_size_limit(int(ctypes.c_ulong(-1).value // 2))
         self._path: str = path
         self._annotation: Annotation = ann
         self._header: List[str] = _extract_header(ann)
 
-    def _unify(self, base_path: str, annotation: Annotation, group_by=None, display_header=True) -> Generator[dict, None, None]:
+    def _unify(self, base_path: str, annotation: Annotation, group_by=None, display_header=True) \
+            -> Generator[dict, None, None]:
         an = annotation.structure
         if isfile(base_path):
             for ext, ann in an.items():
@@ -174,7 +179,8 @@ class Variant:
                     if isfile(file_path):
                         for ext, ann in an.items():
                             if _check_extension(ext, file_path):
-                                for x in _parser(file_path, ann, annotation.delimiter, annotation.columns, annotation.excludes,
+                                for x in _parser(file_path, ann, annotation.delimiter, annotation.columns,
+                                                 annotation.excludes,
                                                  group_by, display_header):
                                     display_header = False
                                     yield x
@@ -191,7 +197,7 @@ class Variant:
                 yield line
 
     def save(self, file_path: str, display_header=True):
-        if isdir(file_path):
+        if file_path is None or isdir(file_path):
             raise ValueError("The path must be a file.")
         with open(file_path, "w") as file:
             writer = csv.writer(file, delimiter=AnnotationFormat[self._annotation.format.upper()].value)
@@ -199,8 +205,7 @@ class Variant:
                 if display_header and i == 0:
                     writer.writerow(line)
                 elif i != 0:
-                    writer.writerow(line)
-            file.close()
+                    writer.writerow(line.values())
 
     @property
     def path(self) -> str:
@@ -209,10 +214,6 @@ class Variant:
     @property
     def header(self) -> List[str]:
         return self._header
-
-    #@property
-    #def generator(self) -> Generator[dict, None, None]:
-    #    return self._generator
 
     @property
     def annotation(self) -> Annotation:

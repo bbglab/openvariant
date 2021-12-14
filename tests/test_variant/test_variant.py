@@ -1,24 +1,44 @@
+import os
 import unittest
+
+from openvariant.annotation.annotation import Annotation
+from openvariant.variant.variant import Variant
 
 
 class TestVariant(unittest.TestCase):
 
-    # Normal Variant creation functionality
     def test_variant_creation(self):
-        pass
+        annotation = Annotation(f'{os.getcwd()}/tests/data/example1/example1.yaml')
+        variant = Variant(f'{os.getcwd()}/tests/data/example1', annotation)
 
-    def test_variant_invalid(self):
-        pass
+        self.assertNotEqual(variant, None)
 
-    # Variant properties
+    def test_variant_invalid_annotation(self):
+        with self.assertRaises(ValueError):
+            Variant(f'{os.getcwd()}/tests/data/example1', None)
+
+    def test_variant_invalid_path(self):
+        with self.assertRaises(ValueError):
+            annotation = Annotation(f'{os.getcwd()}/tests/data/example1/example1.yaml')
+            Variant(None, annotation)
+
     def test_variant_path(self):
-        pass
+        annotation = Annotation(f'{os.getcwd()}/tests/data/example1/example1.yaml')
+        path = f'{os.getcwd()}/tests/data/example1'
+        variant = Variant(path, annotation)
+
+        self.assertEqual(variant.path, path)
 
     def test_variant_header(self):
-        pass
+        annotation = Annotation(f'{os.getcwd()}/tests/data/example1/example1.yaml')
+        res_expected = {'PLATFORM', 'variant', 'DATASET', 'PROJECT'}
+        variant = Variant(f'{os.getcwd()}/tests/data/example1', annotation)
 
-    def test_variant_generator(self):
-        pass
+        self.assertEqual(set(variant.header), res_expected)
 
     def test_variant_annotation(self):
-        pass
+        annotation = Annotation(f'{os.getcwd()}/tests/data/example1/example1.yaml')
+        variant = Variant(f'{os.getcwd()}/tests/data/example1', annotation)
+
+        self.assertEqual(variant.annotation, annotation)
+

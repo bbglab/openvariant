@@ -1,11 +1,31 @@
+import os
 import unittest
+import json
+
+from openvariant.annotation.annotation import Annotation
+from openvariant.variant.variant import Variant
 
 
 class TestVariantRead(unittest.TestCase):
 
-    # Normal Variant read functionality
     def test_variant_read(self):
-        pass
+        annotation = Annotation(f'{os.getcwd()}/tests/data/example1/example1.yaml')
+        variant = Variant(f'{os.getcwd()}/tests/data/example1', annotation)
 
-    def test_variant_read_invalid(self):
-        pass
+        self.assertNotEqual(variant.read(), None)
+
+        with open(f'{os.getcwd()}/tests/data/variant/read.json') as f:
+            data = json.load(f)
+        for i, line in enumerate(variant.read()):
+            self.assertEqual(line, data[i])
+
+    def test_variant_read_by_key(self):
+        annotation = Annotation(f'{os.getcwd()}/tests/data/example1/example1.yaml')
+        variant = Variant(f'{os.getcwd()}/tests/data/example1', annotation)
+
+        self.assertNotEqual(variant.read('variant'), None)
+
+        with open(f'{os.getcwd()}/tests/data/variant/read_by_key.json') as f:
+            data = json.load(f)
+        for i, line in enumerate(variant.read()):
+            self.assertEqual(line, data[i])
