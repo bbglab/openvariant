@@ -31,7 +31,7 @@ class TestVariant(unittest.TestCase):
 
     def test_variant_header(self):
         annotation = Annotation(f'{os.getcwd()}/tests/data/example1/example1.yaml')
-        res_expected = {'PLATFORM', 'variant', 'DATASET', 'PROJECT'}
+        res_expected = {'PLATFORM', 'POSITION', 'variant', 'DATASET', 'PROJECT'}
         variant = Variant(f'{os.getcwd()}/tests/data/example1', annotation)
 
         self.assertEqual(set(variant.header), res_expected)

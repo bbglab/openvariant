@@ -4,7 +4,7 @@ from openvariant.utils.where import parse_where, skip
 from openvariant.variant.variant import Variant
 
 
-def cat(base_path: str, annotation_path: str or None, where: str = None, header_show: bool = True) -> None:
+def cat(base_path: str, annotation_path: str or None = None, where: str = None, header_show: bool = True) -> None:
     for file, annotation in find_files(base_path, annotation_path):
         where_clauses = parse_where(where)
         result = Variant(base_path, annotation)
@@ -17,5 +17,3 @@ def cat(base_path: str, annotation_path: str or None, where: str = None, header_
                 if skip(r, where_clauses):
                     continue
                 print(format_line(list(map(str, r.values())), result.annotation.format))
-
-

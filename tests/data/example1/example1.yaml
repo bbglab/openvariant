@@ -8,6 +8,15 @@ annotation:
     field: 'PLATFORM'
     value: 'WGS'
   - type: 'internal'
+    field: 'POSITION'
+    fieldSource:
+      - 'Position'
+      - 'Start'
+      - 'Start_Position'
+      - 'Pos'
+      - 'Chromosome_Start'
+      - 'POS'
+  - type: 'internal'
     field: 'variant'
     fieldSource:
       - 'Variant_Type'
