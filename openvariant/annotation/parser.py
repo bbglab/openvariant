@@ -90,12 +90,15 @@ def _dirname_parser(x: DirnameBuilder, line: List = None, original_header: List 
 
 def _plugin_parser(x: PluginBuilder, line: List = None, original_header: List = None, path: str = None,
                    dict_line: dict = None) -> dict:
+    if x[2] is None:
+        raise KeyError("Unable to get plugin\'s function")
+    if dict_line is None:
+        dict_line = {}
     try:
-        if dict_line is None:
-            dict_line = {}
         value = x[2](dict_line)
-    except KeyError as e:
-        raise KeyError(f'Something went wrong on the plugin: {e}')
+    except Exception as e:
+        raise Exception(f'Something went wrong on the plugin: {e}')
+
     #if len(x[1]) != 0:
     #    value = _get_text_from_header(x[1], line, original_header, None)
     return value if value is not None else str(float('nan'))

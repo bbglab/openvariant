@@ -125,12 +125,15 @@ def _parser(file: str, annotation: dict, delimiter: str, columns: List, excludes
 
                 if len(columns) != 0:
                     if group_by is not None and group_by not in columns:
-                        row_aux[group_by] = row[group_by]
+                        try:
+                            row_aux[group_by] = row[group_by]
+                        except KeyError as e:
+                            raise KeyError(f"Unable to find group by: {e}. Check annotation for {file} file")
+
                     for col in columns:
                         row_aux[col] = row[col]
 
                     row = row_aux
-
             except (ValueError, IndexError, KeyError) as e:
                 raise ValueError(f"Error parsing line: {lnum} {file}: {e}")
 
@@ -196,7 +199,7 @@ class Variant:
             if i != 0:
                 yield line
 
-    def save(self, file_path: str, display_header=True):
+    def save(self, file_path: str or None, display_header=True):
         if file_path is None or isdir(file_path):
             raise ValueError("The path must be a file.")
         with open(file_path, "w") as file:

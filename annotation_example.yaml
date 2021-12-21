@@ -2,7 +2,7 @@ pattern:
   - '*.maf'
   - '*.vcf'
   - '*.tsv.gz'
-recursive: true
+#UNDER DEVELOPMENT - recursive: true
 format: 'tsv'
 delimiter: 't'
 

@@ -1,0 +1,28 @@
+pattern:
+  - '*.maf'
+format: 'tsv'
+
+annotation:
+  - type: 'static'
+    field: 'PLATFORM'
+    value: 'WGS'
+  - type: 'internal'
+    field: 'POSITION'
+    fieldSource:
+      - 'Position'
+      - 'Start'
+      - 'Start_Position'
+      - 'Pos'
+      - 'Chromosome_Start'
+      - 'POS'
+  - type: 'internal'
+    field: 'variant'
+    fieldSource:
+      - 'Variant_Type'
+      - 'Data'
+  - type: 'filename'
+    field: 'DATASET'
+    function: 'lambda x: "{}".format(x.lower()[:-4])'
+  - type: 'dirname'
+    field: 'PROJECT'
+    function: 'lambda x: "{}".format(x.upper())'

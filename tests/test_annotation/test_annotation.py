@@ -21,13 +21,12 @@ class TestAnnotation(unittest.TestCase):
         self.assertEqual(set(annotation.patterns), res_expect)
 
     def test_annotation_invalid_patterns(self):
-        res_expect = {'*.vcf.gz'}
-        annotation = Annotation(f'{getcwd()}/tests/data/annotation/invalid_pattern.yaml')
-        self.assertEqual(set(annotation.patterns), res_expect)
+        with self.assertRaises(TypeError):
+            Annotation(f'{getcwd()}/tests/data/annotation/invalid_pattern.yaml')
 
     def test_annotation_no_exist_patterns(self):
-        with self.assertRaises(FileNotFoundError):
-            Annotation(f'{getcwd()}/tests/data/no_exist.yaml')
+        with self.assertRaises(KeyError):
+            Annotation(f'{getcwd()}/tests/data/annotation/no_exist_pattern.yaml')
 
     def test_annotation_format(self):
         annotation = Annotation(f'{getcwd()}/tests/data/annotation/annotation.yaml')

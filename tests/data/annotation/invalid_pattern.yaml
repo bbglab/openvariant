@@ -1,4 +1,4 @@
-pattern: '*.vcf.gz'
+pattern: 1234
 recursive: false
 format: 'CSV'
 

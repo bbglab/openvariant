@@ -27,7 +27,6 @@ def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) ->
         return i, None
     else:
         groups = {}
-        # key_not_found = False
         for r in result.read(group_by):
             if skip(r, where_clauses):
                 continue
@@ -38,7 +37,6 @@ def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) ->
                 i += 1
             except (ValueError, KeyError):
                 pass
-
         return i, groups
 
 

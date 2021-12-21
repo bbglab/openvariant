@@ -1,8 +1,11 @@
+import os
+from os import getcwd
+
 from openvariant.annotation.annotation import Annotation
+from openvariant.task.count import count
+from openvariant.task.groupby import group_by
 from openvariant.variant.variant import Variant
 
-annotation = Annotation('./tests/data/example.yaml')
-result = Variant('./tests', annotation)
-for r in result.read():
-    print(r)
-print(result)
+for g, v, _ in group_by(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
+         None, key_by='DATASET', where="PROJECT >= \"SAMPLE1\"", quite=True):
+    print(g, len(v))

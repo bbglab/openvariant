@@ -1,4 +1,4 @@
-pattern:
+patternexample1:
   - '*.maf'
   - '*.vcf.gz'
 recursive: false

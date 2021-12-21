@@ -5,12 +5,8 @@ from typing import List
 from yaml import safe_load, YAMLError
 
 from openvariant.annotation.builder import AnnotationTypesBuilders
-from openvariant.config.config_annotation import (AnnotationGeneralKeys,
-                                                  AnnotationKeys,
-                                                  AnnotationTypes,
-                                                  ExcludesKeys,
-                                                  DEFAULT_FORMAT,
-                                                  DEFAULT_DELIMITER,
+from openvariant.config.config_annotation import (AnnotationGeneralKeys, AnnotationKeys, AnnotationTypes,
+                                                  ExcludesKeys, DEFAULT_FORMAT, DEFAULT_DELIMITER,
                                                   DEFAULT_COLUMNS, AnnotationFormat, AnnotationDelimiter)
 
 
@@ -117,8 +113,7 @@ def _check_annotation_keys(annot: dict) -> None:
              not isinstance(annot[AnnotationKeys.FIELD_MAPPING.value], str) or
              not isinstance(annot[AnnotationKeys.FILE_MAPPING.value], str) or
              not isinstance(annot[AnnotationKeys.FIELD_VALUE.value], str)):
-        raise KeyError(
-            f"'{AnnotationTypes.MAPPING.value}' not annotated well.")
+        raise KeyError(f"'{AnnotationTypes.MAPPING.value}' not annotated well.")
 
 
 class Annotation:
@@ -159,10 +154,6 @@ class Annotation:
             if col not in self._annotations:
                 raise KeyError(f"'{col}' column unable to find.")
 
-    # @property
-    # def recursive(self) -> bool:
-    #    return self._recursive
-
     @property
     def patterns(self) -> List[str]:
         return self._patterns
@@ -189,42 +180,6 @@ class Annotation:
 
     @property
     def structure(self) -> dict:
-
         structure_aux = {AnnotationGeneralKeys.ANNOTATION.name: self._annotations,
                          AnnotationGeneralKeys.EXCLUDE.name: self._excludes}
         return {e: structure_aux for e in self._patterns}
-
-
-'''
-def merge_annotations_structure(ann_a: Annotation, ann_b: Annotation) -> Annotation:
-    """
-    :param ann_a: The first Annotation. This annotation
-    has preference and will override B annotation if there is a conflict
-    :param ann_b: The second Annotation.
-    :return: The merge of A and B annotation
-    """
-    if ann_a is None:
-        return copy.deepcopy(ann_b)
-    elif ann_b is None:
-        return copy.deepcopy(ann_a)
-
-    ann_aa = copy.deepcopy(ann_a)
-
-    ann_aa.set_patterns(list(set(ann_aa.patterns).union(set(ann_b.patterns))))
-
-    excludes_total = ann_aa.excludes
-
-    for k in ann_b.excludes:
-        if k not in excludes_total:
-            excludes_total.append(k)
-
-    ann_aa.set_excludes(excludes_total)
-
-    aa = {k: v for k, v in ann_aa.annotations.items()}
-    for k, v in ann_b.annotations.items():
-        if k not in list(aa.keys()):
-            aa[k] = v
-
-    ann_aa.set_annotations(aa)
-    return ann_aa
-'''

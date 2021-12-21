@@ -6,23 +6,28 @@ from openvariant.task.groupby import group_by
 
 class TestGroupBy(unittest.TestCase):
 
-    def test_group_by(self):
+    def test_group_by_basic(self):
         res_expect = {'chol', 'kich', 'meso', 'laml', 'acc', 'ucs'}
         res = set(
-            [g for g, _, _ in list(group_by(f'{os.getcwd()}/tests/data/', f'{os.getcwd()}/tests/data/task_test.yaml',
+            [g for g, _, _ in list(group_by(f'{os.getcwd()}/tests/data/dataset/',
+                                            f'{os.getcwd()}/tests/data/task_test.yaml',
                                             None, key_by='DATASET', quite=True))])
+
         self.assertEqual(res, res_expect)
 
     def test_invalid_group_by(self):
-        res = list(group_by(f'{os.getcwd()}/tests/data/', f'{os.getcwd()}/tests/data/task_test.yaml', None,
-                            key_by='NO_EXIST', quite=True))
+        res = list(group_by(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
+                            None, key_by='NO_EXIST', quite=True))
+
         self.assertEqual(res, [])
 
     def test_group_by_equal_where(self):
         res_expect_groups = {'kich', 'chol', 'meso', 'laml', 'acc', 'ucs'}
         res_groups = set()
-        for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/', f'{os.getcwd()}/tests/data/task_test.yaml', None,
+        for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/dataset/',
+                                     f'{os.getcwd()}/tests/data/task_test.yaml', None,
                                      key_by='DATASET', where="DATASET == \"acc\"", quite=True)):
+
             res_groups.add(g)
             if g != 'acc':
                 self.assertListEqual(v, [])
@@ -34,11 +39,11 @@ class TestGroupBy(unittest.TestCase):
     def test_group_by_non_equal_where(self):
         res_expect_groups = {'kich', 'chol', 'meso', 'laml', 'acc', 'ucs'}
         res_groups = set()
-        for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/', f'{os.getcwd()}/tests/data/task_test.yaml', None,
-                                     'DATASET', where="DATASET != \"acc\"", quite=True)):
+        for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
+                                     None, 'DATASET', where="DATASET != \"acc\"", quite=True)):
+
             res_groups.add(g)
             if g == 'acc':
-
                 self.assertListEqual(v, [])
             else:
                 self.assertNotEqual(v, [])
@@ -48,10 +53,10 @@ class TestGroupBy(unittest.TestCase):
     def test_group_by_little_than_where(self):
         res_expect_groups = {'kich', 'chol', 'meso', 'laml', 'acc', 'ucs'}
         res_groups = set()
-        for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/', f'{os.getcwd()}/tests/data/task_test.yaml', None,
-                                     key_by='DATASET', where="PROJECT < \"example2\"", quite=True)):
-            res_groups.add(g)
+        for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
+                                     None, key_by='DATASET', where="PROJECT < \"SAMPLE1\"", quite=True)):
 
+            res_groups.add(g)
             if g in ['chol', 'acc']:
                 self.assertNotEqual(v, [])
             else:
@@ -62,11 +67,11 @@ class TestGroupBy(unittest.TestCase):
     def test_group_by_leq_than_where(self):
         res_expect_groups = {'kich', 'chol', 'meso', 'laml', 'acc', 'ucs'}
         res_groups = set()
-        for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/', f'{os.getcwd()}/tests/data/task_test.yaml', None,
-                                     'DATASET', where="PROJECT <= \"example2\"", quite=True)):
+        for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
+                                     None, 'DATASET', where="PROJECT <= \"SAMPLE1\"", quite=True)):
             res_groups.add(g)
 
-            if g in ['chol', 'acc', 'laml', 'kich']:
+            if g in ['chol', 'acc', 'meso', 'ucs']:
                 self.assertNotEqual(v, [])
             else:
                 self.assertEqual(v, [])
@@ -76,11 +81,11 @@ class TestGroupBy(unittest.TestCase):
     def test_group_by_great_than_where(self):
         res_expect_groups = {'kich', 'chol', 'meso', 'laml', 'acc', 'ucs'}
         res_groups = set()
-        for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/', f'{os.getcwd()}/tests/data/task_test.yaml', None,
-                                     'DATASET', where="PROJECT > \"example2\"", quite=True)):
-            res_groups.add(g)
+        for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
+                                     None, 'DATASET', where="PROJECT > \"SAMPLE1\"", quite=True)):
 
-            if g in ['meso', 'ucs']:
+            res_groups.add(g)
+            if g in ['laml', 'kich']:
                 self.assertNotEqual(v, [])
             else:
                 self.assertEqual(v, [])
@@ -90,10 +95,9 @@ class TestGroupBy(unittest.TestCase):
     def test_group_by_geq_than_where(self):
         res_expect_groups = {'kich', 'chol', 'meso', 'laml', 'acc', 'ucs'}
         res_groups = set()
-        for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/', f'{os.getcwd()}/tests/data/task_test.yaml', None,
-                                     'DATASET', where="PROJECT >= \"example2\"", quite=True)):
+        for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml', None,
+                                     'DATASET', where="PROJECT >= \"SAMPLE1\"", quite=True)):
             res_groups.add(g)
-
             if g in ['meso', 'ucs', 'laml', 'kich']:
                 self.assertNotEqual(v, [])
             else:
@@ -104,14 +108,14 @@ class TestGroupBy(unittest.TestCase):
     def test_group_by_no_exist_where(self):
         res_expect_groups = {'kich', 'chol', 'meso', 'laml', 'acc', 'ucs'}
         res_groups = set()
-        for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/', f'{os.getcwd()}/tests/data/task_test.yaml', None,
-                                     'DATASET', where="NOT_EXIST == \"not_exist\"", quite=True)):
+        for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
+                                     None, 'DATASET', where="NOT_EXIST == \"not_exist\"", quite=True)):
             res_groups.add(g)
             self.assertEqual(v, [])
 
         self.assertEqual(res_groups, res_expect_groups)
 
-    def test_group_by_bad_fromat_where(self):
+    def test_group_by_bad_format_where(self):
         with self.assertRaises(ValueError):
-            list(group_by(f'{os.getcwd()}/tests/data/', f'{os.getcwd()}/tests/data/task_test.yaml', None,
+            list(group_by(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml', None,
                           'DATASET', where="NOT_EXIST = \"not_exist\"", quite=True))

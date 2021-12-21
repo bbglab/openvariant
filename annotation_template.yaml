@@ -2,7 +2,7 @@ pattern: #  List of file patterns to match with the current annotation; required
   - string
   - string
   - ...
-recursive: boolean # Explore annotations recursively to all subdirectories; default: False
+# UNDER DEVELOPMENT - recursive: boolean # Explore annotations recursively to all subdirectories; default: False
 format: string # Output format "tsv" or "csv"; default: "tsv"
 delimiter: string # Delimiter of input files: t - tabular, c - coma; default: "t"
 
