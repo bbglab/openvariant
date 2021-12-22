@@ -110,7 +110,7 @@ def _mapping_parser(x: MappingBuilder, line: List = None, original_header: List 
         raise ValueError('Unable to make mapping.')
     value = None
     for field in x[1]:
-        value = line[original_header.index(field)] if field in original_header else None
+        #value = line[original_header.index(field)] if field in original_header else None
         if value is None:
             try:
                 k = dict_line[field]
