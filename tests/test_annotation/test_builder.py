@@ -2,7 +2,7 @@ import math
 import os
 import re
 import unittest
-from types import FunctionType
+from types import FunctionType, MethodType
 
 from openvariant.annotation.builder import AnnotationTypesBuilders, Builder
 from openvariant.config.config_annotation import AnnotationTypes
@@ -145,12 +145,12 @@ class TestBuilder(unittest.TestCase):
 
         self.assertEqual(type_annot, AnnotationTypes.PLUGIN.name)
         self.assertEqual(field_sources, [])
-        self.assertIsInstance(func, FunctionType)
+        self.assertIsInstance(func, MethodType)
 
     def test_builder_invalid_plugin(self):
         plugin_dict = {'type': 'plugin', 'plugin': None, 'field': None}
 
-        with self.assertRaises(ModuleNotFoundError):
+        with self.assertRaises(FileNotFoundError):
             AnnotationTypesBuilders[AnnotationTypes.PLUGIN.name].value(plugin_dict)
 
     def test_builder_mapping(self):
@@ -172,7 +172,7 @@ class TestBuilder(unittest.TestCase):
                         'fieldMapping': None, 'fileMapping': None, 'fieldValue': None}
         annotation_path = f'{os.getcwd()}/tests/data/builder/metadata.yaml'
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(FileNotFoundError):
             AnnotationTypesBuilders[AnnotationTypes.MAPPING.name].value(mapping_dict, annotation_path)
 
     def test_builder_invalid_file_mapping(self):

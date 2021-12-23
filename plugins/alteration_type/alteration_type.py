@@ -1,5 +1,7 @@
 from typing import Tuple
 
+from plugins.plugin import Plugin
+
 
 def _prefix_length(ref: str, alt: str) -> int:
     i = 0
@@ -38,25 +40,32 @@ def _indel_postprocess(start: int, ref: str, alt: str) -> Tuple[str, str, str]:
     return str(start), str(ref), str(alt)
 
 
-def alteration_type(row: dict) -> dict:
-    if 'REF' in row and 'ALT' in row:
-        l_ref = len(row['REF'])
-        l_alt = len(row['ALT'])
+class Alteration_typePlugin(Plugin):
+    """
+    This plugin identifies the alteration type.
+    Classifies the alteration type: checking POSITION, REF and ALT fields.
+    The result will be store as ALT_TYPE field in the same row.
+    """
 
-        if l_alt != l_ref:
-            alt_type = "indel"
-        else:
-            if l_alt > 1:
-                alt_type = "mnv"
+    def run(self, row: dict):
+        if 'REF' in row and 'ALT' in row:
+            l_ref = len(row['REF'])
+            l_alt = len(row['ALT'])
+
+            if l_alt != l_ref:
+                alt_type = "indel"
             else:
-                if '-' in row['REF'] or '-' in row['ALT']:
-                    alt_type = "indel"
+                if l_alt > 1:
+                    alt_type = "mnv"
                 else:
-                    alt_type = "snv"
-        if alt_type == "indel":
-            row['POSITION'], row['REF'], row['ALT'] = _indel_postprocess(row['POSITION'], row['REF'], row['ALT'])
-            
-        row['ALT_TYPE'] = alt_type
-    else:
-        raise ValueError('Unable to find \'REF\' or \'ALT\' values in the row.')
-    return row
+                    if '-' in row['REF'] or '-' in row['ALT']:
+                        alt_type = "indel"
+                    else:
+                        alt_type = "snv"
+            if alt_type == "indel":
+                row['POSITION'], row['REF'], row['ALT'] = _indel_postprocess(row['POSITION'], row['REF'], row['ALT'])
+
+            row['ALT_TYPE'] = alt_type
+        else:
+            raise ValueError("Unable to find 'REF', 'ALT' or 'POSITION' values in the row.")
+        return row

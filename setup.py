@@ -4,7 +4,7 @@ setup(
     name="open-variant",
     version="0.4.1",
     author="BBGLab - Barcelona Biomedical Genomics Lab",
-    packages=find_packages(exclude=['*.tests', '*.tests.*', 'tests.*', 'tests', 'plugins']),
+    packages=find_packages(exclude=['*.test', '*.test.*', 'test.*', 'test']),
     include_package_data=True,
     install_requires=['pyyaml', 'tqdm', 'click'],
     entry_points={

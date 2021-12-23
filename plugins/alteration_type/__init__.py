@@ -1,1 +1,1 @@
-from .alteration_type import alteration_type
+from .alteration_type import Alteration_typePlugin
