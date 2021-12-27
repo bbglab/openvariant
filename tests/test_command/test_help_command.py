@@ -2,7 +2,7 @@ import unittest
 
 from click.testing import CliRunner
 
-from openvariant.task.openvar import cli
+from openvariant.commands.openvar import cli
 
 
 class TestHelpCommand(unittest.TestCase):

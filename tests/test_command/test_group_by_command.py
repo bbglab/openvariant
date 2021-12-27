@@ -3,7 +3,7 @@ from os import getcwd
 
 from click.testing import CliRunner
 
-from openvariant.task.openvar import groupby
+from openvariant.commands.openvar import groupby
 
 
 class TestGroupByCommand(unittest.TestCase):

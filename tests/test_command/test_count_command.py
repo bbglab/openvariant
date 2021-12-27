@@ -3,7 +3,7 @@ from os import getcwd
 
 from click.testing import CliRunner
 
-from openvariant.task.openvar import count
+from openvariant.commands.openvar import count
 
 
 class TestCountCommand(unittest.TestCase):

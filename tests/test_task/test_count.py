@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from openvariant.task.count import count
+from openvariant.commands.tasks.count import count
 
 
 class TestCount(unittest.TestCase):

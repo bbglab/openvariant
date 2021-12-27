@@ -9,7 +9,7 @@ setup(
     install_requires=['pyyaml', 'tqdm', 'click'],
     entry_points={
         'console_scripts': [
-            'openvar = openvariant.task.openvar:cli',
+            'openvar = openvariant.commands.openvar:cli',
         ]
     },
 )

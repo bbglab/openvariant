@@ -1,20 +1,22 @@
+import functools
 from os import cpu_count
 
 import click as click
 
-from openvariant.task.cat import cat as cat_task
-from openvariant.task.count import count as count_task
-from openvariant.task.groupby import group_by as group_by_task
+from openvariant.commands.tasks.cat import cat as cat_task
+from openvariant.commands.tasks.count import count as count_task
+from openvariant.commands.tasks.groupby import group_by as group_by_task
+from openvariant.commands.tasks.plugin import PluginActions
 
 
 @click.group(context_settings={'help_option_names': ['-h', '--help']})
-@click.option('--debug', help='Show debug messages.', is_flag=True)
+# @click.option('--debug', help='Show debug messages.', is_flag=True)
 @click.version_option()
-def cli(debug):
+def main():
     pass
 
 
-@click.command(name="cat", short_help='Concatenate files to standard input')
+@main.command(name="cat", short_help='Concatenate files to standard input')
 @click.argument('input_path', type=click.Path(exists=True), default='.')
 @click.option('--where', '-w', type=click.STRING, default=None, help="Filter expression. eg: CHROMOSOME == 4")
 @click.option('--annotations', '-a', default=None)
@@ -23,7 +25,7 @@ def cat(input_path: str, where: str or None, annotations: str or None, header: b
     cat_task(input_path, annotations, where, header)
 
 
-@click.command(name="count", short_help='Number of rows that matches a specified criterion')
+@main.command(name="count", short_help='Number of rows that matches a specified criterion')
 @click.argument('input_path', type=click.Path(exists=True), default='.')
 @click.option('--where', '-w', multiple=False, type=click.STRING)
 @click.option('--group_by', '-g', type=click.STRING)
@@ -42,7 +44,7 @@ def count(input_path: str, where: str, group_by: str, cores: int, quite: bool, a
     print("TOTAL\t{}".format(result[0]))
 
 
-@click.command(name="groupby", short_help='Groups rows that have the same values into summary rows')
+@main.command(name="groupby", short_help='Groups rows that have the same values into summary rows')
 @click.argument('input_path', type=click.Path(exists=True), default='.')
 @click.option('--header', help='Send header as first row', is_flag=True)
 @click.option('--show', help='Show group by each row', is_flag=True)
@@ -67,9 +69,12 @@ def groupby(input_path: str, script: str, where: str, group_by: str, cores: int,
                     print(f"{group_key}\t{r}") if show else print(f"{r}")
 
 
-cli.add_command(cat)
-cli.add_command(count)
-cli.add_command(groupby)
+@main.command(name="plugin", short_help='')
+@click.argument('action', type=click.Choice(['add']))
+@click.option('--name', '-n', type=click.STRING)
+def plugin(action, name: str or None):
+    PluginActions[action.upper()].value(name)
+
 
 if __name__ == "__main__":
-    cli()
+    main()

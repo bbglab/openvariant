@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from openvariant.task.groupby import group_by
+from openvariant.commands.tasks.groupby import group_by
 
 
 class TestGroupBy(unittest.TestCase):

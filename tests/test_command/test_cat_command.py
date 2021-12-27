@@ -3,7 +3,7 @@ from os import getcwd
 
 from click.testing import CliRunner
 
-from openvariant.task.openvar import cat
+from openvariant.commands.openvar import cat
 
 
 class TestCatCommand(unittest.TestCase):
