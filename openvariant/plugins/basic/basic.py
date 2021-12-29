@@ -1,4 +1,4 @@
-from plugins.plugin import Plugin
+from openvariant.plugins.plugin import Plugin
 
 
 class BasicPlugin(Plugin):

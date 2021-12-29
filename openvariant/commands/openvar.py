@@ -72,8 +72,9 @@ def groupby(input_path: str, script: str, where: str, group_by: str, cores: int,
 @main.command(name="plugin", short_help='')
 @click.argument('action', type=click.Choice(['add']))
 @click.option('--name', '-n', type=click.STRING)
-def plugin(action, name: str or None):
-    PluginActions[action.upper()].value(name)
+@click.option('--directory', '-d', type=click.STRING)
+def plugin(action, name: str or None, directory: str or None):
+    PluginActions[action.upper()].value(name, directory)
 
 
 if __name__ == "__main__":

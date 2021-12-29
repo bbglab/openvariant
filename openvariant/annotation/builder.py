@@ -12,7 +12,7 @@ from os.path import dirname
 from typing import Tuple, Any, List, Callable
 
 from openvariant.config.config_annotation import AnnotationKeys, AnnotationTypes
-from plugins.plugin import Plugin
+from openvariant.plugins.plugin import Plugin
 
 
 class Builder:

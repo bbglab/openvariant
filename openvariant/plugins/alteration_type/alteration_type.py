@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from plugins.plugin import Plugin
+from openvariant.plugins.plugin import Plugin
 
 
 def _prefix_length(ref: str, alt: str) -> int:
@@ -44,7 +44,7 @@ class Alteration_typePlugin(Plugin):
     """
     This plugin identifies the alteration type.
     Classifies the alteration type: checking POSITION, REF and ALT fields.
-    The result will be store as ALT_TYPE field in the same row.
+    The result will be store in a field of the input.
     """
 
     def run(self, row: dict):
