@@ -16,6 +16,7 @@ from openvariant.config.config_annotation import (AnnotationGeneralKeys, Annotat
 
 
 def _read_annotation_file(path: str) -> dict:
+    """Read annotation file with YAML package"""
     with open(path, 'r') as stream:
         try:
             return safe_load(stream)
@@ -25,6 +26,7 @@ def _read_annotation_file(path: str) -> dict:
 
 
 def _check_general_keys(annot: dict) -> None:
+    """Check if general annotations are writen in a proper format"""
     # Pattern key
     if AnnotationGeneralKeys.PATTERN.value not in annot or not isinstance(
             annot[AnnotationGeneralKeys.PATTERN.value], list) \
@@ -67,6 +69,7 @@ def _check_general_keys(annot: dict) -> None:
 
 
 def _check_annotation_keys(annot: dict) -> None:
+    """Check if annotation keys are writen in a proper format"""
     # Type key
     if AnnotationKeys.TYPE.value not in annot or not isinstance(annot[AnnotationKeys.TYPE.value], str):
         raise KeyError(f"'{AnnotationKeys.TYPE.value}' key not found or is not a str.")
@@ -123,7 +126,6 @@ def _check_annotation_keys(annot: dict) -> None:
 
 class Annotation:
     """A representation of the schema that files will be parsed"""
-    _builders: dict = {}
 
     def __init__(self, path: str) -> None:
         """
@@ -134,9 +136,7 @@ class Annotation:
         path : str
             A string path where Annotation file is located.
         """
-        self._builders: dict = {}
 
-        self._register_builders()
         self._path = path
         raw_annotation = _read_annotation_file(path)
         _check_general_keys(raw_annotation)
@@ -159,11 +159,8 @@ class Annotation:
 
         self._check_columns()
 
-    def _register_builders(self) -> None:
-        for b in AnnotationTypes:
-            self._builders[b.value] = AnnotationTypesBuilders[b.name].value
-
     def _check_columns(self) -> None:
+        """Check if columns exists as annotation fields"""
         for col in self._columns:
             if col not in self._annotations:
                 raise KeyError(f"'{col}' column unable to find.")

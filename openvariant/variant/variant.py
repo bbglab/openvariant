@@ -21,6 +21,7 @@ from openvariant.config.config_annotation import AnnotationFormat, AnnotationGen
 
 
 def _open_file(file_path: str, mode='rt') -> TextIO:
+    """Open raw files or compressed files"""
     open_method = open
     if file_path.endswith('gz') or file_path.endswith('bgz'):
         open_method = gzip.open
@@ -31,6 +32,7 @@ def _open_file(file_path: str, mode='rt') -> TextIO:
 
 
 def _base_parser(lines: TextIO, delimiter: str) -> Generator[int, str, None]:
+    """Cleaning comments and irrelevant data"""
     try:
         read_tsv = csv.reader(lines, delimiter=AnnotationDelimiter[delimiter].value)
     except KeyError:
@@ -51,6 +53,7 @@ def _base_parser(lines: TextIO, delimiter: str) -> Generator[int, str, None]:
 
 
 def _parse_row(ann: dict, line: List, header: List, original_header: List, path: str) -> dict:
+    """Parsing of a single row with annotation schema"""
     annotations = ann[AnnotationGeneralKeys.ANNOTATION.name]
     row_parser = []
     remain_annotation = {}
@@ -87,6 +90,7 @@ def _parse_row(ann: dict, line: List, header: List, original_header: List, path:
 
 
 def _apply_exclude(line: dict, excludes: List) -> bool:
+    """Excludes values described on the annotation file"""
     for exclude in excludes:
         try:
             value_line = line[exclude[ExcludesKeys.FIELD.value]]
@@ -105,6 +109,7 @@ def _apply_exclude(line: dict, excludes: List) -> bool:
 def _parser(file: str, annotation: dict, delimiter: str, columns: List, excludes: List, group_by=None,
             display_header=True) -> \
         Generator[dict, None, None]:
+    """Parsing of an entire file with annotation schema"""
     row = None
     fd = _open_file(file, "rt")
 
@@ -147,16 +152,13 @@ def _parser(file: str, annotation: dict, delimiter: str, columns: List, excludes
 
 
 def _check_extension(ext: str, path: str) -> bool:
+    """Check if file matches with the annotation pattern"""
     if ext[0] == '*':
         match = fnmatch(path, ext)
     else:
         reg_apply = re.compile(ext + '$')
         match = len(reg_apply.findall(path)) != 0
     return match
-
-
-def _extract_header(annotation: Annotation):
-    return list(annotation.annotations.keys())
 
 
 class Variant:
@@ -179,7 +181,7 @@ class Variant:
         csv.field_size_limit(int(ctypes.c_ulong(-1).value // 2))
         self._path: str = path
         self._annotation: Annotation = annotation
-        self._header: List[str] = _extract_header(annotation)
+        self._header: List[str] = list(annotation.annotations.keys())
 
     @property
     def path(self) -> str:
@@ -198,6 +200,7 @@ class Variant:
 
     def _unify(self, base_path: str, annotation: Annotation, group_by=None, display_header=True) \
             -> Generator[dict, None, None]:
+        """Parse all the files thought the annotation schema and generated yields to interate"""
         an = annotation.structure
         if isfile(base_path):
             for ext, ann in an.items():
