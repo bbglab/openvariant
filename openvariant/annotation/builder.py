@@ -284,7 +284,7 @@ def _mapping_builder(x: dict, base_path: str) -> MappingBuilder:
 
 
 class AnnotationTypesBuilders(Enum):
-    """Enum for construct every annotation type builder"""
+    """Enum to construct every annotation type builder"""
 
     """Builder for static annotation"""
     STATIC = partial(_static_builder)
