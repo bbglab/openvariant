@@ -1,4 +1,3 @@
-import functools
 from os import cpu_count
 
 import click as click
@@ -33,10 +32,7 @@ def cat(input_path: str, where: str or None, annotations: str or None, header: b
 @click.option('--cores', '-c', help='Maximum processes to run in parallel.', type=click.INT, default=cpu_count())
 @click.option('--quite', '-q', help="Don't show the progress, only the total count.", is_flag=True)
 def count(input_path: str, where: str, group_by: str, cores: int, quite: bool, annotations: str or None) -> None:
-    print(group_by)
     result = count_task(input_path, annotations, group_by=group_by, where=where, cores=cores, quite=quite)
-    print(result)
-    print(group_by)
     if len(result[1]) > 0:
         for k, v in sorted(result[1].items(), key=lambda res: res[1]):
             print("{}\t{}".format(k, v))

@@ -1,3 +1,8 @@
+"""
+Annotation
+====================================
+A core class to represent the schema which files will be parsed.
+"""
 import logging
 import re
 
@@ -117,9 +122,18 @@ def _check_annotation_keys(annot: dict) -> None:
 
 
 class Annotation:
+    """A representation of the schema that files will be parsed"""
     _builders: dict = {}
 
     def __init__(self, path: str) -> None:
+        """
+        Inits Annotation with annotation file path.
+
+        Parameters
+        ---------
+        path : str
+            A string path where Annotation file is located.
+        """
         self._builders: dict = {}
 
         self._register_builders()
@@ -156,30 +170,37 @@ class Annotation:
 
     @property
     def patterns(self) -> List[str]:
+        """List[str]: files patterns that annotation will match"""
         return self._patterns
 
     @property
     def format(self) -> str:
+        """str: output format that will have parsed files"""
         return self._format
 
     @property
     def delimiter(self) -> str:
+        """str: delimiter that annotation will read on files"""
         return self._delimiter
 
     @property
     def columns(self) -> List:
+        """List: columns that will appear on parsed output files"""
         return self._columns
 
     @property
     def annotations(self) -> dict:
+        """dict: annotation that will cover Annotation object"""
         return self._annotations
 
     @property
     def excludes(self) -> List:
+        """List: values that will be excluded after the parsing"""
         return self._excludes
 
     @property
     def structure(self) -> dict:
+        """dict: general structure of Annotation schema"""
         structure_aux = {AnnotationGeneralKeys.ANNOTATION.name: self._annotations,
                          AnnotationGeneralKeys.EXCLUDE.name: self._excludes}
         return {e: structure_aux for e in self._patterns}

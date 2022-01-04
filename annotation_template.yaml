@@ -58,13 +58,8 @@ annotation: # Columns to parse
 
   # Apply plugin in the columns described on the `fieldSource` attribute of input files.
   - type: 'plugin'
-    plugin: string # Plugin to apply, located into 'plugin' folder
+    plugin: string # Plugin to apply, could be internal, located into 'plugin' folder, or customized by the user
     field: string
-    #fieldSource: # UNDER DEVELOPMENT
-    #  - string
-    #  - string
-    #  - ...
-
 
 exclude: # List of field and value that allows to filter out all the rows that have specific value; optional
   - field: string # Field to apply the exclusion

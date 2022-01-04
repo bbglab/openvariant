@@ -1,3 +1,9 @@
+"""
+Variant
+====================================
+A core class to represent the files that will be parsed by an Annotation file.
+"""
+
 import csv
 import ctypes
 import gzip
@@ -12,7 +18,6 @@ from openvariant.annotation.annotation import Annotation
 from openvariant.annotation.parser import AnnotationTypesParsers
 from openvariant.config.config_annotation import AnnotationFormat, AnnotationGeneralKeys, ExcludesKeys, \
     AnnotationDelimiter, AnnotationTypes
-from openvariant.utils.logger import log
 
 
 def _open_file(file_path: str, mode='rt') -> TextIO:
@@ -114,7 +119,7 @@ def _parser(file: str, annotation: dict, delimiter: str, columns: List, excludes
                 row = header
 
             except (ValueError, KeyError) as e:
-                log.error(f"Error parsing header {e}")
+                ValueError(f"Error parsing header {e}")
         else:
             try:
                 row = _parse_row(annotation, line, header, original_header, file)
@@ -155,15 +160,41 @@ def _extract_header(annotation: Annotation):
 
 
 class Variant:
+    """A representation of parsed files"""
 
-    def __init__(self, path: str, ann: Annotation) -> None:
-        if path is None or path == '' or ann is None:
+    def __init__(self, path: str, annotation: Annotation) -> None:
+        """
+        Inits Variant with files path and Annotation object
+
+        Parameters
+        ---------
+        path : str
+            A string path where files to parse are located (could be directory or a single file).
+        annotation : Annotation
+            Object to describe the schema of parsed files.
+        """
+        if path is None or path == '' or annotation is None:
             raise ValueError('Invalid path or wrong Annotation')
 
         csv.field_size_limit(int(ctypes.c_ulong(-1).value // 2))
         self._path: str = path
-        self._annotation: Annotation = ann
-        self._header: List[str] = _extract_header(ann)
+        self._annotation: Annotation = annotation
+        self._header: List[str] = _extract_header(annotation)
+
+    @property
+    def path(self) -> str:
+        """str: Path where parsed files are located"""
+        return self._path
+
+    @property
+    def header(self) -> List[str]:
+        """List[str]: Header of the corresponding parsed files"""
+        return self._header
+
+    @property
+    def annotation(self) -> Annotation:
+        """Annotation: Annotation object which files were parsed"""
+        return self._annotation
 
     def _unify(self, base_path: str, annotation: Annotation, group_by=None, display_header=True) \
             -> Generator[dict, None, None]:
@@ -192,14 +223,38 @@ class Variant:
                             display_header = False
                             yield x
             except PermissionError as e:
-                print(e)
+                raise PermissionError(f"Unable to open a file, permission issue: {e}")
 
-    def read(self, group_key=None) -> Generator[dict, None, None]:
+    def read(self, group_key: str or None = None) -> Generator[dict, None, None]:
+        """
+        Read parsed files and generated an iterator for each row
+
+        Parameters
+        ---------
+        group_key : str or None
+            A string that indicates how rows will be grouped (optional).
+
+        Yields
+        ------
+        dict
+            Representation of a parsed row.
+        """
         for i, line in enumerate(self._unify(self._path, self._annotation, group_by=group_key)):
             if i != 0:
                 yield line
 
-    def save(self, file_path: str or None, display_header=True):
+    def save(self, file_path: str, display_header: bool = True) -> None:
+        """
+        Save parsed files in an indicated location.
+
+        Parameters
+        ---------
+        file_path : str or None
+            A string that indicates the location to store the output file.
+
+        display_header : bool
+            A bool that indicates if the output will have header or not (optional).
+        """
         if file_path is None or isdir(file_path):
             raise ValueError("The path must be a file.")
         with open(file_path, "w") as file:
@@ -209,15 +264,3 @@ class Variant:
                     writer.writerow(line)
                 elif i != 0:
                     writer.writerow(line.values())
-
-    @property
-    def path(self) -> str:
-        return self._path
-
-    @property
-    def header(self) -> List[str]:
-        return self._header
-
-    @property
-    def annotation(self) -> Annotation:
-        return self._annotation

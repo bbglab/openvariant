@@ -1,7 +1,7 @@
 import re
 from enum import Enum
 from functools import partial
-from os.path import basename, dirname, abspath, isfile, isdir
+from os.path import basename, dirname, abspath, isdir
 from typing import List
 
 from openvariant.annotation.builder import Builder, StaticBuilder, InternalBuilder, FilenameBuilder, DirnameBuilder, \
@@ -90,12 +90,12 @@ def _dirname_parser(x: DirnameBuilder, line: List = None, original_header: List 
 
 def _plugin_parser(x: PluginBuilder, line: List = None, original_header: List = None, path: str = None,
                    dict_line: dict = None) -> dict:
-    if x[2] is None:
+    if x[1] is None:
         raise KeyError("Unable to get plugin\'s function")
     if dict_line is None:
         dict_line = {}
     try:
-        value = x[2](dict_line)
+        value = x[1](dict_line)
     except Exception as e:
         raise Exception(f'Something went wrong on the plugin: {e}')
 

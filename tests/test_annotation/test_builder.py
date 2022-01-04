@@ -141,10 +141,9 @@ class TestBuilder(unittest.TestCase):
     def test_builder_plugin(self):
         plugin_dict = {'type': 'plugin', 'plugin': 'alteration_type', 'field': 'ALT_TYPE'}
 
-        type_annot, field_sources, func = AnnotationTypesBuilders[AnnotationTypes.PLUGIN.name].value(plugin_dict)
+        type_annot, func = AnnotationTypesBuilders[AnnotationTypes.PLUGIN.name].value(plugin_dict)
 
         self.assertEqual(type_annot, AnnotationTypes.PLUGIN.name)
-        self.assertEqual(field_sources, [])
         self.assertIsInstance(func, MethodType)
 
     def test_builder_invalid_plugin(self):

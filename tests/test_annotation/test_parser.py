@@ -185,7 +185,7 @@ class TestParser(unittest.TestCase):
             AnnotationTypesParsers[AnnotationTypes.DIRNAME.name].value(dirname_tuple, path=path)
 
     def test_parser_plugin(self):
-        plugin_tuple = (AnnotationTypes.PLUGIN.name, [], function_plugin)
+        plugin_tuple = (AnnotationTypes.PLUGIN.name, function_plugin)
         dict_line = {'CHROMOSOME': '1', 'POSITION': '123551001', 'STRAND': '+', 'REF': 'A'}
         result = AnnotationTypesParsers[AnnotationTypes.PLUGIN.name].value(plugin_tuple, dict_line=dict_line)
         res_expected = {'POSITION': '123551001', 'STRAND': '+', 'REF': 'A'}
@@ -193,19 +193,19 @@ class TestParser(unittest.TestCase):
         self.assertEqual(result, res_expected)
 
     def test_parser_invalid_dict_plugin(self):
-        plugin_tuple = (AnnotationTypes.PLUGIN.name, [], function_plugin)
+        plugin_tuple = (AnnotationTypes.PLUGIN.name, function_plugin)
 
         with self.assertRaises(Exception):
             AnnotationTypesParsers[AnnotationTypes.PLUGIN.name].value(plugin_tuple, dict_line=None)
 
     def test_parser_no_exist_func_plugin(self):
-        plugin_tuple = (AnnotationTypes.PLUGIN.name, [], None)
+        plugin_tuple = (AnnotationTypes.PLUGIN.name, None)
         dict_line = {'CHROMOSOME': '1', 'POSITION': '123551001', 'STRAND': '+', 'REF': 'A'}
         with self.assertRaises(KeyError):
             AnnotationTypesParsers[AnnotationTypes.PLUGIN.name].value(plugin_tuple, dict_line=dict_line)
 
     def test_parser_invalid_func_plugin(self):
-        plugin_tuple = (AnnotationTypes.PLUGIN.name, [], invalid_function_plugin)
+        plugin_tuple = (AnnotationTypes.PLUGIN.name, invalid_function_plugin)
         dict_line = {'CHROMOSOME': '1', 'POSITION': '123551001', 'STRAND': '+', 'REF': 'A'}
         with self.assertRaises(Exception):
             AnnotationTypesParsers[AnnotationTypes.PLUGIN.name].value(plugin_tuple, dict_line=dict_line)

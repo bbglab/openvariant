@@ -11,6 +11,7 @@ class TestCountCommand(unittest.TestCase):
     def test_count_command(self):
         runner = CliRunner()
         result = runner.invoke(count, [f'{getcwd()}/tests/data/dataset'])
+
         self.assertEqual(result.exit_code, 0)
         self.assertNotEqual(result.output, None)
 
