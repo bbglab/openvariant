@@ -14,6 +14,7 @@ from openvariant.variant.variant import Variant
 def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) -> Tuple[int, Union[dict, None]]:
 
     where_clauses = parse_where(where)
+
     i = 0
     input_file, input_annotations = selection
 

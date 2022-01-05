@@ -3,6 +3,7 @@ from typing import List
 
 
 class WhereStatementKeys(Enum):
+    """Enum of different operators in a where statement"""
     EQUAL = 'EQUAL'
     NOEQUAL = 'NOEQUAL'
     MORE = 'MORE'
@@ -12,12 +13,13 @@ class WhereStatementKeys(Enum):
 
 
 class WhereAttributesKeys(Enum):
+    """Enum for the conditional keys"""
     OPERATION = 'OPERATION'
     FIELD = 'FIELD'
     VALUE = 'VALUE'
 
 
-where_stmts = {
+WHERE_STMTS = {
     "==": WhereStatementKeys.EQUAL.value,
     "!=": WhereStatementKeys.NOEQUAL.value,
     "<": WhereStatementKeys.LESS.value,
@@ -26,11 +28,25 @@ where_stmts = {
     ">=": WhereStatementKeys.MOREEQUAL.value
 }
 
-where_stmts_reverse = {v: k for k, v in where_stmts.items()}
+WHERE_STMTS_REVERSE = {v: k for k, v in WHERE_STMTS.items()}
 
 
 # FIXME: Need an AST for where conditions also check the order
 def parse_where(where: str) -> List[dict]:
+    """Construct the conditional statement.
+
+    Build a list of conditional statements with a specified structure.
+
+    Parameters
+    ----------
+    where : str
+        Where statement.
+
+    Returns
+    -------
+    List[dict]
+        List of where statements structured in a specified way.
+    """
     if where is None or where == ():
         return []
     where_clauses = []
@@ -40,7 +56,7 @@ def parse_where(where: str) -> List[dict]:
 
         if len(wh) == 3:
             try:
-                stmt = {WhereAttributesKeys.OPERATION.value: where_stmts[wh[1]],
+                stmt = {WhereAttributesKeys.OPERATION.value: WHERE_STMTS[wh[1]],
                         WhereAttributesKeys.FIELD.value: wh[0],
                         WhereAttributesKeys.VALUE.value: wh[2]}
             except KeyError:
@@ -52,6 +68,22 @@ def parse_where(where: str) -> List[dict]:
 
 
 def skip(row: dict, where: List[dict]) -> bool:
+    """Check if a row agrees with conditional statement.
+
+    Return True if the row has to be skipped, otherwise it will return False.
+
+    Parameters
+    ----------
+    row : dict
+        Line parsed represented in a dict, where keys are fields.
+    where : List[dict]
+        A list of the conditional statements structured in a specified way.
+
+    Returns
+    -------
+    bool
+       Return True if the row has to be skipped and doesn't fulfill the conditional statement.
+    """
     if where is None or len(where) == 0:
         return False
 
@@ -61,7 +93,7 @@ def skip(row: dict, where: List[dict]) -> bool:
             value = row[k[WhereAttributesKeys.FIELD.value]]
             data_value = f"\"{value}\"" if isinstance(value, str) and not value.isnumeric() else str(value)
             filter_wh = eval(data_value + ' ' +
-                             str(where_stmts_reverse[k[WhereAttributesKeys.OPERATION.value]]) + ' ' +
+                             str(WHERE_STMTS_REVERSE[k[WhereAttributesKeys.OPERATION.value]]) + ' ' +
                              str(k[WhereAttributesKeys.VALUE.value]))
             return not filter_wh
         except (KeyError, ValueError):
