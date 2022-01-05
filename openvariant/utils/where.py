@@ -1,3 +1,8 @@
+"""
+Where
+====================================
+Core functions to construct conditional statements and manage them
+"""
 from enum import Enum
 from typing import List
 
@@ -5,10 +10,10 @@ from typing import List
 class WhereStatementKeys(Enum):
     """Enum of different operators in a where statement"""
     EQUAL = 'EQUAL'
-    NOEQUAL = 'NOEQUAL'
+    NO_EQUAL = 'NOEQUAL'
     MORE = 'MORE'
     LESS = 'LESS'
-    MOREEQUAL = 'MOREEQUAL'
+    MORE_EQUAL = 'MOREEQUAL'
     LESSEQUAL = 'LESSEQUAL'
 
 
@@ -21,11 +26,11 @@ class WhereAttributesKeys(Enum):
 
 WHERE_STMTS = {
     "==": WhereStatementKeys.EQUAL.value,
-    "!=": WhereStatementKeys.NOEQUAL.value,
+    "!=": WhereStatementKeys.NO_EQUAL.value,
     "<": WhereStatementKeys.LESS.value,
     ">": WhereStatementKeys.MORE.value,
     "<=": WhereStatementKeys.LESSEQUAL.value,
-    ">=": WhereStatementKeys.MOREEQUAL.value
+    ">=": WhereStatementKeys.MORE_EQUAL.value
 }
 
 WHERE_STMTS_REVERSE = {v: k for k, v in WHERE_STMTS.items()}

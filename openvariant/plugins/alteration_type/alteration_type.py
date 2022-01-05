@@ -20,9 +20,7 @@ def _suffix_length(ref: str, alt: str) -> int:
 
 
 def _indel_postprocess(start: int, ref: str, alt: str) -> Tuple[str, str, str]:
-    """
-    Removes the bases that are repeated in both ref and alt and are therefore NOT variants
-    """
+    """Removes the bases that are repeated in both ref and alt and are therefore NOT variants"""
     prefix_len = _prefix_length(ref, alt)
     ins_correction = 1 if len(ref) < len(alt) else 0
     start = int(start) + max(0, prefix_len - ins_correction)
@@ -47,7 +45,19 @@ class Alteration_typePlugin(Plugin):
     The result will be store in a field of the input.
     """
 
-    def run(self, row: dict):
+    def run(self, row: dict) -> dict:
+        """Extract alteration type from the input row.
+
+        Parameters
+        ----------
+        row : dict
+            Row represented as a dict.
+
+        Returns
+        -------
+        dict
+            The row with the alteration type on the ALT_TYPE field.
+        """
         if 'REF' in row and 'ALT' in row:
             l_ref = len(row['REF'])
             l_alt = len(row['ALT'])

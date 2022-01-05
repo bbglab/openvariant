@@ -1,7 +1,5 @@
 class Plugin(object):
-    """
-    Base class that each plugin must inherit from.
-    """
+    """Base class that each plugin must inherit from"""
 
     def run(self, argument):
         """
