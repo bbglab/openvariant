@@ -1,3 +1,8 @@
+"""
+Count  task
+====================================
+A core functionality to execute count task.
+"""
 import functools
 from multiprocessing import Pool
 from os import cpu_count
@@ -8,11 +13,12 @@ from tqdm import tqdm
 from openvariant.annotation.annotation import Annotation
 from openvariant.find.find import find_files
 from openvariant.utils.where import parse_where, skip
+
 from openvariant.variant.variant import Variant
 
 
 def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) -> Tuple[int, Union[dict, None]]:
-
+    """Main functionality for count task"""
     where_clauses = parse_where(where)
 
     i = 0
@@ -41,9 +47,35 @@ def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) ->
         return i, groups
 
 
-def count(base_path: str, annotation_path: str or None, group_by=None, where=None, cores=cpu_count(), quite=False) -> \
-        Tuple[int, Union[None, dict]]:
+def count(base_path: str, annotation_path: str or None, group_by: str = None, where: str = None, cores: int = cpu_count(),
+          quite: bool = False) -> Tuple[int, Union[None, dict]]:
+    """Print on the stdout the count result.
 
+    It'll parse the input files with its proper annotation schema, and it'll show the count result on the stdout.
+    Can be grouped by a field and can be added a 'where' expression.
+
+    Parameters
+    ----------
+    base_path : srt
+        Base path of input files.
+    annotation_path : str or None
+        Path of annotation file.
+    group_by : str
+        Field to group the result.
+    where : str
+        Conditional statement.
+    quite : bool
+        Discard progress bar.
+    cores : int
+        Number of cores to parallelize the task.
+
+    Returns
+    ----------
+    int
+        The total number of rows.
+    dict
+        A schema with separate groups and the numbers of rows for each.
+    """
     selection = []
     for k, a in find_files(base_path, annotation_path):
         selection += [(k, a)]

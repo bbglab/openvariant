@@ -1,9 +1,25 @@
+"""
+Plugin task
+====================================
+A core functionality to execute different plugin tasks.
+"""
 import os
 from enum import Enum
 from functools import partial
 
 
-def _add_action(name: str, directory: str) -> None:
+def _add_action(name: str, directory: str = None) -> None:
+    """Create a new plugin
+
+    It will generate all the required structure for a new plugin (files and folders).
+
+    Parameters
+    ----------
+    name : str
+        Name of the plugin to create.
+    directory : str
+        The path to create the plugin.
+    """
     path = directory if directory is not None else os.getcwd()
     if os.path.exists(f"{path}/{name}"):
         raise FileExistsError(f"Directory {path}/{name} already exists.")
@@ -40,4 +56,7 @@ def _add_action(name: str, directory: str) -> None:
 
 
 class PluginActions(Enum):
-    ADD = partial(_add_action)
+    """Enum to get the function of each action"""
+
+    """Create a new plugin"""
+    CREATE = partial(_add_action)

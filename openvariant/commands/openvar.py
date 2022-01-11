@@ -1,5 +1,4 @@
 from os import cpu_count
-
 import click as click
 
 from openvariant.commands.tasks.cat import cat as cat_task
@@ -66,7 +65,7 @@ def groupby(input_path: str, script: str, where: str, group_by: str, cores: int,
 
 
 @main.command(name="plugin", short_help='')
-@click.argument('action', type=click.Choice(['add']))
+@click.argument('action', type=click.Choice(['create']))
 @click.option('--name', '-n', type=click.STRING)
 @click.option('--directory', '-d', type=click.STRING)
 def plugin(action, name: str or None, directory: str or None):

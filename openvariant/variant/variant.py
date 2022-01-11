@@ -162,7 +162,15 @@ def _check_extension(ext: str, path: str) -> bool:
 
 
 class Variant:
-    """A representation of parsed files"""
+    """A representation of parsed files
+
+        Methods
+        -------
+        read(group_key: str or None = None)
+            Read the parsed files with its proper annotation.
+        save(file_path: str, display_header: bool = True)
+            Save parsed files on specified location.
+    """
 
     def __init__(self, path: str, annotation: Annotation) -> None:
         """
@@ -198,7 +206,7 @@ class Variant:
         """Annotation: Annotation object which files were parsed"""
         return self._annotation
 
-    def _unify(self, base_path: str, annotation: Annotation, group_by=None, display_header=True) \
+    def _unify(self, base_path: str, annotation: Annotation, group_by: str = None, display_header: bool = True) \
             -> Generator[dict, None, None]:
         """Parse all the files thought the annotation schema and generated yields to interate"""
         an = annotation.structure

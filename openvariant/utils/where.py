@@ -45,7 +45,7 @@ def parse_where(where: str) -> List[dict]:
     Parameters
     ----------
     where : str
-        Where statement.
+        Conditional statement.
 
     Returns
     -------

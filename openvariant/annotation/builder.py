@@ -86,7 +86,7 @@ def _static_builder(x: dict, base_path: str = None) -> StaticBuilder:
     -------
     str
         Annotation type
-    str
+    float or int or str
         Value of the field
     """
     try:

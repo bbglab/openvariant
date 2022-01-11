@@ -1,3 +1,8 @@
+"""
+Config Annotation
+====================================
+A core configuration and const variables of Annotation
+"""
 from enum import Enum
 
 ANNOTATION_EXTENSION = "yaml"
