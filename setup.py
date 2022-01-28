@@ -2,14 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name="open-variant",
-    version="0.5.0",
+    version="0.5.2",
     author="BBGLab - Barcelona Biomedical Genomics Lab",
     packages=find_packages(exclude=['*.test', '*.test.*', 'test.*', 'test']),
     include_package_data=True,
     install_requires=['pyyaml', 'tqdm', 'click'],
     entry_points={
         'console_scripts': [
-            'openvar = openvariant.commands.openvar:main',
+            'openvar = openvariant.commands.openvar:openvar',
         ]
     },
 )

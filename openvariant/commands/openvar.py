@@ -19,7 +19,7 @@ def openvar():
 @openvar.command(name="cat", short_help='Concatenate files to standard input')
 @click.argument('input_path', type=click.Path(exists=True), default='.')
 @click.option('--where', '-w', type=click.STRING, default=None, help="Filter expression. eg: CHROMOSOME == 4")
-@click.option('--annotations', '-a', default=None)
+@click.option('--annotations', '-a', type=click.Path(exists=True), default=None)
 @click.option('--header', help="Show the result header", is_flag=True)
 def cat(input_path: str, where: str or None, annotations: str or None, header: bool):
     """Print the parsed files on the stdout."""
