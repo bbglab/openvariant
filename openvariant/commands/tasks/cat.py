@@ -3,6 +3,7 @@ Cat  task
 ====================================
 A core functionality to execute cat task.
 """
+import time
 from typing import List
 
 from openvariant.config.config_annotation import AnnotationFormat
@@ -35,7 +36,7 @@ def cat(base_path: str, annotation_path: str or None = None, where: str = None, 
     """
     for file, annotation in find_files(base_path, annotation_path):
         where_clauses = parse_where(where)
-        result = Variant(base_path, annotation)
+        result = Variant(file, annotation)
         header = result.header if len(annotation.columns) == 0 else annotation.columns
         if header_show:
             print(_format_line(header, result.annotation.format))

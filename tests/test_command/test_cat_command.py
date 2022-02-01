@@ -45,7 +45,7 @@ class TestCatCommand(unittest.TestCase):
         runner = CliRunner()
         result = runner.invoke(cat, [f'{getcwd()}/tests/data/dataset', '--annotations',
                                      f'{getcwd()}/tests/data/dataset/no_exist.yaml'])
-        self.assertEqual(result.exit_code, 1)
+        self.assertEqual(result.exit_code, 2)
 
     def test_cat_command_invalid_annotation(self):
         runner = CliRunner()
