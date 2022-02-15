@@ -10,6 +10,8 @@ from typing import List
 from yaml import safe_load, YAMLError
 
 from openvariant.annotation.builder import AnnotationTypesBuilders
+from openvariant.annotation.parser import AnnotationTypesParsers
+from openvariant.annotation.process import AnnotationTypesProcess
 from openvariant.config.config_annotation import (AnnotationGeneralKeys, AnnotationKeys, AnnotationTypes,
                                                   ExcludesKeys, DEFAULT_FORMAT, DEFAULT_DELIMITER,
                                                   DEFAULT_COLUMNS, AnnotationFormat, AnnotationDelimiter)
@@ -127,7 +129,7 @@ def _check_annotation_keys(annot: dict) -> None:
 class Annotation:
     """A representation of the schema that files will be parsed"""
 
-    def __init__(self, path: str) -> None:
+    def __init__(self, annotation_path: str) -> None:
         """
         Inits Annotation with annotation file path.
 
@@ -137,8 +139,8 @@ class Annotation:
             A string path where Annotation file is located.
         """
 
-        self._path = path
-        raw_annotation = _read_annotation_file(path)
+        self._path = annotation_path
+        raw_annotation = _read_annotation_file(annotation_path)
         _check_general_keys(raw_annotation)
         for annot in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
             _check_annotation_keys(annot)
@@ -147,16 +149,25 @@ class Annotation:
         self._patterns = patterns if isinstance(patterns, List) else [patterns]
         self._recursive = raw_annotation.get(AnnotationGeneralKeys.RECURSIVE.value, True)
         self._delimiter = raw_annotation.get(AnnotationGeneralKeys.DELIMITER.value, DEFAULT_DELIMITER).upper()
-        self._columns = raw_annotation.get(AnnotationGeneralKeys.COLUMNS.value, DEFAULT_COLUMNS)
 
         self._format = raw_annotation.get(AnnotationGeneralKeys.FORMAT.value, DEFAULT_FORMAT).replace('.', '')
-        self._excludes = raw_annotation.get(AnnotationGeneralKeys.EXCLUDE.value, [])
+
+        self._excludes: dict = {}
+
+        for k in raw_annotation.get(AnnotationGeneralKeys.EXCLUDE.value, []):
+            key_exclude = k[AnnotationKeys.FIELD.value]
+            value_exclude = k[AnnotationKeys.VALUE.value]
+            if key_exclude in self._excludes:
+                self._excludes[key_exclude].append(value_exclude)
+            else:
+                self._excludes[key_exclude] = [value_exclude]
 
         self._annotations: dict = {}
         for k in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
             self._annotations[k[AnnotationKeys.FIELD.value]] = \
                 AnnotationTypesBuilders[k[AnnotationKeys.TYPE.value].upper()].value(k, self._path)
 
+        self._columns = raw_annotation.get(AnnotationGeneralKeys.COLUMNS.value, list(self.annotations.keys()))
         self._check_columns()
 
     def _check_columns(self) -> None:
@@ -164,6 +175,11 @@ class Annotation:
         for col in self._columns:
             if col not in self._annotations:
                 raise KeyError(f"'{col}' column unable to find.")
+
+    @property
+    def path(self) -> str:
+        """str: path where annotation file is located"""
+        return self._path
 
     @property
     def patterns(self) -> List[str]:
@@ -191,7 +207,7 @@ class Annotation:
         return self._annotations
 
     @property
-    def excludes(self) -> List:
+    def excludes(self) -> dict:
         """List: values that will be excluded after the parsing"""
         return self._excludes
 

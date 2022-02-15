@@ -9,145 +9,145 @@ import ctypes
 import gzip
 import lzma
 from fnmatch import fnmatch
-from os import listdir
-from os.path import isfile, join, isdir
+from functools import lru_cache
+import mmap
+from os.path import isdir
 import re
-from typing import Generator, TextIO, List
+from typing import Generator, TextIO, List, Callable
 
 from openvariant.annotation.annotation import Annotation
-from openvariant.annotation.parser import AnnotationTypesParsers
-from openvariant.config.config_annotation import AnnotationFormat, AnnotationGeneralKeys, ExcludesKeys, \
-    AnnotationDelimiter, AnnotationTypes
+from openvariant.annotation.process import AnnotationTypesProcess
+from openvariant.config.config_annotation import AnnotationFormat, AnnotationTypes, AnnotationDelimiter
 
 
-def _open_file(file_path: str, mode='rt') -> TextIO:
+def _open_file(file_path: str, mode='r+b') -> mmap:
     """Open raw files or compressed files"""
     open_method = open
-    if file_path.endswith('gz') or file_path.endswith('bgz'):
-        open_method = gzip.open
-    elif file_path.endswith('xz'):
+    #    open_method = gzip.GzipFile
+    if file_path.endswith('xz'):
         open_method = lzma.open
+    file = open_method(file_path, mode)
+    mm: mmap = mmap.mmap(file.fileno(), length=0, access=mmap.ACCESS_READ)
+    return mm
 
-    return open_method(file_path, mode)
 
-
-def _base_parser(lines: TextIO, delimiter: str) -> Generator[int, str, None]:
+def _base_parser(mm_obj: mmap, file_path: str, delimiter: str) -> Generator[int, str, None]:
     """Cleaning comments and irrelevant data"""
     try:
-        read_tsv = csv.reader(lines, delimiter=AnnotationDelimiter[delimiter].value)
+        if file_path.endswith('gz') or file_path.endswith('bgz'):
+            mm_obj = gzip.GzipFile(mode="r+b", fileobj=mm_obj)
     except KeyError:
         raise KeyError(f"'{delimiter}' key not found.")
-    for l_num, line in enumerate(read_tsv):  # lines, start=1):
-        # Skip empty lines
-        if len(line) == 0:
-            print(line)
+
+    for l_num, line in enumerate(iter(mm_obj.readline, b'')):
+        line = line.decode('utf-8')
+        row_line = line.split(AnnotationDelimiter[delimiter].value)
+
+        if len(row_line) == 0:
+            print(row_line)
             continue
 
         # Skip comments
-        if (line[0].startswith('#') or line[0].startswith('##') or line[0].startswith('browser') or line[0].startswith(
-                'track')) \
-                and not line[0].startswith('#CHROM'):
+        if (row_line[0].startswith('#') or row_line[0].startswith('##') or row_line[0].startswith('browser') or
+                row_line[0].startswith('track')) and not row_line[0].startswith('#CHROM'):
             continue
 
-        yield l_num, line
+        yield l_num, row_line
 
 
-def _parse_row(ann: dict, line: List, header: List, original_header: List, path: str) -> dict:
-    """Parsing of a single row with annotation schema"""
-    annotations = ann[AnnotationGeneralKeys.ANNOTATION.name]
-    row_parser = []
-    remain_annotation = {}
-    annot_plugins = []
-    for k, v in annotations.items():
-        try:
-            value = float('nan')
-            if v[0] == AnnotationTypes.PLUGIN.name:
-                annot_plugins.append(v)
-            elif v[0] != AnnotationTypes.MAPPING.name:
-                value = AnnotationTypesParsers[v[0]].value(v, line, original_header, path)
-            else:
-                remain_annotation[k] = v
-            row_parser.append(value)
-        except IndexError:
-            row_parser.append(float('nan'))
-
-    row_parser = list(map(str, row_parser))
-    dict_line = {h: row_parser[i] for i, h in enumerate(header)}
-
-    for v in annot_plugins:
-        dict_line = AnnotationTypesParsers[v[0]].value(v, line, original_header, path, dict_line)
-
-    for k, v in remain_annotation.items():
-        dict_line[k] = AnnotationTypesParsers[v[0]].value(v, line, original_header, path, dict_line)
-
-    try:
-        for k, v in dict_line.items():
-            dict_line[k] = v.format(**dict_line)
-    except AttributeError as e:
-        raise AttributeError(f'Parsing annotations error for {dict_line}: {e}')
-
-    return dict_line
-
-
-def _apply_exclude(line: dict, excludes: List) -> bool:
+def _exclude(line: dict, excludes: dict) -> bool:
     """Excludes values described on the annotation file"""
-    for exclude in excludes:
-        try:
-            value_line = line[exclude[ExcludesKeys.FIELD.value]]
-            value_exclude = str(exclude[ExcludesKeys.VALUE.value])
-            if value_exclude.startswith("!"):
-                if value_line != value_exclude[1::]:
+    for k, v in excludes.items():
+        for val in v:
+
+            if val is not None and val.startswith("!"):
+                valp = val.replace("!", "")
+                if line[k] != valp:
                     return True
             else:
-                if value_line == value_exclude:
+                if line[k] == val:
                     return True
-        except (KeyError, ValueError):
-            return False
     return False
 
 
-def _parser(file: str, annotation: dict, delimiter: str, columns: List, excludes: List, group_by=None,
-            display_header=True) -> \
-        Generator[dict, None, None]:
+def _extract_header(file_path: str, original_header: list, annotation: Annotation):
+    """Extract header to parse the entire file, and create a reference for each field"""
+    header_schema = {}
+    mapping_fields = []
+
+    for field, ann in annotation.annotations.items():
+        ann_type = ann[0]
+        if ann_type == AnnotationTypes.MAPPING.value:
+            mapping_fields.append((field, ann))
+        else:
+            header_schema.update({field: AnnotationTypesProcess[ann_type].value(ann, original_header, file_path,
+                                                                                header_schema)})
+
+    for field, ann in mapping_fields:
+        ann_type = ann[0]
+        header_schema.update({field: AnnotationTypesProcess[ann_type].value(ann, original_header, file_path,
+                                                                            header_schema)})
+    return header_schema, annotation.columns
+
+
+@lru_cache
+def _parse_field(value: float or int or str, func: Callable) -> str:
+    """Getting the value of a specific annotation field. Cached with LRU policy"""
+    return func(value)
+
+
+def _parse_field_non_cache(value: float or int or str, func: Callable) -> str:
+    """Getting the value of a specific annotation field. No cached"""
+    return func(value)
+
+
+def _parser(file_path: str, annotation: Annotation, group_by: str, display_header: bool) \
+        -> Generator[dict, None, None]:
     """Parsing of an entire file with annotation schema"""
-    row = None
-    fd = _open_file(file, "rt")
+    header, row, row_header = None, {}, []
+    fd = _open_file(file_path, "rb")
+    for lnum, line in _base_parser(fd, file_path, annotation.delimiter):
 
-    header = list(annotation[AnnotationGeneralKeys.ANNOTATION.name].keys())
-    original_header = None
-    for lnum, line in _base_parser(fd, delimiter):
-        if original_header is None:
-            original_header = line
-            try:
-                if not display_header:
-                    continue
-                row = header
-
-            except (ValueError, KeyError) as e:
-                ValueError(f"Error parsing header {e}")
+        if header is None:
+            header, row_header = _extract_header(file_path, line, annotation)
+            if not display_header:
+                continue
+            row = row_header
+            yield row
         else:
             try:
-                row = _parse_row(annotation, line, header, original_header, file)
+                line_dict = {}
+                row, plugin_values = {}, {}
+                for head in annotation.annotations.keys():
+                    type_ann, value, func = header[head]
+                    if type_ann == AnnotationTypes.PLUGIN.name:
+                        plugin_values[head] = header[head]
+                    elif type_ann == AnnotationTypes.INTERNAL.name:
+                        value = line[value] if value is not None else None
 
-                row_aux = {}
-                if _apply_exclude(row, excludes):
-                    continue
+                        line_dict[head] = _parse_field(value, func)
+                    else:
+                        line_dict[head] = _parse_field(value, func)
 
-                if len(columns) != 0:
-                    if group_by is not None and group_by not in columns:
-                        try:
-                            row_aux[group_by] = row[group_by]
-                        except KeyError as e:
-                            raise KeyError(f"Unable to find group by: {e}. Check annotation for {file} file")
+                for head, plug in plugin_values.items():
+                    _, _, func_plugin = plug
+                    line_dict[head] = _parse_field_non_cache(line_dict, func_plugin)
 
-                    for col in columns:
-                        row_aux[col] = row[col]
+                for k in annotation.columns:
+                    row[k] = line_dict[k].format(**line_dict)
 
-                    row = row_aux
+                if group_by is not None and group_by not in annotation.columns:
+                    try:
+                        row[group_by] = line_dict[group_by].format(**line_dict)
+                    except KeyError as e:
+                        raise KeyError(f"Unable to find group by: {e}. Check annotation for {file_path} file")
+
+                if row and not _exclude(line_dict, annotation.excludes):
+                    yield row
+
             except (ValueError, IndexError, KeyError) as e:
-                raise ValueError(f"Error parsing line: {lnum} {file}: {e}")
-
-        yield row
+                fd.close()
+                raise ValueError(f"Error parsing line: {lnum} {file_path}: {e}")
     fd.close()
 
 
@@ -159,6 +159,13 @@ def _check_extension(ext: str, path: str) -> bool:
         reg_apply = re.compile(ext + '$')
         match = len(reg_apply.findall(path)) != 0
     return match
+
+
+def _unify(base_path: str, annotation: Annotation, group_by: str = None, display_header: bool = True) \
+        -> Generator[dict, None, None]:
+    """Parse all the files thought the annotation schema and generated yields to interrate"""
+    for x in _parser(base_path, annotation, group_by, display_header):
+        yield x
 
 
 class Variant:
@@ -189,7 +196,8 @@ class Variant:
         csv.field_size_limit(int(ctypes.c_ulong(-1).value // 2))
         self._path: str = path
         self._annotation: Annotation = annotation
-        self._header: List[str] = list(annotation.annotations.keys())
+        self._header: List[str] = list(annotation.annotations.keys()) if len(annotation.columns) == 0 \
+            else annotation.columns
 
     @property
     def path(self) -> str:
@@ -206,36 +214,6 @@ class Variant:
         """Annotation: Annotation object which files were parsed"""
         return self._annotation
 
-    def _unify(self, base_path: str, annotation: Annotation, group_by: str = None, display_header: bool = True) \
-            -> Generator[dict, None, None]:
-        """Parse all the files thought the annotation schema and generated yields to interate"""
-        an = annotation.structure
-        if isfile(base_path):
-            for ext, ann in an.items():
-                if _check_extension(ext, base_path):
-                    for x in _parser(base_path, ann, annotation.delimiter, annotation.columns, annotation.excludes,
-                                     group_by, display_header):
-                        display_header = False
-                        yield x
-        else:
-            try:
-                for file in listdir(base_path):
-                    file_path = join(base_path, file)
-                    if isfile(file_path):
-                        for ext, ann in an.items():
-                            if _check_extension(ext, file_path):
-                                for x in _parser(file_path, ann, annotation.delimiter, annotation.columns,
-                                                 annotation.excludes,
-                                                 group_by, display_header):
-                                    display_header = False
-                                    yield x
-                    else:
-                        for x in self._unify(file_path, annotation, display_header=display_header):
-                            display_header = False
-                            yield x
-            except PermissionError as e:
-                raise PermissionError(f"Unable to open a file, permission issue: {e}")
-
     def read(self, group_key: str or None = None) -> Generator[dict, None, None]:
         """
         Read parsed files and generated an iterator for each row
@@ -250,7 +228,7 @@ class Variant:
         dict
             Representation of a parsed row.
         """
-        for i, line in enumerate(self._unify(self._path, self._annotation, group_by=group_key)):
+        for i, line in enumerate(_unify(self._path, self._annotation, group_by=group_key)):
             if i != 0:
                 yield line
 
@@ -270,7 +248,7 @@ class Variant:
             raise ValueError("The path must be a file.")
         with open(file_path, "w") as file:
             writer = csv.writer(file, delimiter=AnnotationFormat[self._annotation.format.upper()].value)
-            for i, line in enumerate(self._unify(self._path, self._annotation)):
+            for i, line in enumerate(_unify(self._path, self._annotation)):
                 if display_header and i == 0:
                     writer.writerow(line)
                 elif i != 0:

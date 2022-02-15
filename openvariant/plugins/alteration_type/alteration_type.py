@@ -45,7 +45,7 @@ class Alteration_typePlugin(Plugin):
     The result will be store in a field of the input.
     """
 
-    def run(self, row: dict) -> dict:
+    def run(self, row: dict) -> str:
         """Extract alteration type from the input row.
 
         Parameters
@@ -78,4 +78,4 @@ class Alteration_typePlugin(Plugin):
             row['ALT_TYPE'] = alt_type
         else:
             raise ValueError("Unable to find 'REF', 'ALT' or 'POSITION' values in the row.")
-        return row
+        return row['ALT_TYPE']

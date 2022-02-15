@@ -13,7 +13,7 @@ import importlib
 import importlib.util
 from enum import Enum
 from functools import partial
-from os.path import dirname
+from os.path import dirname, isdir, basename, abspath
 from typing import Tuple, Any, List, Callable
 
 from openvariant.config.config_annotation import AnnotationKeys, AnnotationTypes
@@ -47,14 +47,13 @@ PluginBuilder = Tuple[str, Callable]
 MappingBuilder = Tuple[str, List, dict]
 
 
+
 def _get_function_and_regexp(x: dict) -> Tuple[Builder, re.Pattern]:
     """Get the function and regular expression of an annotation
-
     Parameters
     ----------
     x : dict
         Annotation
-
     Returns
     -------
     Builder
@@ -74,14 +73,11 @@ def _get_function_and_regexp(x: dict) -> Tuple[Builder, re.Pattern]:
 
 def _static_builder(x: dict, base_path: str = None) -> StaticBuilder:
     """Built StaticBuilder from an annotation
-
     Annotation based on a static annotation with a fixed value.
-
     Parameters
     ----------
     x : dict
         Annotation
-
     Returns
     -------
     str
@@ -98,14 +94,11 @@ def _static_builder(x: dict, base_path: str = None) -> StaticBuilder:
 
 def _internal_builder(x: dict, base_path: str = None) -> InternalBuilder:
     """Built InternalBuilder from an annotation
-
     Annotation based on an internal annotation from files to be parsed.
-
     Parameters
     ----------
     x : dict
         Annotation
-
     Returns
     -------
     str
@@ -127,14 +120,11 @@ def _internal_builder(x: dict, base_path: str = None) -> InternalBuilder:
 
 def _dirname_builder(x: dict, base_path: str = None) -> DirnameBuilder:
     """Built DirnameBuilder from an annotation
-
     Annotation based on a dirname annotation from the dirname which is files to parsed are located.
-
     Parameters
     ----------
     x : dict
         Annotation
-
     Returns
     -------
     str
@@ -151,14 +141,11 @@ def _dirname_builder(x: dict, base_path: str = None) -> DirnameBuilder:
 
 def _filename_builder(x: dict, base_path: str = None) -> FilenameBuilder:
     """Built FilenameBuilder from an annotation
-
     Annotation based on a filename annotation from the name of each file that have to be parsed.
-
     Parameters
     ----------
     x : dict
         Annotation
-
     Returns
     -------
     str
@@ -175,12 +162,10 @@ def _filename_builder(x: dict, base_path: str = None) -> FilenameBuilder:
 
 def _get_plugin_function(mod) -> Callable:
     """Get the function from the module
-
     Parameters
     ----------
     mod
         Plugin module where 'run' function is imported
-
     Returns
     -------
     Callable
@@ -197,15 +182,12 @@ def _get_plugin_function(mod) -> Callable:
 
 def _plugin_builder(x: dict, base_path: str = None) -> PluginBuilder:
     """Built PluginBuilder from an annotation
-
     Annotation based on a plugin annotation, from an internal or a customized plugin which data is transformed and
     executed thought a process.
-
     Parameters
     ----------
     x : dict
         Annotation
-
     Returns
     -------
     str
@@ -243,17 +225,14 @@ def _plugin_builder(x: dict, base_path: str = None) -> PluginBuilder:
 
 def _mapping_builder(x: dict, base_path: str) -> MappingBuilder:
     """Built MappingBuilder from an annotation
-
     Annotation based on a mapping annotation, it matches the value of the input file to a value that appears in the
     mapping file. It will return the value of one field of the mapping that has been indicated on the annotation.
-
     Parameters
     ----------
     x : dict
         Annotation.
     base_path : str
         A base path where file that is parsing is located.
-
     Returns
     -------
     str
