@@ -48,7 +48,7 @@ annotation: # Columns to parse
   # Mapping annotation allows to use a mapping file to add a new column base on a many-to-one relation
   - type: 'mapping'
     field: string
-    fieldSource: # Fields to look and map in the input file; required
+    fieldSource: # Fields (from annotation file) to look and map in the input file; required
       - string
       - string
       - ...
