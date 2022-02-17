@@ -15,6 +15,15 @@ class TestAnnotation(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             Annotation(f'{getcwd()}/tests/data/no_exist.yaml')
 
+    def test_annotation_path(self):
+        res_expect = f'{getcwd()}/tests/data/annotation/annotation.yaml'
+        annotation = Annotation(f'{getcwd()}/tests/data/annotation/annotation.yaml')
+        self.assertEqual(annotation.path, res_expect)
+
+    def test_annotation_invalid_path(self):
+        with self.assertRaises(FileNotFoundError):
+            Annotation(f'{getcwd()}/tests/data/no_exist.yaml')
+
     def test_annotation_patterns(self):
         res_expect = {'*.maf', '*.vcf.gz'}
         annotation = Annotation(f'{getcwd()}/tests/data/annotation/annotation.yaml')
@@ -74,7 +83,7 @@ class TestAnnotation(unittest.TestCase):
             Annotation(f'{getcwd()}/tests/data/annotation/no_exist_annotation.yaml')
 
     def test_annotation_excludes(self):
-        res_expect = [{'field': 'MUTATION_REF', 'value': 1234}, {'field': 'DATASET', 'value': 'ucs'}]
+        res_expect = {'MUTATION_REF': [1234], 'DATASET': ['ucs']}
         annotation = Annotation(f'{getcwd()}/tests/data/annotation/annotation.yaml')
         self.assertEqual(annotation.excludes, res_expect)
 

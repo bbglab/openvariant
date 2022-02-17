@@ -10,21 +10,9 @@ from typing import List
 from yaml import safe_load, YAMLError
 
 from openvariant.annotation.builder import AnnotationTypesBuilders
-from openvariant.annotation.parser import AnnotationTypesParsers
-from openvariant.annotation.process import AnnotationTypesProcess
 from openvariant.config.config_annotation import (AnnotationGeneralKeys, AnnotationKeys, AnnotationTypes,
                                                   ExcludesKeys, DEFAULT_FORMAT, DEFAULT_DELIMITER,
-                                                  DEFAULT_COLUMNS, AnnotationFormat, AnnotationDelimiter)
-
-
-def _read_annotation_file(path: str) -> dict:
-    """Read annotation file with YAML package"""
-    with open(path, 'r') as stream:
-        try:
-            return safe_load(stream)
-        except YAMLError as exc:
-            logging.error(exc)
-        stream.close()
+                                                  AnnotationFormat, AnnotationDelimiter)
 
 
 def _check_general_keys(annot: dict) -> None:
@@ -83,10 +71,9 @@ def _check_annotation_keys(annot: dict) -> None:
         raise KeyError(f"'{AnnotationKeys.FIELD.value}' key not found or is not a str.")
 
     # Value key
-    # if (annot[AnnotationKeys.TYPE.value] == AnnotationTypes.STATIC.value or
-    #    annot[AnnotationKeys.TYPE.value] == AnnotationTypes.INTERNAL.value) and \
-    #        not isinstance(annot[AnnotationKeys.VALUE.value], str):
-    #    raise KeyError(f"'{AnnotationKeys.VALUE.value}' key not found or is not a str.")
+    if (annot[AnnotationKeys.TYPE.value] == AnnotationTypes.STATIC.value) and \
+            not isinstance(annot[AnnotationKeys.VALUE.value], str):
+        raise KeyError(f"'{AnnotationKeys.VALUE.value}' key not found or is not a str.")
 
     # Field source key
     if (annot[AnnotationKeys.TYPE.value] == AnnotationTypes.INTERNAL.value or
@@ -129,18 +116,27 @@ def _check_annotation_keys(annot: dict) -> None:
 class Annotation:
     """A representation of the schema that files will be parsed"""
 
+    def _read_annotation_file(self) -> dict:
+        """Read annotation file with YAML package"""
+        with open(self._path, 'r') as stream:
+            try:
+                return safe_load(stream)
+            except YAMLError as exc:
+                logging.error(exc)
+            stream.close()
+
     def __init__(self, annotation_path: str) -> None:
         """
         Inits Annotation with annotation file path.
 
         Parameters
         ---------
-        path : str
+        annotation_path : str
             A string path where Annotation file is located.
         """
 
         self._path = annotation_path
-        raw_annotation = _read_annotation_file(annotation_path)
+        raw_annotation = self._read_annotation_file()
         _check_general_keys(raw_annotation)
         for annot in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
             _check_annotation_keys(annot)

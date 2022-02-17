@@ -2,17 +2,16 @@ pattern: #  List of file patterns to match with the current annotation; required
   - string
   - string
   - ...
-# UNDER DEVELOPMENT - recursive: boolean # Explore annotations recursively to all subdirectories; default: False
 format: string # Output format "tsv" or "csv"; default: "tsv"
 delimiter: string # Delimiter of input files: t - tabular, c - coma; default: "t"
 
-columns: # A list of columns that we want as an output; optional
+columns: # A list of columns that we want as an output; optional (otherwise it will show all the annotation fields)
   - string
   - string
   - ...
 
 annotation: # Columns to parse
-  # Required attributes in each element:
+  # Required attributes in each annotation element:
   # 'type': Describe the type of field that will be parsed.
   # Could be: static, internal, filename, dirname, mapping, plugin
   # 'field': The name of the column that will be parsed
@@ -23,13 +22,12 @@ annotation: # Columns to parse
     value: string | number # Value that it will be written to the output file; required
 
   # The values of `fieldSource` columns that appears on the input files will
-  # be extracted and parsed as values in the outfile
+  # be extracted and parsed as values in the output
   - type: 'internal'
     field: string
-    value: string # Format of the column value; optional
     fieldSource: # Columns to look for in the input files; required
-      - string or list
-      - string or list
+      - string
+      - string
       - ...
     function: string # Function to apply to internal value; optional
 

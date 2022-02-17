@@ -2,7 +2,7 @@ import math
 import os
 import re
 import unittest
-from types import FunctionType, MethodType
+from types import MethodType
 
 from openvariant.annotation.builder import AnnotationTypesBuilders, Builder
 from openvariant.config.config_annotation import AnnotationTypes

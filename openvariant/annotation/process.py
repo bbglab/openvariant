@@ -16,7 +16,7 @@ PluginProcess = Tuple[str, None, Callable]
 MappingProcess = Tuple[str, float or int or str, Callable]
 
 
-def _static_process(x: StaticBuilder, original_header: List, file_path: str = None, annotation: dict = None) \
+def _static_process(x: StaticBuilder, original_header: List = [] or None, file_path: str = None, annotation: dict = None) \
         -> StaticProcess:
     """Get of a Static value
     It will return a fixed value described on the annotation file.
@@ -29,10 +29,13 @@ def _static_process(x: StaticBuilder, original_header: List, file_path: str = No
     str
         A value from an internal field on the input file.
     """
-    return AnnotationTypes.STATIC.name, x[1] if x[1] is not None else float('nan'), str
+    try:
+        return AnnotationTypes.STATIC.name, x[1] if x[1] is not None else float('nan'), str
+    except TypeError:
+        raise TypeError(f'Unable to parser {x[0]} annotation')
 
 
-def _internal_process(x: InternalBuilder, original_header: List, file_path: str = None, annotation: dict = None) \
+def _internal_process(x: InternalBuilder, original_header = List or None, file_path: str = None, annotation: dict = None) \
         -> InternalProcess:
     field_pos = None
     try:
@@ -48,7 +51,7 @@ def _internal_process(x: InternalBuilder, original_header: List, file_path: str 
     return AnnotationTypes.INTERNAL.name, field_pos, x[2]
 
 
-def _filename_process(x: FilenameBuilder, original_header: List, file_path: str = None, annotation: dict = None) \
+def _filename_process(x: FilenameBuilder, original_header: List = [] or None, file_path: str = None, annotation: dict = None) \
         -> FilenameProcess:
     try:
         if isdir(file_path):
@@ -66,7 +69,7 @@ def _filename_process(x: FilenameBuilder, original_header: List, file_path: str 
     return AnnotationTypes.FILENAME.name, value if value is not None else float('nan'), str
 
 
-def _dirname_process(x: DirnameBuilder, original_header: List, file_path: str = None, annotation: dict = None) \
+def _dirname_process(x: DirnameBuilder, original_header: List = [], file_path: str = None, annotation: dict = None) \
         -> DirnameProcess:
     try:
         if isdir(file_path):
@@ -84,13 +87,17 @@ def _dirname_process(x: DirnameBuilder, original_header: List, file_path: str = 
     return AnnotationTypes.DIRNAME.name, value if value is not None else float('nan'), str
 
 
-def _plugin_process(x: PluginBuilder, original_header: List, file_path: str = None, annotation: dict = None) \
+def _plugin_process(x: PluginBuilder, original_header: List = [] or None, file_path: str = None, annotation: dict = None) \
         -> PluginProcess:
+    if x[1] is None:
+        raise ValueError(f'Wrong function on {x[0]} annotation')
     return AnnotationTypes.PLUGIN.name, None, x[1]
 
 
-def _mapping_process(x: MappingBuilder, original_header: List, file_path: str = None, annotation: dict = None) \
+def _mapping_process(x: MappingBuilder, original_header: List = [] or None, file_path: str = None, annotation: dict = None) \
         -> MappingProcess:
+    if x[1] is None:
+        raise ValueError(f'Wrong source fields on {x[0]} annotation')
     value = None
     for source in x[1]:
         try:
