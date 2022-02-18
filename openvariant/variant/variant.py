@@ -89,7 +89,7 @@ def _extract_header(file_path: str, original_header: list, annotation: Annotatio
     return header_schema, annotation.columns
 
 
-@lru_cache
+@lru_cache(maxsize=256)
 def _parse_field(value: float or int or str, func: Callable) -> str:
     """Getting the value of a specific annotation field. Cached with LRU policy"""
     return func(value)

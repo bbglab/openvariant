@@ -41,6 +41,21 @@ def _static_process(x: StaticBuilder, original_header: List = [] or None, file_p
 
 def _internal_process(x: InternalBuilder, original_header = List or None, file_path: str = None, annotation: dict = None) \
         -> InternalProcess:
+    """Get a Internal value
+    It will return a InternalProcess describing the value to get from static annotation.
+    Parameters
+    ----------
+    x : StaticBuilder
+        Annotation builder.
+    Returns
+    -------
+    str
+        Annotation type
+    float or int or str
+        Fixed value
+    Callable
+        Function to execute on the fixed value
+    """
     field_pos = None
     try:
         for i, h in enumerate(original_header):
