@@ -54,7 +54,7 @@ class TestGroupBy(unittest.TestCase):
         res_expect_groups = {'kich', 'chol', 'meso', 'laml', 'acc', 'ucs'}
         res_groups = set()
         for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
-                                     None, key_by='DATASET', where="PROJECT < \"SAMPLE1\"", quite=True)):
+                                     None, key_by='DATASET', where="PROJECT < \"sample1\"", quite=True)):
 
             res_groups.add(g)
             if g in ['chol', 'acc']:
@@ -68,7 +68,7 @@ class TestGroupBy(unittest.TestCase):
         res_expect_groups = {'kich', 'chol', 'meso', 'laml', 'acc', 'ucs'}
         res_groups = set()
         for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
-                                     None, 'DATASET', where="PROJECT <= \"SAMPLE1\"", quite=True)):
+                                     None, 'DATASET', where="PROJECT <= \"sample1\"", quite=True)):
             res_groups.add(g)
 
             if g in ['chol', 'acc', 'meso', 'ucs']:
@@ -82,7 +82,7 @@ class TestGroupBy(unittest.TestCase):
         res_expect_groups = {'kich', 'chol', 'meso', 'laml', 'acc', 'ucs'}
         res_groups = set()
         for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
-                                     None, 'DATASET', where="PROJECT > \"SAMPLE1\"", quite=True)):
+                                     None, 'DATASET', where="PROJECT > \"sample1\"", quite=True)):
 
             res_groups.add(g)
             if g in ['laml', 'kich']:
@@ -96,7 +96,7 @@ class TestGroupBy(unittest.TestCase):
         res_expect_groups = {'kich', 'chol', 'meso', 'laml', 'acc', 'ucs'}
         res_groups = set()
         for g, v, _ in list(group_by(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml', None,
-                                     'DATASET', where="PROJECT >= \"SAMPLE1\"", quite=True)):
+                                     'DATASET', where="PROJECT >= \"sample1\"", quite=True)):
             res_groups.add(g)
             if g in ['meso', 'ucs', 'laml', 'kich']:
                 self.assertNotEqual(v, [])

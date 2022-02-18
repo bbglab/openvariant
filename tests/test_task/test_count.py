@@ -80,8 +80,6 @@ class TestCount(unittest.TestCase):
                          "Count groups not matching")
 
     def test_count_invalid_group_by(self):
-        res = count(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
-                    group_by="NO_EXIST", quite=True)
-
-        self.assertEqual(res[0], 0, "Count number not matching")
-        self.assertEqual(res[1], {}, "Count groups not matching")
+        with self.assertRaises(ValueError):
+            count(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
+                  group_by="NO_EXIST", quite=True)

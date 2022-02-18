@@ -8,9 +8,9 @@ from openvariant.variant.variant import Variant
 
 class TestVariantRead(unittest.TestCase):
 
-    def test_variant_read(self):
+    def test_variant_read_x(self):
         annotation = Annotation(f'{os.getcwd()}/tests/data/dataset/dataset.yaml')
-        variant = Variant(f'{os.getcwd()}/tests/data/dataset', annotation)
+        variant = Variant(f'{os.getcwd()}/tests/data/dataset/CHOL.maf', annotation)
 
         self.assertNotEqual(variant.read(), None)
 
@@ -21,7 +21,7 @@ class TestVariantRead(unittest.TestCase):
 
     def test_variant_read_by_key(self):
         annotation = Annotation(f'{os.getcwd()}/tests/data/dataset/dataset.yaml')
-        variant = Variant(f'{os.getcwd()}/tests/data/dataset', annotation)
+        variant = Variant(f'{os.getcwd()}/tests/data/dataset/CHOL.maf', annotation)
 
         self.assertNotEqual(variant.read('DATASET'), None)
 

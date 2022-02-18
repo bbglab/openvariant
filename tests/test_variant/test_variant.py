@@ -9,13 +9,13 @@ class TestVariant(unittest.TestCase):
 
     def test_variant_creation(self):
         annotation = Annotation(f'{os.getcwd()}/tests/data/dataset/dataset.yaml')
-        variant = Variant(f'{os.getcwd()}/tests/data/dataset', annotation)
+        variant = Variant(f'{os.getcwd()}/tests/data/dataset/CHOL.maf', annotation)
 
         self.assertNotEqual(variant, None)
 
     def test_variant_invalid_annotation(self):
         with self.assertRaises(ValueError):
-            Variant(f'{os.getcwd()}/tests/data/dataset', None)
+            Variant(f'{os.getcwd()}/tests/data/dataset/CHOL.maf', None)
 
     def test_variant_invalid_path(self):
         with self.assertRaises(ValueError):
@@ -24,7 +24,7 @@ class TestVariant(unittest.TestCase):
 
     def test_variant_path(self):
         annotation = Annotation(f'{os.getcwd()}/tests/data/dataset/dataset.yaml')
-        path = f'{os.getcwd()}/tests/data/dataset'
+        path = f'{os.getcwd()}/tests/data/dataset/CHOL.maf'
         variant = Variant(path, annotation)
 
         self.assertEqual(variant.path, path)
@@ -32,13 +32,13 @@ class TestVariant(unittest.TestCase):
     def test_variant_header(self):
         annotation = Annotation(f'{os.getcwd()}/tests/data/dataset/dataset.yaml')
         res_expected = {'PLATFORM', 'POSITION', 'variant', 'DATASET', 'PROJECT'}
-        variant = Variant(f'{os.getcwd()}/tests/data/dataset', annotation)
+        variant = Variant(f'{os.getcwd()}/tests/data/dataset/CHOL.maf', annotation)
 
         self.assertEqual(set(variant.header), res_expected)
 
     def test_variant_annotation(self):
         annotation = Annotation(f'{os.getcwd()}/tests/data/dataset/dataset.yaml')
-        variant = Variant(f'{os.getcwd()}/tests/data/dataset', annotation)
+        variant = Variant(f'{os.getcwd()}/tests/data/dataset/CHOL.maf', annotation)
 
         self.assertEqual(variant.annotation, annotation)
 
