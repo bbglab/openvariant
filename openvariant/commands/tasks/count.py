@@ -35,6 +35,7 @@ def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) ->
     else:
         groups = {}
         for r in result.read(group_by):
+
             if skip(r, where_clauses):
                 continue
             try:

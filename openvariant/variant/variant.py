@@ -11,7 +11,7 @@ import lzma
 from fnmatch import fnmatch
 from functools import lru_cache
 import mmap
-from os.path import isdir
+from os.path import isdir, isfile
 import re
 from typing import Generator, TextIO, List, Callable
 
@@ -20,15 +20,14 @@ from openvariant.annotation.process import AnnotationTypesProcess
 from openvariant.config.config_annotation import AnnotationFormat, AnnotationTypes, AnnotationDelimiter
 
 
-def _open_file(file_path: str, mode='r+b') -> mmap:
+def _open_file(file_path: str, mode='r+b'):
     """Open raw files or compressed files"""
     open_method = open
-    #    open_method = gzip.GzipFile
     if file_path.endswith('xz'):
         open_method = lzma.open
     file = open_method(file_path, mode)
     mm: mmap = mmap.mmap(file.fileno(), length=0, access=mmap.ACCESS_READ)
-    return mm
+    return mm, file
 
 
 def _base_parser(mm_obj: mmap, file_path: str, delimiter: str) -> Generator[int, str, None]:
@@ -105,9 +104,8 @@ def _parser(file_path: str, annotation: Annotation, group_by: str, display_heade
         -> Generator[dict, None, None]:
     """Parsing of an entire file with annotation schema"""
     header, row, row_header = None, {}, []
-    fd = _open_file(file_path, "rb")
-    for lnum, line in _base_parser(fd, file_path, annotation.delimiter):
-
+    mm, file = _open_file(file_path, "rb")
+    for lnum, line in _base_parser(mm, file_path, annotation.delimiter):
         if header is None:
             header, row_header = _extract_header(file_path, line, annotation)
             if not display_header:
@@ -146,9 +144,11 @@ def _parser(file_path: str, annotation: Annotation, group_by: str, display_heade
                     yield row
 
             except (ValueError, IndexError, KeyError) as e:
-                fd.close()
+                mm.close()
+                file.close()
                 raise ValueError(f"Error parsing line: {lnum} {file_path}: {e}")
-    fd.close()
+    mm.close()
+    file.close()
 
 
 def _check_extension(ext: str, path: str) -> bool:
@@ -190,8 +190,10 @@ class Variant:
         annotation : Annotation
             Object to describe the schema of parsed files.
         """
-        if path is None or path == '' or annotation is None:
-            raise ValueError('Invalid path or wrong Annotation')
+        if path is None or path == '' or not isfile(path):
+            raise ValueError('Invalid path, must be a file')
+        if annotation is None:
+            raise ValueError('Invalid annotation')
 
         csv.field_size_limit(int(ctypes.c_ulong(-1).value // 2))
         self._path: str = path

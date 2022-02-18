@@ -13,7 +13,7 @@ import importlib
 import importlib.util
 from enum import Enum
 from functools import partial
-from os.path import dirname, isdir, basename, abspath
+from os.path import dirname
 from typing import Tuple, Any, List, Callable
 
 from openvariant.config.config_annotation import AnnotationKeys, AnnotationTypes
@@ -47,7 +47,6 @@ PluginBuilder = Tuple[str, Callable]
 MappingBuilder = Tuple[str, List, dict]
 
 
-
 def _get_function_and_regexp(x: dict) -> Tuple[Builder, re.Pattern]:
     """Get the function and regular expression of an annotation
     Parameters
@@ -72,8 +71,7 @@ def _get_function_and_regexp(x: dict) -> Tuple[Builder, re.Pattern]:
 
 
 def _static_builder(x: dict, base_path: str = None) -> StaticBuilder:
-    """Built StaticBuilder from an annotation
-    Annotation based on a static annotation with a fixed value.
+    """Built StaticBuilder from an annotation based on a static annotation with a fixed value.
     Parameters
     ----------
     x : dict
@@ -93,8 +91,7 @@ def _static_builder(x: dict, base_path: str = None) -> StaticBuilder:
 
 
 def _internal_builder(x: dict, base_path: str = None) -> InternalBuilder:
-    """Built InternalBuilder from an annotation
-    Annotation based on an internal annotation from files to be parsed.
+    """Built InternalBuilder from an annotation based on an internal annotation from fields of input files.
     Parameters
     ----------
     x : dict
@@ -119,8 +116,8 @@ def _internal_builder(x: dict, base_path: str = None) -> InternalBuilder:
 
 
 def _dirname_builder(x: dict, base_path: str = None) -> DirnameBuilder:
-    """Built DirnameBuilder from an annotation
-    Annotation based on a dirname annotation from the dirname which is files to parsed are located.
+    """Built DirnameBuilder from an annotation based on a dirname annotation, getting the dirname which input files
+    are located.
     Parameters
     ----------
     x : dict
@@ -140,8 +137,7 @@ def _dirname_builder(x: dict, base_path: str = None) -> DirnameBuilder:
 
 
 def _filename_builder(x: dict, base_path: str = None) -> FilenameBuilder:
-    """Built FilenameBuilder from an annotation
-    Annotation based on a filename annotation from the name of each file that have to be parsed.
+    """Built FilenameBuilder from an annotation based on a filename annotation, getting the filename of each input file.
     Parameters
     ----------
     x : dict
@@ -180,10 +176,48 @@ def _get_plugin_function(mod) -> Callable:
     return func
 
 
+def _mapping_builder(x: dict, base_path: str) -> MappingBuilder:
+    """Built MappingBuilder from an annotation based on a mapping annotation, it matches the value of the input file to
+    a value that appears in the mapping file. It will return the value of one field of the mapping that has been
+    indicated on the annotation.
+    Parameters
+    ----------
+    x : dict
+        Annotation.
+    base_path : str
+        A base path where file that is parsing is located.
+    Returns
+    -------
+    str
+        Annotation type.
+    List
+        Fields that has to look for in the input files.
+    dict
+        Schema of the mapping file, where 'key' is the value of one column (fieldMapping) in mapping file and
+        'value' is the value of one column (valueMapping) in the mapping file
+    """
+    values: dict = {}
+    mapping_files = x[AnnotationKeys.FILE_MAPPING.value]
+    files = list(glob.iglob(f"{dirname(base_path)}/**/{mapping_files}", recursive=True))
+    if len(files) == 0:
+        raise FileNotFoundError(f"Unable to find '{mapping_files}' file in '{dirname(base_path)}'")
+    try:
+        for mapping_file in files:
+            open_method = gzip.open if mapping_file.endswith('gz') else open
+            with open_method(mapping_file, "rt") as fd:
+                for r in csv.DictReader(fd, delimiter='\t'):
+                    field = r[x[AnnotationKeys.FIELD_MAPPING.value]]
+                    val = r[x[AnnotationKeys.FIELD_VALUE.value]]
+                    values[field] = val
+            break
+    except TypeError:
+        raise TypeError("Unable to parse mapping annotation")
+    return AnnotationTypes.MAPPING.name, x[AnnotationKeys.FIELD_SOURCE.value], values
+
+
 def _plugin_builder(x: dict, base_path: str = None) -> PluginBuilder:
-    """Built PluginBuilder from an annotation
-    Annotation based on a plugin annotation, from an internal or a customized plugin which data is transformed and
-    executed thought a process.
+    """Built PluginBuilder from an annotation based on a plugin annotation, from an internal or a customized plugin
+    which data is transformed and executed thought a process.
     Parameters
     ----------
     x : dict
@@ -223,45 +257,6 @@ def _plugin_builder(x: dict, base_path: str = None) -> PluginBuilder:
     return AnnotationTypes.PLUGIN.name, func
 
 
-def _mapping_builder(x: dict, base_path: str) -> MappingBuilder:
-    """Built MappingBuilder from an annotation
-    Annotation based on a mapping annotation, it matches the value of the input file to a value that appears in the
-    mapping file. It will return the value of one field of the mapping that has been indicated on the annotation.
-    Parameters
-    ----------
-    x : dict
-        Annotation.
-    base_path : str
-        A base path where file that is parsing is located.
-    Returns
-    -------
-    str
-        Annotation type.
-    List
-        Fields that has to look for in the input files.
-    dict
-        Schema of the mapping file, where 'key' is the value of one column (fieldMapping) in mapping file and
-        'value' is the value of one column (valueMapping) in the mapping file
-    """
-    values: dict = {}
-    mapping_files = x[AnnotationKeys.FILE_MAPPING.value]
-    files = list(glob.iglob(f"{dirname(base_path)}/**/{mapping_files}", recursive=True))
-    if len(files) == 0:
-        raise FileNotFoundError(f"Unable to find '{mapping_files}' file in '{dirname(base_path)}'")
-    try:
-        for mapping_file in files:
-            open_method = gzip.open if mapping_file.endswith('gz') else open
-            with open_method(mapping_file, "rt") as fd:
-                for r in csv.DictReader(fd, delimiter='\t'):
-                    field = r[x[AnnotationKeys.FIELD_MAPPING.value]]
-                    val = r[x[AnnotationKeys.FIELD_VALUE.value]]
-                    values[field] = val
-            break
-    except TypeError:
-        raise TypeError("Unable to parse mapping annotation")
-    return AnnotationTypes.MAPPING.name, x[AnnotationKeys.FIELD_SOURCE.value], values
-
-
 class AnnotationTypesBuilders(Enum):
     """Enum to construct every annotation type builder"""
 
@@ -277,8 +272,8 @@ class AnnotationTypesBuilders(Enum):
     """Builder for filename annotation"""
     FILENAME = partial(_filename_builder)
 
-    """Builder for plugin annotation"""
-    PLUGIN = partial(_plugin_builder)
-
     """Builder for mapping annotation"""
     MAPPING = partial(_mapping_builder)
+
+    """Builder for plugin annotation"""
+    PLUGIN = partial(_plugin_builder)

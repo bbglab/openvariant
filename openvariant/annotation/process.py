@@ -18,8 +18,8 @@ MappingProcess = Tuple[str, float or int or str, Callable]
 
 def _static_process(x: StaticBuilder, original_header: List = [] or None, file_path: str = None, annotation: dict = None) \
         -> StaticProcess:
-    """Get of a Static value
-    It will return a fixed value described on the annotation file.
+    """Get a Static value
+    It will return a StaticProcess describing the value to get from static annotation.
     Parameters
     ----------
     x : StaticBuilder
@@ -27,7 +27,11 @@ def _static_process(x: StaticBuilder, original_header: List = [] or None, file_p
     Returns
     -------
     str
-        A value from an internal field on the input file.
+        Annotation type
+    float or int or str
+        Fixed value
+    Callable
+        Function to execute on the fixed value
     """
     try:
         return AnnotationTypes.STATIC.name, x[1] if x[1] is not None else float('nan'), str

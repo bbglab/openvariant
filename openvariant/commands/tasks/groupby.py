@@ -66,8 +66,10 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
                     output.append(f"{line}")
                     header = False
                 for row in result.read(key_by):
+
                     if skip(row, where_clauses):
                         continue
+
                     if row[key_by] == group_key:
                         line = "\t".join([str(row[h]).strip() for h in columns])
                         output.append(f"{line}")
@@ -151,10 +153,8 @@ def group_by(base_path: str, annotation_path: str or None, script: str or None, 
         A schema with separate groups and the numbers of rows for each.
     """
     selection = list(_group(base_path, annotation_path, key_by))
-
     with Pool(cores) as pool:
-        task = partial(_group_by_task, where=where, key_by=key_by,
-                       script=script, header=header)  # , where=where_parsed, columns=columns, print_headers=headers)
+        task = partial(_group_by_task, where=where, key_by=key_by, script=script, header=header)
         map_method = map if cores == 1 or len(selection) <= 1 else pool.imap_unordered
 
         for group_key, group_result, command in tqdm(
