@@ -198,7 +198,7 @@ def _mapping_builder(x: dict, base_path: str) -> MappingBuilder:
     """
     values: dict = {}
     mapping_files = x[AnnotationKeys.FILE_MAPPING.value]
-    files = list(glob.iglob(f"{dirname(base_path)}/**/{mapping_files}", recursive=True))
+    files = list(glob.iglob(f"{dirname(base_path)}/{mapping_files}", recursive=True))
     if len(files) == 0:
         raise FileNotFoundError(f"Unable to find '{mapping_files}' file in '{dirname(base_path)}'")
     try:

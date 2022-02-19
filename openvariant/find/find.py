@@ -86,6 +86,5 @@ def find_files(base_path: str, annotation_path: str or None = None) -> Generator
     Annotation
         The proper schema of each input file.
     """
-
     annotation, fix = (Annotation(annotation_path), True) if annotation_path is not None else (None, False)
     return _find_files(base_path, annotation, fix)
