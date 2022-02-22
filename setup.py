@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="open-variant",
-    version="0.6.2",
+    version="0.6.3",
     author="BBGLab - Barcelona Biomedical Genomics Lab",
     packages=find_packages(exclude=['*.test', '*.test.*', 'test.*', 'test']),
     include_package_data=True,
