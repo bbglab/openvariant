@@ -16,26 +16,6 @@ from openvariant.annotation.annotation import Annotation
 from openvariant.config.config_annotation import ANNOTATION_EXTENSION
 
 
-def _get_annotation_file(annotation: Annotation or None, file_name: str, file_path: str, base_path: str) -> \
-        Generator[str, Annotation, None]:
-    """Get Annotation object from file location or inherits Annotation of parent directory"""
-    if annotation is None:
-        for annotation_file in glob.iglob(join(dirname(abspath(base_path)), "*.{}".format(ANNOTATION_EXTENSION))):
-            annotation = Annotation(annotation_file)
-
-    ann = None
-    pattern_matches = 0
-    if annotation is not None:
-        for pattern in annotation.patterns:
-            if fnmatch(file_name, pattern):
-                pattern_matches += 1
-                ann = deepcopy(annotation)
-
-    # Process filename and dirname annotations
-    if ann is not None and pattern_matches > 0:  # and __where_match(file_annotations, where=where):
-        yield file_path, ann
-
-
 def _check_extension(ext: str, path: str) -> bool:
     """Check if file matches with the annotation pattern"""
     if ext[0] == '*':

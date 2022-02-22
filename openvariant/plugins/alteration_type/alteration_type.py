@@ -1,5 +1,6 @@
 from typing import Tuple
 
+from openvariant.plugins.context import Context
 from openvariant.plugins.plugin import Plugin
 
 
@@ -38,6 +39,24 @@ def _indel_postprocess(start: int, ref: str, alt: str) -> Tuple[str, str, str]:
     return str(start), str(ref), str(alt)
 
 
+class Alteration_typeContext(Context):
+    """
+    The context of this plugin will be the simplest one, without any added property or methods.
+
+    Attributes
+    ----------
+    row : dict
+        The row that data transformation will be applied.
+    field_name : str
+        Name of the corresponding column that was described on the annotation schema.
+    file_path : str
+        Path of the Input file that is being parsed.
+    """
+
+    def __init__(self, row: dict, field_name: str, file_path: str) -> None:
+        super().__init__(row, field_name, file_path)
+
+
 class Alteration_typePlugin(Plugin):
     """
     This plugin identifies the alteration type.
@@ -45,19 +64,20 @@ class Alteration_typePlugin(Plugin):
     The result will be store in a field of the input.
     """
 
-    def run(self, row: dict) -> str:
+    def run(self, context: Alteration_typeContext) -> str:
         """Extract alteration type from the input row.
 
         Parameters
         ----------
-        row : dict
-            Row represented as a dict.
+        context : Alteration_typeContext
+            Representation of the row to be parsed.
 
         Returns
         -------
-        dict
-            The row with the alteration type on the ALT_TYPE field.
+        str
+            The value of ALT_TYPE field.
         """
+        row = context.row
         if 'REF' in row and 'ALT' in row:
             l_ref = len(row['REF'])
             l_alt = len(row['ALT'])
@@ -75,7 +95,7 @@ class Alteration_typePlugin(Plugin):
             if alt_type == "indel":
                 row['POSITION'], row['REF'], row['ALT'] = _indel_postprocess(row['POSITION'], row['REF'], row['ALT'])
 
-            row['ALT_TYPE'] = alt_type
+            row[context.field_name] = alt_type
         else:
             raise ValueError("Unable to find 'REF', 'ALT' or 'POSITION' values in the row.")
-        return row['ALT_TYPE']
+        return row[context.field_name]

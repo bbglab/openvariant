@@ -13,11 +13,12 @@ from functools import lru_cache
 import mmap
 from os.path import isdir, isfile
 import re
-from typing import Generator, TextIO, List, Callable
+from typing import Generator, TextIO, List, Callable, Any
 
 from openvariant.annotation.annotation import Annotation
 from openvariant.annotation.process import AnnotationTypesProcess
 from openvariant.config.config_annotation import AnnotationFormat, AnnotationTypes, AnnotationDelimiter
+from openvariant.plugins.context import Context
 
 
 def _open_file(file_path: str, mode='r+b'):
@@ -43,7 +44,6 @@ def _base_parser(mm_obj: mmap, file_path: str, delimiter: str) -> Generator[int,
         row_line = line.split(AnnotationDelimiter[delimiter].value)
 
         if len(row_line) == 0:
-            print(row_line)
             continue
 
         # Skip comments
@@ -95,9 +95,10 @@ def _parse_field(value: float or int or str, func: Callable) -> str:
     return func(value)
 
 
-def _parse_field_non_cache(value: float or int or str, func: Callable) -> str:
+def _parse_field_non_cache(row: dict, field_name: str, file_path: str, value: Any, func: Callable) -> str:
     """Getting the value of a specific annotation field. No cached"""
-    return func(value)
+    ctxt = value(row, field_name, file_path)
+    return func(ctxt)
 
 
 def _parser(file_path: str, annotation: Annotation, group_by: str, display_header: bool) \
@@ -128,8 +129,8 @@ def _parser(file_path: str, annotation: Annotation, group_by: str, display_heade
                         line_dict[head] = _parse_field(value, func)
 
                 for head, plug in plugin_values.items():
-                    _, _, func_plugin = plug
-                    line_dict[head] = _parse_field_non_cache(line_dict, func_plugin)
+                    _, ctxt_plugin, func_plugin = plug
+                    line_dict[head] = _parse_field_non_cache(line_dict, head, file_path, ctxt_plugin, func_plugin)
 
                 for k in annotation.columns:
                     row[k] = line_dict[k].format(**line_dict)

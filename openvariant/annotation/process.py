@@ -7,16 +7,18 @@ from typing import Tuple, List, Callable, Optional
 from openvariant.annotation.builder import StaticBuilder, InternalBuilder, FilenameBuilder, Builder, DirnameBuilder, \
     PluginBuilder, MappingBuilder
 from openvariant.config.config_annotation import AnnotationTypes
+from openvariant.plugins.context import Context
 
 StaticProcess = Tuple[str, float or int or str, Callable]
 InternalProcess = Tuple[str, Optional[int], Callable]
 FilenameProcess = Tuple[str, float or int or str, Callable]
 DirnameProcess = Tuple[str, float or int or str, Callable]
-PluginProcess = Tuple[str, None, Callable]
+PluginProcess = Tuple[str, Context, Callable]
 MappingProcess = Tuple[str, float or int or str, Callable]
 
 
-def _static_process(x: StaticBuilder, original_header: List = [] or None, file_path: str = None, annotation: dict = None) \
+def _static_process(x: StaticBuilder, original_header: List = [] or None, file_path: str = None,
+                    annotation: dict = None) \
         -> StaticProcess:
     """Get a Static value
     It will return a StaticProcess describing the value to get from static annotation.
@@ -39,13 +41,14 @@ def _static_process(x: StaticBuilder, original_header: List = [] or None, file_p
         raise TypeError(f'Unable to parser {x[0]} annotation')
 
 
-def _internal_process(x: InternalBuilder, original_header = List or None, file_path: str = None, annotation: dict = None) \
+def _internal_process(x: InternalBuilder, original_header: List = [] or None, file_path: str = None,
+                      annotation: dict = None) \
         -> InternalProcess:
-    """Get a Internal value
-    It will return a InternalProcess describing the value to get from static annotation.
+    """Get an Internal value
+    It will return a InternalProcess describing the value to get from internal annotation.
     Parameters
     ----------
-    x : StaticBuilder
+    x : InternalBuilder
         Annotation builder.
     Returns
     -------
@@ -70,8 +73,26 @@ def _internal_process(x: InternalBuilder, original_header = List or None, file_p
     return AnnotationTypes.INTERNAL.name, field_pos, x[2]
 
 
-def _filename_process(x: FilenameBuilder, original_header: List = [] or None, file_path: str = None, annotation: dict = None) \
+def _filename_process(x: FilenameBuilder, original_header: List = [] or None, file_path: str = None,
+                      annotation: dict = None) \
         -> FilenameProcess:
+    """Get a Filename value
+    It will return a FilenameProcess describing the value to get from filename annotation.
+    Parameters
+    ----------
+    x : FilenameBuilder
+        Annotation builder
+    file_path: str
+        Path of input file
+    Returns
+    -------
+    str
+        Annotation type
+    float or int or str
+        Fixed value
+    Callable
+        Function to execute on the fixed value
+    """
     try:
         if isdir(file_path):
             raise FileNotFoundError('Unable to find a filename')
@@ -88,8 +109,26 @@ def _filename_process(x: FilenameBuilder, original_header: List = [] or None, fi
     return AnnotationTypes.FILENAME.name, value if value is not None else float('nan'), str
 
 
-def _dirname_process(x: DirnameBuilder, original_header: List = [], file_path: str = None, annotation: dict = None) \
+def _dirname_process(x: DirnameBuilder, original_header: List = [] or None, file_path: str = None,
+                     annotation: dict = None) \
         -> DirnameProcess:
+    """Get a Dirname value
+    It will return a DirnameProcess describing the value to get from dirname annotation.
+    Parameters
+    ----------
+    x : DirnameBuilder
+        Annotation builder
+    file_path: str
+        Path of input file
+    Returns
+    -------
+    str
+        Annotation type
+    float or int or str
+        Fixed value
+    Callable
+        Function to execute on the fixed value
+    """
     try:
         if isdir(file_path):
             raise FileNotFoundError('Unable to find a dirname')
@@ -106,21 +145,30 @@ def _dirname_process(x: DirnameBuilder, original_header: List = [], file_path: s
     return AnnotationTypes.DIRNAME.name, value if value is not None else float('nan'), str
 
 
-def _plugin_process(x: PluginBuilder, original_header: List = [] or None, file_path: str = None, annotation: dict = None) \
-        -> PluginProcess:
-    if x[1] is None:
-        raise ValueError(f'Wrong function on {x[0]} annotation')
-    return AnnotationTypes.PLUGIN.name, None, x[1]
-
-
-def _mapping_process(x: MappingBuilder, original_header: List = [] or None, file_path: str = None, annotation: dict = None) \
+def _mapping_process(x: MappingBuilder, original_header: List = [] or None, file_path: str = None,
+                     header_schema: dict = None) \
         -> MappingProcess:
+    """Get a Mapping value
+    It will return a PluginProcess describing the value to get from plugin annotation.
+    Parameters
+    ----------
+    x : PluginBuilder
+        Annotation builder
+    Returns
+    -------
+    str
+        Annotation type
+    None
+        A None value, this value will not be taken into account
+    Callable
+        Function to execute on the fixed value
+    """
     if x[1] is None:
         raise ValueError(f'Wrong source fields on {x[0]} annotation')
     value = None
     for source in x[1]:
         try:
-            map_key = annotation[source][1]
+            map_key = header_schema[source][1]
             value = x[2].get(map_key, None)
         except KeyError:
             pass
@@ -129,6 +177,29 @@ def _mapping_process(x: MappingBuilder, original_header: List = [] or None, file
         raise KeyError(f'Unable to map {x[1]} sources on mapping annotation')
 
     return AnnotationTypes.MAPPING.name, value if value is not None else float('nan'), str
+
+
+def _plugin_process(x: PluginBuilder, original_header: List = [] or None, file_path: str = None,
+                    annotation: dict = None) \
+        -> PluginProcess:
+    """Get a Plugin value
+    It will return a PluginProcess describing the value to get from plugin annotation.
+    Parameters
+    ----------
+    x : PluginBuilder
+        Annotation builder
+    Returns
+    -------
+    str
+        Annotation type
+    None
+        A None value, this value will not be taken into account
+    Callable
+        Function to execute on the fixed value
+    """
+    if x[1] is None or x[2] is None:
+        raise ValueError(f'Wrong function on {x[0]} annotation')
+    return AnnotationTypes.PLUGIN.name, x[2], x[1]
 
 
 class AnnotationTypesProcess(Enum):
@@ -146,8 +217,8 @@ class AnnotationTypesProcess(Enum):
     """Parser for dirname builder"""
     DIRNAME = partial(_dirname_process)
 
-    """Parser for plugin builder"""
-    PLUGIN = partial(_plugin_process)
-
     """Parser for mapping builder"""
     MAPPING = partial(_mapping_process)
+
+    """Parser for plugin builder"""
+    PLUGIN = partial(_plugin_process)

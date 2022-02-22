@@ -48,8 +48,8 @@ def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) ->
         return i, groups
 
 
-def count(base_path: str, annotation_path: str or None, group_by: str = None, where: str = None, cores: int = cpu_count(),
-          quite: bool = False) -> Tuple[int, Union[None, dict]]:
+def count(base_path: str, annotation_path: str or None, group_by: str = None, where: str = None,
+          cores: int = cpu_count(), quite: bool = False) -> Tuple[int, Union[None, dict]]:
     """Print on the stdout the count result.
 
     It'll parse the input files with its proper annotation schema, and it'll show the count result on the stdout.

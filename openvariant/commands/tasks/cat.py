@@ -19,7 +19,7 @@ def _format_line(line: List[str], out_format: str) -> str:
 def cat(base_path: str, annotation_path: str or None = None, where: str = None, header_show: bool = True) -> None:
     """Print on the stdout the parsed files.
 
-    It'll parse the input files with its proper annotation schema, and it'll show the result on the stdout.
+    It will parse the input files with its proper annotation schema, and it'll show the result on the stdout.
     It can be printed with or without header. Can be added a 'where' expression.
 
     Parameters

@@ -17,6 +17,7 @@ from os.path import dirname
 from typing import Tuple, Any, List, Callable
 
 from openvariant.config.config_annotation import AnnotationKeys, AnnotationTypes
+from openvariant.plugins.context import Context
 from openvariant.plugins.plugin import Plugin
 
 
@@ -43,7 +44,7 @@ StaticBuilder = Tuple[str, float or int or str]
 InternalBuilder = Tuple[str, List, Builder, str or float]
 DirnameBuilder = Tuple[str, Builder, re.Pattern]
 FilenameBuilder = Tuple[str, Builder, re.Pattern]
-PluginBuilder = Tuple[str, Callable]
+PluginBuilder = Tuple[str, Callable, Context]
 MappingBuilder = Tuple[str, List, dict]
 
 
@@ -176,6 +177,16 @@ def _get_plugin_function(mod) -> Callable:
     return func
 
 
+def _get_plugin_context(mod) -> Any:
+    ctxt = None
+    cls_members = inspect.getmembers(mod, inspect.isclass)
+    for (_, c) in cls_members:
+        if issubclass(c, Context) & (c is not Context):
+            ctxt = c
+            break
+    return ctxt
+
+
 def _mapping_builder(x: dict, base_path: str) -> MappingBuilder:
     """Built MappingBuilder from an annotation based on a mapping annotation, it matches the value of the input file to
     a value that appears in the mapping file. It will return the value of one field of the mapping that has been
@@ -230,9 +241,11 @@ def _plugin_builder(x: dict, base_path: str = None) -> PluginBuilder:
         Representation of the function to apply on the annotation value (plugin's 'run' function).
     """
     func = None
+    ctxt = None
     try:
         mod = importlib.import_module(f".{x[AnnotationTypes.PLUGIN.value]}", package="openvariant.plugins")
         func = _get_plugin_function(mod)
+        ctxt = _get_plugin_context(mod)
     except ModuleNotFoundError:
         try:
             files = list(glob.iglob(f"{os.getcwd()}/**/{x[AnnotationTypes.PLUGIN.value]}", recursive=True))
@@ -247,6 +260,7 @@ def _plugin_builder(x: dict, base_path: str = None) -> PluginBuilder:
                         spec.loader.exec_module(mod)
 
                         func = _get_plugin_function(mod)
+                        ctxt = _get_plugin_context(mod)
                 except (ImportError, AttributeError):
                     raise ImportError(f"Unable to import 'run' on the plugin.")
         except ModuleNotFoundError:
@@ -254,7 +268,7 @@ def _plugin_builder(x: dict, base_path: str = None) -> PluginBuilder:
     except (ImportError, AttributeError) as e:
         raise ImportError(f"Unable to import the plugin: {e}")
 
-    return AnnotationTypes.PLUGIN.name, func
+    return AnnotationTypes.PLUGIN.name, func, ctxt
 
 
 class AnnotationTypesBuilders(Enum):

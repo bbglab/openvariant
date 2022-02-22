@@ -7,6 +7,7 @@ from openvariant.annotation.builder import StaticBuilder, InternalBuilder, Build
     PluginBuilder, MappingBuilder
 from openvariant.annotation.process import AnnotationTypesProcess, InternalProcess, DirnameProcess, FilenameProcess
 from openvariant.config.config_annotation import AnnotationTypes
+from openvariant.plugins.context import Context
 
 
 def _func_plugin_example(line):
@@ -110,21 +111,6 @@ class TestProcess(unittest.TestCase):
         with self.assertRaises(AttributeError):
             AnnotationTypesProcess[AnnotationTypes.FILENAME.name].value(filename_dict, [], '/dirname/filename.tsv')
 
-    def test_process_plugin(self):
-        plugin_dict: PluginBuilder = (AnnotationTypes.PLUGIN.name, _func_plugin_example)
-
-        res_expect = (AnnotationTypes.PLUGIN.name, None, _func_plugin_example)
-
-        result = AnnotationTypesProcess[AnnotationTypes.PLUGIN.name].value(plugin_dict)
-
-        self.assertEqual(result, res_expect)
-
-    def test_process_invalid_plugin(self):
-        plugin_dict: PluginBuilder = (AnnotationTypes.PLUGIN.name, None)
-
-        with self.assertRaises(ValueError):
-            AnnotationTypesProcess[AnnotationTypes.PLUGIN.name].value(plugin_dict)
-
     def test_process_mapping(self):
         mapping_dict: MappingBuilder = (AnnotationTypes.MAPPING.name, ['PROPERTY'], {'CANCER': 'BLCA'})
         head_schema = {'PROPERTY': ('MAPPING', 'CANCER', str)}
@@ -148,3 +134,19 @@ class TestProcess(unittest.TestCase):
 
         with self.assertRaises(KeyError):
             AnnotationTypesProcess[AnnotationTypes.MAPPING.name].value(mapping_dict, [], None, head_schema)
+
+    def test_process_plugin(self):
+        plugin_dict: PluginBuilder = (AnnotationTypes.PLUGIN.name, _func_plugin_example,
+                                      Context({'FIELD_EXAMPLE': None}, 'FIELD_EXAMPLE', '/workspace/file.tsv'))
+
+        res_expect = (AnnotationTypes.PLUGIN.name, plugin_dict[2], plugin_dict[1])
+
+        result = AnnotationTypesProcess[AnnotationTypes.PLUGIN.name].value(plugin_dict)
+
+        self.assertEqual(result, res_expect)
+
+    def test_process_invalid_plugin(self):
+        plugin_dict: PluginBuilder = (AnnotationTypes.PLUGIN.name, None)
+
+        with self.assertRaises(ValueError):
+            AnnotationTypesProcess[AnnotationTypes.PLUGIN.name].value(plugin_dict)

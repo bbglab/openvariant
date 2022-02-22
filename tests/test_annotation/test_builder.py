@@ -6,6 +6,7 @@ from types import MethodType
 
 from openvariant.annotation.builder import AnnotationTypesBuilders, Builder
 from openvariant.config.config_annotation import AnnotationTypes
+from openvariant.plugins.context import Context
 
 
 class TestBuilder(unittest.TestCase):
@@ -138,20 +139,6 @@ class TestBuilder(unittest.TestCase):
         with self.assertRaises(re.error):
             AnnotationTypesBuilders[AnnotationTypes.FILENAME.name].value(filename_dict)
 
-    def test_builder_plugin(self):
-        plugin_dict = {'type': 'plugin', 'plugin': 'alteration_type', 'field': 'ALT_TYPE'}
-
-        type_annot, func = AnnotationTypesBuilders[AnnotationTypes.PLUGIN.name].value(plugin_dict)
-
-        self.assertEqual(type_annot, AnnotationTypes.PLUGIN.name)
-        self.assertIsInstance(func, MethodType)
-
-    def test_builder_invalid_plugin(self):
-        plugin_dict = {'type': 'plugin', 'plugin': None, 'field': None}
-
-        with self.assertRaises(FileNotFoundError):
-            AnnotationTypesBuilders[AnnotationTypes.PLUGIN.name].value(plugin_dict)
-
     def test_builder_mapping(self):
         mapping_dict = {'type': 'mapping', 'field': 'CANCER_TYPE', 'fieldSource': ['donor_id', 'id', 'Donor_Id'],
                         'fieldMapping': 'icgc_donor_id', 'fileMapping': 'metadata.tsv', 'fieldValue': 'cancer_type'}
@@ -189,3 +176,18 @@ class TestBuilder(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             AnnotationTypesBuilders[AnnotationTypes.MAPPING.name].value(mapping_dict, annotation_path)
+
+    def test_builder_plugin(self):
+        plugin_dict = {'type': 'plugin', 'plugin': 'alteration_type', 'field': 'ALT_TYPE'}
+
+        type_annot, func, ctxt = AnnotationTypesBuilders[AnnotationTypes.PLUGIN.name].value(plugin_dict)
+
+        self.assertEqual(type_annot, AnnotationTypes.PLUGIN.name)
+        self.assertIsInstance(func, MethodType)
+        self.assertTrue(issubclass(ctxt, Context))
+
+    def test_builder_invalid_plugin(self):
+        plugin_dict = {'type': 'plugin', 'plugin': None, 'field': None}
+
+        with self.assertRaises(FileNotFoundError):
+            AnnotationTypesBuilders[AnnotationTypes.PLUGIN.name].value(plugin_dict)
