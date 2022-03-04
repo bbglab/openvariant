@@ -8,13 +8,12 @@ import csv
 import ctypes
 import gzip
 import lzma
-import tarfile
 from fnmatch import fnmatch
 from functools import lru_cache
 import mmap
 from os.path import isdir, isfile
 import re
-from typing import Generator, TextIO, List, Callable, Any
+from typing import Generator, List, Callable, Any
 
 from openvariant.annotation.annotation import Annotation
 from openvariant.annotation.builder import MappingBuilder
@@ -117,9 +116,7 @@ def _parse_mapping_field(x: MappingBuilder, row: dict):
             value = x[2].get(map_key, None)
         except KeyError:
             pass
-    if value is None:
-        raise KeyError(f'Unable to map {x[1]} sources on mapping annotation.')
-    return value
+    return str(value) if value is not None else str(float('nan'))
 
 
 def _parser(file_path: str, annotation: Annotation, group_by: str, display_header: bool) \
