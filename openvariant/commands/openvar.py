@@ -1,3 +1,4 @@
+import time
 from os import cpu_count
 import click as click
 

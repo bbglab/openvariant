@@ -8,6 +8,7 @@ import csv
 import ctypes
 import gzip
 import lzma
+import tarfile
 from fnmatch import fnmatch
 from functools import lru_cache
 import mmap
@@ -16,18 +17,23 @@ import re
 from typing import Generator, TextIO, List, Callable, Any
 
 from openvariant.annotation.annotation import Annotation
+from openvariant.annotation.builder import MappingBuilder
 from openvariant.annotation.process import AnnotationTypesProcess
 from openvariant.config.config_annotation import AnnotationFormat, AnnotationTypes, AnnotationDelimiter
-from openvariant.plugins.context import Context
 
 
 def _open_file(file_path: str, mode='r+b'):
     """Open raw files or compressed files"""
-    open_method = open
+
     if file_path.endswith('xz'):
         open_method = lzma.open
-    file = open_method(file_path, mode)
-    mm: mmap = mmap.mmap(file.fileno(), length=0, access=mmap.ACCESS_READ)
+        file = open_method(file_path, mode)
+        mm = file
+    else:
+        open_method = open
+        file = open_method(file_path, mode)
+        mm: mmap = mmap.mmap(file.fileno(), length=0, access=mmap.ACCESS_READ)
+
     return mm, file
 
 
@@ -48,7 +54,7 @@ def _base_parser(mm_obj: mmap, file_path: str, delimiter: str) -> Generator[int,
 
         # Skip comments
         if (row_line[0].startswith('#') or row_line[0].startswith('##') or row_line[0].startswith('browser') or
-                row_line[0].startswith('track')) and not row_line[0].startswith('#CHROM'):
+            row_line[0].startswith('track')) and not row_line[0].startswith('#CHROM'):
             continue
 
         yield l_num, row_line
@@ -95,10 +101,25 @@ def _parse_field(value: float or int or str, func: Callable) -> str:
     return func(value)
 
 
-def _parse_field_non_cache(row: dict, field_name: str, file_path: str, value: Any, func: Callable) -> str:
+def _parse_plugin_field(row: dict, field_name: str, file_path: str, value: Any, func: Callable) -> str:
     """Getting the value of a specific annotation field. No cached"""
     ctxt = value(row, field_name, file_path)
     return func(ctxt)
+
+
+def _parse_mapping_field(x: MappingBuilder, row: dict):
+    if x[1] is None:
+        raise ValueError(f'Wrong source fields on {x[0]} annotation')
+    value = None
+    for source in x[1]:
+        try:
+            map_key = row[source]
+            value = x[2].get(map_key, None)
+        except KeyError:
+            pass
+    if value is None:
+        raise KeyError(f'Unable to map {x[1]} sources on mapping annotation.')
+    return value
 
 
 def _parser(file_path: str, annotation: Annotation, group_by: str, display_header: bool) \
@@ -116,21 +137,25 @@ def _parser(file_path: str, annotation: Annotation, group_by: str, display_heade
         else:
             try:
                 line_dict = {}
-                row, plugin_values = {}, {}
+                row, plugin_values, mapping_values = {}, {}, {}
                 for head in annotation.annotations.keys():
                     type_ann, value, func = header[head]
                     if type_ann == AnnotationTypes.PLUGIN.name:
                         plugin_values[head] = header[head]
+                    elif type_ann == AnnotationTypes.MAPPING.name:
+                        mapping_values[head] = header[head]
                     elif type_ann == AnnotationTypes.INTERNAL.name:
                         value = line[value] if value is not None else None
-
                         line_dict[head] = _parse_field(value, func)
                     else:
                         line_dict[head] = _parse_field(value, func)
 
+                for head, mapping in mapping_values.items():
+                    _, builder_mapping, func = mapping
+                    line_dict[head] = _parse_mapping_field(builder_mapping, line_dict)
                 for head, plug in plugin_values.items():
                     _, ctxt_plugin, func_plugin = plug
-                    line_dict[head] = _parse_field_non_cache(line_dict, head, file_path, ctxt_plugin, func_plugin)
+                    line_dict[head] = _parse_plugin_field(line_dict, head, file_path, ctxt_plugin, func_plugin)
 
                 for k in annotation.columns:
                     row[k] = line_dict[k].format(**line_dict)

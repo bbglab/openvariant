@@ -14,7 +14,7 @@ InternalProcess = Tuple[str, Optional[int], Callable]
 FilenameProcess = Tuple[str, float or int or str, Callable]
 DirnameProcess = Tuple[str, float or int or str, Callable]
 PluginProcess = Tuple[str, Context, Callable]
-MappingProcess = Tuple[str, float or int or str, Callable]
+MappingProcess = Tuple[str, MappingBuilder, Callable]
 
 
 def _static_process(x: StaticBuilder, original_header: List = [] or None, file_path: str = None,
@@ -163,9 +163,12 @@ def _mapping_process(x: MappingBuilder, original_header: List = [] or None, file
     Callable
         Function to execute on the fixed value
     """
+
+    """
     if x[1] is None:
         raise ValueError(f'Wrong source fields on {x[0]} annotation')
     value = None
+
     for source in x[1]:
         try:
             map_key = header_schema[source][1]
@@ -175,8 +178,8 @@ def _mapping_process(x: MappingBuilder, original_header: List = [] or None, file
 
     if value is None:
         raise KeyError(f'Unable to map {x[1]} sources on mapping annotation')
-
-    return AnnotationTypes.MAPPING.name, value if value is not None else float('nan'), str
+    """
+    return AnnotationTypes.MAPPING.name, x, str #value if value is not None else float('nan'), str
 
 
 def _plugin_process(x: PluginBuilder, original_header: List = [] or None, file_path: str = None,

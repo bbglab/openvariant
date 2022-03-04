@@ -8,7 +8,7 @@ from functools import partial
 from multiprocessing import Pool
 from os import cpu_count
 from subprocess import PIPE, Popen
-from typing import Set, Generator, List, Tuple
+from typing import Generator, List, Tuple
 
 from tqdm import tqdm
 
@@ -19,35 +19,37 @@ from openvariant.utils.where import skip, parse_where
 from openvariant.variant.variant import Variant
 
 
-def _get_unique_values(file_path: str, annotation: Annotation, key: str) -> Set:
+def _get_unique_values(file_path: str, annotation: Annotation, key: str) -> tuple[set, list]:
     """Get unique values of the group by field"""
     values = set()
     result = Variant(file_path, annotation)
-
+    result_read = []
     try:
         for r in result.read(key):
             values.add(r[key])
+            result_read.append(r)
     except KeyError:
         log.warn(f"'{key}' key not found in '{file_path}' file")
-    return values
+    return values, result_read
 
 
-def _group(base_path: str, annotation_path: str or None, key_by: str) -> Generator[str, List, None]:
+def _group(base_path: str, annotation_path: str or None, key_by: str) -> list[tuple[str, List]]:
     """Group file and its annotation by the group value"""
     results = defaultdict(list)
     for file, ann in find_files(base_path, annotation_path):
+        # print(file, ann)
         by_value = ann.annotations.get(key_by, None)
+        # print(by_value)
 
         if isinstance(by_value, tuple):
-            values = _get_unique_values(file, ann, key_by)
-
+            values, result_read = _get_unique_values(file, ann, key_by)
             for s in values:
-                a_clone = ann
-                results[s].append((file, a_clone))
+                results[s].append((file, ann))
 
+    results_by_groups = []
     for key, group_select in results.items():
-        yield key, group_select
-
+        results_by_groups.append((key, group_select))
+    return results_by_groups
 
 def _group_by_task(selection, where=None, key_by=None, script='', header=False) -> Tuple[str, List, bool]:
     """Main functionality for group by task"""
@@ -61,10 +63,15 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
                 result = Variant(value[0], value[1])
 
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
+                # columns = []
                 if header:
                     line = "\t".join([str(h).strip() for h in columns])
                     output.append(f"{line}")
                     header = False
+
+                # for row in value[2]:
+                #    print(row)
+
                 for row in result.read(key_by):
 
                     if skip(row, where_clauses):
@@ -73,6 +80,7 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
                     if row[key_by] == group_key:
                         line = "\t".join([str(row[h]).strip() for h in columns])
                         output.append(f"{line}")
+                    # break
         except BrokenPipeError:
             pass
         return group_key, output, False
@@ -152,7 +160,7 @@ def group_by(base_path: str, annotation_path: str or None, script: str or None, 
     dict
         A schema with separate groups and the numbers of rows for each.
     """
-    selection = list(_group(base_path, annotation_path, key_by))
+    selection = _group(base_path, annotation_path, key_by)
     with Pool(cores) as pool:
         task = partial(_group_by_task, where=where, key_by=key_by, script=script, header=header)
         map_method = map if cores == 1 or len(selection) <= 1 else pool.imap_unordered
