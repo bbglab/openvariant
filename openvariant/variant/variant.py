@@ -97,16 +97,18 @@ def _extract_header(file_path: str, original_header: list, annotation: Annotatio
 @lru_cache(maxsize=256)
 def _parse_field(value: float or int or str, func: Callable) -> str:
     """Getting the value of a specific annotation field. Cached with LRU policy"""
-    return func(value)
+    result = func(value)
+    return result if result is not None else str(float('nan'))
 
 
 def _parse_plugin_field(row: dict, field_name: str, file_path: str, value: Any, func: Callable) -> str:
-    """Getting the value of a specific annotation field. No cached"""
+    """Getting the value of a specific plugin annotation. No cached"""
     ctxt = value(row, field_name, file_path)
     return func(ctxt)
 
 
-def _parse_mapping_field(x: MappingBuilder, row: dict):
+def _parse_mapping_field(x: MappingBuilder, row: dict, func: Callable):
+    """Getting the value of a specific mapping annotation. No cached"""
     if x[1] is None:
         raise ValueError(f'Wrong source fields on {x[0]} annotation')
     value = None
@@ -149,7 +151,7 @@ def _parser(file_path: str, annotation: Annotation, group_by: str, display_heade
 
                 for head, mapping in mapping_values.items():
                     _, builder_mapping, func = mapping
-                    line_dict[head] = _parse_mapping_field(builder_mapping, line_dict)
+                    line_dict[head] = _parse_mapping_field(builder_mapping, line_dict, func)
                 for head, plug in plugin_values.items():
                     _, ctxt_plugin, func_plugin = plug
                     line_dict[head] = _parse_plugin_field(line_dict, head, file_path, ctxt_plugin, func_plugin)
