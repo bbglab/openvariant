@@ -47,13 +47,14 @@ def _base_parser(mm_obj: mmap, file_path: str, delimiter: str) -> Generator[int,
     for l_num, line in enumerate(iter(mm_obj.readline, b'')):
         line = line.decode('utf-8')
         row_line = line.split(AnnotationDelimiter[delimiter].value)
+        row_line = list(map(lambda w: w.replace("\n", ""), row_line))
 
         if len(row_line) == 0:
             continue
 
         # Skip comments
         if (row_line[0].startswith('#') or row_line[0].startswith('##') or row_line[0].startswith('browser') or
-            row_line[0].startswith('track')) and not row_line[0].startswith('#CHROM'):
+                row_line[0].startswith('track')) and not row_line[0].startswith('#CHROM'):
             continue
 
         yield l_num, row_line

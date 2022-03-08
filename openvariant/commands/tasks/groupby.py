@@ -63,14 +63,10 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
                 result = Variant(value[0], value[1])
 
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
-                # columns = []
                 if header:
                     line = "\t".join([str(h).strip() for h in columns])
                     output.append(f"{line}")
                     header = False
-
-                # for row in value[2]:
-                #    print(row)
 
                 for row in result.read(key_by):
 

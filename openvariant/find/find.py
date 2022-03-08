@@ -37,10 +37,10 @@ def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Ge
             file_path = join(base_path, file_name)
 
             if isfile(file_path):
-
-                for ext, _ in annotation.structure.items():
-                    if _check_extension(ext, file_path):
-                        yield file_path, annotation
+                if annotation is not None:
+                    for ext, _ in annotation.structure.items():
+                        if _check_extension(ext, file_path):
+                            yield file_path, annotation
             else:
                 for f, a in _find_files(file_path, annotation, fix):
                     yield f, a
