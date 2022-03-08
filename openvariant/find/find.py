@@ -38,9 +38,12 @@ def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Ge
 
             if isfile(file_path):
                 if annotation is not None:
-                    for ext, _ in annotation.structure.items():
-                        if _check_extension(ext, file_path):
-                            yield file_path, annotation
+                    try:
+                        for ext, _ in annotation.structure.items():
+                            if _check_extension(ext, file_path):
+                                yield file_path, annotation
+                    except AttributeError:
+                        raise AttributeError("Unable to parse annotation file, check its location.")
             else:
                 for f, a in _find_files(file_path, annotation, fix):
                     yield f, a
