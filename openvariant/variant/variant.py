@@ -121,7 +121,6 @@ def _parse_mapping_field(x: MappingBuilder, row: dict, func: Callable):
             pass
     return str(value) if value is not None else str(float('nan'))
 
-
 def _parser(file_path: str, annotation: Annotation, group_by: str, display_header: bool) \
         -> Generator[dict, None, None]:
     """Parsing of an entire file with annotation schema"""
@@ -185,7 +184,6 @@ def _check_extension(ext: str, path: str) -> bool:
         reg_apply = re.compile(ext + '$')
         match = len(reg_apply.findall(path)) != 0
     return match
-
 
 def _unify(base_path: str, annotation: Annotation, group_by: str = None, display_header: bool = True) \
         -> Generator[dict, None, None]:

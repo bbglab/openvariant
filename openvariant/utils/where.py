@@ -96,7 +96,7 @@ def skip(row: dict, where: List[dict]) -> bool:
     for k in where:
         try:
             value = row[k[WhereAttributesKeys.FIELD.value]]
-            data_value = f"\"{value}\"" if isinstance(value, str) and not value.isnumeric() else str(value)
+            data_value = value if isinstance(value, str) and not value.isnumeric() else str(value)
             filter_wh = eval(data_value + ' ' +
                              str(WHERE_STMTS_REVERSE[k[WhereAttributesKeys.OPERATION.value]]) + ' ' +
                              str(k[WhereAttributesKeys.VALUE.value]))
