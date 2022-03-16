@@ -54,7 +54,7 @@ def _base_parser(mm_obj: mmap, file_path: str, delimiter: str) -> Generator[int,
 
         # Skip comments
         if (row_line[0].startswith('#') or row_line[0].startswith('##') or row_line[0].startswith('browser') or
-                row_line[0].startswith('track')) and not row_line[0].startswith('#CHROM'):
+            row_line[0].startswith('track')) and not row_line[0].startswith('#CHROM'):
             continue
 
         yield l_num, row_line
@@ -64,14 +64,13 @@ def _exclude(line: dict, excludes: dict) -> bool:
     """Excludes values described on the annotation file"""
     for k, v in excludes.items():
         for val in v:
-
             if val is not None and val.startswith("!"):
                 valp = val.replace("!", "")
                 if line[k] != valp:
                     return True
-            else:
-                if line[k] == val:
-                    return True
+            elif line[k] == val:
+                return True
+
     return False
 
 
@@ -120,6 +119,7 @@ def _parse_mapping_field(x: MappingBuilder, row: dict, func: Callable):
         except KeyError:
             pass
     return str(value) if value is not None else str(float('nan'))
+
 
 def _parser(file_path: str, annotation: Annotation, group_by: str, display_header: bool) \
         -> Generator[dict, None, None]:
@@ -184,6 +184,7 @@ def _check_extension(ext: str, path: str) -> bool:
         reg_apply = re.compile(ext + '$')
         match = len(reg_apply.findall(path)) != 0
     return match
+
 
 def _unify(base_path: str, annotation: Annotation, group_by: str = None, display_header: bool = True) \
         -> Generator[dict, None, None]:

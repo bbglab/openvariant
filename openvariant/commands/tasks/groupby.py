@@ -19,7 +19,7 @@ from openvariant.utils.where import skip, parse_where
 from openvariant.variant.variant import Variant
 
 
-def _get_unique_values(file_path: str, annotation: Annotation, key: str) -> tuple[set, list]:
+def _get_unique_values(file_path: str, annotation: Annotation, key: str) -> Tuple[set, List]:
     """Get unique values of the group by field"""
     values = set()
     result = Variant(file_path, annotation)
@@ -33,13 +33,11 @@ def _get_unique_values(file_path: str, annotation: Annotation, key: str) -> tupl
     return values, result_read
 
 
-def _group(base_path: str, annotation_path: str or None, key_by: str) -> list[tuple[str, List]]:
+def _group(base_path: str, annotation_path: str or None, key_by: str) -> List[Tuple[str, List]]:
     """Group file and its annotation by the group value"""
     results = defaultdict(list)
     for file, ann in find_files(base_path, annotation_path):
-        # print(file, ann)
         by_value = ann.annotations.get(key_by, None)
-        # print(by_value)
 
         if isinstance(by_value, tuple):
             values, result_read = _get_unique_values(file, ann, key_by)
@@ -50,6 +48,7 @@ def _group(base_path: str, annotation_path: str or None, key_by: str) -> list[tu
     for key, group_select in results.items():
         results_by_groups.append((key, group_select))
     return results_by_groups
+
 
 def _group_by_task(selection, where=None, key_by=None, script='', header=False) -> Tuple[str, List, bool]:
     """Main functionality for group by task"""
