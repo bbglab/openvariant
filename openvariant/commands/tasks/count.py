@@ -34,10 +34,7 @@ def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) ->
         return i, None
     else:
         groups = {}
-        for r in result.read(group_by):
-
-            if skip(r, where_clauses):
-                continue
+        for r in result.read(where=where, group_key=group_by):
             try:
                 val = r[group_by]
                 val_count = groups.get(val, 0)

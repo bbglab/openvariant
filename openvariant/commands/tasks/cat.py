@@ -7,7 +7,6 @@ from typing import List
 
 from openvariant.config.config_annotation import AnnotationFormat
 from openvariant.find.find import find_files
-from openvariant.utils.where import parse_where, skip
 from openvariant.variant.variant import Variant
 
 
@@ -34,14 +33,11 @@ def cat(base_path: str, annotation_path: str or None = None, where: str = None, 
         Shows header on the output.
     """
     for file, annotation in find_files(base_path, annotation_path):
-        where_clauses = parse_where(where)
         result = Variant(file, annotation)
         header = result.header
         if header_show:
             print(_format_line(header, result.annotation.format))
             header_show = False
-        for i, r in enumerate(result.read()):
+        for i, r in enumerate(result.read(where=where)):
             if isinstance(r, dict):
-                if skip(r, where_clauses):
-                    continue
                 print(_format_line(list(map(str, r.values())), result.annotation.format))

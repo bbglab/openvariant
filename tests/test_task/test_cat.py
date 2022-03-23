@@ -95,7 +95,11 @@ class TestCat(unittest.TestCase):
 
     def test_cat_invalid_where(self):
         with self.assertRaises(ValueError):
+            captured_output = StringIO()
+            sys.stdout = captured_output
             cat(f'{os.getcwd()}/tests/data/dataset', where="NO_EXIST = 'no_exist'")
+            sys.stdout = sys.__stdout__
+
 
     def test_cat_no_headers(self):
         captured_output = StringIO()

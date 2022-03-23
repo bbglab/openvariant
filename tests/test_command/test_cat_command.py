@@ -32,7 +32,7 @@ class TestCatCommand(unittest.TestCase):
 
     def test_cat_path_command_no_exist_where_flag(self):
         runner = CliRunner()
-        result = runner.invoke(cat, [f'{getcwd()}/tests/data/dataset', '--where', "variant='no_exist'"])
+        result = runner.invoke(cat, [f'{getcwd()}/tests/data/dataset', '--where', "variant=no_exist"])
         self.assertEqual(result.exit_code, 1)
 
     def test_cat_command_invalid_where(self):

@@ -15,7 +15,6 @@ from tqdm import tqdm
 from openvariant.annotation.annotation import Annotation
 from openvariant.find.find import find_files
 from openvariant.utils.logger import log
-from openvariant.utils.where import skip, parse_where
 from openvariant.variant.variant import Variant
 
 
@@ -25,7 +24,7 @@ def _get_unique_values(file_path: str, annotation: Annotation, key: str) -> Tupl
     result = Variant(file_path, annotation)
     result_read = []
     try:
-        for r in result.read(key):
+        for r in result.read(group_key=key):
             values.add(r[key])
             result_read.append(r)
     except KeyError:
@@ -52,7 +51,6 @@ def _group(base_path: str, annotation_path: str or None, key_by: str) -> List[Tu
 
 def _group_by_task(selection, where=None, key_by=None, script='', header=False) -> Tuple[str, List, bool]:
     """Main functionality for group by task"""
-    where_clauses = parse_where(where)
     group_key, group_values = selection
 
     output = []
@@ -62,20 +60,15 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
                 result = Variant(value[0], value[1])
 
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
+
                 if header:
                     line = "\t".join([str(h).strip() for h in columns])
                     output.append(f"{line}")
                     header = False
-
-                for row in result.read(key_by):
-
-                    if skip(row, where_clauses):
-                        continue
-
+                for row in result.read(where=where, group_key=key_by):
                     if row[key_by] == group_key:
                         line = "\t".join([str(row[h]).strip() for h in columns])
                         output.append(f"{line}")
-                    # break
         except BrokenPipeError:
             pass
         return group_key, output, False
@@ -96,9 +89,7 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
                     process.stdin.write(f"{line}\n".encode())
                     process.stdin.flush()
                     header = False
-                for row in result.read(key_by):
-                    if skip(row, where_clauses):
-                        continue
+                for row in result.read(where=where, group_key=key_by):
                     try:
                         if row[key_by] == group_key:
                             line = "\t".join([str(row[h]).strip() for h in columns])

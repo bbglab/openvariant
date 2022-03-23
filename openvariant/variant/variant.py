@@ -19,6 +19,7 @@ from openvariant.annotation.annotation import Annotation
 from openvariant.annotation.builder import MappingBuilder
 from openvariant.annotation.process import AnnotationTypesProcess
 from openvariant.config.config_annotation import AnnotationFormat, AnnotationTypes, AnnotationDelimiter
+from openvariant.utils.where import skip, parse_where
 
 
 def _open_file(file_path: str, mode='r+b'):
@@ -121,59 +122,7 @@ def _parse_mapping_field(x: MappingBuilder, row: dict, func: Callable):
     return str(value) if value is not None else str(float('nan'))
 
 
-def _parser(file_path: str, annotation: Annotation, group_by: str, display_header: bool) \
-        -> Generator[dict, None, None]:
-    """Parsing of an entire file with annotation schema"""
-    header, row, row_header = None, {}, []
-    mm, file = _open_file(file_path, "rb")
-    for lnum, line in _base_parser(mm, file_path, annotation.delimiter):
-        if header is None:
-            header, row_header = _extract_header(file_path, line, annotation)
-            if not display_header:
-                continue
-            row = row_header
-            yield row
-        else:
-            try:
-                line_dict = {}
-                row, plugin_values, mapping_values = {}, {}, {}
-                for head in annotation.annotations.keys():
-                    type_ann, value, func = header[head]
-                    if type_ann == AnnotationTypes.PLUGIN.name:
-                        plugin_values[head] = header[head]
-                    elif type_ann == AnnotationTypes.MAPPING.name:
-                        mapping_values[head] = header[head]
-                    elif type_ann == AnnotationTypes.INTERNAL.name:
-                        value = line[value] if value is not None else None
-                        line_dict[head] = _parse_field(value, func)
-                    else:
-                        line_dict[head] = _parse_field(value, func)
 
-                for head, mapping in mapping_values.items():
-                    _, builder_mapping, func = mapping
-                    line_dict[head] = _parse_mapping_field(builder_mapping, line_dict, func)
-                for head, plug in plugin_values.items():
-                    _, ctxt_plugin, func_plugin = plug
-                    line_dict[head] = _parse_plugin_field(line_dict, head, file_path, ctxt_plugin, func_plugin)
-
-                for k in annotation.columns:
-                    row[k] = line_dict[k].format(**line_dict)
-
-                if group_by is not None and group_by not in annotation.columns:
-                    try:
-                        row[group_by] = line_dict[group_by].format(**line_dict)
-                    except KeyError as e:
-                        raise KeyError(f"Unable to find group by: {e}. Check annotation for {file_path} file")
-
-                if row and not _exclude(line_dict, annotation.excludes):
-                    yield row
-
-            except (ValueError, IndexError, KeyError) as e:
-                mm.close()
-                file.close()
-                raise ValueError(f"Error parsing line: {lnum} {file_path}: {e}")
-    mm.close()
-    file.close()
 
 
 def _check_extension(ext: str, path: str) -> bool:
@@ -186,11 +135,7 @@ def _check_extension(ext: str, path: str) -> bool:
     return match
 
 
-def _unify(base_path: str, annotation: Annotation, group_by: str = None, display_header: bool = True) \
-        -> Generator[dict, None, None]:
-    """Parse all the files thought the annotation schema and generated yields to interrate"""
-    for x in _parser(base_path, annotation, group_by, display_header):
-        yield x
+
 
 
 class Variant:
@@ -226,6 +171,66 @@ class Variant:
         self._header: List[str] = list(annotation.annotations.keys()) if len(annotation.columns) == 0 \
             else annotation.columns
 
+    def _unify(self, base_path: str, annotation: Annotation, group_by: str = None, display_header: bool = True) \
+            -> Generator[dict, None, None]:
+        """Parse all the files thought the annotation schema and generated yields to interrate"""
+        for x in self._parser(base_path, annotation, group_by, display_header):
+            yield x
+
+    def _parser(self, file_path: str, annotation: Annotation, group_by: str, display_header: bool) \
+            -> Generator[dict, None, None]:
+        """Parsing of an entire file with annotation schema"""
+        header, row, row_header = None, {}, []
+        self.mm, self.file = _open_file(file_path, "rb")
+        for lnum, line in _base_parser(self.mm, file_path, annotation.delimiter):
+            try:
+                if header is None:
+                    header, row_header = _extract_header(file_path, line, annotation)
+                    if not display_header:
+                        continue
+                    row = row_header
+                    yield row
+                else:
+                    line_dict = {}
+                    row, plugin_values, mapping_values = {}, {}, {}
+                    for head in annotation.annotations.keys():
+                        type_ann, value, func = header[head]
+                        if type_ann == AnnotationTypes.PLUGIN.name:
+                            plugin_values[head] = header[head]
+                        elif type_ann == AnnotationTypes.MAPPING.name:
+                            mapping_values[head] = header[head]
+                        elif type_ann == AnnotationTypes.INTERNAL.name:
+                            value = line[value] if value is not None else None
+                            line_dict[head] = _parse_field(value, func)
+                        else:
+                            line_dict[head] = _parse_field(value, func)
+
+                    for head, mapping in mapping_values.items():
+                        _, builder_mapping, func = mapping
+                        line_dict[head] = _parse_mapping_field(builder_mapping, line_dict, func)
+                    for head, plug in plugin_values.items():
+                        _, ctxt_plugin, func_plugin = plug
+                        line_dict[head] = _parse_plugin_field(line_dict, head, file_path, ctxt_plugin, func_plugin)
+
+                    for k in annotation.columns:
+                        row[k] = line_dict[k].format(**line_dict)
+
+                    if group_by is not None and group_by not in annotation.columns:
+                        try:
+                            row[group_by] = line_dict[group_by].format(**line_dict)
+                        except KeyError as e:
+                            raise KeyError(f"Unable to find group by: {e}. Check annotation for {file_path} file")
+
+                    if row and not _exclude(line_dict, annotation.excludes):
+                        yield row
+
+            except (ValueError, IndexError, KeyError) as e:
+                self.mm.close()
+                self.file.close()
+                raise ValueError(f"Error parsing line: {lnum} {file_path}: {e}")
+        self.mm.close()
+        self.file.close()
+
     @property
     def path(self) -> str:
         """str: Path where parsed files are located"""
@@ -241,12 +246,14 @@ class Variant:
         """Annotation: Annotation object which files were parsed"""
         return self._annotation
 
-    def read(self, group_key: str or None = None) -> Generator[dict, None, None]:
+    def read(self, where: dict or str = None, group_key: str or None = None) -> Generator[dict, None, None]:
         """
         Read parsed files and generated an iterator for each row
 
         Parameters
         ---------
+        where : dict or str
+            A conditional where structure (optional).
         group_key : str or None
             A string that indicates how rows will be grouped (optional).
 
@@ -255,8 +262,11 @@ class Variant:
         dict
             Representation of a parsed row.
         """
-        for i, line in enumerate(_unify(self._path, self._annotation, group_by=group_key)):
+        where_clauses = parse_where(where)
+        for i, line in enumerate(self._unify(self._path, self._annotation, group_by=group_key)):
             if i != 0:
+                if skip(line, where_clauses):
+                    continue
                 yield line
 
     def save(self, file_path: str, display_header: bool = True) -> None:
@@ -275,7 +285,7 @@ class Variant:
             raise ValueError("The path must be a file.")
         with open(file_path, "w") as file:
             writer = csv.writer(file, delimiter=AnnotationFormat[self._annotation.format.upper()].value)
-            for i, line in enumerate(_unify(self._path, self._annotation)):
+            for i, line in enumerate(self._unify(self._path, self._annotation)):
                 if display_header and i == 0:
                     writer.writerow(line)
                 elif i != 0:

@@ -23,9 +23,9 @@ class TestVariantRead(unittest.TestCase):
         annotation = Annotation(f'{os.getcwd()}/tests/data/dataset/dataset.yaml')
         variant = Variant(f'{os.getcwd()}/tests/data/dataset/CHOL.maf', annotation)
 
-        self.assertNotEqual(variant.read('DATASET'), None)
+        self.assertNotEqual(variant.read(group_key='DATASET'), None)
 
         with open(f'{os.getcwd()}/tests/data/variant/read_by_key.json') as f:
             data = json.load(f)
-        for i, line in enumerate(variant.read('DATASET')):
+        for i, line in enumerate(variant.read(group_key='DATASET')):
             self.assertEqual(line, data[i])

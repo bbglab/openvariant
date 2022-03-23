@@ -19,14 +19,14 @@ class TestCount(unittest.TestCase):
 
     def test_count_equal_where(self):
         res = count(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
-                    where="DATASET == \"acc\"", quite=True)
+                    where="DATASET == 'acc'", quite=True)
 
         self.assertEqual(res[0], 11660, "Count number not matching")
         self.assertEqual(res[1], {}, "Count groups not matching")
 
     def test_count_non_equal_where(self):
         res = count(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
-                    where="DATASET != \"acc\"", quite=True)
+                    where="DATASET != 'acc'", quite=True)
 
         self.assertEqual(res[0], 30470, "Count number not matching")
         self.assertEqual(res[1], {}, "Count groups not matching")
@@ -61,7 +61,7 @@ class TestCount(unittest.TestCase):
 
     def test_count_no_exist_where(self):
         res = count(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
-                    where="NO_EXIST == \"no_exist\"", quite=True)
+                    where="NO_EXIST == no_exist", quite=True)
 
         self.assertEqual(res[0], 0, "Count number not matching")
         self.assertEqual(res[1], {}, "Count groups not matching")
@@ -69,7 +69,7 @@ class TestCount(unittest.TestCase):
     def test_count_bad_syntax_where(self):
         with self.assertRaises(ValueError):
             count(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
-                  where="NO_EXIST = \"no_exist\"", quite=True)
+                  where="NO_EXIST = no_exist", quite=True)
 
     def test_count_group_by(self):
         res = count(f'{os.getcwd()}/tests/data/dataset/', f'{os.getcwd()}/tests/data/task_test.yaml',
