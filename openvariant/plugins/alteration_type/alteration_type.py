@@ -61,7 +61,6 @@ class Alteration_typePlugin(Plugin):
     """
     This plugin identifies the alteration type.
     Classifies the alteration type: checking POSITION, REF and ALT fields.
-    The result will be store in a field of the input.
     """
 
     def run(self, context: Alteration_typeContext) -> str:
