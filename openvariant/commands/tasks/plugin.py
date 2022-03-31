@@ -70,6 +70,9 @@ def _add_action(name: str, directory: str = None) -> None:
         plugin_file.write(f"\t\t\tThe value of the field transformed.\n")
         plugin_file.write(f"\t\t\"\"\"\n")
         plugin_file.write(f"\n")
+        plugin_file.write(f"\t\t# This is an example code, modify if as you wish\n")
+        plugin_file.write(f"\t\tcontext.row[context.field_name] = \"Hello world! file:\" + context.file_path\n")
+        plugin_file.write(f"\n")
         plugin_file.write(f"\t\treturn context.row[context.field_name]\n")
 
 

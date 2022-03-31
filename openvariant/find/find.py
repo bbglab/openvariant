@@ -7,7 +7,7 @@ import glob
 import re
 from fnmatch import fnmatch
 from os import listdir
-from os.path import isfile, join, basename, abspath, dirname
+from os.path import isfile, join, basename, abspath, dirname, isdir
 from typing import Generator
 from copy import deepcopy
 
@@ -26,30 +26,41 @@ def _check_extension(ext: str, path: str) -> bool:
     return match
 
 
+def _get_annotation(file_path, annotation):
+    if annotation is not None:
+        try:
+            for ext, _ in annotation.structure.items():
+                if _check_extension(ext, file_path):
+                    yield file_path, annotation
+        except AttributeError:
+            raise AttributeError("Unable to parse annotation file, check its location.")
+
+
 def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Generator[str, Annotation, None]:
     """Recursive exploration from a base path"""
     if not fix:
         for annotation_file in glob.iglob(join(base_path, "*.{}".format(ANNOTATION_EXTENSION))):
             annotation = Annotation(annotation_file)
 
-    for file_name in listdir(base_path):
-        try:
+    if isdir(base_path):
+        for file_name in listdir(base_path):
             file_path = join(base_path, file_name)
-
-            if isfile(file_path):
-                if annotation is not None:
-                    try:
-                        for ext, _ in annotation.structure.items():
-                            if _check_extension(ext, file_path):
-                                yield file_path, annotation
-                    except AttributeError:
-                        raise AttributeError("Unable to parse annotation file, check its location.")
-            else:
+            try:
                 for f, a in _find_files(file_path, annotation, fix):
                     yield f, a
+            except PermissionError as e:
+                raise PermissionError(f"Unable to open {file_name}: {e}")
 
+    elif isfile(base_path):
+        file_path = base_path
+        try:
+            for f, a in _get_annotation(file_path, annotation):
+                yield f, a
         except PermissionError as e:
-            raise PermissionError(f"Unable to open {file_name}: {e}")
+            raise PermissionError(f"Unable to open {base_path}: {e}")
+
+    else:
+        raise FileNotFoundError(f"Unable to open {base_path}, it's not a file nor a directory.")
 
 
 def find_files(base_path: str, annotation_path: str or None = None) -> Generator[str, Annotation, None]:
