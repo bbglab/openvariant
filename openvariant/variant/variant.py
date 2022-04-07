@@ -18,8 +18,8 @@ from typing import Generator, List, Callable, Any
 from openvariant.annotation.annotation import Annotation
 from openvariant.annotation.builder import MappingBuilder
 from openvariant.annotation.process import AnnotationTypesProcess
-from openvariant.config.config_annotation import AnnotationFormat, AnnotationTypes, AnnotationDelimiter
-from openvariant.utils.where import skip, parse_where
+from openvariant.annotation.config_annotation import AnnotationFormat, AnnotationTypes, AnnotationDelimiter
+from openvariant.variant.where import skip, parse_where
 
 
 def _open_file(file_path: str, mode='r+b'):
@@ -122,9 +122,6 @@ def _parse_mapping_field(x: MappingBuilder, row: dict, func: Callable):
     return str(value) if value is not None else str(float('nan'))
 
 
-
-
-
 def _check_extension(ext: str, path: str) -> bool:
     """Check if file matches with the annotation pattern"""
     if ext[0] == '*':
@@ -133,9 +130,6 @@ def _check_extension(ext: str, path: str) -> bool:
         reg_apply = re.compile(ext + '$')
         match = len(reg_apply.findall(path)) != 0
     return match
-
-
-
 
 
 class Variant:

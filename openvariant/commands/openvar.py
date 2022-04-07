@@ -2,10 +2,10 @@ from os import cpu_count
 import click as click
 
 import openvariant
-from openvariant.commands.tasks.cat import cat as cat_task
-from openvariant.commands.tasks.count import count as count_task
-from openvariant.commands.tasks.groupby import group_by as group_by_task
-from openvariant.commands.tasks.plugin import PluginActions
+from openvariant.tasks.cat import cat as cat_task
+from openvariant.tasks.count import count as count_task
+from openvariant.tasks.groupby import group_by as group_by_task
+from openvariant.tasks.plugin import PluginActions
 
 
 @click.group(context_settings={'help_option_names': ['-h', '--help']})

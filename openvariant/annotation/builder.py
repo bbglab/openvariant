@@ -16,7 +16,7 @@ from functools import partial
 from os.path import dirname
 from typing import Tuple, Any, List, Callable
 
-from openvariant.config.config_annotation import AnnotationKeys, AnnotationTypes
+from openvariant.annotation.config_annotation import AnnotationKeys, AnnotationTypes
 from openvariant.plugins.context import Context
 from openvariant.plugins.plugin import Plugin
 

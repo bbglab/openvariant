@@ -1,6 +1,6 @@
 import unittest
 
-from openvariant.utils.where import parse_where
+from openvariant.variant.where import parse_where
 
 
 class TestWhere(unittest.TestCase):

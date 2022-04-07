@@ -10,9 +10,9 @@ from typing import List
 from yaml import safe_load, YAMLError
 
 from openvariant.annotation.builder import AnnotationTypesBuilders
-from openvariant.config.config_annotation import (AnnotationGeneralKeys, AnnotationKeys, AnnotationTypes,
-                                                  ExcludesKeys, DEFAULT_FORMAT, DEFAULT_DELIMITER,
-                                                  AnnotationFormat, AnnotationDelimiter)
+from openvariant.annotation.config_annotation import (AnnotationGeneralKeys, AnnotationKeys, AnnotationTypes,
+                                                      ExcludesKeys, DEFAULT_FORMAT, DEFAULT_DELIMITER,
+                                                      AnnotationFormat, AnnotationDelimiter)
 
 
 def _check_general_keys(annot: dict) -> None:

@@ -4,7 +4,7 @@ Where
 Core functions to construct conditional statements and manage them
 """
 from enum import Enum
-from typing import List, Any, Union, Dict
+from typing import List, Any
 
 
 class WhereStatementKeys(Enum):
@@ -36,16 +36,6 @@ WHERE_STMTS = {
 }
 
 WHERE_STMTS_REVERSE = {v: k for k, v in WHERE_STMTS.items()}
-
-
-def and_connector(*kwargs):
-    and_stmt = {WhereStatementKeys.AND.value: [_parse_where(w) for w in kwargs]}
-    return and_stmt
-
-
-def or_connector(*kwargs):
-    or_stmt = {WhereStatementKeys.AND.value: [_parse_where(w) for w in kwargs]}
-    return or_stmt
 
 
 def _parse_where(where: str or None) -> List:

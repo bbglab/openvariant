@@ -5,8 +5,8 @@ A core functionality to execute cat task.
 """
 from typing import List
 
-from openvariant.config.config_annotation import AnnotationFormat
-from openvariant.find.find import find_files
+from openvariant.annotation.config_annotation import AnnotationFormat
+from openvariant.find.find_files import find_files
 from openvariant.variant.variant import Variant
 
 

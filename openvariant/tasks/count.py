@@ -11,15 +11,13 @@ from typing import Tuple, Union
 from tqdm import tqdm
 
 from openvariant.annotation.annotation import Annotation
-from openvariant.find.find import find_files
-from openvariant.utils.where import parse_where, skip
+from openvariant.find.find_files import find_files
 
 from openvariant.variant.variant import Variant
 
 
 def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) -> Tuple[int, Union[dict, None]]:
     """Main functionality for count task"""
-    where_clauses = parse_where(where)
 
     i = 0
     input_file, input_annotations = selection
@@ -27,9 +25,7 @@ def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) ->
     result = Variant(input_file, input_annotations)
 
     if group_by is None:
-        for r in result.read():
-            if skip(r, where_clauses):
-                continue
+        for r in result.read(where=where):
             i += 1
         return i, None
     else:

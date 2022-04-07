@@ -1,4 +1,4 @@
-from openvariant.commands.tasks.count import count
+from openvariant.tasks.count import count
 
 result = count('../data/', './example_2.yaml', where="CHROMOSOME != 12")
 print(result)

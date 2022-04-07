@@ -1,4 +1,4 @@
-from openvariant.annotation.annotation import Annotation
+from openvariant.annotation import Annotation
 from openvariant.variant.variant import Variant
 
 annotation = Annotation('example_1.yaml')

@@ -13,8 +13,7 @@ from typing import Generator, List, Tuple
 from tqdm import tqdm
 
 from openvariant.annotation.annotation import Annotation
-from openvariant.find.find import find_files
-from openvariant.utils.logger import log
+from openvariant.find.find_files import find_files
 from openvariant.variant.variant import Variant
 
 
@@ -28,7 +27,8 @@ def _get_unique_values(file_path: str, annotation: Annotation, key: str) -> Tupl
             values.add(r[key])
             result_read.append(r)
     except KeyError:
-        log.warn(f"'{key}' key not found in '{file_path}' file")
+        pass
+        #log.warn(f"'{key}' key not found in '{file_path}' file")
     return values, result_read
 
 

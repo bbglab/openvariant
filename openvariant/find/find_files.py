@@ -7,13 +7,11 @@ import glob
 import re
 from fnmatch import fnmatch
 from os import listdir
-from os.path import isfile, join, basename, abspath, dirname, isdir
+from os.path import isfile, join, isdir
 from typing import Generator
-from copy import deepcopy
 
 from openvariant.annotation.annotation import Annotation
-
-from openvariant.config.config_annotation import ANNOTATION_EXTENSION
+from openvariant.annotation.config_annotation import ANNOTATION_EXTENSION
 
 
 def _check_extension(ext: str, path: str) -> bool:

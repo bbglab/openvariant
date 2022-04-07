@@ -1,1 +1,4 @@
-__version__ = "0.6.12"
+import pkg_resources
+version = pkg_resources.require("open-variant")[0].version
+__version__ = version
+

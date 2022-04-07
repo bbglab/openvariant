@@ -1,12 +1,11 @@
 import math
 import re
 import unittest
-from types import MethodType
 
 from openvariant.annotation.builder import StaticBuilder, InternalBuilder, Builder, DirnameBuilder, FilenameBuilder, \
-    PluginBuilder, MappingBuilder
-from openvariant.annotation.process import AnnotationTypesProcess, InternalProcess, DirnameProcess, FilenameProcess
-from openvariant.config.config_annotation import AnnotationTypes
+    MappingBuilder, PluginBuilder
+from openvariant.annotation.process import AnnotationTypesProcess
+from openvariant.annotation.config_annotation import AnnotationTypes
 from openvariant.plugins.context import Context
 
 

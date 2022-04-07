@@ -4,9 +4,9 @@ from functools import partial
 from os.path import isdir, basename, abspath, dirname
 from typing import Tuple, List, Callable, Optional
 
-from openvariant.annotation.builder import StaticBuilder, InternalBuilder, FilenameBuilder, Builder, DirnameBuilder, \
+from openvariant.annotation.builder import StaticBuilder, InternalBuilder, FilenameBuilder, DirnameBuilder, \
     PluginBuilder, MappingBuilder
-from openvariant.config.config_annotation import AnnotationTypes
+from openvariant.annotation.config_annotation import AnnotationTypes
 from openvariant.plugins.context import Context
 
 StaticProcess = Tuple[str, float or int or str, Callable]
