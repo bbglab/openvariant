@@ -1,0 +1,37 @@
+h1, h2, h3 {
+	color: #0b0b0b !important;
+}
+
+.prev-next-area {
+	display: none;
+}
+
+.navbar-light {
+	background-color: #f0f0f0 !important;
+}
+
+.headerlink {
+	display: none;
+}
+
+.breadcrumbs-outer {
+    display: none;
+}
+
+button.copybtn {
+	cursor: pointer;
+	width: 2.2em;
+	height: 2.2em;
+}
+
+.section {
+	text-align: justify;
+}
+
+/*.navbar-light .navbar-nav li a.nav-link:hover {
+  color: red;
+}*/
+
+.toctree-wrapper ul li {
+    list-style-type: none;
+}
