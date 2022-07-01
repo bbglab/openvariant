@@ -16,85 +16,97 @@ def openvar():
     pass
 
 
-@openvar.command(name="cat", short_help='Concatenate files to standard input')
+@openvar.command(name="cat", short_help='Concatenate parsed files to standard output.')
 @click.argument('input_path', type=click.Path(exists=True), default='.')
-@click.option('--where', '-w', type=click.STRING, default=None, help="Filter expression. eg: CHROMOSOME == 4")
-@click.option('--annotations', '-a', type=click.Path(exists=True), default=None)
-@click.option('--header', help="Show the result header", is_flag=True)
-@click.option('--output', '-o', help="File to write the output.", default=None)
+@click.option('--where', '-w', type=click.STRING, default=None, help="Condition expression. eg: CHROMOSOME == 4")
+@click.option('--annotations', '-a', type=click.Path(exists=True), default=None,
+              help="Annotation path. eg: /path/annotation.yaml")
+@click.option('--header', is_flag=True, help="Show the result header.")
+@click.option('--output', '-o', default=None, help="File to write the output.")
 def cat(input_path: str, where: str or None, annotations: str or None, header: bool, output: str or None):
     """Print the parsed files on the stdout/"output"."""
     cat_task(input_path, annotations, where, header, output)
 
 
-@openvar.command(name="count", short_help='Number of rows that matches a specified criterion')
+@openvar.command(name="count", short_help='Number of rows that matches a specified criterion.')
 @click.argument('input_path', type=click.Path(exists=True), default='.')
-@click.option('--where', '-w', multiple=False, type=click.STRING, help="Filter expression. eg: CHROMOSOME == 4")
-@click.option('--group_by', '-g', type=click.STRING, help="Filter expression. eg: CHROMOSOME")
-@click.option('--annotations', '-a', default=None, type=click.Path(exists=True))
-@click.option('--cores', '-c', help='Maximum processes to run in parallel.', type=click.INT, default=cpu_count())
-@click.option('--quite', '-q', help="Don't show the progress, only the total count.", is_flag=True)
-@click.option('--output', '-o', help="File to write the output.", default=None)
-def count(input_path: str, where: str, group_by: str, cores: int, quite: bool, annotations: str or None, output:str or None) -> None:
+@click.option('--where', '-w', multiple=False, type=click.STRING, help="Condition expression. eg: CHROMOSOME == 4")
+@click.option('--group_by', '-g', type=click.STRING, help="Key to group rows. eg: COUNTRY")
+@click.option('--annotations', '-a', default=None, type=click.Path(exists=True),
+              help="Annotation path. eg: /path/annotation.yaml")
+@click.option('--cores', '-c', type=click.INT, default=cpu_count(), help='Maximum processes to run in parallel.')
+@click.option('--quite', '-q', is_flag=True, help="Don't show the progress.")
+@click.option('--output', '-o', default=None, help="File to write the output.")
+def count(input_path: str, where: str, group_by: str, cores: int, quite: bool, annotations: str or None,
+          output: str or None) -> None:
     """Print on the stdout/"output" the number of rows that meets the criteria."""
     result = count_task(input_path, annotations, group_by=group_by, where=where, cores=cores, quite=quite)
+    out_file = None
     if output:
         out_file = open(output, "w")
     if len(result[1]) > 0:
         for k, v in sorted(result[1].items(), key=lambda res: res[1]):
             if output:
                 out_file.write("{}\t{}\n".format(k, v))
-            else: print("{}\t{}".format(k, v))
-    
+            else:
+                print("{}\t{}".format(k, v))
+
     if output:
         out_file.write("TOTAL\t{}\n".format(result[0]))
-    else: print("TOTAL\t{}".format(result[0]))
-    
-    if output: out_file.close()
-    
+    else:
+        print("TOTAL\t{}".format(result[0]))
+
+    if output:
+        out_file.close()
 
 
-@openvar.command(name="groupby", short_help='Groups rows that have the same values into summary rows')
+@openvar.command(name="groupby", short_help='Group the parsed result for each different value of the specified key.')
 @click.argument('input_path', type=click.Path(exists=True), default='.')
-@click.option('--header', help='Send header as first row', is_flag=True)
-@click.option('--show', help='Show group by each row', is_flag=True)
-@click.option('--group_by', '-g', type=click.STRING, default=None, help="Filter expression. eg: CHROMOSOME")
+@click.option('--header', is_flag=True, help="Show the result header.")
+@click.option('--show', is_flag=True, help='Show group by each row.')
 @click.option('--where', '-w', type=click.STRING, default=None, help="Filter expression. eg: CHROMOSOME == 4")
+@click.option('--group_by', '-g', type=click.STRING, default=None, help="Key to group rows. eg: COUNTRY")
 @click.option('--script', '-s', type=click.STRING, default=None,
               help="Filter expression. eg: gzip > \${GROUP_KEY}.parsed.tsv.gz")
-@click.option('--annotations', '-a', default=None, type=click.Path(exists=True))
-@click.option('--cores', '-c', help='Maximum processes to run in parallel.', type=click.INT, default=cpu_count())
-@click.option('--quite', '-q', help="Don't show the progress, only the total count.", is_flag=True)
+@click.option('--annotations', '-a', default=None, type=click.Path(exists=True),
+              help="Annotation path. eg: /path/annotation.yaml")
+@click.option('--cores', '-c', type=click.INT, default=cpu_count(), help='Maximum processes to run in parallel.')
+@click.option('--quite', '-q', is_flag=True, help="Don't show the progress.")
 @click.option('--output', '-o', help="File to write the output.", default=None)
 def groupby(input_path: str, script: str, where: str, group_by: str, cores: int, quite: bool, annotations: str or None,
             header: bool, show: bool, output: str or None):
     """Print on the stdout/"output" the parsed files group by a specified field."""
+    out_file = None
     if output:
         out_file = open(output, 'w')
     for group_key, group_result, command in group_by_task(input_path, annotations, script, key_by=group_by, where=where,
-                                                        cores=cores, quite=quite, header=header):
+                                                          cores=cores, quite=quite, header=header):
         for r in group_result:
             if command:
                 if output:
                     out_file.write(f"{group_key}\t{r}\n") if show else out_file.write(f"{r}\n")
-                else: print(f"{group_key}\t{r}") if show else print(f"{r}")
+                else:
+                    print(f"{group_key}\t{r}") if show else print(f"{r}")
             else:
                 if header:
                     if output:
                         out_file.write(f"{r}\n")
-                    else: print(f"{r}")
+                    else:
+                        print(f"{r}")
                     header = False
                 else:
                     if output:
                         out_file.write(f"{group_key}\t{r}\n") if show else out_file.write(f"{r}\n")
-                    else: print(f"{group_key}\t{r}") if show else print(f"{r}")
+                    else:
+                        print(f"{group_key}\t{r}") if show else print(f"{r}")
     if output:
         out_file.close()
 
-@openvar.command(name="plugin", short_help='Actions to execute for a plugin: create')
+
+@openvar.command(name="plugin", short_help='Actions to execute for a plugin: create.')
 @click.argument('action', type=click.Choice(['create']))
-@click.option('--name', '-n', type=click.STRING)
-@click.option('--directory', '-d', type=click.STRING)
+@click.option('--name', '-n', type=click.STRING, help="Name of the plugin.")
+@click.option('--directory', '-d', type=click.STRING, help="Directory to reach the plugin.")
 def plugin(action, name: str or None, directory: str or None):
     """Actions to apply on the plugin system."""
     PluginActions[action.upper()].value(name, directory)

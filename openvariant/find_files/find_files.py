@@ -7,7 +7,7 @@ import glob
 import re
 from fnmatch import fnmatch
 from os import listdir
-from os.path import isfile, join, isdir
+from os.path import isfile, join, isdir, basename, dirname
 from typing import Generator
 
 from openvariant.annotation.annotation import Annotation
@@ -37,7 +37,11 @@ def _get_annotation(file_path, annotation):
 def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Generator[str, Annotation, None]:
     """Recursive exploration from a base path"""
     if not fix:
-        for annotation_file in glob.iglob(join(base_path, "*.{}".format(ANNOTATION_EXTENSION))):
+        if isfile(base_path):
+            annotation_path = dirname(base_path)
+        else:
+            annotation_path = base_path
+        for annotation_file in glob.iglob(join(annotation_path, "*.{}".format(ANNOTATION_EXTENSION))):
             annotation = Annotation(annotation_file)
 
     if isdir(base_path):

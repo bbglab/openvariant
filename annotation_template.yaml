@@ -54,7 +54,7 @@ annotation: # Columns to parse
     fileMapping: string # File name to make the mapping; required
     fieldValue: string # Field of the final output value; required
 
-  # Apply plugin in the columns described on the `fieldSource` attribute of input files.
+  # Apply plugin transformation in each row of the input file.
   - type: 'plugin'
     plugin: string # Plugin to apply, could be internal, located into 'plugin' folder, or customized by the user
     field: string

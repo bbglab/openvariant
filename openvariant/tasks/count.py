@@ -11,7 +11,7 @@ from typing import Tuple, Union
 from tqdm import tqdm
 
 from openvariant.annotation.annotation import Annotation
-from openvariant.find.find_files import find_files
+from openvariant.find_files.find_files import find_files
 
 from openvariant.variant.variant import Variant
 

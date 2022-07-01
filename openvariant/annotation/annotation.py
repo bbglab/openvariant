@@ -125,6 +125,12 @@ class Annotation:
                 logging.error(exc)
             stream.close()
 
+    def _check_columns(self) -> None:
+        """Check if columns exists as annotation fields"""
+        for col in self._columns:
+            if col not in self._annotations:
+                raise KeyError(f"'{col}' column unable to find.")
+
     def __init__(self, annotation_path: str) -> None:
         """
         Inits Annotation with annotation file path.
@@ -137,6 +143,7 @@ class Annotation:
 
         self._path = annotation_path
         raw_annotation = self._read_annotation_file()
+
         _check_general_keys(raw_annotation)
         for annot in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
             _check_annotation_keys(annot)
@@ -145,11 +152,9 @@ class Annotation:
         self._patterns = patterns if isinstance(patterns, List) else [patterns]
         self._recursive = raw_annotation.get(AnnotationGeneralKeys.RECURSIVE.value, True)
         self._delimiter = raw_annotation.get(AnnotationGeneralKeys.DELIMITER.value, DEFAULT_DELIMITER).upper()
-
         self._format = raw_annotation.get(AnnotationGeneralKeys.FORMAT.value, DEFAULT_FORMAT).replace('.', '')
 
         self._excludes: dict = {}
-
         for k in raw_annotation.get(AnnotationGeneralKeys.EXCLUDE.value, []):
             key_exclude = k[AnnotationKeys.FIELD.value]
             value_exclude = k[AnnotationKeys.VALUE.value]
@@ -166,12 +171,6 @@ class Annotation:
 
         self._columns = raw_annotation.get(AnnotationGeneralKeys.COLUMNS.value, list(self.annotations.keys()))
         self._check_columns()
-
-    def _check_columns(self) -> None:
-        """Check if columns exists as annotation fields"""
-        for col in self._columns:
-            if col not in self._annotations:
-                raise KeyError(f"'{col}' column unable to find.")
 
     @property
     def path(self) -> str:

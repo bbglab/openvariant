@@ -6,7 +6,7 @@ A core functionality to execute cat task.
 from typing import List
 
 from openvariant.annotation.config_annotation import AnnotationFormat
-from openvariant.find.find_files import find_files
+from openvariant.find_files.find_files import find_files
 from openvariant.variant.variant import Variant
 
 
@@ -32,6 +32,7 @@ def cat(base_path: str, annotation_path: str or None = None, where: str = None, 
     header_show : bool
         Shows header on the output.
     """
+    out_file = None
     if output:
         out_file = open(output, "w")
     for file, annotation in find_files(base_path, annotation_path):
@@ -41,12 +42,15 @@ def cat(base_path: str, annotation_path: str or None = None, where: str = None, 
             if output:
                 out_file.write(_format_line(header, result.annotation.format))
                 out_file.write("\n")
-            else: print(_format_line(header, result.annotation.format))
+            else:
+                print(_format_line(header, result.annotation.format))
             header_show = False
         for i, r in enumerate(result.read(where=where)):
             if isinstance(r, dict):
                 if output:
                     out_file.write(_format_line(list(map(str, r.values())), result.annotation.format))
                     out_file.write("\n")
-                else: print(_format_line(list(map(str, r.values())), result.annotation.format))
-    if output: out_file.close()
+                else:
+                    print(_format_line(list(map(str, r.values())), result.annotation.format))
+    if output:
+        out_file.close()

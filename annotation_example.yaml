@@ -42,10 +42,6 @@ annotation:
     function: 'lambda x: "{}".format(x.lower())'
     regex: '(*.)'
 
-  - type: 'plugin'
-    plugin: 'alteration_type'
-    field: 'ALT_TYPE'
-
   - type: 'mapping'
     field: 'MUTATION_REF'
     fieldSource:
@@ -55,6 +51,11 @@ annotation:
     fieldMapping: 'MUTATION_ID'
     fileMapping: 'metadata_mutation.tsv'
     fieldValue: 'REFERENCE'
+
+  - type: 'plugin'
+    plugin: 'alteration_type'
+    field: 'ALT_TYPE'
+
 
 exclude:
   - field: 'DATASET'

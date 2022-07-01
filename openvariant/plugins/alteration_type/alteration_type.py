@@ -104,5 +104,5 @@ class Alteration_typePlugin(Plugin):
 
             row[context.field_name] = alt_type
         else:
-            raise ValueError("Unable to find 'REF', 'ALT' or 'POSITION' values in the row.")
+            raise ValueError("Unable to find_files 'REF', 'ALT' or 'POSITION' values in the row.")
         return row[context.field_name]
