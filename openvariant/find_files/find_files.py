@@ -34,25 +34,16 @@ def _get_annotation(file_path, annotation):
             raise AttributeError("Unable to parse annotation file, check its location.")
 
 
-def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Generator[str, Annotation, None]:
+def _scan_files(base_path: str, annotation: Annotation, fix: bool):
     """Recursive exploration from a base path"""
-    if not fix:
-        if isfile(base_path):
-            annotation_path = dirname(base_path)
-        else:
-            annotation_path = base_path
-        for annotation_file in glob.iglob(join(annotation_path, "*.{}".format(ANNOTATION_EXTENSION))):
-            annotation = Annotation(annotation_file)
-
     if isdir(base_path):
         for file_name in listdir(base_path):
             file_path = join(base_path, file_name)
             try:
-                for f, a in _find_files(file_path, annotation, fix):
+                for f, a in _scan_files(file_path, annotation, fix):
                     yield f, a
             except PermissionError as e:
                 raise PermissionError(f"Unable to open {file_name}: {e}")
-
     elif isfile(base_path):
         file_path = base_path
         try:
@@ -60,9 +51,24 @@ def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Ge
                 yield f, a
         except PermissionError as e:
             raise PermissionError(f"Unable to open {base_path}: {e}")
-
     else:
         raise FileNotFoundError(f"Unable to open {base_path}, it's not a file nor a directory.")
+
+
+def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Generator[str, Annotation, None]:
+    """Recursive exploration from a base path distinct if there's a fix annotation or no"""
+    if not fix:
+        if isfile(base_path):
+            annotation_path = dirname(base_path)
+        else:
+            annotation_path = base_path
+        for annotation_file in glob.iglob(join(annotation_path, "*.{}".format(ANNOTATION_EXTENSION))):
+            annotation = Annotation(annotation_file)
+            for f, a in _scan_files(base_path, annotation, fix):
+                yield f, a
+    else:
+        for f, a in _scan_files(base_path, annotation, fix):
+            yield f, a
 
 
 def find_files(base_path: str, annotation_path: str or None = None) -> Generator[str, Annotation, None]:

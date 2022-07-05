@@ -15,7 +15,8 @@ def _format_line(line: List[str], out_format: str) -> str:
     return AnnotationFormat[out_format.upper()].value.join(line)
 
 
-def cat(base_path: str, annotation_path: str or None = None, where: str = None, header_show: bool = True, output: str or None = None) -> None:
+def cat(base_path: str, annotation_path: str or None = None, where: str = None, header_show: bool = True,
+        output: str or None = None) -> None:
     """Print on the stdout/"output" the parsed files.
 
     It will parse the input files with its proper annotation schema, and it'll show the result on the stdout.
@@ -31,6 +32,8 @@ def cat(base_path: str, annotation_path: str or None = None, where: str = None, 
         Conditional statement.
     header_show : bool
         Shows header on the output.
+    output : str or None
+        Save output on a file.
     """
     out_file = None
     if output:
