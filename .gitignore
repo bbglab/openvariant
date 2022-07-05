@@ -113,3 +113,10 @@ out/
 
 # JIRA plugins
 atlassian-ide-plugin.xml
+
+# Documentation
+docs/examples/find_files
+docs/examples/variant
+docs/examples/cat
+docs/examples/group_by
+docs/examples/count
