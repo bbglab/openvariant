@@ -14,7 +14,7 @@ From a base path (directory or file) it will generate an iterator that will thro
 corresponding `annotation` file that matches the ``pattern`` parameter.
 
 This is can be useful to make sure which `annotation` file can correspond on each `input` file and then each file can
-be parsed through `Variant <#id2>`_ task.
+be parsed through `Variant <#id2>`_ task. Check :ref:`Find files examples` for more cases.
 
 .. code-block:: python
 

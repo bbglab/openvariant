@@ -1,9 +1,11 @@
+.. _Find files examples:
+
 *********************
 Find files examples
 *********************
+.. nbgallery::
+    :name: Fine files
+    :glob:
 
-.. toctree::
-   :maxdepth: 2
-
-   ./notebooks/find_files_with_directory_path.ipynb
-   ./notebooks/find_files_with_file_path.ipynb
+    find_files/find_files_with_directory_path.ipynb
+    find_files/find_files_with_file_path.ipynb

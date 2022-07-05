@@ -4,4 +4,10 @@
 Variant examples
 *********************
 
-HELOELEODOE
+
+.. nbgallery::
+    :name: Variant
+    :glob:
+
+    variant/read.ipynb
+    variant/save.ipynb

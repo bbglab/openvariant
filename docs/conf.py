@@ -89,6 +89,12 @@ html_theme_options = {
     ],
 }
 
+nbsphinx_thumbnails = {
+    'examples/find_files/find_files_with_directory_path': './_static/examples_thumbnails/find_files_folder.png',
+    'examples/find_files/find_files_with_file_path': './_static/examples_thumbnails/find_files_file.png',
+}
+
+
 html_title = 'OpenVariant'
 html_favicon = './_static/favicon_openvariant.ico'
 
@@ -97,3 +103,5 @@ html_use_opensearch = 'False'
 html_logo = "./_static/title.png"
 
 language = "en"
+
+

@@ -32,6 +32,19 @@ button.copybtn {
   color: red;
 }*/
 
-.toctree-wrapper ul li {
+/*.toctree-wrapper ul li {
     list-style-type: none;
+}*/
+
+.sphx-glr-thumbcontainer a.internal {
+	padding: 130px 10px 0;
+}
+.sphx-glr-thumbcontainer .figure {
+  margin: auto;
+  width: auto;
+}
+
+.sphx-glr-thumbcontainer {
+	padding-top: 0;
+	min-height: 180px;
 }
