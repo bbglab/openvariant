@@ -1,8 +1,0 @@
-pattern:
-  - '*.maf.gz'
-format: 'tsv'
-
-annotation:
-  - type: 'static'
-    field: 'PLATFORM'
-    value: 'WGS'

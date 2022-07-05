@@ -20,7 +20,7 @@ def openvar():
 @click.argument('input_path', type=click.Path(exists=True), default='.')
 @click.option('--where', '-w', type=click.STRING, default=None, help="Condition expression. eg: CHROMOSOME == 4")
 @click.option('--annotations', '-a', type=click.Path(exists=True), default=None,
-              help="Annotation path. eg: /path/annotation.yaml")
+              help="Annotation path. eg: /path/annotation_vcf.yaml")
 @click.option('--header', is_flag=True, help="Show the result header.")
 @click.option('--output', '-o', default=None, help="File to write the output.")
 def cat(input_path: str, where: str or None, annotations: str or None, header: bool, output: str or None):
@@ -33,7 +33,7 @@ def cat(input_path: str, where: str or None, annotations: str or None, header: b
 @click.option('--where', '-w', multiple=False, type=click.STRING, help="Condition expression. eg: CHROMOSOME == 4")
 @click.option('--group_by', '-g', type=click.STRING, help="Key to group rows. eg: COUNTRY")
 @click.option('--annotations', '-a', default=None, type=click.Path(exists=True),
-              help="Annotation path. eg: /path/annotation.yaml")
+              help="Annotation path. eg: /path/annotation_vcf.yaml")
 @click.option('--cores', '-c', type=click.INT, default=cpu_count(), help='Maximum processes to run in parallel.')
 @click.option('--quite', '-q', is_flag=True, help="Don't show the progress.")
 @click.option('--output', '-o', default=None, help="File to write the output.")
@@ -69,7 +69,7 @@ def count(input_path: str, where: str, group_by: str, cores: int, quite: bool, a
 @click.option('--script', '-s', type=click.STRING, default=None,
               help="Filter expression. eg: gzip > \${GROUP_KEY}.parsed.tsv.gz")
 @click.option('--annotations', '-a', default=None, type=click.Path(exists=True),
-              help="Annotation path. eg: /path/annotation.yaml")
+              help="Annotation path. eg: /path/annotation_vcf.yaml")
 @click.option('--cores', '-c', type=click.INT, default=cpu_count(), help='Maximum processes to run in parallel.')
 @click.option('--quite', '-q', is_flag=True, help="Don't show the progress.")
 @click.option('--output', '-o', help="File to write the output.", default=None)

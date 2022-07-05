@@ -621,23 +621,25 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="With-directory-path">
 <h1>With directory path<a class="headerlink" href="#With-directory-path" title="Permalink to this headline">#</a></h1>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">getcwd</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">getcwd</span>
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">dirname</span>
 <span class="kn">from</span> <span class="nn">openvariant</span> <span class="kn">import</span> <span class="n">find_files</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset_folder</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dirname</span><span class="p">(</span><span class="n">getcwd</span><span class="p">())</span><span class="si">}</span><span class="s1">/datasets/sample1&#39;</span>
 
-<span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">dataset_folder</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Path file: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">dataset_folder</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dirname</span><span class="p">(</span><span class="n">getcwd</span><span class="p">())</span><span class="si">}</span><span class="s1">/datasets/sample1&#39;</span>
+</pre></div>
+</div>
+</div>
+<p>It will get any type of file that matches with any <em>annotation</em> file that is on the same folder or on a child folder.</p>
+<p>As we see, the output has files with two types of pattern <code class="docutils literal notranslate"><span class="pre">*.vcf.gz</span></code> and <code class="docutils literal notranslate"><span class="pre">*.maf.gz</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">dataset_folder</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;File path: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Annotation object: </span><span class="si">{</span><span class="n">annotation</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------------------------------------&quot;</span><span class="p">)</span>
 </pre></div>
@@ -648,29 +650,51 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Path file: /home/dmartinez/openvariant/examples/datasets/sample1/4c0b87e5-ee6a-4d1b-89e3-0e4af13bea34.wgs.CaVEMan.raw_somatic_mutation.vcf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7ff07035caf0&gt;
+File path: /home/dmartinez/openvariant/examples/datasets/sample1/5a3a743.wxs.maf.gz
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b8ebbc10&gt;
 -------------------------------------
-Path file: /home/dmartinez/openvariant/examples/datasets/sample1/3e45c90e-3e32-4d62-ba4a-a23fb166ebdc.wgs.CaVEMan.raw_somatic_mutation.vcf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7ff07035cdc0&gt;
+File path: /home/dmartinez/openvariant/examples/datasets/sample1/22f5b2f.wxs.maf.gz
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b8ebbc10&gt;
 -------------------------------------
-Path file: /home/dmartinez/openvariant/examples/datasets/sample1/6fabf35c-4a22-4a6f-bf87-4ab9d67af24b.wgs.CaVEMan.raw_somatic_mutation.vcf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7ff07035cac0&gt;
+File path: /home/dmartinez/openvariant/examples/datasets/sample1/345c90e.raw_somatic_mutation.vcf.gz
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b860f580&gt;
 -------------------------------------
-Path file: /home/dmartinez/openvariant/examples/datasets/sample1/de46c011-295e-41cc-b396-38a8b8d5e0a0.wgs.CaVEMan.raw_somatic_mutation.vcf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7ff0723df3a0&gt;
+File path: /home/dmartinez/openvariant/examples/datasets/sample1/de46011.raw_somatic_mutation.vcf.gz
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b860f580&gt;
 -------------------------------------
-Path file: /home/dmartinez/openvariant/examples/datasets/sample1/80e43eb5-53cc-4950-8e11-3a70e22b6025.wgs.CaVEMan.raw_somatic_mutation.vcf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7ff072794a60&gt;
+File path: /home/dmartinez/openvariant/examples/datasets/sample1/sample1_1/3a70e22.raw_somatic_mutation.vcf.gz
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b860f580&gt;
 -------------------------------------
-Path file: /home/dmartinez/openvariant/examples/datasets/sample1/b2165d6b-2026-4c67-96f8-b8e31337cf0a.wgs.CaVEMan.raw_somatic_mutation.vcf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7ff0607c2c40&gt;
+File path: /home/dmartinez/openvariant/examples/datasets/sample1/sample1_1/4c0b87e.raw_somatic_mutation.vcf.gz
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b860f580&gt;
 -------------------------------------
-Path file: /home/dmartinez/openvariant/examples/datasets/sample1/8db5f405-81cd-41ec-8bce-7e638d4257ca.wgs.CaVEMan.raw_somatic_mutation.vcf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7ff0726c8610&gt;
+</pre></div></div>
+</div>
+<p>On the following example we will get files with a fixed <em>Annotation</em> file.</p>
+<p>All the files that we will be able to detect will follow pattern described on annotations.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">annotation_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dirname</span><span class="p">(</span><span class="n">getcwd</span><span class="p">())</span><span class="si">}</span><span class="s1">/datasets/sample1/annotation_maf.yaml&#39;</span>
+
+<span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">dataset_folder</span><span class="p">,</span> <span class="n">annotation_file</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;File path: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Annotation object: </span><span class="si">{</span><span class="n">annotation</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------------------------------------&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+File path: /home/dmartinez/openvariant/examples/datasets/sample1/5a3a743.wxs.maf.gz
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b8304fa0&gt;
 -------------------------------------
-Path file: /home/dmartinez/openvariant/examples/datasets/sample1/9dc23b6c-0a23-45f4-9ed4-36f5c7fffbef.wgs.CaVEMan.raw_somatic_mutation.vcf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7ff0723df3a0&gt;
+File path: /home/dmartinez/openvariant/examples/datasets/sample1/22f5b2f.wxs.maf.gz
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b8304fa0&gt;
 -------------------------------------
 </pre></div></div>
 </div>

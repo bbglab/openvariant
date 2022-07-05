@@ -15,19 +15,13 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "outputs": [
-    {
-     "data": {
-      "text/plain": "0"
-     },
-     "execution_count": 1,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
-    "i = 0\n",
-    "i"
+    "from os import getcwd\n",
+    "from os.path import dirname\n",
+    "from openvariant import find_files\n",
+    "\n",
+    "dataset_file = f'{dirname(getcwd())}/datasets/sample1/5a3a743.wxs.maf.gz'"
    ],
    "metadata": {
     "collapsed": false,
@@ -37,10 +31,82 @@
    }
   },
   {
+   "cell_type": "markdown",
+   "source": [
+    "As it occurs on the [directory path examples](find_files_with_directory_path.ipynb), it will get the file and its corresponding _Annotation_ object.\n",
+    "\n",
+    "It will only get 1 file as an output, the file that is pass as a parameter. In case that there's any _annotation_ file that matches with file's pattern, it won't generate any output."
+   ],
+   "metadata": {
+    "collapsed": false,
+    "pycharm": {
+     "name": "#%% md\n"
+    }
+   }
+  },
+  {
    "cell_type": "code",
-   "execution_count": null,
-   "outputs": [],
-   "source": [],
+   "execution_count": 2,
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "File path: /home/dmartinez/openvariant/examples/datasets/sample1/5a3a743.wxs.maf.gz\n",
+      "Annotation object: <openvariant.annotation.annotation.Annotation object at 0x7f5041c98310>\n",
+      "-------------------------------------\n"
+     ]
+    }
+   ],
+   "source": [
+    "for file_path, annotation in find_files(dataset_file):\n",
+    "    print(f'File path: {file_path}')\n",
+    "    print(f'Annotation object: {annotation}')\n",
+    "    print(\"-------------------------------------\")"
+   ],
+   "metadata": {
+    "collapsed": false,
+    "pycharm": {
+     "name": "#%%\n"
+    }
+   }
+  },
+  {
+   "cell_type": "markdown",
+   "source": [
+    "It is possible to pass the _Annotation_ file as a parameter of the function.\n",
+    "\n",
+    "It will generate the same output as it did before, and if the _annotation_ file doesn't match with the _input_ file it will not generate any output."
+   ],
+   "metadata": {
+    "collapsed": false,
+    "pycharm": {
+     "name": "#%% md\n"
+    }
+   }
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "File path: /home/dmartinez/openvariant/examples/datasets/sample1/5a3a743.wxs.maf.gz\n",
+      "Annotation object: <openvariant.annotation.annotation.Annotation object at 0x7f5041c98700>\n",
+      "-------------------------------------\n"
+     ]
+    }
+   ],
+   "source": [
+    "annotation_file = f'{dirname(getcwd())}/datasets/sample1/annotation_maf.yaml'\n",
+    "\n",
+    "for file_path, annotation in find_files(dataset_file, annotation_file):\n",
+    "    print(f'File path: {file_path}')\n",
+    "    print(f'Annotation object: {annotation}')\n",
+    "    print(\"-------------------------------------\")"
+   ],
    "metadata": {
     "collapsed": false,
     "pycharm": {
