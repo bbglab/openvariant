@@ -19,6 +19,7 @@ from openvariant.annotation.annotation import Annotation
 from openvariant.annotation.builder import MappingBuilder
 from openvariant.annotation.process import AnnotationTypesProcess
 from openvariant.annotation.config_annotation import AnnotationFormat, AnnotationTypes, AnnotationDelimiter
+from openvariant.utils.utils import check_extension
 from openvariant.variant.where import skip, parse_where
 
 
@@ -175,6 +176,12 @@ class Variant:
             -> Generator[dict, None, None]:
         """Parsing of an entire file with annotation schema"""
         header, row, row_header = None, {}, []
+
+        matches = [check_extension(ext, file_path) for ext in annotation.patterns]
+
+        if not any(matches):
+            raise NameError("Annotation patterns don't match with input file.")
+
         self.mm, self.file = _open_file(file_path, "rb")
         for lnum, line in _base_parser(self.mm, file_path, annotation.delimiter):
             try:

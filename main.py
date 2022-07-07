@@ -14,10 +14,11 @@ from openvariant import find_files, Annotation, Variant
 #print(res)
 
 
-#for file, annotation in find_files(f"{getcwd()}/tests/data/dataset/"):
+annotation = Annotation(f"{getcwd()}/tests/data/dataset/dataset.yaml")
 
-file = "./indexes.tsv"
-annotation = Annotation("./metadata.yaml")
-result = Variant(file, annotation)
+#for file, _ in find_files(f"{getcwd()}/tests/data/dataset/"):
+
+result = Variant(f"{getcwd()}/tests/data/dataset/sample3/", annotation)
 for line in result.read():
     print(f"Line in a dict: {line}")
+    break

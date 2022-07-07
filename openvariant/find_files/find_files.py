@@ -4,31 +4,20 @@ Find
 A core functionally to search files and with its corresponding annotation.
 """
 import glob
-import re
-from fnmatch import fnmatch
 from os import listdir
-from os.path import isfile, join, isdir, basename, dirname
+from os.path import isfile, join, isdir, dirname
 from typing import Generator
 
 from openvariant.annotation.annotation import Annotation
 from openvariant.annotation.config_annotation import ANNOTATION_EXTENSION
-
-
-def _check_extension(ext: str, path: str) -> bool:
-    """Check if file matches with the annotation pattern"""
-    if ext[0] == '*':
-        match = fnmatch(path, ext)
-    else:
-        reg_apply = re.compile(ext + '$')
-        match = len(reg_apply.findall(path)) != 0
-    return match
+from openvariant.utils.utils import check_extension
 
 
 def _get_annotation(file_path, annotation):
     if annotation is not None:
         try:
             for ext, _ in annotation.structure.items():
-                if _check_extension(ext, file_path):
+                if check_extension(ext, file_path):
                     yield file_path, annotation
         except AttributeError:
             raise AttributeError("Unable to parse annotation file, check its location.")
