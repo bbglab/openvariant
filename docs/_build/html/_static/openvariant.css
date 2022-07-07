@@ -48,3 +48,13 @@ button.copybtn {
 	padding-top: 0;
 	min-height: 180px;
 }
+
+div.nblast.container {
+	padding-top: 20px;
+}
+
+div.nbinput.container div.input_area div[class*="highlight"] > pre, div.nboutput.container div.output_area div[class*="highlight"] > pre, div.nboutput.container div.output_area div[class*="highlight"].math, div.nboutput.container div.output_area.rendered_html, div.nboutput.container div.output_area > div.output_javascript, div.nboutput.container div.output_area:not(.rendered_html) > img {
+	padding: 10px;
+	margin: 2px;
+	border: aliceblue solid 5px;
+}

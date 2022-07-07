@@ -92,6 +92,8 @@ html_theme_options = {
 nbsphinx_thumbnails = {
     'examples/find_files/find_files_with_directory_path': './_static/examples_thumbnails/find_files_folder.png',
     'examples/find_files/find_files_with_file_path': './_static/examples_thumbnails/find_files_file.png',
+    'examples/variant/read': './_static/examples_thumbnails/read.png',
+    'examples/variant/save': './_static/examples_thumbnails/save.png',
 }
 
 

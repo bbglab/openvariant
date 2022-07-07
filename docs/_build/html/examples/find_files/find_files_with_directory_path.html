@@ -620,6 +620,7 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="With-directory-path">
 <h1>With directory path<a class="headerlink" href="#With-directory-path" title="Permalink to this headline">#</a></h1>
+<p>Simple example on how find files task works for a directory path.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -651,22 +652,22 @@ div.rendered_html tbody tr:hover {
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 File path: /home/dmartinez/openvariant/examples/datasets/sample1/5a3a743.wxs.maf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b8ebbc10&gt;
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7fe99c24dd60&gt;
 -------------------------------------
 File path: /home/dmartinez/openvariant/examples/datasets/sample1/22f5b2f.wxs.maf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b8ebbc10&gt;
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7fe99c24dd60&gt;
 -------------------------------------
 File path: /home/dmartinez/openvariant/examples/datasets/sample1/345c90e.raw_somatic_mutation.vcf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b860f580&gt;
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7fe99c57fd90&gt;
 -------------------------------------
 File path: /home/dmartinez/openvariant/examples/datasets/sample1/de46011.raw_somatic_mutation.vcf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b860f580&gt;
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7fe99c57fd90&gt;
 -------------------------------------
 File path: /home/dmartinez/openvariant/examples/datasets/sample1/sample1_1/3a70e22.raw_somatic_mutation.vcf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b860f580&gt;
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7fe99c57fd90&gt;
 -------------------------------------
 File path: /home/dmartinez/openvariant/examples/datasets/sample1/sample1_1/4c0b87e.raw_somatic_mutation.vcf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b860f580&gt;
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7fe99c57fd90&gt;
 -------------------------------------
 </pre></div></div>
 </div>
@@ -691,10 +692,38 @@ Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 File path: /home/dmartinez/openvariant/examples/datasets/sample1/5a3a743.wxs.maf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b8304fa0&gt;
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7fe99c23d970&gt;
 -------------------------------------
 File path: /home/dmartinez/openvariant/examples/datasets/sample1/22f5b2f.wxs.maf.gz
-Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7f39b8304fa0&gt;
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7fe99c23d970&gt;
+-------------------------------------
+</pre></div></div>
+</div>
+<p>On the following example we will get files with a fixed <em>Annotation</em> file.</p>
+<p>All the files that we will be able to detect will follow pattern described on annotations.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">annotation_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dirname</span><span class="p">(</span><span class="n">getcwd</span><span class="p">())</span><span class="si">}</span><span class="s1">/datasets/sample1/annotation_maf.yaml&#39;</span>
+
+<span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">dataset_folder</span><span class="p">,</span> <span class="n">annotation_file</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;File path: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Annotation object: </span><span class="si">{</span><span class="n">annotation</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------------------------------------&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+File path: /home/dmartinez/openvariant/examples/datasets/sample1/5a3a743.wxs.maf.gz
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7fe99c23d820&gt;
+-------------------------------------
+File path: /home/dmartinez/openvariant/examples/datasets/sample1/22f5b2f.wxs.maf.gz
+Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x7fe99c23d820&gt;
 -------------------------------------
 </pre></div></div>
 </div>

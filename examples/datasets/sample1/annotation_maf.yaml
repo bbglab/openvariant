@@ -6,13 +6,13 @@ columns:
   - POSITION
   - DATASET
   - SAMPLE
-  - STRAND
+  - STRAND_REF
   - PLATFORM
 
 annotation:
   - type: static
     field: PLATFORM
-    value: WGS'
+    value: WGS
   - type: internal
     field: POSITION
     fieldSource:
@@ -36,10 +36,9 @@ annotation:
       - ''
     function: 'lambda s: ''-'' if s in [''-'', ''0'', ''-1''] else ''+'' if s in [''+'', ''1'', ''+1''] else ''+'''
   - type: mapping
-    field: 'SCORE'
+    field: STRAND_REF
     fieldSource:
-      - 'STRAND'
-    fieldMapping: 'STRAND_ID'
-    fileMapping: 'metadata_strand.tsv'
-    fieldValue: 'REFERENCE'
-
+      - STRAND
+    fieldMapping: STRAND_SCORE
+    fileMapping: metadata_strand.tsv
+    fieldValue: REFERENCE
