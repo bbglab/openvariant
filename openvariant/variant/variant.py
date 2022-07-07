@@ -263,7 +263,7 @@ class Variant:
                     continue
                 yield line
 
-    def save(self, file_path: str, display_header: bool = True) -> None:
+    def save(self, file_path: str, mode: str = 'w', display_header: bool = True) -> None:
         """
         Save parsed files in an indicated location.
 
@@ -271,13 +271,16 @@ class Variant:
         ---------
         file_path : str or None
             A string that indicates the location to store the output file.
-
+        mode : string
+            Two modes for writing (optional):
+            'w' the cursor starts at the begging of the file.
+            'a' the cursor starts at the end of the file.
         display_header : bool
             A bool that indicates if the output will have header or not (optional).
         """
         if file_path is None or isdir(file_path):
             raise ValueError("The path must be a file.")
-        with open(file_path, "w") as file:
+        with open(file_path, mode) as file:
             writer = csv.writer(file, delimiter=AnnotationFormat[self._annotation.format.upper()].value)
             for i, line in enumerate(self._unify(self._path, self._annotation)):
                 if display_header and i == 0:
