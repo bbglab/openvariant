@@ -7,8 +7,6 @@ on:
   push:
     branches:
       - '**'
-      - master
-      - develop
       - '!refs/tags/.*'
     tags-ignore:
       - '*'
