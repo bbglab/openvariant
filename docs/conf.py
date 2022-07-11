@@ -94,6 +94,9 @@ nbsphinx_thumbnails = {
     'examples/find_files/find_files_with_file_path': './_static/examples_thumbnails/find_files_file.png',
     'examples/variant/read': './_static/examples_thumbnails/read.png',
     'examples/variant/save': './_static/examples_thumbnails/save.png',
+    'examples/tasks/cat': './_static/examples_thumbnails/cat_task.png',
+    'examples/tasks/count': './_static/examples_thumbnails/count_task.png',
+    'examples/tasks/group_by': './_static/examples_thumbnails/group_by_task.png',
 }
 
 

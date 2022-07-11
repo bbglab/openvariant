@@ -47,7 +47,7 @@ Cat
 ------------------------------
 
 It will show on the stdout (standard out) the whole parsed output. This task can be also executed with :ref:`Command-line interface`.
-Check, :ref:`Cat examples` for more cases.
+Check, Cat examples in :ref:`Tasks examples` for more cases.
 
 .. code-block:: python
 
@@ -64,7 +64,7 @@ Group by
 
 It will generate an interator that will throw three variables: ``group_key`` (the value of each group), ``group_result``
 (a list of all rows that pertain to each group) and ``command`` (if it uses `script` parameter or not).
-It will group the parsed result for each different value of the specified ``key_by``. For further details, check out :ref:`Group by examples`.
+It will group the parsed result for each different value of the specified ``key_by``. For further details, check out Group by examples in :ref:`Tasks examples`.
 
 .. code-block:: python
 
@@ -82,7 +82,7 @@ Count
 ------------------------------
 
 It returns the number of rows that matches a specific conditions. You can see more examples in this section:
-:ref:`Count examples`.
+Count examples in :ref:`Tasks examples`.
 
 .. code-block:: python
 

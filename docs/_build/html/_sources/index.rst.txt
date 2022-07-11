@@ -11,7 +11,7 @@
 |
 
 
-|badge1| |badge2|
+|badge1| |badge2| |badge3|
 
 .. |badge1| image:: https://img.shields.io/github/license/bbglab/openvariant
    :target: https://opensource.org/licenses/BSD-3-Clause
@@ -20,6 +20,10 @@
 .. |badge2| image:: https://img.shields.io/pypi/v/open-variant
    :target: https://pypi.org/project/open-variant/
    :alt: PyPi version
+
+.. |badge3| image:: https://github.com/bbglab/openvariant/actions/workflows/openvariant_tester.yml/badge.svg
+   :target: https://github.com/bbglab/openvariant/actions/workflows/openvariant_tester.yml
+   :alt: Test workflow
 
 OpenVariant documentation
 =============================

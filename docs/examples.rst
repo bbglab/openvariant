@@ -8,11 +8,9 @@ Examples
    :maxdepth: 4
    :hidden:
 
-   examples/find_files.rst
-   examples/variant.rst
-   examples/cat_examples.rst
-   examples/group_by_examples.rst
-   examples/count_examples.rst
+   examples/find_files_examples.rst
+   examples/variant_examples.rst
+   examples/tasks_examples.rst
    examples/cli_examples.rst
    examples/plugin_examples.rst
 
@@ -24,7 +22,7 @@ Examples
     :column: col-lg-12 border-0 p-1
 
 
-    .. link-button:: examples/find_files
+    .. link-button:: examples/find_files_examples
         :type: ref
         :text: 🔍  Find files
         :classes: stretched-link text-justify p-0 m-0
@@ -36,7 +34,7 @@ Examples
     ---
     :column: col-lg-12 border-0 p-1
 
-    .. link-button:: examples/variant
+    .. link-button:: examples/variant_examples
         :type: ref
         :text: 📄  Variant
         :classes: stretched-link text-justify p-0 m-0
@@ -48,39 +46,18 @@ Examples
     ---
     :column: col-lg-12 border-0 p-1
 
-    .. link-button:: examples/cat_examples
+    .. link-button:: examples/tasks_examples
         :type: ref
-        :text: 📝  Cat task
+        :text: 📝  🧮  🗃️  Tasks
         :classes: stretched-link text-justify p-0 m-0
 
     +++
 
-    Show on the stdout the parsed result.
+    Bunch of tasks to perform with **OpenVariant**
 
-    ---
-    :column: col-lg-12 border-0 p-1
-
-    .. link-button:: examples/group_by_examples
-        :type: ref
-        :text: 🗃️  Group by task
-        :classes: stretched-link text-justify p-0 m-0
-
-    +++
-
-    Group parsed result for each different value of a specific field.
-
-    ---
-    :column: col-lg-12 border-0 p-1
-
-    .. link-button:: examples/count_examples
-        :type: ref
-        :text: 🧮  Count task
-        :classes: stretched-link text-justify p-0 m-0
-
-
-    +++
-
-    Number of rows that matches some conditions.
+    - Cat
+    - Count
+    - Group by
 
     ---
     :column: col-lg-12 border-0 p-1

@@ -13,10 +13,7 @@ EXAMPLES_DOCS = ./examples
 
 EXAMPLES_FINDFILES = ../examples/find_files
 EXAMPLES_VARIANT = ../examples/variant
-EXAMPLES_CAT = ../examples/cat
-EXAMPLES_GROUP_BY = ../examples/group_by
-EXAMPLES_COUNT = ../examples/count
-
+EXAMPLES_TASKS = ../examples/tasks
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -29,9 +26,7 @@ help:
 %: Makefile
 	cp -r $(EXAMPLES_FINDFILES) $(EXAMPLES_DOCS)
 	cp -r $(EXAMPLES_VARIANT) $(EXAMPLES_DOCS)
-	cp -r $(EXAMPLES_CAT) $(EXAMPLES_DOCS)
-	cp -r $(EXAMPLES_GROUP_BY) $(EXAMPLES_DOCS)
-	cp -r $(EXAMPLES_COUNT) $(EXAMPLES_DOCS)
+	cp -r $(EXAMPLES_TASKS) $(EXAMPLES_DOCS)
 
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 

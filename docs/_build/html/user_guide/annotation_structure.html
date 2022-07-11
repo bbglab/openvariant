@@ -313,10 +313,10 @@ and the <a class="reference external" href="https://github.com/bbglab/openvarian
 <h2>Pattern (required)<a class="headerlink" href="#pattern-required" title="Permalink to this headline">#</a></h2>
 <p>List of file patterns which the package will match and apply the corresponding annotation. Can be applied <cite>regexp</cite>
 to search and match the files that ends with that pattern.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
-<span class="nt">pattern</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="s">&#39;*.maf&#39;</span>
-    <span class="p p-Indicator">-</span> <span class="s">&#39;samples.vcf.gz&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span><span class="w"></span>
+<span class="nt">pattern</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.maf&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;samples.vcf.gz&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -325,8 +325,8 @@ to search and match the files that ends with that pattern.</p>
 <p>The format that the output will be, in case we save the output on a file or we would like to show on the standard output.
 There are only two options: <code class="docutils literal notranslate"><span class="pre">tsv</span></code> (tab-separated value) or <code class="docutils literal notranslate"><span class="pre">csv</span></code> (comma-separated value). It is optional and the
 default value is <code class="docutils literal notranslate"><span class="pre">tsv</span></code>.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
-<span class="nt">format</span><span class="p">:</span> <span class="s">&#39;tsv&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span><span class="w"></span>
+<span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;tsv&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -334,12 +334,12 @@ default value is <code class="docutils literal notranslate"><span class="pre">ts
 <h2>Columns (optional)<a class="headerlink" href="#columns-optional" title="Permalink to this headline">#</a></h2>
 <p>List of columns that we want as an <cite>output</cite>. All value must be values of the annotation fields. If it is
 empty the default value will be all the fields described on the <a class="reference external" href="#annotation">Annotation</a> parameter.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
-<span class="nt">columns</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="s">&#39;SAMPLE_ID&#39;</span>
-    <span class="p p-Indicator">-</span> <span class="s">&#39;NUM_CASES&#39;</span>
-    <span class="p p-Indicator">-</span> <span class="s">&#39;PROJECT&#39;</span>
-    <span class="p p-Indicator">-</span> <span class="s">&#39;COUNTRY&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span><span class="w"></span>
+<span class="nt">columns</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;SAMPLE_ID&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;NUM_CASES&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;PROJECT&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;COUNTRY&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -348,13 +348,13 @@ empty the default value will be all the fields described on the <a class="refere
 <p>List of the different annotations that <cite>output</cite> file will have. The list of each field
 will be set it up with the <code class="docutils literal notranslate"><span class="pre">annotation</span></code> key, then, each annotation will be described
 on the list.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">annotation</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">...</span>
-      <span class="l l-Scalar l-Scalar-Plain">...</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">...</span>
-      <span class="l l-Scalar l-Scalar-Plain">...</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">...</span>
-      <span class="l l-Scalar l-Scalar-Plain">...</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">annotation</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The order of the different annotations doesn’t matter and in each annotation type has its different properties.
@@ -368,10 +368,10 @@ that we describe on <code class="docutils literal notranslate"><span class="pre"
 <li><p><code class="docutils literal notranslate"><span class="pre">field</span></code>: name that will appear as a head column of this annotation. (required)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: final value that will parsed in all rows. (required)</p></li>
 </ul>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="s">&#39;static&#39;</span>
-      <span class="nt">field</span><span class="p">:</span> <span class="s">&#39;ID&#39;</span>
-      <span class="nt">value</span><span class="p">:</span> <span class="s">&#39;SG2F24986083&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;static&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ID&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;SG2F24986083&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -386,16 +386,16 @@ which is a lambda function that will take the value as an input.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">fieldSource</span></code>: list of that will try to match with input fields and transform it to the annotation <code class="docutils literal notranslate"><span class="pre">field</span></code> on the output. (required)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">function</span></code>: lambda function that will be executed after get the value of <code class="docutils literal notranslate"><span class="pre">fieldSource</span></code>. If it is not specified it will execute <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">lambda</span></span> <span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">)</span></span></code> making any modification into the value. (optional)</p></li>
 </ul>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="s">&#39;internal&#39;</span>
-      <span class="nt">field</span><span class="p">:</span> <span class="s">&#39;CHROMOSOME&#39;</span>
-      <span class="nt">fieldSource</span><span class="p">:</span>
-        <span class="p p-Indicator">-</span> <span class="s">&#39;Chromosome&#39;</span>
-        <span class="p p-Indicator">-</span> <span class="s">&#39;Chr&#39;</span>
-        <span class="p p-Indicator">-</span> <span class="s">&#39;Chrom&#39;</span>
-        <span class="p p-Indicator">-</span> <span class="s">&#39;Chromosome_Name&#39;</span>
-        <span class="p p-Indicator">-</span> <span class="s">&#39;#chrom&#39;</span>
-      <span class="nt">function</span><span class="p">:</span> <span class="s">&quot;lambda</span><span class="nv"> </span><span class="s">c:</span><span class="nv"> </span><span class="s">c.upper().replace(&#39;CHR&#39;,</span><span class="nv"> </span><span class="s">&#39;&#39;).replace(&#39;23&#39;,</span><span class="nv"> </span><span class="s">&#39;X&#39;).replace(&#39;24&#39;,</span><span class="nv"> </span><span class="s">&#39;Y&#39;)&quot;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;internal&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;CHROMOSOME&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">fieldSource</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;Chromosome&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;Chr&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;Chrom&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;Chromosome_Name&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;#chrom&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lambda</span><span class="nv"> </span><span class="s">c:</span><span class="nv"> </span><span class="s">c.upper().replace(&#39;CHR&#39;,</span><span class="nv"> </span><span class="s">&#39;&#39;).replace(&#39;23&#39;,</span><span class="nv"> </span><span class="s">&#39;X&#39;).replace(&#39;24&#39;,</span><span class="nv"> </span><span class="s">&#39;Y&#39;)&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -409,11 +409,11 @@ as value of the <code class="docutils literal notranslate"><span class="pre">fie
 <li><p><code class="docutils literal notranslate"><span class="pre">function</span></code>: lambda function that will be executed after get the value of <code class="docutils literal notranslate"><span class="pre">fieldSource</span></code>. If it is not specified it will execute <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">lambda</span></span> <span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">)</span></span></code> making any modification into the value. (optional)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">regex</span></code>: regular expression that will be executed after <code class="docutils literal notranslate"><span class="pre">function</span></code> parameter runs. If it is not specified it will execute <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="o"><span class="pre">.*</span></span><span class="p"><span class="pre">)</span></span></code> as a regular expression. (optional)</p></li>
 </ul>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="s">&#39;filename&#39;</span>
-      <span class="nt">field</span><span class="p">:</span> <span class="s">&#39;DATASET&#39;</span>
-      <span class="nt">function</span><span class="p">:</span> <span class="s">&#39;lambda</span><span class="nv"> </span><span class="s">x:</span><span class="nv"> </span><span class="s">&quot;{}&quot;.format(x.lower()[:-4])&#39;</span>
-      <span class="nt">regex</span><span class="p">:</span> <span class="s">&#39;[a-zA-Z0-9]*.&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;filename&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;DATASET&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;lambda</span><span class="nv"> </span><span class="s">x:</span><span class="nv"> </span><span class="s">&quot;{}&quot;.format(x.lower()[:-4])&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">regex</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[a-zA-Z0-9]*.&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -428,11 +428,11 @@ It will result with the same workflow that <a class="reference external" href="#
 <li><p><code class="docutils literal notranslate"><span class="pre">function</span></code>: lambda function that will be executed after get the value of <code class="docutils literal notranslate"><span class="pre">fieldSource</span></code>. If it is not specified it will execute <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">lambda</span></span> <span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">)</span></span></code> making any modification into the value. (optional)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">regex</span></code>: regular expression that will be executed after <code class="docutils literal notranslate"><span class="pre">function</span></code> parameter runs. If it is not specified it will execute <code class="code highlight python docutils literal notranslate"><span class="p"><span class="pre">(</span></span><span class="o"><span class="pre">.*</span></span><span class="p"><span class="pre">)</span></span></code> as a regular expression. (optional)</p></li>
 </ul>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="s">&#39;dirname&#39;</span>
-      <span class="nt">field</span><span class="p">:</span> <span class="s">&#39;PROJECT&#39;</span>
-      <span class="nt">function</span><span class="p">:</span> <span class="s">&#39;lambda</span><span class="nv"> </span><span class="s">x:</span><span class="nv"> </span><span class="s">&quot;{}&quot;.format(x.lower())&#39;</span>
-      <span class="nt">regex</span><span class="p">:</span> <span class="s">&#39;[a-zA-Z0-9]*-[0-9]*&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;dirname&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;PROJECT&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;lambda</span><span class="nv"> </span><span class="s">x:</span><span class="nv"> </span><span class="s">&quot;{}&quot;.format(x.lower())&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">regex</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[a-zA-Z0-9]*-[0-9]*&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -451,16 +451,16 @@ It will result with the same workflow that <a class="reference external" href="#
 <img alt="../_images/mapping_schema.png" class="align-center" src="../_images/mapping_schema.png" />
 <p>It will take <code class="docutils literal notranslate"><span class="pre">fieldSource</span></code> on the <cite>input</cite> file and it will match with the value of <code class="docutils literal notranslate"><span class="pre">fieldMapping</span></code> on <cite>mapping</cite> file.
 When this two values match it will get the value of <cite>fieldValue</cite> on that row as value of the output <code class="docutils literal notranslate"><span class="pre">field</span></code>.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="s">&#39;mapping&#39;</span>
-      <span class="nt">field</span><span class="p">:</span> <span class="s">&#39;MUTATION_REF&#39;</span>
-      <span class="nt">fieldSource</span><span class="p">:</span>
-        <span class="p p-Indicator">-</span> <span class="s">&#39;MutationID&#39;</span>
-        <span class="p p-Indicator">-</span> <span class="s">&#39;id&#39;</span>
-        <span class="p p-Indicator">-</span> <span class="s">&#39;Mutation_Id&#39;</span>
-      <span class="nt">fieldMapping</span><span class="p">:</span> <span class="s">&#39;MUTATION_ID&#39;</span>
-      <span class="nt">fileMapping</span><span class="p">:</span> <span class="s">&#39;metadata_mutation.tsv&#39;</span>
-      <span class="nt">fieldValue</span><span class="p">:</span> <span class="s">&#39;REFERENCE&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;mapping&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;MUTATION_REF&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">fieldSource</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;MutationID&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;id&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;Mutation_Id&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">fieldMapping</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;MUTATION_ID&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">fileMapping</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;metadata_mutation.tsv&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">fieldValue</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;REFERENCE&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -474,10 +474,10 @@ folder or can be customized and created by the user. See further details in <a c
 <li><p><code class="docutils literal notranslate"><span class="pre">field</span></code>: name that will appear as a head column of this annotation. (required)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">plugin</span></code>: name of plugin to apply (required)</p></li>
 </ul>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="s">&#39;plugin&#39;</span>
-      <span class="nt">field</span><span class="p">:</span> <span class="s">&#39;ALT_TYPE&#39;</span>
-      <span class="nt">plugin</span><span class="p">:</span> <span class="s">&#39;alteration_type&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;plugin&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ALT_TYPE&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;alteration_type&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -486,33 +486,33 @@ folder or can be customized and created by the user. See further details in <a c
 <h2>Exclude (optional)<a class="headerlink" href="#exclude-optional" title="Permalink to this headline">#</a></h2>
 <p>List of values that will be exclude from the <cite>output</cite> file in the parsing process. This parameter is optional and all the elements
 will be treated as an <cite>OR</cite> operation, it means if any of the elements is turns true the row will be excluded.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">exclude</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">...</span>
-      <span class="l l-Scalar l-Scalar-Plain">...</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">...</span>
-      <span class="l l-Scalar l-Scalar-Plain">...</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">...</span>
-      <span class="l l-Scalar l-Scalar-Plain">...</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">exclude</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Each element is composed of a <code class="docutils literal notranslate"><span class="pre">field</span></code> parameter and a <code class="docutils literal notranslate"><span class="pre">value</span></code> parameter. If <code class="docutils literal notranslate"><span class="pre">value</span></code> matches with the same <code class="docutils literal notranslate"><span class="pre">field</span></code>
 that appears on the <cite>output</cite>, the row that is reading on that moment will be excluded. Both parameters are required.
 Here, a short example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
-    <span class="nt">exclude</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">field</span><span class="p">:</span> <span class="s">&#39;DATASET&#39;</span>
-        <span class="nt">value</span><span class="p">:</span> <span class="s">&#39;laml&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">exclude</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;DATASET&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;laml&#39;</span><span class="w"></span>
 
-      <span class="p p-Indicator">-</span> <span class="nt">field</span><span class="p">:</span> <span class="s">&#39;DATASET&#39;</span>
-        <span class="nt">value</span><span class="p">:</span> <span class="s">&#39;ucs&#39;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;DATASET&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ucs&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>In addition, we can distinct <code class="docutils literal notranslate"><span class="pre">!</span></code> operator which it will exclude all the rows that are not the same as the <code class="docutils literal notranslate"><span class="pre">value</span></code>
 in the same <code class="docutils literal notranslate"><span class="pre">field</span></code>. Short example of it:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span>
-    <span class="nt">exclude</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">field</span><span class="p">:</span> <span class="s">&#39;ID&#39;</span>
-        <span class="nt">value</span><span class="p">:</span> <span class="s">&#39;!GB00BLF7NX68&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">exclude</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ID&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;!GB00BLF7NX68&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 </div>

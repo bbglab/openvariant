@@ -46,7 +46,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="With file path" href="find_files_with_file_path.html" />
-    <link rel="prev" title="Find files examples" href="../find_files.html" />
+    <link rel="prev" title="Find files examples" href="../find_files_examples.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
     
@@ -159,7 +159,7 @@
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="../find_files.html">
+  <a class="reference internal" href="../find_files_examples.html">
    Find files examples
   </a>
   <input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
@@ -181,7 +181,7 @@
   </ul>
  </li>
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../variant.html">
+  <a class="reference internal" href="../variant_examples.html">
    Variant examples
   </a>
   <input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
@@ -203,8 +203,8 @@
   </ul>
  </li>
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../cat_examples.html">
-   Cat task examples
+  <a class="reference internal" href="../tasks_examples.html">
+   Tasks examples
   </a>
   <input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -213,94 +213,23 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="../cat/simple_cat.html">
-     Simple
+    <a class="reference internal" href="../tasks/cat.html">
      <em>
-      cat
-     </em>
-     task
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../cat/where_in_cat.html">
-     Where in
-     <em>
-      cat
+      Cat
      </em>
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../cat/header_in_cat.html">
-     Header in
-     <em>
-      cat
-     </em>
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../group_by_examples.html">
-   Group by task examples
-  </a>
-  <input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../group_by/simple_group_by.html">
-     Simple
-     <em>
-      group by
-     </em>
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../group_by/where_in_group_by.html">
-     Where in
-     <em>
-      group by
-     </em>
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../count_examples.html">
-   Count task examples
-  </a>
-  <input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../count/simple_count.html">
-     Simple
-     <em>
-      count
-     </em>
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../count/where_in_count.html">
-     Where in
-     <em>
-      count
-     </em>
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../count/count_with_group_by.html">
+    <a class="reference internal" href="../tasks/count.html">
      <em>
       Count
      </em>
-     with
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../tasks/group_by.html">
      <em>
-      group by
+      Group by
      </em>
     </a>
    </li>
@@ -634,12 +563,17 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <p>It will get any type of file that matches with any <em>annotation</em> file that is on the same folder or on a child folder.</p>
+<p><code class="docutils literal notranslate"><span class="pre">find_files</span></code> function parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">base_path</span></code> - Base path of <em>input</em> folder.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">annotation_path</span></code> - Path of <em>annotation</em> file.</p></li>
+</ul>
 <p>As we see, the output has files with two types of pattern <code class="docutils literal notranslate"><span class="pre">*.vcf.gz</span></code> and <code class="docutils literal notranslate"><span class="pre">*.maf.gz</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">dataset_folder</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">base_path</span><span class="o">=</span><span class="n">dataset_folder</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;File path: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Annotation object: </span><span class="si">{</span><span class="n">annotation</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------------------------------------&quot;</span><span class="p">)</span>
@@ -679,7 +613,7 @@ Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">annotation_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dirname</span><span class="p">(</span><span class="n">getcwd</span><span class="p">())</span><span class="si">}</span><span class="s1">/datasets/sample1/annotation_maf.yaml&#39;</span>
 
-<span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">dataset_folder</span><span class="p">,</span> <span class="n">annotation_file</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">base_path</span><span class="o">=</span><span class="n">dataset_folder</span><span class="p">,</span> <span class="n">annotation_path</span><span class="o">=</span><span class="n">annotation_file</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;File path: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Annotation object: </span><span class="si">{</span><span class="n">annotation</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------------------------------------&quot;</span><span class="p">)</span>
@@ -707,7 +641,7 @@ Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">annotation_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dirname</span><span class="p">(</span><span class="n">getcwd</span><span class="p">())</span><span class="si">}</span><span class="s1">/datasets/sample1/annotation_maf.yaml&#39;</span>
 
-<span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">dataset_folder</span><span class="p">,</span> <span class="n">annotation_file</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">base_path</span><span class="o">=</span><span class="n">dataset_folder</span><span class="p">,</span> <span class="n">annotation_path</span><span class="o">=</span><span class="n">annotation_file</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;File path: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Annotation object: </span><span class="si">{</span><span class="n">annotation</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------------------------------------&quot;</span><span class="p">)</span>
@@ -735,7 +669,7 @@ Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="../find_files.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="../find_files_examples.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>

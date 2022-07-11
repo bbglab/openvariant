@@ -274,7 +274,7 @@ check <a class="reference internal" href="../examples.html#examples"><span class
 <p>From a base path (directory or file) it will generate an iterator that will throw all the <cite>inputs</cite> files and its
 corresponding <cite>annotation</cite> file that matches the <code class="docutils literal notranslate"><span class="pre">pattern</span></code> parameter.</p>
 <p>This is can be useful to make sure which <cite>annotation</cite> file can correspond on each <cite>input</cite> file and then each file can
-be parsed through <a class="reference external" href="#id2">Variant</a> task. Check <a class="reference internal" href="../examples/find_files.html#find-files-examples"><span class="std std-ref">Find files examples</span></a> for more cases.</p>
+be parsed through <a class="reference external" href="#id2">Variant</a> task. Check <a class="reference internal" href="../examples/find_files_examples.html#find-files-examples"><span class="std std-ref">Find files examples</span></a> for more cases.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example</span>
 <span class="kn">from</span> <span class="nn">openvariant</span> <span class="kn">import</span> <span class="n">find_files</span>
 
@@ -287,7 +287,7 @@ be parsed through <a class="reference external" href="#id2">Variant</a> task. Ch
 <h2>Variant<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h2>
 <p>Allow us to parse an <cite>input</cite> file through the <cite>annotation</cite> file. It will generate an object which you can apply different
 functionalities. Here, there is an example but for further details and more in-depth understand of each functionality,
-check <a class="reference internal" href="../examples/variant.html#variant-examples"><span class="std std-ref">Variant examples</span></a>.</p>
+check <a class="reference internal" href="../examples/variant_examples.html#variant-examples"><span class="std std-ref">Variant examples</span></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example</span>
 <span class="kn">from</span> <span class="nn">openvariant</span> <span class="kn">import</span> <span class="n">Annotation</span><span class="p">,</span> <span class="n">Variant</span>
 
@@ -302,7 +302,7 @@ check <a class="reference internal" href="../examples/variant.html#variant-examp
 <div class="section" id="cat">
 <h2>Cat<a class="headerlink" href="#cat" title="Permalink to this headline">#</a></h2>
 <p>It will show on the stdout (standard out) the whole parsed output. This task can be also executed with <a class="reference internal" href="cli.html#command-line-interface"><span class="std std-ref">Command-line interface (CLI)</span></a>.
-Check, <a class="reference internal" href="../examples/cat_examples.html#cat-examples"><span class="std std-ref">Cat task examples</span></a> for more cases.</p>
+Check, Cat examples in <a class="reference internal" href="../examples/tasks_examples.html#tasks-examples"><span class="std std-ref">Tasks examples</span></a> for more cases.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example</span>
 <span class="kn">from</span> <span class="nn">openvariant.tasks</span> <span class="kn">import</span> <span class="n">cat</span>
 
@@ -317,7 +317,7 @@ Check, <a class="reference internal" href="../examples/cat_examples.html#cat-exa
 <h2>Group by<a class="headerlink" href="#group-by" title="Permalink to this headline">#</a></h2>
 <p>It will generate an interator that will throw three variables: <code class="docutils literal notranslate"><span class="pre">group_key</span></code> (the value of each group), <code class="docutils literal notranslate"><span class="pre">group_result</span></code>
 (a list of all rows that pertain to each group) and <code class="docutils literal notranslate"><span class="pre">command</span></code> (if it uses <cite>script</cite> parameter or not).
-It will group the parsed result for each different value of the specified <code class="docutils literal notranslate"><span class="pre">key_by</span></code>. For further details, check out <a class="reference internal" href="../examples/group_by_examples.html#group-by-examples"><span class="std std-ref">Group by task examples</span></a>.</p>
+It will group the parsed result for each different value of the specified <code class="docutils literal notranslate"><span class="pre">key_by</span></code>. For further details, check out Group by examples in <a class="reference internal" href="../examples/tasks_examples.html#tasks-examples"><span class="std std-ref">Tasks examples</span></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example</span>
 <span class="kn">from</span> <span class="nn">openvariant.tasks</span> <span class="kn">import</span> <span class="n">group_by</span>
 
@@ -333,7 +333,7 @@ It will group the parsed result for each different value of the specified <code 
 <div class="section" id="count">
 <h2>Count<a class="headerlink" href="#count" title="Permalink to this headline">#</a></h2>
 <p>It returns the number of rows that matches a specific conditions. You can see more examples in this section:
-<a class="reference internal" href="../examples/count_examples.html#count-examples"><span class="std std-ref">Count task examples</span></a>.</p>
+Count examples in <a class="reference internal" href="../examples/tasks_examples.html#tasks-examples"><span class="std std-ref">Tasks examples</span></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example</span>
 <span class="kn">from</span> <span class="nn">openvariant.tasks</span> <span class="kn">import</span> <span class="n">count</span>
 

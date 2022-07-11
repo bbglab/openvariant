@@ -3,7 +3,7 @@
   {
    "cell_type": "markdown",
    "source": [
-    "# _Count_ with _group by_"
+    "# _Group by_"
    ],
    "metadata": {
     "collapsed": false,

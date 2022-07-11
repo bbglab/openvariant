@@ -49,6 +49,10 @@ button.copybtn {
 	min-height: 180px;
 }
 
+.sphx-glr-thumbcontainer:hover {
+	border: #b3b3b3 solid 2px;
+}
+
 div.nblast.container {
 	padding-top: 20px;
 }

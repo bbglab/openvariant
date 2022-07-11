@@ -46,7 +46,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Save" href="save.html" />
-    <link rel="prev" title="Variant examples" href="../variant.html" />
+    <link rel="prev" title="Variant examples" href="../variant_examples.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
     
@@ -159,7 +159,7 @@
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../find_files.html">
+  <a class="reference internal" href="../find_files_examples.html">
    Find files examples
   </a>
   <input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
@@ -181,7 +181,7 @@
   </ul>
  </li>
  <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="../variant.html">
+  <a class="reference internal" href="../variant_examples.html">
    Variant examples
   </a>
   <input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
@@ -203,8 +203,8 @@
   </ul>
  </li>
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../cat_examples.html">
-   Cat task examples
+  <a class="reference internal" href="../tasks_examples.html">
+   Tasks examples
   </a>
   <input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -213,94 +213,23 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="../cat/simple_cat.html">
-     Simple
+    <a class="reference internal" href="../tasks/cat.html">
      <em>
-      cat
-     </em>
-     task
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../cat/where_in_cat.html">
-     Where in
-     <em>
-      cat
+      Cat
      </em>
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../cat/header_in_cat.html">
-     Header in
-     <em>
-      cat
-     </em>
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../group_by_examples.html">
-   Group by task examples
-  </a>
-  <input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../group_by/simple_group_by.html">
-     Simple
-     <em>
-      group by
-     </em>
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../group_by/where_in_group_by.html">
-     Where in
-     <em>
-      group by
-     </em>
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../count_examples.html">
-   Count task examples
-  </a>
-  <input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../count/simple_count.html">
-     Simple
-     <em>
-      count
-     </em>
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../count/where_in_count.html">
-     Where in
-     <em>
-      count
-     </em>
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../count/count_with_group_by.html">
+    <a class="reference internal" href="../tasks/count.html">
      <em>
       Count
      </em>
-     with
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../tasks/group_by.html">
      <em>
-      group by
+      Group by
      </em>
     </a>
    </li>
@@ -634,15 +563,29 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>We can see the 10 first line of a file parsed through an <em>annotation</em> file.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Annotation</span></code> object generated from <em>annotation</em> file. Parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">annotation_path</span></code> - Path of <em>annotation</em> file.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Variant</span></code> object to iterate through the parsed file. Parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">path</span></code> - Path of <em>input</em> file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">annotation</span></code> - Annotation object which <em>input</em> will be parsed.</p></li>
+</ul>
+<p>One of the main function of <em>Variant</em> is <code class="docutils literal notranslate"><span class="pre">read</span></code>.It will generate an iterator to scan the parsed file.</p>
+<p><code class="docutils literal notranslate"><span class="pre">read</span></code> function parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">where</span></code> - Filter expression.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">group_key</span></code> - Key to group rows.</p></li>
+</ul>
+<p>On this example, it will get the 10 first line of parsed file through an <em>annotation</em> file.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">annotation</span> <span class="o">=</span> <span class="n">Annotation</span><span class="p">(</span><span class="n">annotation_file</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">Variant</span><span class="p">(</span><span class="n">dataset_file</span><span class="p">,</span> <span class="n">annotation</span><span class="p">)</span>
+<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">annotation</span> <span class="o">=</span> <span class="n">Annotation</span><span class="p">(</span><span class="n">annotation_path</span><span class="o">=</span><span class="n">annotation_file</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">Variant</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">dataset_file</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span><span class="n">annotation</span><span class="p">)</span>
 
-<span class="n">n_line</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="k">for</span> <span class="n">n_line</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">read</span><span class="p">()):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Line </span><span class="si">{</span><span class="n">n_line</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">n_line</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
@@ -711,12 +654,35 @@ Input file:  /home/dmartinez/openvariant/examples/datasets/sample1/22f5b2f.wxs.m
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-{&#39;PLATFORM&#39;: (&#39;STATIC&#39;, &#39;WGS&#39;), &#39;POSITION&#39;: (&#39;INTERNAL&#39;, [&#39;Position&#39;, &#39;Start&#39;, &#39;Start_Position&#39;, &#39;Pos&#39;, &#39;Chromosome_Start&#39;, &#39;POS&#39;], &lt;openvariant.annotation.builder.Builder object at 0x7f7eac15cca0&gt;, nan), &#39;DATASET&#39;: (&#39;FILENAME&#39;, &lt;openvariant.annotation.builder.Builder object at 0x7f7eac15cdc0&gt;, re.compile(&#39;(.*)&#39;)), &#39;SAMPLE&#39;: (&#39;DIRNAME&#39;, &lt;openvariant.annotation.builder.Builder object at 0x7f7eac15cc10&gt;, re.compile(&#39;(.*)&#39;)), &#39;STRAND&#39;: (&#39;INTERNAL&#39;, [&#39;Strand&#39;, &#39;Chromosome_Strand&#39;, &#39;&#39;], &lt;openvariant.annotation.builder.Builder object at 0x7f7eac15c280&gt;, nan), &#39;STRAND_REF&#39;: (&#39;MAPPING&#39;, [&#39;STRAND&#39;], {&#39;+&#39;: &#39;POS&#39;, &#39;-&#39;: &#39;NEG&#39;})}
+{&#39;PLATFORM&#39;: (&#39;STATIC&#39;, &#39;WGS&#39;), &#39;POSITION&#39;: (&#39;INTERNAL&#39;, [&#39;Position&#39;, &#39;Start&#39;, &#39;Start_Position&#39;, &#39;Pos&#39;, &#39;Chromosome_Start&#39;, &#39;POS&#39;], &lt;openvariant.annotation.builder.Builder object at 0x7f0f4b5e2f10&gt;, nan), &#39;DATASET&#39;: (&#39;FILENAME&#39;, &lt;openvariant.annotation.builder.Builder object at 0x7f0f4b18bdc0&gt;, re.compile(&#39;(.*)&#39;)), &#39;SAMPLE&#39;: (&#39;DIRNAME&#39;, &lt;openvariant.annotation.builder.Builder object at 0x7f0f4b18b820&gt;, re.compile(&#39;(.*)&#39;)), &#39;STRAND&#39;: (&#39;INTERNAL&#39;, [&#39;Strand&#39;, &#39;Chromosome_Strand&#39;, &#39;&#39;], &lt;openvariant.annotation.builder.Builder object at 0x7f0f4b18bca0&gt;, nan), &#39;STRAND_REF&#39;: (&#39;MAPPING&#39;, [&#39;STRAND&#39;], {&#39;+&#39;: &#39;POS&#39;, &#39;-&#39;: &#39;NEG&#39;})}
 </pre></div></div>
 </div>
-<p><strong>Variant</strong> can be combined with <code class="docutils literal notranslate"><span class="pre">find_files</span></code> as it show the following example. It will print the 3 first lines of each input file.</p>
+<p>One of the parameter on <code class="docutils literal notranslate"><span class="pre">read</span></code> function is <code class="docutils literal notranslate"><span class="pre">where</span></code>. You will be able to apply a conditional filter. The possible operations can be: - <code class="docutils literal notranslate"><span class="pre">==</span></code> - Equal. - <code class="docutils literal notranslate"><span class="pre">!=</span></code> - Not equal. - <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> - Less or equal than. - <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> - Less than. - <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> - More or equal than. - <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> - More than.</p>
+<p>One example of this parameter is the following one:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">annotation</span> <span class="o">=</span> <span class="n">Annotation</span><span class="p">(</span><span class="n">annotation_path</span><span class="o">=</span><span class="n">annotation_file</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">Variant</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">dataset_file</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span><span class="n">annotation</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">n_line</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="s2">&quot;POSITION == 186112&quot;</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;POSITION&#39;: &#39;186112&#39;, &#39;DATASET&#39;: &#39;22f5b2f&#39;, &#39;SAMPLE&#39;: &#39;SAMPLE1&#39;, &#39;STRAND_REF&#39;: &#39;POS&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;}
+</pre></div></div>
+</div>
+<p>Also, <code class="docutils literal notranslate"><span class="pre">read</span></code> allows <code class="docutils literal notranslate"><span class="pre">group_key</span></code> as a parameter which it will group rows depending on its value.</p>
+<p><strong>Variant</strong> can be combined with <code class="docutils literal notranslate"><span class="pre">find_files</span></code> as it show the following example. It will print the 3 first lines of each input file.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">basename</span>
@@ -724,8 +690,8 @@ Input file:  /home/dmartinez/openvariant/examples/datasets/sample1/22f5b2f.wxs.m
 
 <span class="n">dataset_folder</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dirname</span><span class="p">(</span><span class="n">getcwd</span><span class="p">())</span><span class="si">}</span><span class="s1">/datasets/sample1&#39;</span>
 
-<span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">dataset_folder</span><span class="p">):</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">Variant</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">base_path</span><span class="o">=</span><span class="n">dataset_folder</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">Variant</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span><span class="n">annotation</span><span class="p">)</span>
 
     <span class="n">n_line</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;File: &#39;</span><span class="p">,</span> <span class="n">basename</span><span class="p">(</span><span class="n">file_path</span><span class="p">),</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -794,7 +760,7 @@ Line 2: {&#39;POSITION&#39;: &#39;10267&#39;, &#39;DATASET&#39;: &#39;.raw_somat
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="../variant.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="../variant_examples.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
