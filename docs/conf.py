@@ -97,8 +97,12 @@ nbsphinx_thumbnails = {
     'examples/tasks/cat': './_static/examples_thumbnails/cat_task.png',
     'examples/tasks/count': './_static/examples_thumbnails/count_task.png',
     'examples/tasks/group_by': './_static/examples_thumbnails/group_by_task.png',
+    'examples/cli/introduction_cli': './_static/examples_thumbnails/introduction_cli.png',
+    'examples/cli/main_cli': './_static/examples_thumbnails/main_cli.png',
+    'examples/plugin_system/plugin_system': './_static/examples_thumbnails/plugin_example.png',
 }
 
+nbsphinx_input_prompt = '[%s] - '
 
 html_title = 'OpenVariant'
 html_favicon = './_static/favicon_openvariant.ico'

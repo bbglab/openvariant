@@ -18,7 +18,7 @@ def openvar():
 
 @openvar.command(name="cat", short_help='Concatenate parsed files to standard output.')
 @click.argument('input_path', type=click.Path(exists=True), default='.')
-@click.option('--where', '-w', type=click.STRING, default=None, help="Condition expression. eg: CHROMOSOME == 4")
+@click.option('--where', '-w', type=click.STRING, default=None, help="Filter expression. eg: CHROMOSOME == 4")
 @click.option('--annotations', '-a', type=click.Path(exists=True), default=None,
               help="Annotation path. eg: /path/annotation_vcf.yaml")
 @click.option('--header', is_flag=True, help="Show the result header.")
@@ -30,7 +30,7 @@ def cat(input_path: str, where: str or None, annotations: str or None, header: b
 
 @openvar.command(name="count", short_help='Number of rows that matches a specified criterion.')
 @click.argument('input_path', type=click.Path(exists=True), default='.')
-@click.option('--where', '-w', multiple=False, type=click.STRING, help="Condition expression. eg: CHROMOSOME == 4")
+@click.option('--where', '-w', multiple=False, type=click.STRING, help="Filter expression. eg: CHROMOSOME == 4")
 @click.option('--group_by', '-g', type=click.STRING, help="Key to group rows. eg: COUNTRY")
 @click.option('--annotations', '-a', default=None, type=click.Path(exists=True),
               help="Annotation path. eg: /path/annotation_vcf.yaml")

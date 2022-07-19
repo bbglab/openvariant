@@ -117,6 +117,6 @@ atlassian-ide-plugin.xml
 # Documentation
 docs/examples/find_files
 docs/examples/variant
-docs/examples/cat
-docs/examples/group_by
-docs/examples/count
+docs/examples/tasks
+docs/examples/cli
+docs/examples/plugin_systemhttps://github.com/bbglab/openvariant/tree/master/examples

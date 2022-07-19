@@ -235,15 +235,44 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="../cli_examples.html">
    Command-line interface (CLI) examples
   </a>
+  <input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../cli/introduction_cli.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../cli/main_cli.html">
+     Main tasks
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="../plugin_examples.html">
    Plugin examples
   </a>
+  <input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../plugin_system/plugin_system.html">
+     Plugin system example
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -551,7 +580,7 @@ div.rendered_html tbody tr:hover {
 <h1>Save<a class="headerlink" href="#Save" title="Permalink to this headline">#</a></h1>
 <p>Simple example on how <strong>Variant</strong> can save the output.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1] - 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">getcwd</span>
@@ -586,7 +615,7 @@ div.rendered_html tbody tr:hover {
 </ul>
 <p>On this example, it will save the parsed input in an <em>output</em> file.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2] - 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">annotation</span> <span class="o">=</span> <span class="n">Annotation</span><span class="p">(</span><span class="n">annotation_file</span><span class="p">)</span>
@@ -599,7 +628,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>It is also possible to combine <code class="docutils literal notranslate"><span class="pre">save</span></code> function with <code class="docutils literal notranslate"><span class="pre">find_files</span></code> which will find any file and then save parsed output appending it in a single file.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3] - 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openvariant</span> <span class="kn">import</span> <span class="n">find_files</span>

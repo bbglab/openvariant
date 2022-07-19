@@ -235,15 +235,44 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="../cli_examples.html">
    Command-line interface (CLI) examples
   </a>
+  <input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../cli/introduction_cli.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../cli/main_cli.html">
+     Main tasks
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="../plugin_examples.html">
    Plugin examples
   </a>
+  <input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../plugin_system/plugin_system.html">
+     Plugin system example
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -551,7 +580,7 @@ div.rendered_html tbody tr:hover {
 <h1>Read<a class="headerlink" href="#Read" title="Permalink to this headline">#</a></h1>
 <p>Simple example on how <strong>Variant</strong> can read and how can be treated.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1] - 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">getcwd</span>
@@ -580,7 +609,7 @@ div.rendered_html tbody tr:hover {
 </ul>
 <p>On this example, it will get the 10 first line of parsed file through an <em>annotation</em> file.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2] - 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">annotation</span> <span class="o">=</span> <span class="n">Annotation</span><span class="p">(</span><span class="n">annotation_path</span><span class="o">=</span><span class="n">annotation_file</span><span class="p">)</span>
@@ -613,7 +642,7 @@ Line 9: {&#39;POSITION&#39;: &#39;187363&#39;, &#39;DATASET&#39;: &#39;22f5b2f&#
 <p>As we can see in the output each line is a <code class="docutils literal notranslate"><span class="pre">dict</span></code> where the <code class="docutils literal notranslate"><span class="pre">key</span></code> is the field of the parsed result and the <code class="docutils literal notranslate"><span class="pre">value</span></code> is the value inside that cell.</p>
 <p><strong>Variant</strong> has different attributes than we can explore:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3] - 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Headers: &#39;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
@@ -642,7 +671,7 @@ Input file:  /home/dmartinez/openvariant/examples/datasets/sample1/22f5b2f.wxs.m
 <li><p>Structure - <code class="docutils literal notranslate"><span class="pre">structure</span></code></p></li>
 </ul>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4] - 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">annotations</span><span class="p">)</span>
@@ -660,7 +689,7 @@ Input file:  /home/dmartinez/openvariant/examples/datasets/sample1/22f5b2f.wxs.m
 <p>One of the parameter on <code class="docutils literal notranslate"><span class="pre">read</span></code> function is <code class="docutils literal notranslate"><span class="pre">where</span></code>. You will be able to apply a conditional filter. The possible operations can be: - <code class="docutils literal notranslate"><span class="pre">==</span></code> - Equal. - <code class="docutils literal notranslate"><span class="pre">!=</span></code> - Not equal. - <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> - Less or equal than. - <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> - Less than. - <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> - More or equal than. - <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> - More than.</p>
 <p>One example of this parameter is the following one:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5] - 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">annotation</span> <span class="o">=</span> <span class="n">Annotation</span><span class="p">(</span><span class="n">annotation_path</span><span class="o">=</span><span class="n">annotation_file</span><span class="p">)</span>
@@ -682,7 +711,7 @@ Input file:  /home/dmartinez/openvariant/examples/datasets/sample1/22f5b2f.wxs.m
 <p>Also, <code class="docutils literal notranslate"><span class="pre">read</span></code> allows <code class="docutils literal notranslate"><span class="pre">group_key</span></code> as a parameter which it will group rows depending on its value.</p>
 <p><strong>Variant</strong> can be combined with <code class="docutils literal notranslate"><span class="pre">find_files</span></code> as it show the following example. It will print the 3 first lines of each input file.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6] - 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">basename</span>

@@ -3,5 +3,9 @@
 ***************************************
 Command-line interface (CLI) examples
 ***************************************
+.. nbgallery::
+    :name: Command-line interface
+    :glob:
 
-HELOELEODOE
+    cli/introduction_cli.ipynb
+    cli/main_cli.ipynb

@@ -14,6 +14,8 @@ EXAMPLES_DOCS = ./examples
 EXAMPLES_FINDFILES = ../examples/find_files
 EXAMPLES_VARIANT = ../examples/variant
 EXAMPLES_TASKS = ../examples/tasks
+EXAMPLES_CLI = ../examples/cli
+EXAMPLES_PLUGIN_SYS = ../examples/plugin_system
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -27,6 +29,8 @@ help:
 	cp -r $(EXAMPLES_FINDFILES) $(EXAMPLES_DOCS)
 	cp -r $(EXAMPLES_VARIANT) $(EXAMPLES_DOCS)
 	cp -r $(EXAMPLES_TASKS) $(EXAMPLES_DOCS)
+	cp -r $(EXAMPLES_CLI) $(EXAMPLES_DOCS)
+	cp -r $(EXAMPLES_PLUGIN_SYS) $(EXAMPLES_DOCS)
 
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 

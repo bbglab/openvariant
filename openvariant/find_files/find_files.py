@@ -66,7 +66,7 @@ def find_files(base_path: str, annotation_path: str or None = None) -> Generator
     Parameters
     ----------
     base_path : srt
-        Base path of input files.
+        Base path of input folder/file.
     annotation_path : str or None
         Path of annotation file.
 

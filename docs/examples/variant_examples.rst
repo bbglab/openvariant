@@ -3,8 +3,6 @@
 *********************
 Variant examples
 *********************
-
-
 .. nbgallery::
     :name: Variant
     :glob:

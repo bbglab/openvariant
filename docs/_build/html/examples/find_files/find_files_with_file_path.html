@@ -235,15 +235,44 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="../cli_examples.html">
    Command-line interface (CLI) examples
   </a>
+  <input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../cli/introduction_cli.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../cli/main_cli.html">
+     Main tasks
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toctree-l1">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="../plugin_examples.html">
    Plugin examples
   </a>
+  <input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../plugin_system/plugin_system.html">
+     Plugin system example
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -551,7 +580,7 @@ div.rendered_html tbody tr:hover {
 <h1>With file path<a class="headerlink" href="#With-file-path" title="Permalink to this headline">#</a></h1>
 <p>Simple example on how find files task works for a file path.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1] - 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">getcwd</span>
@@ -570,7 +599,7 @@ div.rendered_html tbody tr:hover {
 </ul>
 <p>It will only get 1 file as an output, the file that is pass as a parameter. In case that there’s any <em>annotation</em> file that matches with file’s pattern, it won’t generate any output.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2] - 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">base_path</span><span class="o">=</span><span class="n">dataset_file</span><span class="p">):</span>
@@ -593,7 +622,7 @@ Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x
 <p>It is possible to pass the <em>Annotation</em> file as a parameter of the function.</p>
 <p>It will generate the same output as it did before, and if the <em>annotation</em> file doesn’t match with the <em>input</em> file it will not generate any output.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3] - 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">annotation_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dirname</span><span class="p">(</span><span class="n">getcwd</span><span class="p">())</span><span class="si">}</span><span class="s1">/datasets/sample1/annotation_maf.yaml&#39;</span>
@@ -618,7 +647,7 @@ Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x
 <p>As it occurs on the <a class="reference internal" href="find_files_with_directory_path.html"><span class="doc">directory path examples</span></a>, it will get the file and its corresponding <em>Annotation</em> object.</p>
 <p>It will only get 1 file as an output, the file that is pass as a parameter. In case that there’s any <em>annotation</em> file that matches with file’s pattern, it won’t generate any output.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4] - 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">dataset_file</span><span class="p">):</span>
@@ -641,7 +670,7 @@ Annotation object: &lt;openvariant.annotation.annotation.Annotation object at 0x
 <p>It is possible to pass the <em>Annotation</em> file as a parameter of the function.</p>
 <p>It will generate the same output as it did before, and if the <em>annotation</em> file doesn’t match with the <em>input</em> file it will not generate any output.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5] - 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">annotation_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dirname</span><span class="p">(</span><span class="n">getcwd</span><span class="p">())</span><span class="si">}</span><span class="s1">/datasets/sample1/annotation_maf.yaml&#39;</span>

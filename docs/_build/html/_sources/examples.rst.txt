@@ -64,7 +64,7 @@ Examples
 
     .. link-button:: examples/cli_examples
         :type: ref
-        :text: 📟  Command-line (CLI)
+        :text: 🖥️  Command-line (CLI)
         :classes: stretched-link text-justify p-0 m-0
 
     +++

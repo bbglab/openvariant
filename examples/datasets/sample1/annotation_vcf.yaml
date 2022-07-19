@@ -23,7 +23,7 @@ annotation:
       - 'POS'
   - type: filename
     field: DATASET
-    function: 'lambda x: "{}".format(x.lower()[7:])'
+    function: 'lambda x: "{}".format(x.lower()[:7])'
   - type: internal
     field: REF
     fieldSource:
