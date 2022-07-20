@@ -1,8 +1,7 @@
 .. _Variant examples:
 
-*********************
 Variant examples
-*********************
+===============================
 .. nbgallery::
     :name: Variant
     :glob:

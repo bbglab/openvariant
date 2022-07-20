@@ -1,8 +1,7 @@
 .. _Plugin examples:
 
-*********************
 Plugin examples
-*********************
+===============================
 
 **OpenVariant** offers a plugin system, where the user will be able to build their own plugins and make a customized
 data transformation. First of all, you will need to create a plugin; hence, check :ref:`Command-line interface` section
@@ -12,7 +11,7 @@ to know how plugins works and how they are composed in order to understand the f
 We are going to introduce you two little plugins that we will use them on the example. The two plugins are described and built as:
 
 *Add date* plugin
-===============================
+########################
 
 It will generate a new field and it will add the today's date. `run` function will be executed on each line of the
 *input* file adding this new field. We can see on the following block the different codes that we add to obtain this.
@@ -50,7 +49,7 @@ In addition, after generate the plugin template with the command-line, we overwr
     		return context.row[context.field_name]
 
 *Get length* plugin
-===============================
+########################
 
 On this second plugin, we will get the length between two different numbers that are annotated as fields. For each row
 of the *input* file, `run` function will be executed. It will get the `START` field and `END` field and then it will get the length

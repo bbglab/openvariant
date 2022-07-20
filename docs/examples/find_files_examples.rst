@@ -1,8 +1,7 @@
 .. _Find files examples:
 
-*********************
 Find files examples
-*********************
+===============================
 .. nbgallery::
     :name: Fine files
     :glob:
