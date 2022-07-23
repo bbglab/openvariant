@@ -1,3 +1,3 @@
-from .find_files import find_files
+from .find_files import findfiles
 
-__all__ = ['find_files']
+__all__ = ['findfiles']
