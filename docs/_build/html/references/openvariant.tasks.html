@@ -1,0 +1,543 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>openvariant.tasks package &#8212; OpenVariant</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles/pydata-sphinx-theme.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/openvariant.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within OpenVariant"
+          href="../_static/opensearch.xml"/>
+    <link rel="shortcut icon" href="../_static/favicon_openvariant.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Examples" href="../examples.html" />
+    <link rel="prev" title="openvariant.find_files package" href="openvariant.find_files.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../index.html">
+  <img src="../_static/title.png" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../user_guide.html">
+  User guide
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../references.html">
+  References
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../examples.html">
+  Examples
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../contribution_guide.html">
+  Contribution guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../release_notes.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/bbglab/openvariant" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/bbglab" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="modules.html">
+   openvariant
+  </a>
+  <input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="openvariant.variant.html">
+     openvariant.variant package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="openvariant.annotation.html">
+     openvariant.annotation package
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="openvariant.find_files.html">
+     openvariant.find_files package
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     openvariant.tasks package
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#submodules">
+   Submodules
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-openvariant.tasks.cat">
+   openvariant.tasks.cat module
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cat-task">
+     Cat  task
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-openvariant.tasks.count">
+   openvariant.tasks.count module
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#count-task">
+     Count  task
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-openvariant.tasks.groupby">
+   openvariant.tasks.groupby module
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#group-by-task">
+     Group by task
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-openvariant.tasks.plugin">
+   openvariant.tasks.plugin module
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plugin-task">
+     Plugin task
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-openvariant.tasks">
+   Module contents
+  </a>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/bbglab/https://github.com/bbglab/openvariant/edit//references/openvariant.tasks.rst">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
+
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="openvariant-tasks-package">
+<h1>openvariant.tasks package<a class="headerlink" href="#openvariant-tasks-package" title="Permalink to this headline">#</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
+</div>
+<div class="section" id="module-openvariant.tasks.cat">
+<span id="openvariant-tasks-cat-module"></span><h2>openvariant.tasks.cat module<a class="headerlink" href="#module-openvariant.tasks.cat" title="Permalink to this headline">#</a></h2>
+<div class="section" id="cat-task">
+<h3>Cat  task<a class="headerlink" href="#cat-task" title="Permalink to this headline">#</a></h3>
+<p>A core functionality to execute cat task.</p>
+<dl class="py function">
+<dt id="openvariant.tasks.cat.cat">
+<code class="sig-prename descclassname"><span class="pre">openvariant.tasks.cat.</span></code><code class="sig-name descname"><span class="pre">cat</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_show</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../_modules/openvariant/tasks/cat.html#cat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.tasks.cat.cat" title="Permalink to this definition">#</a></dt>
+<dd><p>Print on the stdout the parsed files.</p>
+<p>It will parse the input files with its proper annotation schema, and it’ll show the result on the stdout.
+It can be printed with or without header. Can be added a ‘where’ expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_path</strong> (<em>srt</em>) – Base path of input files.</p></li>
+<li><p><strong>annotation_path</strong> (<em>str</em><em> or </em><em>None</em>) – Path of annotation file.</p></li>
+<li><p><strong>where</strong> (<em>str</em>) – Conditional statement.</p></li>
+<li><p><strong>header_show</strong> (<em>bool</em>) – Shows header on the output.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-openvariant.tasks.count">
+<span id="openvariant-tasks-count-module"></span><h2>openvariant.tasks.count module<a class="headerlink" href="#module-openvariant.tasks.count" title="Permalink to this headline">#</a></h2>
+<div class="section" id="count-task">
+<h3>Count  task<a class="headerlink" href="#count-task" title="Permalink to this headline">#</a></h3>
+<p>A core functionality to execute count task.</p>
+<dl class="py function">
+<dt id="openvariant.tasks.count.count">
+<code class="sig-prename descclassname"><span class="pre">openvariant.tasks.count.</span></code><code class="sig-name descname"><span class="pre">count</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_by</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cores</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quite</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/openvariant/tasks/count.html#count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.tasks.count.count" title="Permalink to this definition">#</a></dt>
+<dd><p>Print on the stdout the count result.</p>
+<p>It’ll parse the input files with its proper annotation schema, and it’ll show the count result on the stdout.
+Can be grouped by a field and can be added a ‘where’ expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_path</strong> (<em>srt</em>) – Base path of input files.</p></li>
+<li><p><strong>annotation_path</strong> (<em>str</em><em> or </em><em>None</em>) – Path of annotation file.</p></li>
+<li><p><strong>group_by</strong> (<em>str</em>) – Field to group the result.</p></li>
+<li><p><strong>where</strong> (<em>str</em>) – Conditional statement.</p></li>
+<li><p><strong>quite</strong> (<em>bool</em>) – Discard progress bar.</p></li>
+<li><p><strong>cores</strong> (<em>int</em>) – Number of cores to parallelize the task.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>int</em> – The total number of rows.</p></li>
+<li><p><em>dict</em> – A schema with separate groups and the numbers of rows for each.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-openvariant.tasks.groupby">
+<span id="openvariant-tasks-groupby-module"></span><h2>openvariant.tasks.groupby module<a class="headerlink" href="#module-openvariant.tasks.groupby" title="Permalink to this headline">#</a></h2>
+<div class="section" id="group-by-task">
+<h3>Group by task<a class="headerlink" href="#group-by-task" title="Permalink to this headline">#</a></h3>
+<p>A core functionality to execute group by task.</p>
+<dl class="py function">
+<dt id="openvariant.tasks.groupby.group_by">
+<code class="sig-prename descclassname"><span class="pre">openvariant.tasks.groupby.</span></code><code class="sig-name descname"><span class="pre">group_by</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">script</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_by</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">,</span> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">None</span><span class="p"><span class="pre">,</span> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/openvariant/tasks/groupby.html#group_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.tasks.groupby.group_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Print on the stdout the group by result.</p>
+<p>It’ll parse the input files with its proper annotation schema, and it’ll show the parsed result separated for each
+group by value. It’ll be grouped by a field and can be added a ‘where’ expression. Also, the result can be
+executed thought a bash script.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_path</strong> (<em>srt</em>) – Base path of input files.</p></li>
+<li><p><strong>annotation_path</strong> (<em>str</em><em> or </em><em>None</em>) – Path of annotation file.</p></li>
+<li><p><strong>script</strong> (<em>str</em><em> or </em><em>None</em>) – Path of annotation file.</p></li>
+<li><p><strong>key_by</strong> (<em>str</em>) – Field to group the result.</p></li>
+<li><p><strong>where</strong> (<em>str</em>) – Conditional statement.</p></li>
+<li><p><strong>quite</strong> (<em>bool</em>) – Discard progress bar.</p></li>
+<li><p><strong>cores</strong> (<em>int</em>) – Number of cores to parallelize the task.</p></li>
+<li><p><strong>header</strong> (<em>bool</em>) – Number of cores to parallelize the task.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>int</em> – The total number of rows.</p></li>
+<li><p><em>dict</em> – A schema with separate groups and the numbers of rows for each.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-openvariant.tasks.plugin">
+<span id="openvariant-tasks-plugin-module"></span><h2>openvariant.tasks.plugin module<a class="headerlink" href="#module-openvariant.tasks.plugin" title="Permalink to this headline">#</a></h2>
+<div class="section" id="plugin-task">
+<h3>Plugin task<a class="headerlink" href="#plugin-task" title="Permalink to this headline">#</a></h3>
+<p>A core functionality to execute different plugin tasks.</p>
+<dl class="py class">
+<dt id="openvariant.tasks.plugin.PluginActions">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">openvariant.tasks.plugin.</span></code><code class="sig-name descname"><span class="pre">PluginActions</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openvariant/tasks/plugin.html#PluginActions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.tasks.plugin.PluginActions" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Enum to get the function of each action</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-openvariant.tasks">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-openvariant.tasks" title="Permalink to this headline">#</a></h2>
+<dl class="py function">
+<dt id="openvariant.tasks.cat">
+<code class="sig-prename descclassname"><span class="pre">openvariant.tasks.</span></code><code class="sig-name descname"><span class="pre">cat</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_show</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../_modules/openvariant/tasks/cat.html#cat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.tasks.cat" title="Permalink to this definition">#</a></dt>
+<dd><p>Print on the stdout the parsed files.</p>
+<p>It will parse the input files with its proper annotation schema, and it’ll show the result on the stdout.
+It can be printed with or without header. Can be added a ‘where’ expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_path</strong> (<em>srt</em>) – Base path of input files.</p></li>
+<li><p><strong>annotation_path</strong> (<em>str</em><em> or </em><em>None</em>) – Path of annotation file.</p></li>
+<li><p><strong>where</strong> (<em>str</em>) – Conditional statement.</p></li>
+<li><p><strong>header_show</strong> (<em>bool</em>) – Shows header on the output.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="openvariant.tasks.count">
+<code class="sig-prename descclassname"><span class="pre">openvariant.tasks.</span></code><code class="sig-name descname"><span class="pre">count</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_by</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cores</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quite</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/openvariant/tasks/count.html#count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.tasks.count" title="Permalink to this definition">#</a></dt>
+<dd><p>Print on the stdout the count result.</p>
+<p>It’ll parse the input files with its proper annotation schema, and it’ll show the count result on the stdout.
+Can be grouped by a field and can be added a ‘where’ expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_path</strong> (<em>srt</em>) – Base path of input files.</p></li>
+<li><p><strong>annotation_path</strong> (<em>str</em><em> or </em><em>None</em>) – Path of annotation file.</p></li>
+<li><p><strong>group_by</strong> (<em>str</em>) – Field to group the result.</p></li>
+<li><p><strong>where</strong> (<em>str</em>) – Conditional statement.</p></li>
+<li><p><strong>quite</strong> (<em>bool</em>) – Discard progress bar.</p></li>
+<li><p><strong>cores</strong> (<em>int</em>) – Number of cores to parallelize the task.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>int</em> – The total number of rows.</p></li>
+<li><p><em>dict</em> – A schema with separate groups and the numbers of rows for each.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="openvariant.tasks.group_by">
+<code class="sig-prename descclassname"><span class="pre">openvariant.tasks.</span></code><code class="sig-name descname"><span class="pre">group_by</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">script</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_by</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">,</span> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">None</span><span class="p"><span class="pre">,</span> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/openvariant/tasks/groupby.html#group_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.tasks.group_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Print on the stdout the group by result.</p>
+<p>It’ll parse the input files with its proper annotation schema, and it’ll show the parsed result separated for each
+group by value. It’ll be grouped by a field and can be added a ‘where’ expression. Also, the result can be
+executed thought a bash script.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_path</strong> (<em>srt</em>) – Base path of input files.</p></li>
+<li><p><strong>annotation_path</strong> (<em>str</em><em> or </em><em>None</em>) – Path of annotation file.</p></li>
+<li><p><strong>script</strong> (<em>str</em><em> or </em><em>None</em>) – Path of annotation file.</p></li>
+<li><p><strong>key_by</strong> (<em>str</em>) – Field to group the result.</p></li>
+<li><p><strong>where</strong> (<em>str</em>) – Conditional statement.</p></li>
+<li><p><strong>quite</strong> (<em>bool</em>) – Discard progress bar.</p></li>
+<li><p><strong>cores</strong> (<em>int</em>) – Number of cores to parallelize the task.</p></li>
+<li><p><strong>header</strong> (<em>bool</em>) – Number of cores to parallelize the task.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>int</em> – The total number of rows.</p></li>
+<li><p><em>dict</em> – A schema with separate groups and the numbers of rows for each.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="openvariant.find_files.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">openvariant.find_files package</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../examples.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Examples</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, BBGLab - Barcelona Biomedical Genomics Lab.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

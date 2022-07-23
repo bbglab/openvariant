@@ -1,0 +1,506 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>openvariant.plugins package &#8212; OpenVariant</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles/pydata-sphinx-theme.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/openvariant.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within OpenVariant"
+          href="../_static/opensearch.xml"/>
+    <link rel="shortcut icon" href="../_static/favicon_openvariant.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../index.html">
+  <img src="../_static/title.png" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../user_guide.html">
+  User guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../references.html">
+  References
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../examples.html">
+  Examples
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../contribution_guide.html">
+  Contribution guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../release_notes.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/bbglab/openvariant" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/bbglab" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#subpackages">
+   Subpackages
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#submodules">
+   Submodules
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-openvariant.plugins.context">
+   openvariant.plugins.context module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-openvariant.plugins.plugin">
+   openvariant.plugins.plugin module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-openvariant.plugins">
+   Module contents
+  </a>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/bbglab/https://github.com/bbglab/openvariant/edit//references/openvariant.plugins.rst">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
+
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="openvariant-plugins-package">
+<h1>openvariant.plugins package<a class="headerlink" href="#openvariant-plugins-package" title="Permalink to this headline">#</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="openvariant.plugins.alteration_type.html">openvariant.plugins.alteration_type package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="openvariant.plugins.alteration_type.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openvariant.plugins.alteration_type.html#module-openvariant.plugins.alteration_type.alteration_type">openvariant.plugins.alteration_type.alteration_type module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openvariant.plugins.alteration_type.html#module-openvariant.plugins.alteration_type">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="openvariant.plugins.get_AF.html">openvariant.plugins.get_AF package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="openvariant.plugins.get_AF.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openvariant.plugins.get_AF.html#module-openvariant.plugins.get_AF.get_AF">openvariant.plugins.get_AF.get_AF module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openvariant.plugins.get_AF.html#module-openvariant.plugins.get_AF">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
+</div>
+<div class="section" id="module-openvariant.plugins.context">
+<span id="openvariant-plugins-context-module"></span><h2>openvariant.plugins.context module<a class="headerlink" href="#module-openvariant.plugins.context" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt id="openvariant.plugins.context.Context">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">openvariant.plugins.context.</span></code><code class="sig-name descname"><span class="pre">Context</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openvariant/plugins/context.html#Context"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.plugins.context.Context" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class that each context must inherit from</p>
+<dl class="py method">
+<dt id="openvariant.plugins.context.Context.field_name">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">field_name</span></code><a class="headerlink" href="#openvariant.plugins.context.Context.field_name" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="openvariant.plugins.context.Context.file_path">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">file_path</span></code><a class="headerlink" href="#openvariant.plugins.context.Context.file_path" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="openvariant.plugins.context.Context.row">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">row</span></code><a class="headerlink" href="#openvariant.plugins.context.Context.row" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-openvariant.plugins.plugin">
+<span id="openvariant-plugins-plugin-module"></span><h2>openvariant.plugins.plugin module<a class="headerlink" href="#module-openvariant.plugins.plugin" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt id="openvariant.plugins.plugin.Plugin">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">openvariant.plugins.plugin.</span></code><code class="sig-name descname"><span class="pre">Plugin</span></code><a class="reference internal" href="../_modules/openvariant/plugins/plugin.html#Plugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.plugins.plugin.Plugin" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class that each plugin must inherit from</p>
+<dl class="py method">
+<dt id="openvariant.plugins.plugin.Plugin.run">
+<code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argument</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openvariant/plugins/plugin.html#Plugin.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.plugins.plugin.Plugin.run" title="Permalink to this definition">#</a></dt>
+<dd><p>This is a main function (required) which OpenVariant will call every time that this plugin is
+described in an annotation file.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-openvariant.plugins">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-openvariant.plugins" title="Permalink to this headline">#</a></h2>
+<dl class="py class">
+<dt id="openvariant.plugins.Alteration_typeContext">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">openvariant.plugins.</span></code><code class="sig-name descname"><span class="pre">Alteration_typeContext</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openvariant/plugins/alteration_type/alteration_type.html#Alteration_typeContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.plugins.Alteration_typeContext" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openvariant.plugins.context.Context" title="openvariant.plugins.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">openvariant.plugins.context.Context</span></code></a></p>
+<p>The context of this plugin will be the simplest one, without any added property or methods.</p>
+<dl class="py attribute">
+<dt id="openvariant.plugins.Alteration_typeContext.row">
+<code class="sig-name descname"><span class="pre">row</span></code><a class="headerlink" href="#openvariant.plugins.Alteration_typeContext.row" title="Permalink to this definition">#</a></dt>
+<dd><p>The row that data transformation will be applied.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="openvariant.plugins.Alteration_typeContext.field_name">
+<code class="sig-name descname"><span class="pre">field_name</span></code><a class="headerlink" href="#openvariant.plugins.Alteration_typeContext.field_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the corresponding column that was described on the annotation schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="openvariant.plugins.Alteration_typeContext.file_path">
+<code class="sig-name descname"><span class="pre">file_path</span></code><a class="headerlink" href="#openvariant.plugins.Alteration_typeContext.file_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Path of the Input file that is being parsed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="openvariant.plugins.Alteration_typePlugin">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">openvariant.plugins.</span></code><code class="sig-name descname"><span class="pre">Alteration_typePlugin</span></code><a class="reference internal" href="../_modules/openvariant/plugins/alteration_type/alteration_type.html#Alteration_typePlugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.plugins.Alteration_typePlugin" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openvariant.plugins.plugin.Plugin" title="openvariant.plugins.plugin.Plugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">openvariant.plugins.plugin.Plugin</span></code></a></p>
+<p>This plugin identifies the alteration type.
+Classifies the alteration type: checking POSITION, REF and ALT fields.</p>
+<dl class="py method">
+<dt id="openvariant.plugins.Alteration_typePlugin.run">
+<code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="openvariant.plugins.alteration_type.html#openvariant.plugins.alteration_type.alteration_type.Alteration_typeContext" title="openvariant.plugins.alteration_type.alteration_type.Alteration_typeContext"><span class="pre">openvariant.plugins.alteration_type.alteration_type.Alteration_typeContext</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="../_modules/openvariant/plugins/alteration_type/alteration_type.html#Alteration_typePlugin.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.plugins.Alteration_typePlugin.run" title="Permalink to this definition">#</a></dt>
+<dd><p>Extract alteration type from the input row.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>context</strong> (<a class="reference internal" href="#openvariant.plugins.Alteration_typeContext" title="openvariant.plugins.Alteration_typeContext"><em>Alteration_typeContext</em></a>) – Representation of the row to be parsed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The value of ALT_TYPE field.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="openvariant.plugins.Context">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">openvariant.plugins.</span></code><code class="sig-name descname"><span class="pre">Context</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openvariant/plugins/context.html#Context"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.plugins.Context" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class that each context must inherit from</p>
+<dl class="py method">
+<dt id="openvariant.plugins.Context.field_name">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">field_name</span></code><a class="headerlink" href="#openvariant.plugins.Context.field_name" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="openvariant.plugins.Context.file_path">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">file_path</span></code><a class="headerlink" href="#openvariant.plugins.Context.file_path" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="openvariant.plugins.Context.row">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">row</span></code><a class="headerlink" href="#openvariant.plugins.Context.row" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="openvariant.plugins.Get_afContext">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">openvariant.plugins.</span></code><code class="sig-name descname"><span class="pre">Get_afContext</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openvariant/plugins/get_AF/get_AF.html#Get_afContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.plugins.Get_afContext" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openvariant.plugins.context.Context" title="openvariant.plugins.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">openvariant.plugins.context.Context</span></code></a></p>
+<p>Get_afPlugin class generated by OpenVariant
+.. attribute:: row</p>
+<blockquote>
+<div><p>Main method to execute data transformation in each row.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt id="openvariant.plugins.Get_afContext.field_name">
+<code class="sig-name descname"><span class="pre">field_name</span></code><a class="headerlink" href="#openvariant.plugins.Get_afContext.field_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the corresponding column that was described on the annotation schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="openvariant.plugins.Get_afContext.file_path">
+<code class="sig-name descname"><span class="pre">file_path</span></code><a class="headerlink" href="#openvariant.plugins.Get_afContext.file_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Path of the Input file that is being parsed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="openvariant.plugins.Get_afPlugin">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">openvariant.plugins.</span></code><code class="sig-name descname"><span class="pre">Get_afPlugin</span></code><a class="reference internal" href="../_modules/openvariant/plugins/get_AF/get_AF.html#Get_afPlugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.plugins.Get_afPlugin" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openvariant.plugins.plugin.Plugin" title="openvariant.plugins.plugin.Plugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">openvariant.plugins.plugin.Plugin</span></code></a></p>
+<p>This plugin get alternate allele frequency of a sample in a .vcf.
+It will be in located in ‘subAF’ field and will get the float number with regexp.</p>
+<dl class="py method">
+<dt id="openvariant.plugins.Get_afPlugin.run">
+<code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#openvariant.plugins.Get_afContext" title="openvariant.plugins.Get_afContext"><span class="pre">Get_afContext</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openvariant/plugins/get_AF/get_AF.html#Get_afPlugin.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.plugins.Get_afPlugin.run" title="Permalink to this definition">#</a></dt>
+<dd><p>Main method to execute data transformation in each row.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="id0">
+<code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="openvariant.plugins.get_AF.html#openvariant.plugins.get_AF.get_AF.Get_afContext" title="openvariant.plugins.get_AF.get_AF.Get_afContext"><span class="pre">openvariant.plugins.get_AF.get_AF.Get_afContext</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="../_modules/openvariant/plugins/get_AF/get_AF.html#Get_afPlugin.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Permalink to this definition">#</a></dt>
+<dd><p>Extract allele frequency from the input row.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>context</strong> (<a class="reference internal" href="#openvariant.plugins.Get_afContext" title="openvariant.plugins.Get_afContext"><em>Get_afContext</em></a>) – Representation of the row to be parsed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The value of the field transformed.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float or int or str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="openvariant.plugins.Plugin">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">openvariant.plugins.</span></code><code class="sig-name descname"><span class="pre">Plugin</span></code><a class="reference internal" href="../_modules/openvariant/plugins/plugin.html#Plugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.plugins.Plugin" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class that each plugin must inherit from</p>
+<dl class="py method">
+<dt id="openvariant.plugins.Plugin.run">
+<code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argument</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openvariant/plugins/plugin.html#Plugin.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.plugins.Plugin.run" title="Permalink to this definition">#</a></dt>
+<dd><p>This is a main function (required) which OpenVariant will call every time that this plugin is
+described in an annotation file.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, BBGLab - Barcelona Biomedical Genomics Lab.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

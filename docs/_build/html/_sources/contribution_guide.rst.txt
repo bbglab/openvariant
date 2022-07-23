@@ -7,7 +7,7 @@ Contribution guide
 This is a brief guidelines that you need to know in order to make a contribution to the project.
 
 #. `Fork <https://docs.github.com/en/get-started/quickstart/fork-a-repo>`_ the repository (don't try to commit on the **OpenVariant** main repository).
-#. Clone your fork to your local (your computer). If you have the repo already cloned from the main github repo, just
+#. Clone your fork to your local (your computer). If you have the repo already cloned from the main GitHub repository, just
    add a new remote pointing at your fork, like this: ``git remote add fork <cloning address of your fork>``. Check if it
    looks good: ``git remote -v``.
 
@@ -30,4 +30,5 @@ If you cloned from your fork, then it should point there. You can add the main r
 Commit messages
 ===============================================
 
-For a good practise, it is recommended to follow `Conventional Commits <https://www.conventionalcommits.org/en/v1.0.0/>`_ guidance with short and self-explanatory commits.
+For a good practise, it is recommended to follow `Conventional Commits <https://www.conventionalcommits.org/en/v1.0.0/>`_
+guidance with short and self-explanatory commits.
