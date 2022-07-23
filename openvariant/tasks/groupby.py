@@ -13,7 +13,7 @@ from typing import Generator, List, Tuple
 from tqdm import tqdm
 
 from openvariant.annotation.annotation import Annotation
-from openvariant.find_files.find_files import find_files
+from openvariant.find_files.find_files import findfiles
 from openvariant.variant.variant import Variant
 
 
@@ -35,7 +35,7 @@ def _get_unique_values(file_path: str, annotation: Annotation, key: str) -> Tupl
 def _group(base_path: str, annotation_path: str or None, key_by: str) -> List[Tuple[str, List]]:
     """Group file and its annotation by the group value"""
     results = defaultdict(list)
-    for file, ann in find_files(base_path, annotation_path):
+    for file, ann in findfiles(base_path, annotation_path):
         by_value = ann.annotations.get(key_by, None)
 
         if isinstance(by_value, tuple):
