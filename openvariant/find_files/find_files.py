@@ -60,7 +60,7 @@ def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Ge
             yield f, a
 
 
-def find_files(base_path: str, annotation_path: str or None = None) -> Generator[str, Annotation, None]:
+def findfiles(base_path: str, annotation_path: str or None = None) -> Generator[str, Annotation, None]:
     """Get each file and its proper annotation object.
 
     Parameters
