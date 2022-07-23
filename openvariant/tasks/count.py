@@ -11,7 +11,7 @@ from typing import Tuple, Union
 from tqdm import tqdm
 
 from openvariant.annotation.annotation import Annotation
-from openvariant.find_files.find_files import find_files
+from openvariant.find_files.find_files import findfiles
 
 from openvariant.variant.variant import Variant
 
@@ -71,7 +71,7 @@ def count(base_path: str, annotation_path: str or None, group_by: str = None, wh
         A schema with separate groups and the numbers of rows for each.
     """
     selection = []
-    for k, a in find_files(base_path, annotation_path):
+    for k, a in findfiles(base_path, annotation_path):
         selection += [(k, a)]
 
     with Pool(cores) as pool:
