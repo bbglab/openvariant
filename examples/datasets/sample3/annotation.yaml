@@ -5,6 +5,8 @@ format: 'tsv'
 columns:
   - CHROM
   - DATE
+  - START
+  - END
   - LENGTH
 
 
