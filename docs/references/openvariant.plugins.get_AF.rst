@@ -9,7 +9,7 @@ openvariant.plugins.get\_AF.get\_AF module
 
 .. automodule:: openvariant.plugins.get_AF.get_AF
    :members:
-   :undoc-members:
+   :noindex:
    :show-inheritance:
 
 Module contents
@@ -17,5 +17,5 @@ Module contents
 
 .. automodule:: openvariant.plugins.get_AF
    :members:
-   :undoc-members:
+   :noindex:
    :show-inheritance:
