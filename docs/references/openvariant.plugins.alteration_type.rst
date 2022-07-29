@@ -9,7 +9,7 @@ openvariant.plugins.alteration\_type.alteration\_type module
 
 .. automodule:: openvariant.plugins.alteration_type.alteration_type
    :members:
-   :undoc-members:
+   :noindex:
    :show-inheritance:
 
 Module contents
@@ -17,5 +17,5 @@ Module contents
 
 .. automodule:: openvariant.plugins.alteration_type
    :members:
-   :undoc-members:
+   :noindex:
    :show-inheritance:
