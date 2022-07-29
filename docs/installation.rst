@@ -11,7 +11,7 @@ Assuming that you have a default Python environment already configured, if you w
 Python virtual environments, follow instructions on `venv <https://docs.python.org/3/library/venv.html>`_  for further details.
 Also, it is possible to create and work with a package manager like `Conda <https://github.com/conda/conda>`_ or `Mamba <https://github.com/mamba-org/mamba>`_.
 
-Before to install **OpenVariant** you have to make sure that you have ``pip`` installed and updated with the last version.
+Before installing **OpenVariant** you have to make sure that you have ``pip`` installed and updated with the last version.
 Otherwise, follow the steps on `pip documentation <https://pip.pypa.io/en/stable/installation/>`_.
 
 

@@ -43,7 +43,7 @@
     <link rel="shortcut icon" href="../_static/favicon_openvariant.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Examples" href="../examples.html" />
+    <link rel="next" title="openvariant.plugins package" href="openvariant.plugins.html" />
     <link rel="prev" title="openvariant.find_files package" href="openvariant.find_files.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
@@ -186,6 +186,33 @@
      openvariant.tasks package
     </a>
    </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="openvariant.plugins.html">
+     openvariant.plugins package
+    </a>
+    <input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="openvariant.plugins.alteration_type.html">
+       openvariant.plugins.alteration_type package
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="openvariant.plugins.get_AF.html">
+       openvariant.plugins.get_AF package
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="openvariant.commands.html">
+     openvariant.commands package
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -309,8 +336,8 @@
 <p>A core functionality to execute cat task.</p>
 <dl class="py function">
 <dt id="openvariant.tasks.cat.cat">
-<code class="sig-prename descclassname"><span class="pre">openvariant.tasks.cat.</span></code><code class="sig-name descname"><span class="pre">cat</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_show</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../_modules/openvariant/tasks/cat.html#cat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.tasks.cat.cat" title="Permalink to this definition">#</a></dt>
-<dd><p>Print on the stdout the parsed files.</p>
+<code class="sig-prename descclassname"><span class="pre">openvariant.tasks.cat.</span></code><code class="sig-name descname"><span class="pre">cat</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_show</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../_modules/openvariant/tasks/cat.html#cat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.tasks.cat.cat" title="Permalink to this definition">#</a></dt>
+<dd><p>Print on the stdout/”output” the parsed files.</p>
 <p>It will parse the input files with its proper annotation schema, and it’ll show the result on the stdout.
 It can be printed with or without header. Can be added a ‘where’ expression.</p>
 <dl class="field-list simple">
@@ -320,6 +347,7 @@ It can be printed with or without header. Can be added a ‘where’ expression.
 <li><p><strong>annotation_path</strong> (<em>str</em><em> or </em><em>None</em>) – Path of annotation file.</p></li>
 <li><p><strong>where</strong> (<em>str</em>) – Conditional statement.</p></li>
 <li><p><strong>header_show</strong> (<em>bool</em>) – Shows header on the output.</p></li>
+<li><p><strong>output</strong> (<em>str</em><em> or </em><em>None</em>) – Save output on a file.</p></li>
 </ul>
 </dd>
 </dl>
@@ -416,8 +444,8 @@ executed thought a bash script.</p>
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-openvariant.tasks" title="Permalink to this headline">#</a></h2>
 <dl class="py function">
 <dt id="openvariant.tasks.cat">
-<code class="sig-prename descclassname"><span class="pre">openvariant.tasks.</span></code><code class="sig-name descname"><span class="pre">cat</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_show</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../_modules/openvariant/tasks/cat.html#cat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.tasks.cat" title="Permalink to this definition">#</a></dt>
-<dd><p>Print on the stdout the parsed files.</p>
+<code class="sig-prename descclassname"><span class="pre">openvariant.tasks.</span></code><code class="sig-name descname"><span class="pre">cat</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_show</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../_modules/openvariant/tasks/cat.html#cat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#openvariant.tasks.cat" title="Permalink to this definition">#</a></dt>
+<dd><p>Print on the stdout/”output” the parsed files.</p>
 <p>It will parse the input files with its proper annotation schema, and it’ll show the result on the stdout.
 It can be printed with or without header. Can be added a ‘where’ expression.</p>
 <dl class="field-list simple">
@@ -427,6 +455,7 @@ It can be printed with or without header. Can be added a ‘where’ expression.
 <li><p><strong>annotation_path</strong> (<em>str</em><em> or </em><em>None</em>) – Path of annotation file.</p></li>
 <li><p><strong>where</strong> (<em>str</em>) – Conditional statement.</p></li>
 <li><p><strong>header_show</strong> (<em>bool</em>) – Shows header on the output.</p></li>
+<li><p><strong>output</strong> (<em>str</em><em> or </em><em>None</em>) – Save output on a file.</p></li>
 </ul>
 </dd>
 </dl>
@@ -505,10 +534,10 @@ executed thought a bash script.</p>
             <p class="prev-next-title">openvariant.find_files package</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="../examples.html" title="next page">
+    <a class='right-next' id="next-link" href="openvariant.plugins.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Examples</p>
+        <p class="prev-next-title">openvariant.plugins package</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

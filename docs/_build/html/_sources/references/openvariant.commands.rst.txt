@@ -9,7 +9,6 @@ openvariant.commands.openvar module
 
 .. automodule:: openvariant.commands.openvar
    :members:
-   :undoc-members:
    :show-inheritance:
 
 Module contents
@@ -17,5 +16,4 @@ Module contents
 
 .. automodule:: openvariant.commands
    :members:
-   :undoc-members:
    :show-inheritance:

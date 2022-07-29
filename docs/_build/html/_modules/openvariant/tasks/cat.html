@@ -186,7 +186,7 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
 <span class="kn">from</span> <span class="nn">openvariant.annotation.config_annotation</span> <span class="kn">import</span> <span class="n">AnnotationFormat</span>
-<span class="kn">from</span> <span class="nn">openvariant.find.find_files</span> <span class="kn">import</span> <span class="n">find_files</span>
+<span class="kn">from</span> <span class="nn">openvariant.find_files.find_files</span> <span class="kn">import</span> <span class="n">findfiles</span>
 <span class="kn">from</span> <span class="nn">openvariant.variant.variant</span> <span class="kn">import</span> <span class="n">Variant</span>
 
 
@@ -195,8 +195,9 @@
     <span class="k">return</span> <span class="n">AnnotationFormat</span><span class="p">[</span><span class="n">out_format</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="cat"><a class="viewcode-back" href="../../../references/openvariant.tasks.html#openvariant.tasks.cat.cat">[docs]</a><span class="k">def</span> <span class="nf">cat</span><span class="p">(</span><span class="n">base_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">annotation_path</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">where</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">header_show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Print on the stdout the parsed files.</span>
+<div class="viewcode-block" id="cat"><a class="viewcode-back" href="../../../references/openvariant.tasks.html#openvariant.tasks.cat.cat">[docs]</a><span class="k">def</span> <span class="nf">cat</span><span class="p">(</span><span class="n">base_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">annotation_path</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">where</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">header_show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Print on the stdout/&quot;output&quot; the parsed files.</span>
 
 <span class="sd">    It will parse the input files with its proper annotation schema, and it&#39;ll show the result on the stdout.</span>
 <span class="sd">    It can be printed with or without header. Can be added a &#39;where&#39; expression.</span>
@@ -211,16 +212,31 @@
 <span class="sd">        Conditional statement.</span>
 <span class="sd">    header_show : bool</span>
 <span class="sd">        Shows header on the output.</span>
+<span class="sd">    output : str or None</span>
+<span class="sd">        Save output on a file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">file</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">annotation_path</span><span class="p">):</span>
+    <span class="n">out_file</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+        <span class="n">out_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">file</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">findfiles</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">annotation_path</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">Variant</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">annotation</span><span class="p">)</span>
         <span class="n">header</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">header</span>
         <span class="k">if</span> <span class="n">header_show</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">_format_line</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">format</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+                <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">_format_line</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">format</span><span class="p">))</span>
+                <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">_format_line</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">format</span><span class="p">))</span>
             <span class="n">header_show</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">_format_line</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">values</span><span class="p">())),</span> <span class="n">result</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">format</span><span class="p">))</span></div>
+                <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+                    <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">_format_line</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">values</span><span class="p">())),</span> <span class="n">result</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">format</span><span class="p">))</span>
+                    <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">_format_line</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">values</span><span class="p">())),</span> <span class="n">result</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">format</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+        <span class="n">out_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 </pre></div>
 
               </div>

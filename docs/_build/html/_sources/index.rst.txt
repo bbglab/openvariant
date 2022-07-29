@@ -32,7 +32,7 @@ OpenVariant documentation
 different multiple input file formats (e. g. ``tsv``, ``csv``, ``vcf``, ``maf``, ``bed``), being able to customize the output.
 
 These docs will guide you through the installation, different methods and some practical examples.
-For more information check our `GitHub repository <https://github.com/bbglab/openvariant>`_.
+For more information, check our `GitHub repository <https://github.com/bbglab/openvariant>`_.
 
 
 .. toctree::

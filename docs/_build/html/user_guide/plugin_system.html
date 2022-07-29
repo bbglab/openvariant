@@ -238,18 +238,18 @@
 <span id="id1"></span><h1>Plugin system<a class="headerlink" href="#plugin-system" title="Permalink to this headline">#</a></h1>
 <p>We designed a plugin system where the user will be able to create and add any kind of data transformation.
 Each plugin has to be noticed on the <cite>annotation</cite> file as <a class="reference internal" href="annotation_structure.html#annotation-structure"><span class="std std-ref">Annotation structure</span></a> section explains, if it
-wants to be used. An <strong>OpenVariant</strong>’s plugin is a python module composed by a single file. This file has two classes:</p>
+wants to be used. An <strong>OpenVariant</strong>’s plugin is a python module composed of a single file. This file has two classes:</p>
 <ul class="simple">
-<li><p><strong>Context</strong>: contains different attributes of the row and the file that is parsing (<code class="docutils literal notranslate"><span class="pre">row</span></code>, <code class="docutils literal notranslate"><span class="pre">field_name</span></code>, <code class="docutils literal notranslate"><span class="pre">file_path</span></code>). It is used as input argument that runs plugin’s functionality.</p></li>
+<li><p><strong>Context</strong>: contains different attributes of the row and the file that is parsed (<code class="docutils literal notranslate"><span class="pre">row</span></code>, <code class="docutils literal notranslate"><span class="pre">field_name</span></code>, <code class="docutils literal notranslate"><span class="pre">file_path</span></code>). It is used as input argument that runs the plugin’s functionality.</p></li>
 <li><p><strong>Plugin</strong>: has <code class="docutils literal notranslate"><span class="pre">run</span></code> function that will process the row and apply the data transformation.</p></li>
 </ul>
-<p>Each object will be work as a single base class to be inherited on each plugin. On the following schema we can
+<p>Each object will be working as a single base class to be inherited on each plugin. On the following schema we can
 visualize how the different classes are connected and composed with <strong>OpenVariant</strong> package.</p>
 <a class="reference internal image-reference" href="../_images/schema_plugin.png"><img alt="../_images/schema_plugin.png" class="align-center" src="../_images/schema_plugin.png" style="height: 500px;" /></a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>As we mention before, plugin has to be present on the <cite>annotation</cite> file in order to be used. Plugins can be
+<p>As we have mentioned before, the plugin has to be present on the <cite>annotation</cite> file in order to be used. Plugins can be
 distributed on different folders where <cite>Builder</cite> will manage to find them and apply the data transformation.
 Plugins will inherit <cite>Context</cite> and <cite>Plugin</cite> as base classes for each plugin. These classes are described as it follows:</p>
 <p><strong>Context</strong></p>

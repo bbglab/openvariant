@@ -193,7 +193,7 @@
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
 <span class="kn">from</span> <span class="nn">openvariant.annotation.annotation</span> <span class="kn">import</span> <span class="n">Annotation</span>
-<span class="kn">from</span> <span class="nn">openvariant.find.find_files</span> <span class="kn">import</span> <span class="n">find_files</span>
+<span class="kn">from</span> <span class="nn">openvariant.find_files.find_files</span> <span class="kn">import</span> <span class="n">findfiles</span>
 <span class="kn">from</span> <span class="nn">openvariant.variant.variant</span> <span class="kn">import</span> <span class="n">Variant</span>
 
 
@@ -215,7 +215,7 @@
 <span class="k">def</span> <span class="nf">_group</span><span class="p">(</span><span class="n">base_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">annotation_path</span><span class="p">:</span> <span class="nb">str</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">key_by</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;Group file and its annotation by the group value&quot;&quot;&quot;</span>
     <span class="n">results</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">file</span><span class="p">,</span> <span class="n">ann</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">annotation_path</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">file</span><span class="p">,</span> <span class="n">ann</span> <span class="ow">in</span> <span class="n">findfiles</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">annotation_path</span><span class="p">):</span>
         <span class="n">by_value</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key_by</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">by_value</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>

@@ -283,6 +283,26 @@
 </div>
 <div class="section" id="openvariant-find-files-find-files-module">
 <h2>openvariant.find_files.find_files module<a class="headerlink" href="#openvariant-find-files-find-files-module" title="Permalink to this headline">#</a></h2>
+<dl class="py function">
+<dt>
+<code class="sig-prename descclassname"><span class="pre">openvariant.find_files.</span></code><code class="sig-name descname"><span class="pre">findfiles</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="openvariant.annotation.html#openvariant.annotation.annotation.Annotation" title="openvariant.annotation.annotation.Annotation"><span class="pre">openvariant.annotation.annotation.Annotation</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/openvariant/find_files/find_files.html#findfiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Get each file and its proper annotation object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_path</strong> (<em>srt</em>) – Base path of input files.</p></li>
+<li><p><strong>annotation_path</strong> (<em>str</em><em> or </em><em>None</em>) – Path of annotation file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>str</em> – Input file’s name.</p></li>
+<li><p><em>Annotation</em> – The proper schema of each input file.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 </div>
 

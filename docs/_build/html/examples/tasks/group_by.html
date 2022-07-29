@@ -578,7 +578,7 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="Group-by">
 <h1><em>Group by</em><a class="headerlink" href="#Group-by" title="Permalink to this headline">#</a></h1>
-<p>Simple example where we can find how <strong>group by</strong> task works. This task is able with command-line.</p>
+<p>A simple example where we can find how <strong>group by</strong> task works. This task is able with command-line.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1] - 
 </pre></div>
@@ -592,7 +592,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">group_by</span></code> task allow us to group the rows depending on the value of an output field.</p>
+<p><code class="docutils literal notranslate"><span class="pre">group_by</span></code> task allows us to group the rows depending on the value of an output field.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">base_path</span></code> - Input path to explore and parse.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">annotation_path</span></code> - Path of the annotation path.</p></li>
@@ -621,18 +621,6 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Group: ACC
-ACAP3   1p36.33 ACC
-ACTRT2  1p36.32 ACC
-AGRN    1p36.33 ACC
-ANKRD65 1p36.33 ACC
-ATAD3A  1p36.33 ACC
-ATAD3B  1p36.33 ACC
-ATAD3C  1p36.33 ACC
-AURKAIP1        1p36.33 ACC
-B3GALT6 1p36.33 ACC
-
-
 Group: MESO
 ACAP3   1p36.33 MESO
 ACTRT2  1p36.32 MESO
@@ -645,9 +633,29 @@ AURKAIP1        1p36.33 MESO
 B3GALT6 1p36.33 MESO
 
 
+Group: ACC
+ACAP3   1p36.33 ACC
+ACTRT2  1p36.32 ACC
+AGRN    1p36.33 ACC
+ANKRD65 1p36.33 ACC
+ATAD3A  1p36.33 ACC
+ATAD3B  1p36.33 ACC
+ATAD3C  1p36.33 ACC
+AURKAIP1        1p36.33 ACC
+B3GALT6 1p36.33 ACC
+
+
 </pre></div></div>
 </div>
-<p>One of the parameter on <code class="docutils literal notranslate"><span class="pre">count</span></code> task is <code class="docutils literal notranslate"><span class="pre">where</span></code>. You will be able to apply a conditional filter. The possible operations can be: - <code class="docutils literal notranslate"><span class="pre">==</span></code> - Equal. - <code class="docutils literal notranslate"><span class="pre">!=</span></code> - Not equal. - <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> - Less or equal than. - <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> - Less than. - <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> - More or equal than. - <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> - More than.</p>
+<p>One of the parameters on <code class="docutils literal notranslate"><span class="pre">count</span></code> task is <code class="docutils literal notranslate"><span class="pre">where</span></code>. You will be able to apply a conditional filter. The possible operations can be:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">==</span></code> - Equal.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">!=</span></code> - Not equal.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> - Less or equal than.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;</span></code> - Less than.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> - More or equal than.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;</span></code> - More than.</p></li>
+</ul>
 <p>One example of this parameter is the following one:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3] - 
@@ -666,17 +674,17 @@ B3GALT6 1p36.33 MESO
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Group: ACC
-ATAD3C  1p36.33 ACC
-
-
 Group: MESO
 ATAD3C  1p36.33 MESO
 
 
+Group: ACC
+ATAD3C  1p36.33 ACC
+
+
 </pre></div></div>
 </div>
-<p>Also, on <code class="docutils literal notranslate"><span class="pre">group</span> <span class="pre">by</span></code> task there is <code class="docutils literal notranslate"><span class="pre">script</span></code> parameter which will allow to the user to execute a command shell on the parsed result. On the following example we can see how many characters there are on each group of the parsed output:</p>
+<p>Also, on <code class="docutils literal notranslate"><span class="pre">group</span> <span class="pre">by</span></code> task, there is <code class="docutils literal notranslate"><span class="pre">script</span></code> parameter which will allow to the user to execute a command shell on the parsed result. In the following example we can see how many characters there are in each group of the parsed output:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4] - 
 </pre></div>

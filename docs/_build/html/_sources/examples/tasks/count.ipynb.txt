@@ -15,7 +15,7 @@
   {
    "cell_type": "markdown",
    "source": [
-    "Simple example where we can find how **count** task works. This task is able with command-line."
+    "A simple example where we can find how **count** task works. This task is able with command-line."
    ],
    "metadata": {
     "collapsed": false,
@@ -46,7 +46,7 @@
   {
    "cell_type": "markdown",
    "source": [
-    "`count` task allow us to count the number of rows that result has. It has the following parameters:\n",
+    "`count` task allows us to count the number of rows that result has. It has the following parameters:\n",
     "\n",
     "- `base_path` - Input path to explore and parse.\n",
     "- `annotation_path` - Path of the annotation path.\n",
@@ -66,7 +66,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
+   "execution_count": 2,
    "outputs": [
     {
      "name": "stdout",
@@ -91,12 +91,13 @@
    "cell_type": "markdown",
    "source": [
     "One of the parameter on `count` task is `where`. You will be able to apply a conditional filter. The possible operations can be:\n",
-    "- `==` - Equal.\n",
-    "- `!=` - Not equal.\n",
-    "- `<=` - Less or equal than.\n",
-    "- `<` - Less than.\n",
-    "- `>=` - More or equal than.\n",
-    "- `>` - More than.\n",
+    "\n",
+    "+ `==` - Equal.\n",
+    "+ `!=` - Not equal.\n",
+    "+ `<=` - Less or equal than.\n",
+    "+ `<` - Less than.\n",
+    "+ `>=` - More or equal than.\n",
+    "+ `>` - More than.\n",
     "\n",
     "Also, `gropu_by` to group rows on different values of this key. An example of these parameters is the following one:"
    ],
@@ -109,7 +110,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 6,
+   "execution_count": 3,
    "outputs": [
     {
      "name": "stdout",

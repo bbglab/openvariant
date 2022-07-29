@@ -191,7 +191,7 @@
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
 <span class="kn">from</span> <span class="nn">openvariant.annotation.annotation</span> <span class="kn">import</span> <span class="n">Annotation</span>
-<span class="kn">from</span> <span class="nn">openvariant.find.find_files</span> <span class="kn">import</span> <span class="n">find_files</span>
+<span class="kn">from</span> <span class="nn">openvariant.find_files.find_files</span> <span class="kn">import</span> <span class="n">findfiles</span>
 
 <span class="kn">from</span> <span class="nn">openvariant.variant.variant</span> <span class="kn">import</span> <span class="n">Variant</span>
 
@@ -251,7 +251,7 @@
 <span class="sd">        A schema with separate groups and the numbers of rows for each.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">selection</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">annotation_path</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">findfiles</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">annotation_path</span><span class="p">):</span>
         <span class="n">selection</span> <span class="o">+=</span> <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="n">a</span><span class="p">)]</span>
 
     <span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="n">cores</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>

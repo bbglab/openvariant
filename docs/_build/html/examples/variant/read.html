@@ -578,7 +578,7 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="Read">
 <h1>Read<a class="headerlink" href="#Read" title="Permalink to this headline">#</a></h1>
-<p>Simple example on how <strong>Variant</strong> can read and how can be treated.</p>
+<p>A simple example on how <strong>Variant</strong> can read and how can be treated.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1] - 
 </pre></div>
@@ -601,13 +601,13 @@ div.rendered_html tbody tr:hover {
 <li><p><code class="docutils literal notranslate"><span class="pre">path</span></code> - Path of <em>input</em> file.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">annotation</span></code> - Annotation object which <em>input</em> will be parsed.</p></li>
 </ul>
-<p>One of the main function of <em>Variant</em> is <code class="docutils literal notranslate"><span class="pre">read</span></code>.It will generate an iterator to scan the parsed file.</p>
+<p>One of the main functions of <em>Variant</em> is <code class="docutils literal notranslate"><span class="pre">read</span></code>.It will generate an iterator to scan the parsed file.</p>
 <p><code class="docutils literal notranslate"><span class="pre">read</span></code> function parameters:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">where</span></code> - Filter expression.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">group_key</span></code> - Key to group rows.</p></li>
 </ul>
-<p>On this example, it will get the 10 first line of parsed file through an <em>annotation</em> file.</p>
+<p>In this example, it will get the 10 first lines of parsed files through an <em>annotation</em> file.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2] - 
 </pre></div>
@@ -639,7 +639,7 @@ Line 8: {&#39;POSITION&#39;: &#39;187323&#39;, &#39;DATASET&#39;: &#39;22f5b2f&#
 Line 9: {&#39;POSITION&#39;: &#39;187363&#39;, &#39;DATASET&#39;: &#39;22f5b2f&#39;, &#39;SAMPLE&#39;: &#39;SAMPLE1&#39;, &#39;STRAND_REF&#39;: &#39;POS&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;}
 </pre></div></div>
 </div>
-<p>As we can see in the output each line is a <code class="docutils literal notranslate"><span class="pre">dict</span></code> where the <code class="docutils literal notranslate"><span class="pre">key</span></code> is the field of the parsed result and the <code class="docutils literal notranslate"><span class="pre">value</span></code> is the value inside that cell.</p>
+<p>As we can see in the output each line is a <code class="docutils literal notranslate"><span class="pre">dict</span></code> where the <code class="docutils literal notranslate"><span class="pre">key</span></code> is the field of the parsed result and the <code class="docutils literal notranslate"><span class="pre">value</span></code> is the value in that cell.</p>
 <p><strong>Variant</strong> has different attributes than we can explore:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3] - 
@@ -683,10 +683,18 @@ Input file:  /home/dmartinez/openvariant/examples/datasets/sample1/22f5b2f.wxs.m
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-{&#39;PLATFORM&#39;: (&#39;STATIC&#39;, &#39;WGS&#39;), &#39;POSITION&#39;: (&#39;INTERNAL&#39;, [&#39;Position&#39;, &#39;Start&#39;, &#39;Start_Position&#39;, &#39;Pos&#39;, &#39;Chromosome_Start&#39;, &#39;POS&#39;], &lt;openvariant.annotation.builder.Builder object at 0x7f0f4b5e2f10&gt;, nan), &#39;DATASET&#39;: (&#39;FILENAME&#39;, &lt;openvariant.annotation.builder.Builder object at 0x7f0f4b18bdc0&gt;, re.compile(&#39;(.*)&#39;)), &#39;SAMPLE&#39;: (&#39;DIRNAME&#39;, &lt;openvariant.annotation.builder.Builder object at 0x7f0f4b18b820&gt;, re.compile(&#39;(.*)&#39;)), &#39;STRAND&#39;: (&#39;INTERNAL&#39;, [&#39;Strand&#39;, &#39;Chromosome_Strand&#39;, &#39;&#39;], &lt;openvariant.annotation.builder.Builder object at 0x7f0f4b18bca0&gt;, nan), &#39;STRAND_REF&#39;: (&#39;MAPPING&#39;, [&#39;STRAND&#39;], {&#39;+&#39;: &#39;POS&#39;, &#39;-&#39;: &#39;NEG&#39;})}
+{&#39;PLATFORM&#39;: (&#39;STATIC&#39;, &#39;WGS&#39;), &#39;POSITION&#39;: (&#39;INTERNAL&#39;, [&#39;Position&#39;, &#39;Start&#39;, &#39;Start_Position&#39;, &#39;Pos&#39;, &#39;Chromosome_Start&#39;, &#39;POS&#39;], &lt;openvariant.annotation.builder.Builder object at 0x7fa8bc0b3b20&gt;, nan), &#39;DATASET&#39;: (&#39;FILENAME&#39;, &lt;openvariant.annotation.builder.Builder object at 0x7fa8bc0b3940&gt;, re.compile(&#39;(.*)&#39;)), &#39;SAMPLE&#39;: (&#39;DIRNAME&#39;, &lt;openvariant.annotation.builder.Builder object at 0x7fa8bc0b3520&gt;, re.compile(&#39;(.*)&#39;)), &#39;STRAND&#39;: (&#39;INTERNAL&#39;, [&#39;Strand&#39;, &#39;Chromosome_Strand&#39;, &#39;&#39;], &lt;openvariant.annotation.builder.Builder object at 0x7fa8bc0b3310&gt;, nan), &#39;STRAND_REF&#39;: (&#39;MAPPING&#39;, [&#39;STRAND&#39;], {&#39;+&#39;: &#39;POS&#39;, &#39;-&#39;: &#39;NEG&#39;})}
 </pre></div></div>
 </div>
-<p>One of the parameter on <code class="docutils literal notranslate"><span class="pre">read</span></code> function is <code class="docutils literal notranslate"><span class="pre">where</span></code>. You will be able to apply a conditional filter. The possible operations can be: - <code class="docutils literal notranslate"><span class="pre">==</span></code> - Equal. - <code class="docutils literal notranslate"><span class="pre">!=</span></code> - Not equal. - <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> - Less or equal than. - <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> - Less than. - <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> - More or equal than. - <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> - More than.</p>
+<p>One of the parameter to <code class="docutils literal notranslate"><span class="pre">read</span></code> function is <code class="docutils literal notranslate"><span class="pre">where</span></code>. You will be able to apply a conditional filter. The possible operations can be:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">==</span></code> - Equal.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">!=</span></code> - Not equal.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> - Less or equal than.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;</span></code> - Less than.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> - More or equal than.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;</span></code> - More than.</p></li>
+</ul>
 <p>One example of this parameter is the following one:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5] - 
@@ -709,17 +717,17 @@ Input file:  /home/dmartinez/openvariant/examples/datasets/sample1/22f5b2f.wxs.m
 </pre></div></div>
 </div>
 <p>Also, <code class="docutils literal notranslate"><span class="pre">read</span></code> allows <code class="docutils literal notranslate"><span class="pre">group_key</span></code> as a parameter which it will group rows depending on its value.</p>
-<p><strong>Variant</strong> can be combined with <code class="docutils literal notranslate"><span class="pre">find_files</span></code> as it show the following example. It will print the 3 first lines of each input file.</p>
+<p><strong>Variant</strong> can be combined with <code class="docutils literal notranslate"><span class="pre">findfiles</span></code> as it shows the following example. It will print the 3 first lines of each input file.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6] - 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">basename</span>
-<span class="kn">from</span> <span class="nn">openvariant</span> <span class="kn">import</span> <span class="n">find_files</span>
+<span class="kn">from</span> <span class="nn">openvariant</span> <span class="kn">import</span> <span class="n">findfiles</span>
 
 <span class="n">dataset_folder</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dirname</span><span class="p">(</span><span class="n">getcwd</span><span class="p">())</span><span class="si">}</span><span class="s1">/datasets/sample1&#39;</span>
 
-<span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">find_files</span><span class="p">(</span><span class="n">base_path</span><span class="o">=</span><span class="n">dataset_folder</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">findfiles</span><span class="p">(</span><span class="n">base_path</span><span class="o">=</span><span class="n">dataset_folder</span><span class="p">):</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">Variant</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span><span class="n">annotation</span><span class="p">)</span>
 
     <span class="n">n_line</span> <span class="o">=</span> <span class="mi">1</span>
@@ -753,30 +761,30 @@ Line 2: {&#39;POSITION&#39;: &#39;98933&#39;, &#39;DATASET&#39;: &#39;22f5b2f&#3
 
 File:  345c90e.raw_somatic_mutation.vcf.gz
 
-Line 0: {&#39;POSITION&#39;: &#39;10267&#39;, &#39;DATASET&#39;: &#39;.raw_somatic_mutation.vcf.gz&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:T_C&#39;}
-Line 1: {&#39;POSITION&#39;: &#39;10273&#39;, &#39;DATASET&#39;: &#39;.raw_somatic_mutation.vcf.gz&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:T_C&#39;}
-Line 2: {&#39;POSITION&#39;: &#39;10321&#39;, &#39;DATASET&#39;: &#39;.raw_somatic_mutation.vcf.gz&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:C_T&#39;}
+Line 0: {&#39;POSITION&#39;: &#39;10267&#39;, &#39;DATASET&#39;: &#39;345c90e&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:T_C&#39;}
+Line 1: {&#39;POSITION&#39;: &#39;10273&#39;, &#39;DATASET&#39;: &#39;345c90e&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:T_C&#39;}
+Line 2: {&#39;POSITION&#39;: &#39;10321&#39;, &#39;DATASET&#39;: &#39;345c90e&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:C_T&#39;}
 
 
 File:  de46011.raw_somatic_mutation.vcf.gz
 
-Line 0: {&#39;POSITION&#39;: &#39;10105&#39;, &#39;DATASET&#39;: &#39;.raw_somatic_mutation.vcf.gz&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:A_C&#39;}
-Line 1: {&#39;POSITION&#39;: &#39;10381&#39;, &#39;DATASET&#39;: &#39;.raw_somatic_mutation.vcf.gz&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:T_C&#39;}
-Line 2: {&#39;POSITION&#39;: &#39;10438&#39;, &#39;DATASET&#39;: &#39;.raw_somatic_mutation.vcf.gz&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:A_T&#39;}
+Line 0: {&#39;POSITION&#39;: &#39;10105&#39;, &#39;DATASET&#39;: &#39;de46011&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:A_C&#39;}
+Line 1: {&#39;POSITION&#39;: &#39;10381&#39;, &#39;DATASET&#39;: &#39;de46011&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:T_C&#39;}
+Line 2: {&#39;POSITION&#39;: &#39;10438&#39;, &#39;DATASET&#39;: &#39;de46011&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:A_T&#39;}
 
 
 File:  3a70e22.raw_somatic_mutation.vcf.gz
 
-Line 0: {&#39;POSITION&#39;: &#39;10033&#39;, &#39;DATASET&#39;: &#39;.raw_somatic_mutation.vcf.gz&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:A_C&#39;}
-Line 1: {&#39;POSITION&#39;: &#39;10075&#39;, &#39;DATASET&#39;: &#39;.raw_somatic_mutation.vcf.gz&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:A_C&#39;}
-Line 2: {&#39;POSITION&#39;: &#39;10087&#39;, &#39;DATASET&#39;: &#39;.raw_somatic_mutation.vcf.gz&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:A_C&#39;}
+Line 0: {&#39;POSITION&#39;: &#39;10033&#39;, &#39;DATASET&#39;: &#39;3a70e22&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:A_C&#39;}
+Line 1: {&#39;POSITION&#39;: &#39;10075&#39;, &#39;DATASET&#39;: &#39;3a70e22&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:A_C&#39;}
+Line 2: {&#39;POSITION&#39;: &#39;10087&#39;, &#39;DATASET&#39;: &#39;3a70e22&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:A_C&#39;}
 
 
 File:  4c0b87e.raw_somatic_mutation.vcf.gz
 
-Line 0: {&#39;POSITION&#39;: &#39;10105&#39;, &#39;DATASET&#39;: &#39;.raw_somatic_mutation.vcf.gz&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:A_C&#39;}
-Line 1: {&#39;POSITION&#39;: &#39;10241&#39;, &#39;DATASET&#39;: &#39;.raw_somatic_mutation.vcf.gz&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:T_C&#39;}
-Line 2: {&#39;POSITION&#39;: &#39;10267&#39;, &#39;DATASET&#39;: &#39;.raw_somatic_mutation.vcf.gz&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:T_C&#39;}
+Line 0: {&#39;POSITION&#39;: &#39;10105&#39;, &#39;DATASET&#39;: &#39;4c0b87e&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:A_C&#39;}
+Line 1: {&#39;POSITION&#39;: &#39;10241&#39;, &#39;DATASET&#39;: &#39;4c0b87e&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:T_C&#39;}
+Line 2: {&#39;POSITION&#39;: &#39;10267&#39;, &#39;DATASET&#39;: &#39;4c0b87e&#39;, &#39;PLATFORM&#39;: &#39;WGS&#39;, &#39;INFO&#39;: &#39;WGS:T_C&#39;}
 
 
 </pre></div></div>

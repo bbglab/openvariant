@@ -7,12 +7,12 @@
 Command-line interface (CLI)
 ===============================
 
-**OpenVariant** is a package that can be run inside Python scripts, but, also, allow to the user to run some of its tasks
+**OpenVariant** is a package that can be run in Python scripts, but, also, allow to the user to run some of its tasks
 in a shell and command language. The same tasks that can be executed through a command-line interface (CLI) that we present
-here can be also perform in a Python script.
+here can be also performed in a Python script.
 
-The main command that rules **OpenVariant** is :bash:`openvar`, with that command we can chose different options to perform different tasks.
-The tasks with their parameters are the following:
+The main command that rules **OpenVariant** is :bash:`openvar`, with that command we can choose different options to perform different tasks.
+The tasks with their parameters are the following ones:
 
 .. code:: bash
 
@@ -36,7 +36,7 @@ The tasks with their parameters are the following:
 Cat command
 ############
 
-Concatenate parsed files on the standard output. For this options the parameters are the following ones:
+Concatenate parsed files on the standard output. For these options the parameters are the following ones:
 
 * ``input_path`` - Input path.
 * ``-w,--where`` - Condition expression.
@@ -52,7 +52,7 @@ Concatenate parsed files on the standard output. For this options the parameters
 Count command
 ###############
 
-Number of rows that matches a specific conditions. The parameters are the follow ones:
+Number of rows that matches a specific condition. The parameters are the following ones:
 
 * ``input_path`` - Input path.
 * ``-w,--where`` - Condition expression.
@@ -69,7 +69,7 @@ Number of rows that matches a specific conditions. The parameters are the follow
 Group by command
 #################
 
-Number of rows that matches a specific conditions. The parameters are the follow ones:
+Number of rows that matches a specific condition. The parameters are the following ones:
 
 * ``input_path`` - Input path.
 * ``-w,--where`` - Condition expression.
@@ -86,7 +86,7 @@ Number of rows that matches a specific conditions. The parameters are the follow
 Plugin command
 ################
 
-Actions to apply on plugins system. Mainly creat the template of a new plugin. For that, these parameters can be used
+Actions to apply on the plugins system. Mainly create the template of a new plugin. For that, these parameters can be used
 (to learn more about how plugins work, check :ref:`Plugin system` section):
 
 * ``action`` - Action to perform ['create'].

@@ -15,7 +15,7 @@
   {
    "cell_type": "markdown",
    "source": [
-    "Simple example where we can find how **group by** task works. This task is able with command-line.\n"
+    "A simple example where we can find how **group by** task works. This task is able with command-line.\n"
    ],
    "metadata": {
     "collapsed": false,
@@ -46,7 +46,7 @@
   {
    "cell_type": "markdown",
    "source": [
-    "`group_by` task allow us to group the rows depending on the value of an output field.\n",
+    "`group_by` task allows us to group the rows depending on the value of an output field.\n",
     "\n",
     "- `base_path` - Input path to explore and parse.\n",
     "- `annotation_path` - Path of the annotation path.\n",
@@ -74,18 +74,6 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "Group: ACC\n",
-      "ACAP3\t1p36.33\tACC\n",
-      "ACTRT2\t1p36.32\tACC\n",
-      "AGRN\t1p36.33\tACC\n",
-      "ANKRD65\t1p36.33\tACC\n",
-      "ATAD3A\t1p36.33\tACC\n",
-      "ATAD3B\t1p36.33\tACC\n",
-      "ATAD3C\t1p36.33\tACC\n",
-      "AURKAIP1\t1p36.33\tACC\n",
-      "B3GALT6\t1p36.33\tACC\n",
-      "\n",
-      "\n",
       "Group: MESO\n",
       "ACAP3\t1p36.33\tMESO\n",
       "ACTRT2\t1p36.32\tMESO\n",
@@ -96,6 +84,18 @@
       "ATAD3C\t1p36.33\tMESO\n",
       "AURKAIP1\t1p36.33\tMESO\n",
       "B3GALT6\t1p36.33\tMESO\n",
+      "\n",
+      "\n",
+      "Group: ACC\n",
+      "ACAP3\t1p36.33\tACC\n",
+      "ACTRT2\t1p36.32\tACC\n",
+      "AGRN\t1p36.33\tACC\n",
+      "ANKRD65\t1p36.33\tACC\n",
+      "ATAD3A\t1p36.33\tACC\n",
+      "ATAD3B\t1p36.33\tACC\n",
+      "ATAD3C\t1p36.33\tACC\n",
+      "AURKAIP1\t1p36.33\tACC\n",
+      "B3GALT6\t1p36.33\tACC\n",
       "\n",
       "\n"
      ]
@@ -118,14 +118,14 @@
   {
    "cell_type": "markdown",
    "source": [
+    "One of the parameters on `count` task is `where`. You will be able to apply a conditional filter. The possible operations can be:\n",
     "\n",
-    "One of the parameter on `count` task is `where`. You will be able to apply a conditional filter. The possible operations can be:\n",
-    "- `==` - Equal.\n",
-    "- `!=` - Not equal.\n",
-    "- `<=` - Less or equal than.\n",
-    "- `<` - Less than.\n",
-    "- `>=` - More or equal than.\n",
-    "- `>` - More than.\n",
+    "+ `==` - Equal.\n",
+    "+ `!=` - Not equal.\n",
+    "+ `<=` - Less or equal than.\n",
+    "+ `<` - Less than.\n",
+    "+ `>=` - More or equal than.\n",
+    "+ `>` - More than.\n",
     "\n",
     "One example of this parameter is the following one:"
    ],
@@ -144,12 +144,12 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "Group: ACC\n",
-      "ATAD3C\t1p36.33\tACC\n",
-      "\n",
-      "\n",
       "Group: MESO\n",
       "ATAD3C\t1p36.33\tMESO\n",
+      "\n",
+      "\n",
+      "Group: ACC\n",
+      "ATAD3C\t1p36.33\tACC\n",
       "\n",
       "\n"
      ]
@@ -172,7 +172,7 @@
   {
    "cell_type": "markdown",
    "source": [
-    "Also, on `group by` task there is `script` parameter which will allow to the user to execute a command shell on the parsed result. On the following example we can see how many characters there are on each group of the parsed output:"
+    "Also, on `group by` task, there is `script` parameter which will allow to the user to execute a command shell on the parsed result. In the following example we can see how many characters there are in each group of the parsed output:"
    ],
    "metadata": {
     "collapsed": false,

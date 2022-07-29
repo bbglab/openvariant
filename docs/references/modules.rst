@@ -9,4 +9,3 @@ openvariant
    openvariant.find_files
    openvariant.tasks
    openvariant.plugins
-   openvariant.commands

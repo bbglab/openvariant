@@ -345,18 +345,18 @@
 data transformation. First of all, you will need to create a plugin; hence, check <a class="reference internal" href="../user_guide/cli.html#command-line-interface"><span class="std std-ref">Command-line interface (CLI)</span></a> section
 and <a class="reference internal" href="cli_examples.html#command-line-interface-examples"><span class="std std-ref">Command-line interface (CLI) examples</span></a> to understand how a plugin template can be generated. Also, it is important
 to know how plugins works and how they are composed in order to understand the following examples that we introduce.</p>
-<p>We are going to introduce you two little plugins that we will use them on the example. The two plugins are described and built as:</p>
+<p>We are going to introduce you two little plugins that we will use them in the example. The two plugins are described and built as:</p>
 <div class="section" id="add-date-plugin">
 <h2><em>Add date</em> plugin<a class="headerlink" href="#add-date-plugin" title="Permalink to this headline">#</a></h2>
-<p>It will generate a new field and it will add the today’s date. <cite>run</cite> function will be executed on each line of the
-<em>input</em> file adding this new field. We can see on the following block the different codes that we add to obtain this.</p>
-<p>On the <em>annotation</em> file we described the field that we want to add on the _output_ file.</p>
+<p>It will generate a new field and it will add the today’s date. <cite>run</cite> function will be executed for each line of the
+<em>input</em> file, adding this new field. We can see on the following block the different codes that we add to obtain this.</p>
+<p>On the <em>annotation</em> file we described the field that we want to add on the <em>output</em> file.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plugin</span><span class="w"></span>
 <span class="w">  </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">add_date</span><span class="w"></span>
 <span class="w">  </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DATE</span><span class="w"></span>
 </pre></div>
 </div>
-<p>In addition, after generate the plugin template with the command-line, we overwrite the <cite>Add_dateContext</cite> class and
+<p>In addition, after generating the plugin template with the command-line, we overwrite the <cite>Add_dateContext</cite> class and
 <cite>Add_datePlugin</cite> class, in order to add the today’s date on one field of the output.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
 
@@ -382,9 +382,9 @@ to know how plugins works and how they are composed in order to understand the f
 <div class="section" id="get-length-plugin">
 <h2><em>Get length</em> plugin<a class="headerlink" href="#get-length-plugin" title="Permalink to this headline">#</a></h2>
 <p>On this second plugin, we will get the length between two different numbers that are annotated as fields. For each row
-of the <em>input</em> file, <cite>run</cite> function will be executed. It will get the <cite>START</cite> field and <cite>END</cite> field and then it will get the length
+of the <em>input</em> file, <cite>run</cite> function will be executed. It will get on the <cite>START</cite> field and <cite>END</cite> field and then it will get the length
 between these two values (the difference).</p>
-<p>On the  <em>annotation</em> file we find the following fields described as:</p>
+<p>In the  <em>annotation</em> file we find the following fields described as:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plugin</span><span class="w"></span>
 <span class="w">  </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">get_length</span><span class="w"></span>
 <span class="w">  </span><span class="nt">field</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LENGTH</span><span class="w"></span>
@@ -398,7 +398,7 @@ between these two values (the difference).</p>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;loc.end&#39;</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Also, like in the previous plugin, we generated the plugin templated with command-line and them we overwrite them to
+<p>Also, like in the previous plugin, we generated the plugin templated with command-line and then we overwrite them to
 extract the length between the two fields.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openvariant.plugins.context</span> <span class="kn">import</span> <span class="n">Context</span>
 <span class="kn">from</span> <span class="nn">openvariant.plugins.plugin</span> <span class="kn">import</span> <span class="n">Plugin</span>
@@ -418,7 +418,7 @@ extract the length between the two fields.</p>
             <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">row</span><span class="p">[</span><span class="n">context</span><span class="o">.</span><span class="n">field_name</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>These two plugins are used on the following example:</p>
+<p>These two plugins are used in the following example:</p>
 <div class="toctree-wrapper compound" id="plugin-system-examples">
 </div>
 <div class="sphx-glr-thumbcontainer">

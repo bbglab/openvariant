@@ -305,6 +305,12 @@
                 <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
             <span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
+    <span class="k">def</span> <span class="nf">_check_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Check if columns exists as annotation fields&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_annotations</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&#39; column unable to find.&quot;</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotation_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Inits Annotation with annotation file path.</span>
@@ -317,6 +323,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">annotation_path</span>
         <span class="n">raw_annotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_annotation_file</span><span class="p">()</span>
+
         <span class="n">_check_general_keys</span><span class="p">(</span><span class="n">raw_annotation</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">annot</span> <span class="ow">in</span> <span class="n">raw_annotation</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">AnnotationGeneralKeys</span><span class="o">.</span><span class="n">ANNOTATION</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="p">[]):</span>
             <span class="n">_check_annotation_keys</span><span class="p">(</span><span class="n">annot</span><span class="p">)</span>
@@ -325,11 +332,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_patterns</span> <span class="o">=</span> <span class="n">patterns</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">patterns</span><span class="p">,</span> <span class="n">List</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">patterns</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_recursive</span> <span class="o">=</span> <span class="n">raw_annotation</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">AnnotationGeneralKeys</span><span class="o">.</span><span class="n">RECURSIVE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_delimiter</span> <span class="o">=</span> <span class="n">raw_annotation</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">AnnotationGeneralKeys</span><span class="o">.</span><span class="n">DELIMITER</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">DEFAULT_DELIMITER</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_format</span> <span class="o">=</span> <span class="n">raw_annotation</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">AnnotationGeneralKeys</span><span class="o">.</span><span class="n">FORMAT</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">DEFAULT_FORMAT</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_excludes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
-
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">raw_annotation</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">AnnotationGeneralKeys</span><span class="o">.</span><span class="n">EXCLUDE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="p">[]):</span>
             <span class="n">key_exclude</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="n">AnnotationKeys</span><span class="o">.</span><span class="n">FIELD</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
             <span class="n">value_exclude</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="n">AnnotationKeys</span><span class="o">.</span><span class="n">VALUE</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
@@ -346,12 +351,6 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="o">=</span> <span class="n">raw_annotation</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">AnnotationGeneralKeys</span><span class="o">.</span><span class="n">COLUMNS</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_columns</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">_check_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Check if columns exists as annotation fields&quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_annotations</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&#39; column unable to find.&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>

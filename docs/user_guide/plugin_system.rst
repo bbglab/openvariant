@@ -5,12 +5,12 @@ Plugin system
 
 We designed a plugin system where the user will be able to create and add any kind of data transformation.
 Each plugin has to be noticed on the `annotation` file as :ref:`Annotation structure` section explains, if it
-wants to be used. An **OpenVariant**'s plugin is a python module composed by a single file. This file has two classes:
+wants to be used. An **OpenVariant**'s plugin is a python module composed of a single file. This file has two classes:
 
-* **Context**: contains different attributes of the row and the file that is parsing (``row``, ``field_name``, ``file_path``). It is used as input argument that runs plugin's functionality.
+* **Context**: contains different attributes of the row and the file that is parsed (``row``, ``field_name``, ``file_path``). It is used as input argument that runs the plugin's functionality.
 * **Plugin**: has ``run`` function that will process the row and apply the data transformation.
 
-Each object will be work as a single base class to be inherited on each plugin. On the following schema we can
+Each object will be working as a single base class to be inherited on each plugin. On the following schema we can
 visualize how the different classes are connected and composed with **OpenVariant** package.
 
 .. image:: ../_static/schema_plugin.png
@@ -19,7 +19,7 @@ visualize how the different classes are connected and composed with **OpenVarian
 
 |
 
-As we mention before, plugin has to be present on the `annotation` file in order to be used. Plugins can be
+As we have mentioned before, the plugin has to be present on the `annotation` file in order to be used. Plugins can be
 distributed on different folders where `Builder` will manage to find them and apply the data transformation.
 Plugins will inherit `Context` and `Plugin` as base classes for each plugin. These classes are described as it follows:
 

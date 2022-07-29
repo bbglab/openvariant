@@ -13,8 +13,8 @@ This is a brief guidelines that you need to know in order to make a contribution
 
    *Note: you can call this remote pointing to your fork as fork or upstream (more correct way of calling it).*
 
-#. Create a new branch, like this: ``git checkout -b my_new_shiny_feature`` (the nam of the new branch should be related
-   with the issue or feature that wants to be implemented).
+#. Create a new branch, like this: ``git checkout -b my_new_shiny_feature`` (the name of the new branch should be related
+   to with the issue or feature that wants to be implemented).
 #. Code, make the required changes or add your new fancy feature.
 #. Add changes: ``git add -p``
 #. Commit them: ``git commit -m "feat: added a nice feature"``

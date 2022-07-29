@@ -8,15 +8,15 @@ data transformation. First of all, you will need to create a plugin; hence, chec
 and :ref:`Command-line interface examples` to understand how a plugin template can be generated. Also, it is important
 to know how plugins works and how they are composed in order to understand the following examples that we introduce.
 
-We are going to introduce you two little plugins that we will use them on the example. The two plugins are described and built as:
+We are going to introduce you two little plugins that we will use them in the example. The two plugins are described and built as:
 
 *Add date* plugin
 ########################
 
-It will generate a new field and it will add the today's date. `run` function will be executed on each line of the
-*input* file adding this new field. We can see on the following block the different codes that we add to obtain this.
+It will generate a new field and it will add the today's date. `run` function will be executed for each line of the
+*input* file, adding this new field. We can see on the following block the different codes that we add to obtain this.
 
-On the *annotation* file we described the field that we want to add on the _output_ file.
+On the *annotation* file we described the field that we want to add on the *output* file.
 
 .. code-block:: yaml
 
@@ -24,7 +24,7 @@ On the *annotation* file we described the field that we want to add on the _outp
     plugin: add_date
     field: DATE
 
-In addition, after generate the plugin template with the command-line, we overwrite the `Add_dateContext` class and
+In addition, after generating the plugin template with the command-line, we overwrite the `Add_dateContext` class and
 `Add_datePlugin` class, in order to add the today's date on one field of the output.
 
 .. code-block:: python
@@ -52,10 +52,10 @@ In addition, after generate the plugin template with the command-line, we overwr
 ########################
 
 On this second plugin, we will get the length between two different numbers that are annotated as fields. For each row
-of the *input* file, `run` function will be executed. It will get the `START` field and `END` field and then it will get the length
+of the *input* file, `run` function will be executed. It will get on the `START` field and `END` field and then it will get the length
 between these two values (the difference).
 
-On the  *annotation* file we find the following fields described as:
+In the  *annotation* file we find the following fields described as:
 
 .. code-block:: yaml
 
@@ -71,7 +71,7 @@ On the  *annotation* file we find the following fields described as:
     fieldSource:
       - 'loc.end'
 
-Also, like in the previous plugin, we generated the plugin templated with command-line and them we overwrite them to
+Also, like in the previous plugin, we generated the plugin templated with command-line and then we overwrite them to
 extract the length between the two fields.
 
 .. code-block:: python
@@ -93,7 +93,7 @@ extract the length between the two fields.
 
     		return context.row[context.field_name]
 
-These two plugins are used on the following example:
+These two plugins are used in the following example:
 
 .. nbgallery::
     :name: Plugin System examples

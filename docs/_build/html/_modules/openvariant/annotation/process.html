@@ -275,7 +275,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">isdir</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s1">&#39;Unable to find a filename&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s1">&#39;Unable to find_files a filename&#39;</span><span class="p">)</span>
 
         <span class="n">func_result</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="n">basename</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">func_result</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -311,7 +311,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">isdir</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s1">&#39;Unable to find a dirname&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s1">&#39;Unable to find_files a dirname&#39;</span><span class="p">)</span>
 
         <span class="n">func_result</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="n">basename</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="n">file_path</span><span class="p">))))</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">func_result</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -359,7 +359,7 @@
 <span class="sd">    if value is None:</span>
 <span class="sd">        raise KeyError(f&#39;Unable to map {x[1]} sources on mapping annotation&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">AnnotationTypes</span><span class="o">.</span><span class="n">MAPPING</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="nb">str</span> <span class="c1">#value if value is not None else float(&#39;nan&#39;), str</span>
+    <span class="k">return</span> <span class="n">AnnotationTypes</span><span class="o">.</span><span class="n">MAPPING</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="nb">str</span>
 
 
 <span class="k">def</span> <span class="nf">_plugin_process</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">PluginBuilder</span><span class="p">,</span> <span class="n">original_header</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

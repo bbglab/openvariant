@@ -199,6 +199,7 @@
 <span class="kn">from</span> <span class="nn">openvariant.annotation.builder</span> <span class="kn">import</span> <span class="n">MappingBuilder</span>
 <span class="kn">from</span> <span class="nn">openvariant.annotation.process</span> <span class="kn">import</span> <span class="n">AnnotationTypesProcess</span>
 <span class="kn">from</span> <span class="nn">openvariant.annotation.config_annotation</span> <span class="kn">import</span> <span class="n">AnnotationFormat</span><span class="p">,</span> <span class="n">AnnotationTypes</span><span class="p">,</span> <span class="n">AnnotationDelimiter</span>
+<span class="kn">from</span> <span class="nn">openvariant.utils.utils</span> <span class="kn">import</span> <span class="n">check_extension</span>
 <span class="kn">from</span> <span class="nn">openvariant.variant.where</span> <span class="kn">import</span> <span class="n">skip</span><span class="p">,</span> <span class="n">parse_where</span>
 
 
@@ -355,6 +356,12 @@
             <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Parsing of an entire file with annotation schema&quot;&quot;&quot;</span>
         <span class="n">header</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">row_header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="p">{},</span> <span class="p">[]</span>
+
+        <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">check_extension</span><span class="p">(</span><span class="n">ext</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">annotation</span><span class="o">.</span><span class="n">patterns</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">matches</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s2">&quot;Annotation patterns don&#39;t match with input file.&quot;</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">_open_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">lnum</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">_base_parser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">annotation</span><span class="o">.</span><span class="n">delimiter</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
@@ -443,7 +450,7 @@
                     <span class="k">continue</span>
                 <span class="k">yield</span> <span class="n">line</span></div>
 
-<div class="viewcode-block" id="Variant.save"><a class="viewcode-back" href="../../../references/openvariant.variant.html#openvariant.variant.variant.Variant.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">display_header</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Variant.save"><a class="viewcode-back" href="../../../references/openvariant.variant.html#openvariant.variant.variant.Variant.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">display_header</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save parsed files in an indicated location.</span>
 
@@ -451,13 +458,16 @@
 <span class="sd">        ---------</span>
 <span class="sd">        file_path : str or None</span>
 <span class="sd">            A string that indicates the location to store the output file.</span>
-
+<span class="sd">        mode : string</span>
+<span class="sd">            Two modes for writing (optional):</span>
+<span class="sd">            &#39;w&#39; the cursor starts at the begging of the file.</span>
+<span class="sd">            &#39;a&#39; the cursor starts at the end of the file.</span>
 <span class="sd">        display_header : bool</span>
 <span class="sd">            A bool that indicates if the output will have header or not (optional).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">file_path</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">isdir</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The path must be a file.&quot;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">AnnotationFormat</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_annotation</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_unify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_annotation</span><span class="p">)):</span>
                 <span class="k">if</span> <span class="n">display_header</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>

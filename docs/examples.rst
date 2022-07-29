@@ -4,8 +4,8 @@
 Examples
 *********************
 
-We will find a different examples on each functionalities and task that we cna apply with **OpenVariant**. If something
-is not understood correctly we recommend to you to check the :ref:`User guide`. Also, the examples that we offer on the
+We will find a different examples on each functionalities and task that we can apply with **OpenVariant**. If something
+is not understood correctly, we recommend to you to check the :ref:`User guide`. Also, the examples that we offer on the
 documentation can be found on the repo: `OpenVariant examples <https://github.com/bbglab/openvariant/tree/master/examples>`_.
 
 .. toctree::
