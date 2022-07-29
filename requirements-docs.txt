@@ -15,7 +15,6 @@ executing==0.9.1
 fastjsonschema==2.16.1
 idna==3.3
 imagesize==1.4.1
-ipython==8.4.0
 jedi==0.18.1
 Jinja2==3.1.2
 jsonschema==4.8.0
@@ -71,3 +70,4 @@ traitlets==5.3.0
 urllib3==1.26.11
 wcwidth==0.2.5
 webencodings==0.5.1
+ipython
