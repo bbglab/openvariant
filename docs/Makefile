@@ -9,13 +9,20 @@ SOURCEDIR     = .
 BUILDDIR      = _build
 
 
-EXAMPLES_DOCS = ./examples
+EXAMPLES_FINDFILES_DR = ./examples/find_files
+EXAMPLES_FINDFILES = ../examples/find_files/*.ipynb
 
-EXAMPLES_FINDFILES = ../examples/find_files
-EXAMPLES_VARIANT = ../examples/variant
-EXAMPLES_TASKS = ../examples/tasks
-EXAMPLES_CLI = ../examples/cli
-EXAMPLES_PLUGIN_SYS = ../examples/plugin_system
+EXAMPLES_VARIANT_DR = ./examples/variant
+EXAMPLES_VARIANT = ../examples/variant/*.ipynb
+
+EXAMPLES_TASKS_DR = ./examples/tasks
+EXAMPLES_TASKS = ../examples/tasks/*.ipynb
+
+EXAMPLES_CLI_DR = ./examples/cli
+EXAMPLES_CLI = ../examples/cli/*.ipynb
+
+EXAMPLES_PLUGIN_SYS_DR = ./examples/plugin_system
+EXAMPLES_PLUGIN_SYS = ../examples/plugin_system/*.ipynb
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -26,11 +33,16 @@ help:
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
-	cp -r $(EXAMPLES_FINDFILES) $(EXAMPLES_DOCS)
-	cp -r $(EXAMPLES_VARIANT) $(EXAMPLES_DOCS)
-	cp -r $(EXAMPLES_TASKS) $(EXAMPLES_DOCS)
-	cp -r $(EXAMPLES_CLI) $(EXAMPLES_DOCS)
-	cp -r $(EXAMPLES_PLUGIN_SYS) $(EXAMPLES_DOCS)
+	mkdir -p $(EXAMPLES_FINDFILES_DR)
+	cp -r $(EXAMPLES_FINDFILES) $(EXAMPLES_FINDFILES_DR)
+	mkdir -p $(EXAMPLES_VARIANT_DR)
+	cp -r $(EXAMPLES_VARIANT) $(EXAMPLES_VARIANT_DR)
+	mkdir -p $(EXAMPLES_TASKS_DR)
+	cp -r $(EXAMPLES_TASKS) $(EXAMPLES_TASKS_DR)
+	mkdir -p $(EXAMPLES_CLI_DR)
+	cp -r $(EXAMPLES_CLI) $(EXAMPLES_CLI_DR)
+	mkdir -p $(EXAMPLES_PLUGIN_SYS_DR)
+	cp -r $(EXAMPLES_PLUGIN_SYS) $(EXAMPLES_PLUGIN_SYS_DR)
 
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
