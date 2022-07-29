@@ -2,7 +2,7 @@ import unittest
 from os import getcwd
 
 from openvariant.annotation.annotation import Annotation
-from openvariant.config.config_annotation import DEFAULT_FORMAT, DEFAULT_DELIMITER
+from openvariant.annotation.config_annotation import DEFAULT_FORMAT, DEFAULT_DELIMITER
 
 
 class TestAnnotation(unittest.TestCase):

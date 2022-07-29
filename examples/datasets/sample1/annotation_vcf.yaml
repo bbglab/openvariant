@@ -1,0 +1,39 @@
+pattern:
+  - '*.vcf.gz'
+format: 'tsv'
+
+columns:
+  - POSITION
+  - DATASET
+  - PLATFORM
+  - INFO
+
+annotation:
+  - type: static
+    field: PLATFORM
+    value: WGS
+  - type: internal
+    field: POSITION
+    fieldSource:
+      - 'Position'
+      - 'Start'
+      - 'Start_Position'
+      - 'Pos'
+      - 'Chromosome_Start'
+      - 'POS'
+  - type: filename
+    field: DATASET
+    function: 'lambda x: "{}".format(x.lower()[:7])'
+  - type: internal
+    field: REF
+    fieldSource:
+      - 'REF'
+  - type: internal
+    field: ALT
+    fieldSource:
+      - 'ALT'
+  - type: static
+    field: INFO
+    value: '{PLATFORM}:{REF}_{ALT}'
+
+

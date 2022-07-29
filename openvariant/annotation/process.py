@@ -4,9 +4,9 @@ from functools import partial
 from os.path import isdir, basename, abspath, dirname
 from typing import Tuple, List, Callable, Optional
 
-from openvariant.annotation.builder import StaticBuilder, InternalBuilder, FilenameBuilder, Builder, DirnameBuilder, \
+from openvariant.annotation.builder import StaticBuilder, InternalBuilder, FilenameBuilder, DirnameBuilder, \
     PluginBuilder, MappingBuilder
-from openvariant.config.config_annotation import AnnotationTypes
+from openvariant.annotation.config_annotation import AnnotationTypes
 from openvariant.plugins.context import Context
 
 StaticProcess = Tuple[str, float or int or str, Callable]
@@ -95,7 +95,7 @@ def _filename_process(x: FilenameBuilder, original_header: List = [] or None, fi
     """
     try:
         if isdir(file_path):
-            raise FileNotFoundError('Unable to find a filename')
+            raise FileNotFoundError('Unable to find_files a filename')
 
         func_result = x[1](basename(file_path))
         value = x[2].findall(func_result)[0]
@@ -131,7 +131,7 @@ def _dirname_process(x: DirnameBuilder, original_header: List = [] or None, file
     """
     try:
         if isdir(file_path):
-            raise FileNotFoundError('Unable to find a dirname')
+            raise FileNotFoundError('Unable to find_files a dirname')
 
         func_result = x[1](basename(dirname(abspath(file_path))))
         value = x[2].findall(func_result)[0]
@@ -179,7 +179,7 @@ def _mapping_process(x: MappingBuilder, original_header: List = [] or None, file
     if value is None:
         raise KeyError(f'Unable to map {x[1]} sources on mapping annotation')
     """
-    return AnnotationTypes.MAPPING.name, x, str #value if value is not None else float('nan'), str
+    return AnnotationTypes.MAPPING.name, x, str
 
 
 def _plugin_process(x: PluginBuilder, original_header: List = [] or None, file_path: str = None,

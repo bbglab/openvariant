@@ -1,0 +1,26 @@
+pattern:
+  - '*.tsv'
+format: 'tsv'
+
+columns:
+  - SYMBOL
+  - CYTOBAND
+  - CANCER
+
+annotation:
+  - type: internal
+    field: SYMBOL
+    fieldSource:
+      - 'Gene Symbol'
+  - type: internal
+    field: ID
+    fieldSource:
+      - 'Locus ID'
+  - type: internal
+    field: CYTOBAND
+    fieldSource:
+      - 'Cytoband'
+  - type: filename
+    field: CANCER
+    function: 'lambda x: "{}".format(x[12:-4])'
+

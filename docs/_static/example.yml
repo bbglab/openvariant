@@ -1,0 +1,50 @@
+###
+# comment1
+#
+# .. code-block:: yaml
+#
+#    - pattern:
+#         - '*.maf'
+#         - '*.vcf.gz'
+pattern:
+  - '*.maf'
+  - '*.vcf.gz'
+recursive: false
+
+annotation:
+  - type: 'internal'
+    field: 'POSITION'
+    fieldSource:
+      - 'Position'
+      - 'Start'
+      - 'Start_Position'
+      - 'Pos'
+      - 'Chromosome_Start'
+      - 'POS'
+
+  - type: 'internal'
+    field: 'REF'
+    fieldSource:
+      - 'Ref'
+      - 'Reference_Allele'
+      - 'Reference'
+      - 'Reference_Genome_Allele'
+      - 'REF'
+
+  - type: 'internal'
+    field: 'ALT'
+    fieldSource:
+      - 'Alt'
+      - 'Tumor_Seq_Allele2'
+      - 'Variant'
+      - 'Alternative'
+      - 'Mutated_To_Allele'
+      - 'ALT'
+
+  - type: 'filename'
+    field: 'DATASET'
+    function: 'lambda x: "{}".format(x.lower()[:-4])'
+
+  - type: 'dirname'
+    field: 'PROJECT'
+    function: 'lambda x: "{}".format(x.lower())'

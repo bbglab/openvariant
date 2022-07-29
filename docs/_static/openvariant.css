@@ -1,0 +1,68 @@
+h1, h2, h3 {
+	color: #0b0b0b !important;
+}
+
+.prev-next-area {
+	display: none;
+}
+
+.navbar-light {
+	background-color: #f0f0f0 !important;
+}
+
+.headerlink {
+	display: none;
+}
+
+.breadcrumbs-outer {
+    display: none;
+}
+
+button.copybtn {
+	cursor: pointer;
+	width: 2.2em;
+	height: 2.2em;
+}
+
+.section {
+	text-align: justify;
+}
+
+/*.navbar-light .navbar-nav li a.nav-link:hover {
+  color: red;
+}*/
+
+/*.toctree-wrapper ul li {
+    list-style-type: none;
+}*/
+
+.sphx-glr-thumbcontainer a.internal {
+	padding: 130px 10px 0;
+}
+.sphx-glr-thumbcontainer .figure {
+  margin: auto;
+  width: 150px;
+}
+
+.sphx-glr-thumbcontainer {
+	padding-top: 0;
+	min-height: 180px;
+}
+
+.sphx-glr-thumbcontainer:hover {
+	border: #b3b3b3 solid 2px;
+}
+
+div.nblast.container {
+	padding-top: 20px;
+}
+
+div.nbinput.container div.input_area div[class*="highlight"] > pre, div.nboutput.container div.output_area div[class*="highlight"] > pre, div.nboutput.container div.output_area div[class*="highlight"].math, div.nboutput.container div.output_area.rendered_html, div.nboutput.container div.output_area > div.output_javascript, div.nboutput.container div.output_area:not(.rendered_html) > img {
+	padding: 10px;
+	margin: 2px;
+	border: aliceblue solid 5px;
+}
+
+#variant, #annotation  {
+	text-align: left;
+}

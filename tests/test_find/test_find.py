@@ -2,7 +2,7 @@ import os
 import unittest
 from typing import List
 
-from openvariant.find.find import find_files
+from openvariant.find_files.find_files import find_files
 
 
 class TestFind(unittest.TestCase):

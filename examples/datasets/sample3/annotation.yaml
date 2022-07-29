@@ -1,0 +1,31 @@
+pattern:
+  - '*.seg'
+format: 'tsv'
+
+columns:
+  - CHROM
+  - DATE
+  - START
+  - END
+  - LENGTH
+
+
+annotation:
+  - type: internal
+    field: CHROM
+    fieldSource:
+      - 'chrom'
+  - type: plugin
+    plugin: add_date
+    field: DATE
+  - type: plugin
+    plugin: get_length
+    field: LENGTH
+  - type: internal
+    field: START
+    fieldSource:
+      - 'loc.start'
+  - type: internal
+    field: END
+    fieldSource:
+      - 'loc.end'

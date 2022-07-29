@@ -16,7 +16,7 @@ from functools import partial
 from os.path import dirname
 from typing import Tuple, Any, List, Callable
 
-from openvariant.config.config_annotation import AnnotationKeys, AnnotationTypes
+from openvariant.annotation.config_annotation import AnnotationKeys, AnnotationTypes
 from openvariant.plugins.context import Context
 from openvariant.plugins.plugin import Plugin
 
@@ -113,7 +113,7 @@ def _internal_builder(x: dict, base_path: str = None) -> InternalBuilder:
 
     return AnnotationTypes.INTERNAL.name, x[AnnotationKeys.FIELD_SOURCE.value], Builder("(lambda y: y)") \
         if AnnotationKeys.FUNCTION.value not in x or x[AnnotationKeys.FUNCTION.value] is None or \
-           len(x[AnnotationKeys.FUNCTION.value]) == 2 else Builder(x[AnnotationKeys.FUNCTION.value]), value
+        len(x[AnnotationKeys.FUNCTION.value]) == 2 else Builder(x[AnnotationKeys.FUNCTION.value]), value
 
 
 def _dirname_builder(x: dict, base_path: str = None) -> DirnameBuilder:

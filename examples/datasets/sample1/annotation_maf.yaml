@@ -1,0 +1,44 @@
+pattern:
+  - '*.maf.gz'
+format: 'tsv'
+
+columns:
+  - POSITION
+  - DATASET
+  - SAMPLE
+  - STRAND_REF
+  - PLATFORM
+
+annotation:
+  - type: static
+    field: PLATFORM
+    value: WGS
+  - type: internal
+    field: POSITION
+    fieldSource:
+      - 'Position'
+      - 'Start'
+      - 'Start_Position'
+      - 'Pos'
+      - 'Chromosome_Start'
+      - 'POS'
+  - type: filename
+    field: DATASET
+    function: 'lambda x: "{}".format(x.lower()[:-11])'
+  - type: dirname
+    field: SAMPLE
+    function: 'lambda x: "{}".format(x.upper())'
+  - type: internal
+    field: STRAND
+    fieldSource:
+      - Strand
+      - Chromosome_Strand
+      - ''
+    function: 'lambda s: ''-'' if s in [''-'', ''0'', ''-1''] else ''+'' if s in [''+'', ''1'', ''+1''] else ''+'''
+  - type: mapping
+    field: STRAND_REF
+    fieldSource:
+      - STRAND
+    fieldMapping: STRAND_SCORE
+    fileMapping: metadata_strand.tsv
+    fieldValue: REFERENCE

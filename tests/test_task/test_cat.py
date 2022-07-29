@@ -3,7 +3,7 @@ import sys
 import unittest
 from io import StringIO
 
-from openvariant.commands.tasks.cat import cat
+from openvariant.tasks.cat import cat
 
 
 class TestCat(unittest.TestCase):

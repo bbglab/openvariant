@@ -55,6 +55,13 @@ class Alteration_typeContext(Context):
 
     def __init__(self, row: dict, field_name: str, file_path: str) -> None:
         super().__init__(row, field_name, file_path)
+        self.alt_field = 'ALT'
+        self.ref_field = 'REF'
+        self.pos_field = 'POSITION'
+
+        self.indel_value = 'indel'
+        self.mnv_value = 'mnv'
+        self.snv_value = 'snv'
 
 
 class Alteration_typePlugin(Plugin):
@@ -77,22 +84,23 @@ class Alteration_typePlugin(Plugin):
             The value of ALT_TYPE field.
         """
         row = context.row
-        if 'REF' in row and 'ALT' in row:
-            l_ref = len(row['REF'])
-            l_alt = len(row['ALT'])
+        if context.ref_field in row and context.alt_field in row:
+            l_ref = len(row[context.ref_field])
+            l_alt = len(row[context.alt_field])
 
             if l_alt != l_ref:
-                alt_type = "indel"
+                alt_type = context.indel_value
             else:
                 if l_alt > 1:
-                    alt_type = "mnv"
+                    alt_type = context.mnv_value
                 else:
-                    if '-' in row['REF'] or '-' in row['ALT']:
-                        alt_type = "indel"
+                    if '-' in row[context.ref_field] or '-' in row[context.alt_field]:
+                        alt_type = context.indel_value
                     else:
                         alt_type = "snv"
-            if alt_type == "indel":
-                row['POSITION'], row['REF'], row['ALT'] = _indel_postprocess(row['POSITION'], row['REF'], row['ALT'])
+            if alt_type == context.indel_value:
+                row[context.pos_field], row[context.ref_field], row[context.alt_field] = \
+                    _indel_postprocess(row[context.pos_field], row[context.ref_field], row[context.alt_field])
 
             row[context.field_name] = alt_type
         else:

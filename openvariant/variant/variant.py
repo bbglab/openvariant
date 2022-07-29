@@ -18,8 +18,9 @@ from typing import Generator, List, Callable, Any
 from openvariant.annotation.annotation import Annotation
 from openvariant.annotation.builder import MappingBuilder
 from openvariant.annotation.process import AnnotationTypesProcess
-from openvariant.config.config_annotation import AnnotationFormat, AnnotationTypes, AnnotationDelimiter
-from openvariant.utils.where import skip, parse_where
+from openvariant.annotation.config_annotation import AnnotationFormat, AnnotationTypes, AnnotationDelimiter
+from openvariant.utils.utils import check_extension
+from openvariant.variant.where import skip, parse_where
 
 
 def _open_file(file_path: str, mode='r+b'):
@@ -122,9 +123,6 @@ def _parse_mapping_field(x: MappingBuilder, row: dict, func: Callable):
     return str(value) if value is not None else str(float('nan'))
 
 
-
-
-
 def _check_extension(ext: str, path: str) -> bool:
     """Check if file matches with the annotation pattern"""
     if ext[0] == '*':
@@ -133,9 +131,6 @@ def _check_extension(ext: str, path: str) -> bool:
         reg_apply = re.compile(ext + '$')
         match = len(reg_apply.findall(path)) != 0
     return match
-
-
-
 
 
 class Variant:
@@ -181,6 +176,12 @@ class Variant:
             -> Generator[dict, None, None]:
         """Parsing of an entire file with annotation schema"""
         header, row, row_header = None, {}, []
+
+        matches = [check_extension(ext, file_path) for ext in annotation.patterns]
+
+        if not any(matches):
+            raise NameError("Annotation patterns don't match with input file.")
+
         self.mm, self.file = _open_file(file_path, "rb")
         for lnum, line in _base_parser(self.mm, file_path, annotation.delimiter):
             try:
@@ -269,7 +270,7 @@ class Variant:
                     continue
                 yield line
 
-    def save(self, file_path: str, display_header: bool = True) -> None:
+    def save(self, file_path: str, mode: str = 'w', display_header: bool = True) -> None:
         """
         Save parsed files in an indicated location.
 
@@ -277,13 +278,16 @@ class Variant:
         ---------
         file_path : str or None
             A string that indicates the location to store the output file.
-
+        mode : string
+            Two modes for writing (optional):
+            'w' the cursor starts at the begging of the file.
+            'a' the cursor starts at the end of the file.
         display_header : bool
             A bool that indicates if the output will have header or not (optional).
         """
         if file_path is None or isdir(file_path):
             raise ValueError("The path must be a file.")
-        with open(file_path, "w") as file:
+        with open(file_path, mode) as file:
             writer = csv.writer(file, delimiter=AnnotationFormat[self._annotation.format.upper()].value)
             for i, line in enumerate(self._unify(self._path, self._annotation)):
                 if display_header and i == 0:
