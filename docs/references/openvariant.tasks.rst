@@ -9,6 +9,7 @@ openvariant.tasks.cat module
 
 .. automodule:: openvariant.tasks.cat
    :members:
+   :noindex:
    :show-inheritance:
 
 openvariant.tasks.count module
@@ -16,6 +17,7 @@ openvariant.tasks.count module
 
 .. automodule:: openvariant.tasks.count
    :members:
+   :noindex:
    :show-inheritance:
 
 openvariant.tasks.groupby module

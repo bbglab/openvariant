@@ -9,7 +9,7 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#
+#conda
 import os
 import sys
 
@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('../'))
 # -- Project information -----------------------------------------------------
 
 project = 'OpenVariant'
-copyright = '2021, BBGLab - Barcelona Biomedical Genomics Lab'
+copyright = '2022, BBGLab - Barcelona Biomedical Genomics Lab'
 author = 'BBGLab - Barcelona Biomedical Genomics Lab'
 
 # The full version, including alpha/beta/rc tags
@@ -49,7 +49,8 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '_templates']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '_templates', 
+                    '**.ipynb_checkpoints']
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -73,6 +74,7 @@ html_context = {
     "github_repo": "https://github.com/bbglab/openvariant",
     "github_version": "",
     "doc_path": "",
+    "default_mode": "light"
 }
 
 html_theme_options = {
