@@ -11,7 +11,7 @@
 |
 
 
-|badge1| |badge2| |badge3|
+|badge1| |badge2| |badge3| |badge4|
 
 .. |badge1| image:: https://img.shields.io/github/license/bbglab/openvariant
    :target: https://opensource.org/licenses/BSD-3-Clause
@@ -24,6 +24,10 @@
 .. |badge3| image:: https://github.com/bbglab/openvariant/actions/workflows/openvariant_tester.yml/badge.svg
    :target: https://github.com/bbglab/openvariant/actions/workflows/openvariant_tester.yml
    :alt: Test workflow
+
+.. |badge4| image:: https://readthedocs.org/projects/openvariant/badge/?version=latest
+   :target: https://openvariant.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
 
 OpenVariant documentation
 =============================
