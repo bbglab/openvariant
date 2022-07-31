@@ -2,7 +2,7 @@
     <br>
     <br>
     <a href="https://openvariant.readthedocs.io/">
-      <img src="logo_openvariant.png" width="430" height="352">
+      <img src="logo.png" width="530" height="350">
     </a>
     <br>
     <br>
@@ -21,8 +21,6 @@
     <br>
     <br>
 </div>
-
----------------------
 
 OpenVariant is a comprehensive Python package that provides different functionalities to read, parse and operate
 different multiple input file formats (e. g. ``tsv``, ``csv``, ``vcf``, ``maf``, ``bed``), being able to customize the output.
