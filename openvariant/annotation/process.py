@@ -10,7 +10,7 @@ from openvariant.annotation.config_annotation import AnnotationTypes
 from openvariant.plugins.context import Context
 
 StaticProcess = Tuple[str, float or int or str, Callable]
-InternalProcess = Tuple[str, Optional[int], Callable]
+InternalProcess = Tuple[str, Tuple[dict, str], str]
 FilenameProcess = Tuple[str, float or int or str, Callable]
 DirnameProcess = Tuple[str, float or int or str, Callable]
 PluginProcess = Tuple[str, Context, Callable]
@@ -59,18 +59,34 @@ def _internal_process(x: InternalBuilder, original_header: List = [] or None, fi
     Callable
         Function to execute on the fixed value
     """
-    field_pos = None
+    field_pos = {}
     try:
-        for i, h in enumerate(original_header):
-            if h in set(x[1]):
-                field_pos = i
-                break
+        header_dict = {field: num for num, field in list(enumerate(original_header))}
+        for source in x[1]:
+            if isinstance(source, List):
+                for s in source:
+                    try:
+                        field_pos.update({s: header_dict[s]})
+                    except KeyError:
+                        field_pos = {}
+                        pass
+                if len(field_pos) == len(source):
+                    break
+                else:
+                    field_pos = {}
+            else:
+                try:
+                    field_pos = {source: header_dict[source]}
+                    break
+                except KeyError:
+                    pass
+
     except TypeError:
         raise TypeError(f'Unable to parser {x[0]} annotation')
     except SyntaxError:
         raise SyntaxError(f'Unable to parser function lambda on {x[0]} annotation')
 
-    return AnnotationTypes.INTERNAL.name, field_pos, x[2]
+    return AnnotationTypes.INTERNAL.name, (field_pos, x[3]), x[2]
 
 
 def _filename_process(x: FilenameBuilder, original_header: List = [] or None, file_path: str = None,

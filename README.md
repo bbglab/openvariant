@@ -66,7 +66,7 @@ For more details check our [Installation](https://openvariant.readthedocs.io/en/
 ## Examples
 
 We offer a bunch of [Examples](examples) to we be able to understand how OpenVariant can be applied. Also, check 
-[Examples](./examples) section in OpenVariant's documentation.
+[Examples](https://openvariant.readthedocs.io/en/latest/examples.html) section in OpenVariant's documentation.
 
 ## Contributing
 

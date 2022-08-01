@@ -88,6 +88,7 @@ def _static_builder(x: dict, base_path: str = None) -> StaticBuilder:
         value = x[AnnotationKeys.VALUE.value]
     except KeyError:
         raise KeyError('Static annotation is wrong specified.')
+
     return AnnotationTypes.STATIC.name, value
 
 
@@ -109,7 +110,7 @@ def _internal_builder(x: dict, base_path: str = None) -> InternalBuilder:
     try:
         value = x[AnnotationKeys.VALUE.value]
     except KeyError:
-        value = float('nan')
+        value = None
 
     return AnnotationTypes.INTERNAL.name, x[AnnotationKeys.FIELD_SOURCE.value], Builder("(lambda y: y)") \
         if AnnotationKeys.FUNCTION.value not in x or x[AnnotationKeys.FUNCTION.value] is None or \

@@ -3,6 +3,7 @@ pattern:
 format: tsv
 
 columns:
+- ID
 - CHROMOSOME
 - POSITION
 - REF
@@ -12,6 +13,11 @@ columns:
 - PLATFORM
 
 annotation:
+- type: internal
+  field: ID
+  value: '{Hugo_Symbol}_{NCBI_Build}'
+  fieldSource:
+  - ['Hugo_Symbol', 'NCBI_Build']
 - type: internal
   field: CHROMOSOME
   fieldSource:
