@@ -47,18 +47,19 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest tests/test_task/test_group_by.py
-        pytest tests/test_task/test_count.py
-        pytest tests/test_task/test_cat.py
-        pytest tests/test_find/test_find.py
-        pytest tests/test_utils/test_where.py
-        pytest tests/test_variant/test_variant.py
-        pytest tests/test_variant/test_variant_read.py
-        pytest tests/test_variant/test_variant_save.py
-        pytest tests/test_command/test_count_command.py
-        pytest tests/test_command/test_help_command.py
-        pytest tests/test_command/test_group_by_command.py
-        pytest tests/test_command/test_cat_command.py
-        pytest tests/test_annotation/test_annotation.py
-        pytest tests/test_annotation/test_process.py
-        pytest tests/test_annotation/test_builder.py
+        python3 -m unittest discover -s tests
+        # pytest tests/test_task/test_group_by.py
+        # pytest tests/test_task/test_count.py
+        # pytest tests/test_task/test_cat.py
+        # pytest tests/test_find/test_find.py
+        # pytest tests/test_utils/test_where.py
+        # pytest tests/test_variant/test_variant.py
+        # pytest tests/test_variant/test_variant_read.py
+        # pytest tests/test_variant/test_variant_save.py
+        # pytest tests/test_command/test_count_command.py
+        # pytest tests/test_command/test_help_command.py
+        # pytest tests/test_command/test_group_by_command.py
+        # pytest tests/test_command/test_cat_command.py
+        # pytest tests/test_annotation/test_annotation.py
+        # pytest tests/test_annotation/test_process.py
+        # pytest tests/test_annotation/test_builder.py
