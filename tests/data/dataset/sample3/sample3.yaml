@@ -16,7 +16,7 @@ columns:
 annotation:
 - type: static
   field: ALL
-  value: '{ID}_{CHROMOSOME}_{POSITION}_{REF}_{ALT}_{STRAND}_{ALT_TYPE}_{PLATFORM}'
+  value: '{ID}_{CHROMOSOME}_{POSITION}_{REF}_{ALT}_{STRAND}_{ALT_TYPE}_{PLATFORM}_{DATASET}'
 - type: internal
   field: ID
   value: '{Hugo_Symbol}_{NCBI_Build}'

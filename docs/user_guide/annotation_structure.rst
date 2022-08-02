@@ -104,6 +104,16 @@ Fixed value that will be parsed to all the rows of the `output` file. The value 
           field: 'ID'
           value: 'SG2F24986083'
 
+Also, we can combine other fields on a ``static`` annotation, as the following example represent:
+
+.. code-block:: yaml
+
+    # Example:
+    # Where YEAR, DATASET and PATIENT are fields from other annotations
+        - type: 'static'
+          field: 'ID'
+          value: '{YEAR}_{DATASET}_{PATIENT}'
+
 Internal
 #############
 
