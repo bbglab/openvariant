@@ -11,11 +11,11 @@ on:
     tags-ignore:
       - '*'
     paths-ignore:
-      - './examples/**'
+      - './examples/*'
   pull_request:
     branches: [ "master" ]
     paths-ignore:
-      - './examples/**'
+      - './examples/*'
 
 permissions:
   contents: read
