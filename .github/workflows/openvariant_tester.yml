@@ -10,8 +10,12 @@ on:
       - '!refs/tags/.*'
     tags-ignore:
       - '*'
+    paths-ignore:
+      - './examples/**'
   pull_request:
     branches: [ "master" ]
+    paths-ignore:
+      - './examples/**'
 
 permissions:
   contents: read
