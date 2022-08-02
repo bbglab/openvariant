@@ -100,7 +100,6 @@ class TestCat(unittest.TestCase):
             cat(f'{os.getcwd()}/tests/data/dataset', where="NO_EXIST = 'no_exist'")
             sys.stdout = sys.__stdout__
 
-
     def test_cat_no_headers(self):
         captured_output = StringIO()
         sys.stdout = captured_output

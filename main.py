@@ -18,6 +18,6 @@ from openvariant import findfiles, Annotation, Variant
 
 for file, ann in findfiles(f"{getcwd()}/tests/data/dataset/sample3"):
     result = Variant(file, ann)
-    for line in result.read():
+    for line in result.read(where="REF != 'A',REF != 'G'"):
         print(f"Line in a dict: {line}")
         break

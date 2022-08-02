@@ -2,7 +2,7 @@ import os
 import unittest
 from typing import List
 
-from openvariant.find_files.find_files import find_files
+from openvariant.find_files.find_files import findfiles
 
 
 class TestFind(unittest.TestCase):
@@ -16,9 +16,8 @@ class TestFind(unittest.TestCase):
                     f'{os.getcwd()}/tests/data/dataset/ACC.maf',
                     f'{os.getcwd()}/tests/data/dataset/CHOL.maf'}
 
-        res_list = find_files(f'{os.getcwd()}/tests/data/dataset')
+        res_list = findfiles(f'{os.getcwd()}/tests/data/dataset')
         f_res, a_res = zip(*list(res_list))
-
         self.assertEqual(set(f_res), f_expect)
         self.assertIsInstance(list(a_res), List)
 
@@ -31,21 +30,21 @@ class TestFind(unittest.TestCase):
                       f'{os.getcwd()}/tests/data/dataset/CHOL.maf'}
 
         res = set(
-            [f for f, a in list(find_files(f'{os.getcwd()}/tests/data/dataset',
+            [f for f, a in list(findfiles(f'{os.getcwd()}/tests/data/dataset',
                                            f'{os.getcwd()}/tests/data/dataset/dataset.yaml'))])
         self.assertEqual(res, res_expect)
 
     def test_no_exist_find_files(self):
         with self.assertRaises(FileNotFoundError):
-            set([f for f, a in list(find_files(f'{os.getcwd()}/tests/data/dataset/no-exist',
+            set([f for f, a in list(findfiles(f'{os.getcwd()}/tests/data/dataset/no-exist',
                                                f'{os.getcwd()}/tests/data/dataset/dataset.yaml'))])
 
     def test_no_exist_annotation_find_files(self):
         with self.assertRaises(FileNotFoundError):
-            set([f for f, a in list(find_files(f'{os.getcwd()}/tests/data/dataset',
+            set([f for f, a in list(findfiles(f'{os.getcwd()}/tests/data/dataset',
                                                f'{os.getcwd()}/tests/data/dataset/no_exist.yaml'))])
 
     def test_invalid_annotation_find_files(self):
         with self.assertRaises(FileNotFoundError):
-            set([f for f, a in list(find_files(f'{os.getcwd()}/tests/data/dataset',
+            set([f for f, a in list(findfiles(f'{os.getcwd()}/tests/data/dataset',
                                                f'{os.getcwd()}/tests/data/dataset/no_exist.yaml'))])
