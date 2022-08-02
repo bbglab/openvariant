@@ -1,5 +1,5 @@
 pattern:
-- data_mutations_extended.txt
+  - '[_a-z]*.txt'
 format: tsv
 
 columns:
@@ -11,8 +11,12 @@ columns:
 - STRAND
 - ALT_TYPE
 - PLATFORM
+- ALL
 
 annotation:
+- type: static
+  field: ALL
+  value: '{ID}_{CHROMOSOME}_{POSITION}_{REF}_{ALT}_{STRAND}_{ALT_TYPE}_{PLATFORM}'
 - type: internal
   field: ID
   value: '{Hugo_Symbol}_{NCBI_Build}'

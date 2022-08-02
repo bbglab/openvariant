@@ -168,7 +168,7 @@ class Variant:
 
     def _unify(self, base_path: str, annotation: Annotation, group_by: str = None, display_header: bool = True) \
             -> Generator[dict, None, None]:
-        """Parse all the files thought the annotation schema and generated yields to interrate"""
+        """Parse all the files thought the annotation schema and generated yields to iterate"""
         for x in self._parser(base_path, annotation, group_by, display_header):
             yield x
 

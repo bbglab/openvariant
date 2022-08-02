@@ -37,6 +37,7 @@ to search and match the files with that pattern.
     # Example:
     pattern:
         - '*.maf'
+        - '[a-zA-Z-]*.tsv'
         - 'samples.vcf.gz'
 
 Format (optional)

@@ -1,12 +1,8 @@
 import re
 from fnmatch import fnmatch
+from os.path import basename
 
 
 def check_extension(ext: str, path: str) -> bool:
     """Check if file matches with the annotation pattern"""
-    if ext[0] == '*':
-        match = fnmatch(path, ext)
-    else:
-        reg_apply = re.compile(ext + '$')
-        match = len(reg_apply.findall(path)) != 0
-    return match
+    return fnmatch(basename(path), ext) if ext[0] == '*' else re.match(ext, basename(path)) is not None
