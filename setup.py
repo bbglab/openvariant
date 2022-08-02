@@ -12,4 +12,5 @@ setup(
             'openvar = openvariant.commands.openvar:openvar',
         ]
     },
+    url="https://github.com/bbglab/openvariant",
 )
