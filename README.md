@@ -2,7 +2,7 @@
     <br>
     <br>
     <a href="https://openvariant.readthedocs.io/">
-      <img src="logo.png" width="530" height="350">
+      <img src="https://github.com/bbglab/openvariant/raw/master/logo.png" width="590" height="350">
     </a>
     <br>
     <br>
@@ -46,7 +46,7 @@ functionalities on our parsed result some of them are the following ones:
 
 <div align="center">
   <a href="https://openvariant.readthedocs.io/en/latest/user_guide.html">
-    <img src="workflow.gif" width="600" height="352">
+    <img src="https://github.com/bbglab/openvariant/raw/master/workflow.gif" width="600" height="352">
   </a>
 </div>
 
