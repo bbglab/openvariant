@@ -1,6 +1,6 @@
 from os import getcwd
 
-from openvariant import find_files, Annotation, Variant
+from openvariant import findfiles, Annotation, Variant
 
 # where = "VAR != 4 AND (VAR != 5 OR VAR != 10)"
 # where_clauses = parse_where(where)
@@ -14,11 +14,10 @@ from openvariant import find_files, Annotation, Variant
 #print(res)
 
 
-annotation = Annotation(f"{getcwd()}/tests/data/dataset/dataset.yaml")
+#annotation = Annotation(f"{getcwd()}/tests/data/dataset/dataset.yaml")
 
-#for file, _ in find_files(f"{getcwd()}/tests/data/dataset/"):
-
-result = Variant(f"{getcwd()}/tests/data/dataset/sample3/", annotation)
-for line in result.read():
-    print(f"Line in a dict: {line}")
-    break
+for file, ann in findfiles(f"{getcwd()}/tests/data/dataset/sample3"):
+    result = Variant(file, ann)
+    for line in result.read(where="REF != 'A',REF != 'G'"):
+        print(f"Line in a dict: {line}")
+        break

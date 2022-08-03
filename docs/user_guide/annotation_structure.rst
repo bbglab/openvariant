@@ -37,6 +37,7 @@ to search and match the files with that pattern.
     # Example:
     pattern:
         - '*.maf'
+        - '[a-zA-Z-]*.tsv'
         - 'samples.vcf.gz'
 
 Format (optional)
@@ -103,6 +104,16 @@ Fixed value that will be parsed to all the rows of the `output` file. The value 
           field: 'ID'
           value: 'SG2F24986083'
 
+Also, we can combine other fields on a ``static`` annotation, as the following example represent:
+
+.. code-block:: yaml
+
+    # Example:
+    # Where YEAR, DATASET and PATIENT are fields from other annotations
+        - type: 'static'
+          field: 'ID'
+          value: '{YEAR}_{DATASET}_{PATIENT}'
+
 Internal
 #############
 
@@ -112,6 +123,7 @@ which is a lambda function that will take the value as an input.
 
 * ``type``: type of annotation. (required)
 * ``field``: name that will appear as a head column of this annotation. (required)
+* ``value``: text to represent multiple ``fieldSource`` parameters. (optional)
 * ``fieldSource``: list of that will try to match with input fields and transform it to the annotation ``field`` on the output. (required)
 * ``function``: lambda function that will be executed after get the value of ``fieldSource``. If it is not specified it will execute :python:`(lambda y: y)` making any modification into the value. (optional)
 
@@ -127,6 +139,19 @@ which is a lambda function that will take the value as an input.
             - 'Chromosome_Name'
             - '#chrom'
           function: "lambda c: c.upper().replace('CHR', '').replace('23', 'X').replace('24', 'Y')"
+
+On the following example we can see the use of multiple fields on the ``internal`` type. It will format the ``value`` text
+with the fields that appears on the ``fieldSource`` parameter. All the fields will must match with the ``value`` text.
+
+.. code-block:: yaml
+
+    # Example:
+    # 'Symbol', 'Country' and 'Year' are columns from the input file.
+        - type: 'internal'
+          field: 'ID'
+          value: 'Identity_{Symbol}_{Country}_{Year}'
+          fieldSource:
+            - ['Symbol', 'Country', 'Year']
 
 Filename
 #############

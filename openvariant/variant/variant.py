@@ -168,7 +168,7 @@ class Variant:
 
     def _unify(self, base_path: str, annotation: Annotation, group_by: str = None, display_header: bool = True) \
             -> Generator[dict, None, None]:
-        """Parse all the files thought the annotation schema and generated yields to interrate"""
+        """Parse all the files thought the annotation schema and generated yields to iterate"""
         for x in self._parser(base_path, annotation, group_by, display_header):
             yield x
 
@@ -201,7 +201,15 @@ class Variant:
                         elif type_ann == AnnotationTypes.MAPPING.name:
                             mapping_values[head] = header[head]
                         elif type_ann == AnnotationTypes.INTERNAL.name:
-                            value = line[value] if value is not None else None
+                            if len(value[0]) == 1:
+                                pos = list(value[0].values())[0]
+                                value = line[pos] if value is not None else None
+                            else:
+                                pos = {}
+                                for val, position in value[0].items():
+                                    pos.update({val: line[position]})
+                                value = value[1].format(**pos)
+
                             line_dict[head] = _parse_field(value, func)
                         else:
                             line_dict[head] = _parse_field(value, func)

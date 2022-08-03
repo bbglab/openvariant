@@ -2,7 +2,7 @@
     <br>
     <br>
     <a href="https://openvariant.readthedocs.io/">
-      <img src="logo.png" width="530" height="350">
+      <img src="https://github.com/bbglab/openvariant/raw/master/logo.png" width="590" height="350">
     </a>
     <br>
     <br>
@@ -46,7 +46,7 @@ functionalities on our parsed result some of them are the following ones:
 
 <div align="center">
   <a href="https://openvariant.readthedocs.io/en/latest/user_guide.html">
-    <img src="workflow.gif" width="600" height="352">
+    <img src="https://github.com/bbglab/openvariant/raw/master/workflow.gif" width="600" height="352">
   </a>
 </div>
 
@@ -65,17 +65,16 @@ For more details check our [Installation](https://openvariant.readthedocs.io/en/
 
 ## Examples
 
-We offer a bunch of [Examples](examples) to we be able to understand how OpenVariant can be applied. Also, check 
-[Examples](./examples) section in OpenVariant's documentation.
+We offer a bunch of [Examples](https://github.com/bbglab/openvariant/tree/master/examples) to we be able to understand how OpenVariant can be applied. Also, check 
+[Examples](https://openvariant.readthedocs.io/en/latest/examples.html) section in OpenVariant's documentation.
 
 ## Contributing
 
 Feel free to contribute as much as you want to the code.
 
-See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing and respect your behaviour specified
-at [CODE OF CONDUCT](CODE_OF_CONDUCT.md).
+See [CONTRIBUTING](https://github.com/bbglab/openvariant/blob/master/CONTRIBUTING.md) for guidelines on contributing and respect your behaviour specified
+at [CODE OF CONDUCT](https://github.com/bbglab/openvariant/blob/master/CODE_OF_CONDUCT.md).
 
 ## License
 
-The software is licensed under [BSD-3-Clause](LICENSE), and the artworks in the images folder are licensed
-under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.txt).
+The software is licensed under [BSD-3-Clause](https://github.com/bbglab/openvariant/blob/master/LICENSE).

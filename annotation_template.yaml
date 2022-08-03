@@ -25,6 +25,7 @@ annotation: # Columns to parse
   # be extracted and parsed as values in the output
   - type: 'internal'
     field: string
+    value: string # Text to represent multiple fieldSource; optional
     fieldSource: # Columns to look for in the input files; required
       - string
       - string

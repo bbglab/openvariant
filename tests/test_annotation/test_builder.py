@@ -42,7 +42,7 @@ class TestBuilder(unittest.TestCase):
         self.assertEqual(type_annot, AnnotationTypes.INTERNAL.name)
         self.assertEqual(field_sources, ['Variant_Type', 'Data'])
         self.assertIsInstance(annot, Builder)
-        self.assertTrue(math.isnan(value))
+        self.assertIsNone(value)
 
     def test_builder_internal_with_value(self):
         internal_dict = {'type': 'internal', 'field': 'sample', 'fieldSource': ['icgc_sample_id', 'icgc_specimen_id'],

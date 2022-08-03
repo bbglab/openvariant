@@ -44,7 +44,7 @@ class TestProcess(unittest.TestCase):
                                                                                               original_header)
 
         self.assertEqual(type_annot, AnnotationTypes.INTERNAL.name)
-        self.assertEqual(value, 1)
+        self.assertEqual(value, ({'POS': 1}, None))
         self.assertIsInstance(func, Builder)
 
     def test_process_invalid_internal(self):
@@ -57,7 +57,7 @@ class TestProcess(unittest.TestCase):
             internal_dict, original_header)
 
         self.assertEqual(type_annot, AnnotationTypes.INTERNAL.name)
-        self.assertEqual(value, None)
+        self.assertEqual(value, ({}, None))
         self.assertIsInstance(func, Builder)
 
     def test_process_no_exist_internal(self):
