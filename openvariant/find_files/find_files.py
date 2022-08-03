@@ -29,7 +29,9 @@ def _scan_files(base_path: str, annotation: Annotation, fix: bool):
         if not fix:
             for annotation_file in glob.iglob(join(base_path, "*.{}".format(ANNOTATION_EXTENSION))):
                 annotation = Annotation(annotation_file)
-        for file_name in listdir(base_path):
+        list_files = listdir(base_path)
+        list_files.sort()
+        for file_name in list_files:
             file_path = join(base_path, file_name)
             try:
                 for f, a in _scan_files(file_path, annotation, fix):
