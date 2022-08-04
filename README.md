@@ -12,9 +12,12 @@
   	<a href="https://pypi.org/project/open-variant/">
   		<img alt="PyPi" src="https://img.shields.io/pypi/v/open-variant">
   	</a>
-      <a href="https://github.com/bbglab/openvariant/actions/workflows/openvariant_tester.yml">
-          <img alt="Test" src="https://github.com/bbglab/openvariant/actions/workflows/openvariant_tester.yml/badge.svg">
-      </a>
+     <a href="https://github.com/bbglab/openvariant/actions/workflows/openvariant_tester.yml">
+         <img alt="Test" src="https://github.com/bbglab/openvariant/actions/workflows/openvariant_tester.yml/badge.svg">
+     </a>
+    <a href="https://codecov.io/gh/bbglab/openvariant" > 
+        <img alt="Coverage" src="https://codecov.io/gh/bbglab/openvariant/branch/develop/graph/badge.svg?token=N6HUMWS9U5"/> 
+    </a>
   	<a href="https://openvariant.readthedocs.io/en/latest/?badge=latest">
   		<img alt="Documentation Status" src="https://readthedocs.org/projects/openvariant/badge/?version=latest">
   	</a>
