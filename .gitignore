@@ -116,3 +116,6 @@ atlassian-ide-plugin.xml
 
 # Documentation
 docs/_build/
+
+# VSCode
+.vscode/

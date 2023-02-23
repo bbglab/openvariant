@@ -56,6 +56,10 @@ def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Ge
             annotation_path = dirname(base_path)
         else:
             annotation_path = base_path
+            for file_name in listdir(annotation_path):
+                file_path = join(annotation_path, file_name)
+                for f, a in _find_files(file_path, annotation, fix):
+                    yield f, a
         for annotation_file in glob.iglob(join(annotation_path, "*.{}".format(ANNOTATION_EXTENSION))):
             annotation = Annotation(annotation_file)
             for f, a in _scan_files(base_path, annotation, fix):
