@@ -204,6 +204,8 @@ class Variant:
                             if len(value[0]) == 1:
                                 pos = list(value[0].values())[0]
                                 value = line[pos] if value is not None else None
+                            elif len(value[0]) == 0:
+                                value = line[pos] if value[1] is not None else None 
                             else:
                                 pos = {}
                                 for val, position in value[0].items():
