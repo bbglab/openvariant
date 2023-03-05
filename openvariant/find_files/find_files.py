@@ -58,11 +58,9 @@ def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Ge
             annotation_path = base_path
         for annotation_file in glob.iglob(join(annotation_path, "*.{}".format(ANNOTATION_EXTENSION))):
             annotation = Annotation(annotation_file)
-            for f, a in _scan_files(base_path, annotation, fix):
-                yield f, a
-    else:
-        for f, a in _scan_files(base_path, annotation, fix):
-            yield f, a
+            
+    for f, a in _scan_files(base_path, annotation, fix):
+        yield f, a
 
 
 def findfiles(base_path: str, annotation_path: str or None = None) -> Generator[str, Annotation, None]:
@@ -83,4 +81,5 @@ def findfiles(base_path: str, annotation_path: str or None = None) -> Generator[
         The proper schema of each input file.
     """
     annotation, fix = (Annotation(annotation_path), True) if annotation_path is not None else (None, False)
-    return _find_files(base_path, annotation, fix)
+    for f, a in _find_files(base_path, annotation, fix):
+        yield f, a
