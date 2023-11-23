@@ -1,0 +1,50 @@
+pattern:
+  - '.*\.vcf$'
+  - '.*\.vcf\.gz$'
+
+columns:
+  - CHROMOSOME
+  - POS
+  - REF
+  - ALT
+  - TYPE
+  - POS_HG38
+
+annotation:
+  - type: "internal"
+    field: "CHROMOSOME"
+    fieldSource:
+      - "#CHROM"
+    function: "lambda c: c.upper().replace('CHR', '').replace('23', 'X').replace('24', 'Y')"
+
+  - type: "internal"
+    field: "POS"
+    fieldSource:
+      - "POS"
+
+  - type: "internal"
+    field: "REF"
+    fieldSource:
+      - "REF"
+    function: "lambda c: c.upper()"
+
+  - type: "internal"
+    field: "ALT"
+    fieldSource:
+      - "ALT"
+    function: "lambda c: c.upper()"
+
+  - type: "internal"
+    field: "TYPE"
+    fieldSource:
+      - "ALT"
+    function: "lambda c: 'CNA' if '<' == c[0] and '>' == c[-1] else 'MUT'"
+
+  - type: "plugin"
+    plugin: liftover
+    field: "POS_HG38"
+
+  - type: "internal"
+    field: "POS_HG19"
+    fieldSource: 
+      - "POS"
