@@ -13,6 +13,7 @@ class TestFind(unittest.TestCase):
                     f'{os.getcwd()}/tests/data/dataset/sample1/MESO.maf',
                     f'{os.getcwd()}/tests/data/dataset/sample1/UCS.maf',
                     f'{os.getcwd()}/tests/data/dataset/sample3/data_mutations_extended.txt',
+                    f'{os.getcwd()}/tests/data/dataset/sample4/sample_hg19.vcf',
                     f'{os.getcwd()}/tests/data/dataset/ACC.maf',
                     f'{os.getcwd()}/tests/data/dataset/CHOL.maf'}
 
