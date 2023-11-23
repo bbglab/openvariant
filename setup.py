@@ -17,7 +17,7 @@ setup(
     keywords='bioinformatics,openvariant,openvar,bbglab',
     packages=find_packages(exclude=["tests.*", "tests"]),
     include_package_data=True,
-    install_requires=['pyyaml', 'tqdm', 'click'],
+    install_requires=['pyyaml', 'tqdm', 'click', 'pyliftover'],
     entry_points={
         'console_scripts': [
             'openvar = openvariant.commands.openvar:openvar',
