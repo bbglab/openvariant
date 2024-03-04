@@ -187,7 +187,7 @@ class TestBuilder(unittest.TestCase):
         self.assertTrue(issubclass(ctxt, Context))
 
     def test_builder_invalid_plugin(self):
-        plugin_dict = {'type': 'plugin', 'plugin': None, 'field': None}
+        plugin_dict = {'type': 'plugin', 'plugin': None, 'field': None, 'path': None}
 
         with self.assertRaises(FileNotFoundError):
             AnnotationTypesBuilders[AnnotationTypes.PLUGIN.name].value(plugin_dict)
