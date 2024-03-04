@@ -33,6 +33,7 @@ class AnnotationKeys(Enum):
     FILE_MAPPING = 'fileMapping'
     FIELD_MAPPING = 'fieldMapping'
     FIELD_VALUE = 'fieldValue'
+    PATH = 'path'
 
 
 class ExcludesKeys(Enum):

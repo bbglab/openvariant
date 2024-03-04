@@ -249,9 +249,9 @@ def _plugin_builder(x: dict, base_path: str = None) -> PluginBuilder:
         ctxt = _get_plugin_context(mod)
     except ModuleNotFoundError:
         try:
-            files = list(glob.iglob(f"{os.getcwd()}/**/{x[AnnotationTypes.PLUGIN.value]}", recursive=True))
+            files = list(glob.iglob(f"{x[AnnotationKeys.PATH.value]}/**/{x[AnnotationTypes.PLUGIN.value]}", recursive=True))
             if len(files) == 0:
-                raise FileNotFoundError(f"Unable to find '{x[AnnotationTypes.PLUGIN.value]}' plugin in '{os.getcwd()}'")
+                raise FileNotFoundError(f"Unable to find '{x[AnnotationTypes.PLUGIN.value]}' plugin in '{x[AnnotationKeys.PATH.value]}'")
             else:
                 try:
                     for package in files:

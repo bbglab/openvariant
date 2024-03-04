@@ -59,6 +59,7 @@ annotation: # Columns to parse
   - type: 'plugin'
     plugin: string # Plugin to apply, could be internal, located into 'plugin' folder, or customized by the user
     field: string
+    path: string # Specify where openvar needs to find plugin; not required 
 
 exclude: # List of field and value that allows to filter out all the rows that have specific value; optional
   - field: string # Field to apply the exclusion
