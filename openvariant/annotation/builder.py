@@ -249,9 +249,9 @@ def _plugin_builder(x: dict, base_path: str = None) -> PluginBuilder:
         ctxt = _get_plugin_context(mod)
     except ModuleNotFoundError:
         try:
-            files = list(glob.iglob(f"{os.getcwd()}/**/{x[AnnotationTypes.PLUGIN.value]}", recursive=True))
+            files = list(glob.iglob(f"{os.environ['OPENVAR_PLUGIN']}/**/{x[AnnotationTypes.PLUGIN.value]}", recursive=True))
             if len(files) == 0:
-                raise FileNotFoundError(f"Unable to find '{x[AnnotationTypes.PLUGIN.value]}' plugin in '{os.getcwd()}'")
+                raise FileNotFoundError(f"Unable to find '{x[AnnotationTypes.PLUGIN.value]}' plugin in '{os.environ['OPENVAR_PLUGIN']}'")
             else:
                 try:
                     for package in files:
@@ -263,7 +263,7 @@ def _plugin_builder(x: dict, base_path: str = None) -> PluginBuilder:
                         func = _get_plugin_function(mod)
                         ctxt = _get_plugin_context(mod)
                 except (ImportError, AttributeError):
-                    raise ImportError(f"Unable to import 'run' on the plugin.")
+                    raise ImportError("Unable to import 'run' on the plugin.")
         except ModuleNotFoundError:
             raise ModuleNotFoundError(f"Unable to found '{x[AnnotationTypes.PLUGIN.value]}' plugin.")
     except (ImportError, AttributeError) as e:
