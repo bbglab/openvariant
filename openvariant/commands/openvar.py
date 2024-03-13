@@ -6,6 +6,7 @@ from openvariant.tasks.cat import cat as cat_task
 from openvariant.tasks.count import count as count_task
 from openvariant.tasks.groupby import group_by as group_by_task
 from openvariant.tasks.plugin import PluginActions
+from openvariant.utils.utils import loadEnvironmentVariables
 
 
 @click.group(context_settings={'help_option_names': ['-h', '--help']})
@@ -13,6 +14,7 @@ from openvariant.tasks.plugin import PluginActions
 def openvar():
     """'openvar' is the command-line interface of OpenVariant.
     Parsing and data transformation of multiple input formats."""
+    loadEnvironmentVariables()
     pass
 
 
@@ -106,10 +108,9 @@ def groupby(input_path: str, script: str, where: str, group_by: str, cores: int,
 @openvar.command(name="plugin", short_help='Actions to execute for a plugin: create.')
 @click.argument('action', type=click.Choice(['create']))
 @click.option('--name', '-n', type=click.STRING, help="Name of the plugin.")
-@click.option('--directory', '-d', type=click.STRING, help="Directory to reach the plugin.")
-def plugin(action, name: str or None, directory: str or None):
+def plugin(action, name: str or None):
     """Actions to apply on the plugin system."""
-    PluginActions[action.upper()].value(name, directory)
+    PluginActions[action.upper()].value(name)
 
 
 if __name__ == "__main__":

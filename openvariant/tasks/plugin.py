@@ -8,7 +8,7 @@ from enum import Enum
 from functools import partial
 
 
-def _add_action(name: str, directory: str = None) -> None:
+def _add_action(name: str) -> None:
     """Create a new plugin
 
     It will generate all the required structure for a new plugin (files and folders).
@@ -20,7 +20,7 @@ def _add_action(name: str, directory: str = None) -> None:
     directory : str
         The path to create the plugin.
     """
-    path = directory if directory is not None else os.getcwd()
+    path = os.environ['OPENVAR_PLUGIN']
     if os.path.exists(f"{path}/{name}"):
         raise FileExistsError(f"Directory {path}/{name} already exists.")
     os.mkdir(f"{path}/{name}")
