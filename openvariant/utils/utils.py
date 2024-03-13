@@ -7,9 +7,9 @@ from os.path import basename
 
 ENV_VAR = {
     'OPENVAR_PLUGIN': user_data_dir('openvariant', 'bbglab')
-    }
+}
 
-def loadEnvironmentVariables():
+def loadEnvironmentVariables() -> None:
     """Load environment variable into the environment."""
 
     missing_vars = set(ENV_VAR.keys()).difference(set(os.environ))
