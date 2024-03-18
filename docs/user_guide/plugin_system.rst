@@ -19,8 +19,9 @@ visualize how the different classes are connected and composed with **OpenVarian
 
 |
 
-As we have mentioned before, the plugin has to be present on the `annotation` file in order to be used. Plugins can be
-distributed on different folders where `Builder` will manage to find them and apply the data transformation.
+As we have mentioned before, the plugin has to be present on the `annotation` file in order to be used. Custom plugins will be placed in the 
+folder where the environment variable `OPENVAR_PLUGIN` points (`/home/user/.local/openvariant/` by default). 
+The `Builder` will manage to find them and apply the data transformation.
 Plugins will inherit `Context` and `Plugin` as base classes for each plugin. These classes are described as it follows:
 
 **Context**
