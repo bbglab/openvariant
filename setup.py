@@ -6,7 +6,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="open-variant",
-    version="0.7.6",
+    version="1.0.0",
     author="BBGLab - Barcelona Biomedical Genomics Lab",
     author_email='bbglab@irbbarcelona.org',
     description="OpenVariant provides different functionalities to read, parse and operate different multiple input "
