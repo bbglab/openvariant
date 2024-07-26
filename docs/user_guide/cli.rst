@@ -97,11 +97,11 @@ Create
 --------
 
 It will generate the template with required files to apply and run a new plugin with the name stipulated and in the
-corresponding directory.
+default directory.
 
 .. code-block:: bash
 
     # Example
-    openvar plugin create -n reverse_value -d /my_plugins
+    openvar plugin create -n reverse_value
 
 For further details, check :ref:`Command-line interface examples` and you will have a clearer picture on how to use CLI tasks.
