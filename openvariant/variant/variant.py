@@ -17,9 +17,8 @@ from typing import Generator, List, Callable, Any
 
 from openvariant.annotation.annotation import Annotation
 from openvariant.annotation.builder import MappingBuilder
-from openvariant.annotation.process import AnnotationTypesProcess
 from openvariant.annotation.config_annotation import AnnotationFormat, AnnotationTypes, AnnotationDelimiter
-from openvariant.utils.utils import check_extension
+from openvariant.utils.utils import check_extension, import_class_from_module
 from openvariant.variant.where import skip, parse_where
 
 
@@ -86,8 +85,12 @@ def _extract_header(file_path: str, original_header: list, annotation: Annotatio
         if ann_type == AnnotationTypes.MAPPING.value:
             mapping_fields.append((field, ann))
         else:
-            header_schema.update({field: AnnotationTypesProcess[ann_type].value(ann, original_header, file_path,
-                                                                                header_schema)})
+            class_name = ann_type
+            module_name = "openvariant.annotation.process"
+            ClassAnnotation = import_class_from_module(module_name, class_name)
+            instance = ClassAnnotation()
+
+            header_schema.update({field: instance(ann, original_header, file_path, header_schema)})
 
     for field, ann in mapping_fields:
         ann_type = ann[0]
