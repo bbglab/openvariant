@@ -5,11 +5,11 @@ A core class to represent the schema which files will be parsed.
 """
 import logging
 import re
+import importlib
 
 from typing import List
 from yaml import safe_load, YAMLError
 
-from openvariant.annotation.builder import AnnotationTypesBuilders
 from openvariant.annotation.config_annotation import (AnnotationGeneralKeys, AnnotationKeys, AnnotationTypes,
                                                       ExcludesKeys, DEFAULT_FORMAT, DEFAULT_DELIMITER,
                                                       AnnotationFormat, AnnotationDelimiter)
@@ -116,6 +116,16 @@ def _check_annotation_keys(annot: dict) -> None:
 class Annotation:
     """A representation of the schema that files will be parsed"""
 
+    def _import_class_from_module(self, module_name, class_name):
+        """Import annotation class"""
+        try:
+            module = importlib.import_module(module_name)
+            class_ = getattr(module, class_name)
+            return class_
+        except (ModuleNotFoundError, AttributeError) as e:
+            print(f"Error: {e}")
+            return None
+
     def _read_annotation_file(self) -> dict:
         """Read annotation file with YAML package"""
         with open(self._path, 'r') as stream:
@@ -166,8 +176,13 @@ class Annotation:
         self._annotations: dict = {}
         for k in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
 
+            class_name = k[AnnotationKeys.TYPE.value].upper()
+            module_name = "openvariant.annotation.builder"
+            ClassAnnotation = self._import_class_from_module(module_name, class_name)
+            instance = ClassAnnotation()
+
             self._annotations[k[AnnotationKeys.FIELD.value]] = \
-                AnnotationTypesBuilders[k[AnnotationKeys.TYPE.value].upper()].value(k, self._path)
+                instance(k, self._path)
 
         self._columns = raw_annotation.get(AnnotationGeneralKeys.COLUMNS.value, list(self.annotations.keys()))
         self._check_columns()

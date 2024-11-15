@@ -70,92 +70,95 @@ def _get_function_and_regexp(x: dict) -> Tuple[Builder, re.Pattern]:
         raise re.error(f'Wrong regex pattern: {e}')
     return func_apply, regex_apply
 
+class STATIC: 
+    def __call__(self, x: dict, base_path: str = None) -> StaticBuilder:
+        """Built StaticBuilder from an annotation based on a static annotation with a fixed value.
+        Parameters
+        ----------
+        x : dict
+            Annotation
+        Returns
+        -------
+        str
+            Annotation type
+        float or int or str
+            Value of the field
+        """
+        try:
+            value = x[AnnotationKeys.VALUE.value]
+        except KeyError:
+            raise KeyError('Static annotation is wrong specified.')
 
-def _static_builder(x: dict, base_path: str = None) -> StaticBuilder:
-    """Built StaticBuilder from an annotation based on a static annotation with a fixed value.
-    Parameters
-    ----------
-    x : dict
-        Annotation
-    Returns
-    -------
-    str
-        Annotation type
-    float or int or str
-        Value of the field
-    """
-    try:
-        value = x[AnnotationKeys.VALUE.value]
-    except KeyError:
-        raise KeyError('Static annotation is wrong specified.')
-
-    return AnnotationTypes.STATIC.name, value
-
-
-def _internal_builder(x: dict, base_path: str = None) -> InternalBuilder:
-    """Built InternalBuilder from an annotation based on an internal annotation from fields of input files.
-    Parameters
-    ----------
-    x : dict
-        Annotation
-    Returns
-    -------
-    str
-        Annotation type
-    str
-        Value of the field
-    Builder
-        Representation of the function to apply on the annotation value
-    """
-    try:
-        value = x[AnnotationKeys.VALUE.value]
-    except KeyError:
-        value = None
-
-    return AnnotationTypes.INTERNAL.name, x[AnnotationKeys.FIELD_SOURCE.value], Builder("(lambda y: y)") \
-        if AnnotationKeys.FUNCTION.value not in x or x[AnnotationKeys.FUNCTION.value] is None or \
-        len(x[AnnotationKeys.FUNCTION.value]) == 2 else Builder(x[AnnotationKeys.FUNCTION.value]), value
+        return AnnotationTypes.STATIC.name, value
 
 
-def _dirname_builder(x: dict, base_path: str = None) -> DirnameBuilder:
-    """Built DirnameBuilder from an annotation based on a dirname annotation, getting the dirname which input files
-    are located.
-    Parameters
-    ----------
-    x : dict
-        Annotation
-    Returns
-    -------
-    str
-        Annotation type
-    Builder
-        Representation of the function to apply on the annotation value (dirname).
-    re.Pattern
-        Representation of a regular expression to apply on the annotation value (dirname).
-    """
-    func_apply, regex_apply = _get_function_and_regexp(x)
+class INTERNAL: 
+    def __call__(self, x: dict, base_path: str = None) -> InternalBuilder:
+        """Built InternalBuilder from an annotation based on an internal annotation from fields of input files.
+        Parameters
+        ----------
+        x : dict
+            Annotation
+        Returns
+        -------
+        str
+            Annotation type
+        str
+            Value of the field
+        Builder
+            Representation of the function to apply on the annotation value
+        """
+        try:
+            value = x[AnnotationKeys.VALUE.value]
+        except KeyError:
+            value = None
 
-    return AnnotationTypes.DIRNAME.name, func_apply, regex_apply
+        return AnnotationTypes.INTERNAL.name, x[AnnotationKeys.FIELD_SOURCE.value], Builder("(lambda y: y)") \
+            if AnnotationKeys.FUNCTION.value not in x or x[AnnotationKeys.FUNCTION.value] is None or \
+            len(x[AnnotationKeys.FUNCTION.value]) == 2 else Builder(x[AnnotationKeys.FUNCTION.value]), value
 
 
-def _filename_builder(x: dict, base_path: str = None) -> FilenameBuilder:
-    """Built FilenameBuilder from an annotation based on a filename annotation, getting the filename of each input file.
-    Parameters
-    ----------
-    x : dict
-        Annotation
-    Returns
-    -------
-    str
-        Annotation type
-    Builder
-        Representation of the function to apply on the annotation value (filename).
-    re.Pattern
-        Representation of a regular expression to apply on the annotation value (filename).
-    """
-    func_apply, regex_apply = _get_function_and_regexp(x)
+class DIRNAME:
+    def __call__(self, x: dict, base_path: str = None) -> DirnameBuilder:
+        """Built DirnameBuilder from an annotation based on a dirname annotation, getting the dirname which input files
+        are located.
+        Parameters
+        ----------
+        x : dict
+            Annotation
+        Returns
+        -------
+        str
+            Annotation type
+        Builder
+            Representation of the function to apply on the annotation value (dirname).
+        re.Pattern
+            Representation of a regular expression to apply on the annotation value (dirname).
+        """
+        func_apply, regex_apply = _get_function_and_regexp(x)
 
-    return AnnotationTypes.FILENAME.name, func_apply, regex_apply
+        return AnnotationTypes.DIRNAME.name, func_apply, regex_apply
+
+
+class FILENAME:
+    def __call__(self, x: dict, base_path: str = None) -> FilenameBuilder:
+        """Built FilenameBuilder from an annotation based on a filename annotation, getting the filename of each input file.
+        Parameters
+        ----------
+        x : dict
+            Annotation
+        Returns
+        -------
+        str
+            Annotation type
+        Builder
+            Representation of the function to apply on the annotation value (filename).
+        re.Pattern
+            Representation of a regular expression to apply on the annotation value (filename).
+        """
+        func_apply, regex_apply = _get_function_and_regexp(x)
+
+        return AnnotationTypes.FILENAME.name, func_apply, regex_apply
 
 
 def _get_plugin_function(mod) -> Callable:
@@ -188,107 +191,87 @@ def _get_plugin_context(mod) -> Any:
     return ctxt
 
 
-def _mapping_builder(x: dict, base_path: str) -> MappingBuilder:
-    """Built MappingBuilder from an annotation based on a mapping annotation, it matches the value of the input file to
-    a value that appears in the mapping file. It will return the value of one field of the mapping that has been
-    indicated on the annotation.
-    Parameters
-    ----------
-    x : dict
-        Annotation.
-    base_path : str
-        A base path where file that is parsing is located.
-    Returns
-    -------
-    str
-        Annotation type.
-    List
-        Fields that has to look for in the input files.
-    dict
-        Schema of the mapping file, where 'key' is the value of one column (fieldMapping) in mapping file and
-        'value' is the value of one column (valueMapping) in the mapping file
-    """
-    values: dict = {}
-    mapping_files = x[AnnotationKeys.FILE_MAPPING.value]
-    files = list(glob.iglob(f"{dirname(base_path)}/{mapping_files}", recursive=True))
-    if len(files) == 0:
-        raise FileNotFoundError(f"Unable to find '{mapping_files}' file in '{dirname(base_path)}'")
-    try:
-        for mapping_file in files:
-            open_method = gzip.open if mapping_file.endswith('gz') else open
-            with open_method(mapping_file, "rt") as fd:
-                for r in csv.DictReader(fd, delimiter='\t'):
-                    field = r[x[AnnotationKeys.FIELD_MAPPING.value]]
-                    val = r[x[AnnotationKeys.FIELD_VALUE.value]]
-                    values[field] = val
-            break
-    except TypeError:
-        raise TypeError("Unable to parse mapping annotation")
-    return AnnotationTypes.MAPPING.name, x[AnnotationKeys.FIELD_SOURCE.value], values
-
-
-def _plugin_builder(x: dict, base_path: str = None) -> PluginBuilder:
-    """Built PluginBuilder from an annotation based on a plugin annotation, from an internal or a customized plugin
-    which data is transformed and executed thought a process.
-    Parameters
-    ----------
-    x : dict
-        Annotation
-    Returns
-    -------
-    str
-        Annotation type
-    Builder
-        Representation of the function to apply on the annotation value (plugin's 'run' function).
-    """
-    func = None
-    ctxt = None
-    try:
-        mod = importlib.import_module(f".{x[AnnotationTypes.PLUGIN.value]}", package="openvariant.plugins")
-        func = _get_plugin_function(mod)
-        ctxt = _get_plugin_context(mod)
-    except ModuleNotFoundError:
+class MAPPING:
+    def __call__(self, x: dict, base_path: str) -> MappingBuilder:
+        """Built MappingBuilder from an annotation based on a mapping annotation, it matches the value of the input file to
+        a value that appears in the mapping file. It will return the value of one field of the mapping that has been
+        indicated on the annotation.
+        Parameters
+        ----------
+        x : dict
+            Annotation.
+        base_path : str
+            A base path where file that is parsing is located.
+        Returns
+        -------
+        str
+            Annotation type.
+        List
+            Fields that has to look for in the input files.
+        dict
+            Schema of the mapping file, where 'key' is the value of one column (fieldMapping) in mapping file and
+            'value' is the value of one column (valueMapping) in the mapping file
+        """
+        values: dict = {}
+        mapping_files = x[AnnotationKeys.FILE_MAPPING.value]
+        files = list(glob.iglob(f"{dirname(base_path)}/{mapping_files}", recursive=True))
+        if len(files) == 0:
+            raise FileNotFoundError(f"Unable to find '{mapping_files}' file in '{dirname(base_path)}'")
         try:
-            files = list(glob.iglob(f"{os.environ['OPENVAR_PLUGIN']}/**/{x[AnnotationTypes.PLUGIN.value]}", recursive=True))
-            if len(files) == 0:
-                raise FileNotFoundError(f"Unable to find '{x[AnnotationTypes.PLUGIN.value]}' plugin in '{os.environ['OPENVAR_PLUGIN']}'")
-            else:
-                try:
-                    for package in files:
-                        spec = importlib.util.spec_from_file_location(f".{x[AnnotationTypes.PLUGIN.value]}",
-                                                                      f"{package}/{x[AnnotationTypes.PLUGIN.value]}.py")
-                        mod = importlib.util.module_from_spec(spec)
-                        spec.loader.exec_module(mod)
+            for mapping_file in files:
+                open_method = gzip.open if mapping_file.endswith('gz') else open
+                with open_method(mapping_file, "rt") as fd:
+                    for r in csv.DictReader(fd, delimiter='\t'):
+                        field = r[x[AnnotationKeys.FIELD_MAPPING.value]]
+                        val = r[x[AnnotationKeys.FIELD_VALUE.value]]
+                        values[field] = val
+                break
+        except TypeError:
+            raise TypeError("Unable to parse mapping annotation")
+        return AnnotationTypes.MAPPING.name, x[AnnotationKeys.FIELD_SOURCE.value], values
 
-                        func = _get_plugin_function(mod)
-                        ctxt = _get_plugin_context(mod)
-                except (ImportError, AttributeError):
-                    raise ImportError("Unable to import 'run' on the plugin.")
+
+class PLUGIN:
+    def __call__(self, x: dict, base_path: str = None) -> PluginBuilder:
+        """Built PluginBuilder from an annotation based on a plugin annotation, from an internal or a customized plugin
+        which data is transformed and executed thought a process.
+        Parameters
+        ----------
+        x : dict
+            Annotation
+        Returns
+        -------
+        str
+            Annotation type
+        Builder
+            Representation of the function to apply on the annotation value (plugin's 'run' function).
+        """
+        func = None
+        ctxt = None
+        try:
+            mod = importlib.import_module(f".{x[AnnotationTypes.PLUGIN.value]}", package="openvariant.plugins")
+            func = _get_plugin_function(mod)
+            ctxt = _get_plugin_context(mod)
         except ModuleNotFoundError:
-            raise ModuleNotFoundError(f"Unable to found '{x[AnnotationTypes.PLUGIN.value]}' plugin.")
-    except (ImportError, AttributeError) as e:
-        raise ImportError(f"Unable to import the plugin: {e}")
+            try:
+                files = list(glob.iglob(f"{os.environ['OPENVAR_PLUGIN']}/**/{x[AnnotationTypes.PLUGIN.value]}", recursive=True))
+                if len(files) == 0:
+                    raise FileNotFoundError(f"Unable to find '{x[AnnotationTypes.PLUGIN.value]}' plugin in '{os.environ['OPENVAR_PLUGIN']}'")
+                else:
+                    try:
+                        for package in files:
+                            spec = importlib.util.spec_from_file_location(f".{x[AnnotationTypes.PLUGIN.value]}",
+                                                                          f"{package}/{x[AnnotationTypes.PLUGIN.value]}.py")
+                            mod = importlib.util.module_from_spec(spec)
+                            spec.loader.exec_module(mod)
 
-    return AnnotationTypes.PLUGIN.name, func, ctxt
+                            func = _get_plugin_function(mod)
+                            ctxt = _get_plugin_context(mod)
+                    except (ImportError, AttributeError):
+                        raise ImportError("Unable to import 'run' on the plugin.")
+            except ModuleNotFoundError:
+                raise ModuleNotFoundError(f"Unable to found '{x[AnnotationTypes.PLUGIN.value]}' plugin.")
+        except (ImportError, AttributeError) as e:
+            raise ImportError(f"Unable to import the plugin: {e}")
 
-
-class AnnotationTypesBuilders(Enum):
-    """Enum to construct every annotation type builder"""
-
-    """Builder for static annotation"""
-    STATIC = partial(_static_builder)
-
-    """Builder for internal annotation"""
-    INTERNAL = partial(_internal_builder)
-
-    """Builder for dirname annotation"""
-    DIRNAME = partial(_dirname_builder)
-
-    """Builder for filename annotation"""
-    FILENAME = partial(_filename_builder)
-
-    """Builder for mapping annotation"""
-    MAPPING = partial(_mapping_builder)
-
-    """Builder for plugin annotation"""
-    PLUGIN = partial(_plugin_builder)
+        return AnnotationTypes.PLUGIN.name, func, ctxt
