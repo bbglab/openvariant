@@ -11,8 +11,6 @@ import glob
 import gzip
 import importlib
 import importlib.util
-from enum import Enum
-from functools import partial
 from os.path import dirname
 from typing import Tuple, Any, List, Callable
 
