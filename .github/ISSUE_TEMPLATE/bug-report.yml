@@ -77,6 +77,14 @@ body:
       placeholder: Add other commentaries that may be helpful to fix the bug. 
     validations:
       required: false
+  - type: input
+    id: contact
+    attributes:
+      label: Contact details (optional)
+      description: How can we get in touch with you if we need more info?
+      placeholder: e.g. email@example.com
+    validations:
+      required: false
   - type: markdown
     attributes:
       value: |
