@@ -16,10 +16,8 @@ sphinx:
 
 python:
   install:
-    - method: pip
-      path: .
     - requirements: requirements-docs.txt 
-    - method: pip
-      args: --upgrade pip setuptools wheel  
-    - method: pip
-      args: pyzmq --no-binary=:all: 
+
+commands:
+  - pip install --upgrade pip setuptools wheel
+  - pip install pyzmq --no-binary=:all:
