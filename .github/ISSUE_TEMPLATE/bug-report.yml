@@ -1,0 +1,91 @@
+name: Bug report 
+title: OpenVariant Bug | 
+description: Create a bug report to help us improve OpenVariant.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out the sections below to help everyone identify and fix the bug
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the issue
+      placeholder: Describe your issue and its behaviour (you can add screenshots or videos). 
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce the bug
+      placeholder: Describe the steps to reproduce the bug or the commands to run.
+    validations:
+      required: true
+  - type: textarea
+    id: error
+    attributes:
+      label: Error encountered or actual result
+      placeholder: Copy/paste the stderr output or describe the wrong result. 
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Expected result
+      placeholder: Describe the result that OpenVariant should show. 
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: OpenVariant version
+      placeholder: X.Y.Z
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: X.Y.Z
+    validations:
+      required: true
+  - type: input
+    id: installation
+    attributes:
+      label: Installation method
+      placeholder: e.g. pip, source code
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: e.g. Jupyter notebook, CLI, Nextflow, Docker/Singularity, Conda, script
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      placeholder: e.g. Debian/Ubuntu, Arch Linux, macOS, Windows
+    validations:
+      required: true
+  - type: textarea
+    id: comment
+    attributes:
+      label: Other commentaries (optional)
+      placeholder: Add other commentaries that may be helpful to fix the bug. 
+    validations:
+      required: false
+  - type: input
+    id: contact
+    attributes:
+      label: Contact details (optional)
+      description: How can we get in touch with you if we need more info?
+      placeholder: e.g. email@example.com
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting this bug!

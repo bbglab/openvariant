@@ -1,0 +1,42 @@
+name: New feature
+title: OpenVariant New Feature | 
+description: Propose a new feature to improve OpenVariant
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out the sections below to help us to build the new feature.
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the feature
+      placeholder: Describe the new feature and its behaviour.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it should be implemented?
+      placeholder: Give us the reasons why this new feature show be in OpenVariant.
+    validations:
+      required: true
+  - type: textarea
+    id: suggest
+    attributes:
+      label: The best way to implement the new feature (optional)
+      placeholder: Suggest how it should be implemented or give additional context.  
+    validations:
+      required: false
+  - type: input
+    id: contact
+    attributes:
+      label: Contact details (optional)
+      description: How can we get in touch with you if we need more info?
+      placeholder: e.g. email@example.com
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your suggestion!

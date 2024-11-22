@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions
+    url: https://github.com/bbglab/openvariant/discussions/categories/general
+    about: Ask general questions or get help from the community. 
+  - name: Email us
+    url: mailto:bbglab@irbbarcelona.org
+    about: Email us for inquiries, collaborations, or more details on OpenVariant.

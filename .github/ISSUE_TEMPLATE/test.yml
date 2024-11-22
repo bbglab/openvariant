@@ -1,0 +1,49 @@
+name: Test suggestion
+title: "OpenVariant Test | " 
+description: Propose a new unit test or modify the actual ones.
+labels: ["test"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out the sections below to help us to build or modify unit tests.
+  - type: input
+    id: feature
+    attributes:
+      label: Which feature relates to this test?
+      placeholder: e.g. task, command, annotation
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the new unit test or the changes to apply
+      placeholder: Describe the new test to implement or the modifications to carry on. 
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it should be implemented/changed?
+      placeholder: Give us the reasons why this unit test should be implemented or modified.
+    validations:
+      required: true
+  - type: textarea
+    id: suggest
+    attributes:
+      label: The best way to test the feature (optional)
+      placeholder: Suggest how the feature should be tested or give additional context.
+    validations:
+      required: false
+  - type: input
+    id: contact
+    attributes:
+      label: Contact details (optional)
+      description: How can we get in touch with you if we need more info?
+      placeholder: e.g. email@example.com
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing!
