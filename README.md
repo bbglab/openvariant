@@ -68,15 +68,14 @@ For more details check our [Installation](https://openvariant.readthedocs.io/en/
 
 ## Examples
 
-We offer a bunch of [examples](https://github.com/bbglab/openvariant/tree/master/examples) to be able to understand how OpenVariant can be applied. Also, check 
-[Examples](https://openvariant.readthedocs.io/en/latest/examples.html) section in OpenVariant's documentation.
+We provide a variety of [examples](https://github.com/bbglab/openvariant/tree/master/examples) to help to understand how OpenVariant can be applied. Explore the 
+[Examples](https://openvariant.readthedocs.io/en/latest/examples.html) section in OpenVariant's documentation for more details.
 
 ## Contributing
 
-Feel free to contribute as much as you want to the code.
+You're welcome to contribute to the code as much as you'd like!
 
-See [CONTRIBUTING](https://github.com/bbglab/openvariant/blob/master/CONTRIBUTING.md) for guidelines on contributing and respect your behaviour specified
-at [CODE OF CONDUCT](https://github.com/bbglab/openvariant/blob/master/CODE_OF_CONDUCT.md).
+Please review the guidelines outlined in the [Contributing](https://github.com/bbglab/openvariant/blob/master/CONTRIBUTING.md) document and adhere to the standards of conduct detailed in the [Code of Conduct](https://github.com/bbglab/openvariant/blob/master/CODE_OF_CONDUCT.md).
 
 ## License
 

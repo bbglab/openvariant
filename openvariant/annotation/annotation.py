@@ -9,7 +9,7 @@ import re
 from typing import List
 from yaml import safe_load, YAMLError
 
-from openvariant.annotation.builder import AnnotationTypesBuilders
+from openvariant.utils.utils import import_class_from_module
 from openvariant.annotation.config_annotation import (AnnotationGeneralKeys, AnnotationKeys, AnnotationTypes,
                                                       ExcludesKeys, DEFAULT_FORMAT, DEFAULT_DELIMITER,
                                                       AnnotationFormat, AnnotationDelimiter)
@@ -166,8 +166,13 @@ class Annotation:
         self._annotations: dict = {}
         for k in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
 
+            class_name = k[AnnotationKeys.TYPE.value].upper()
+            module_name = "openvariant.annotation.builder"
+            ClassAnnotation = import_class_from_module(module_name, class_name)
+            instance = ClassAnnotation()
+
             self._annotations[k[AnnotationKeys.FIELD.value]] = \
-                AnnotationTypesBuilders[k[AnnotationKeys.TYPE.value].upper()].value(k, self._path)
+                instance(k, self._path)
 
         self._columns = raw_annotation.get(AnnotationGeneralKeys.COLUMNS.value, list(self.annotations.keys()))
         self._check_columns()
