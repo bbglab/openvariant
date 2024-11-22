@@ -4,14 +4,22 @@ build:
   os: "ubuntu-22.04"
   tools:
     python: "3.12"
+
   apt_packages:
+    # Install necessary system-level dependencies
     - gcc
+    - python3-dev
+    - build-essential 
 
-# Build from the docs/ directory with Sphinx
 sphinx:
-  configuration: docs/conf.py
+  configuration: docs/conf.py 
 
-# Explicitly set the version of Python and its requirements
 python:
   install:
-    - requirements: requirements-docs.txt
+    - method: pip
+      path: .
+    - requirements: requirements-docs.txt 
+    - method: pip
+      args: --upgrade pip setuptools wheel  
+    - method: pip
+      args: pyzmq --no-binary=:all: 
