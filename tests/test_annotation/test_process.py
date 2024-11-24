@@ -4,7 +4,7 @@ import unittest
 
 from openvariant.annotation.builder import StaticBuilder, InternalBuilder, Builder, DirnameBuilder, FilenameBuilder, \
     MappingBuilder, PluginBuilder
-from openvariant.annotation.process import AnnotationTypesProcess
+from openvariant.annotation.process import STATIC, INTERNAL, FILENAME, DIRNAME, MAPPING, PLUGIN
 from openvariant.annotation.config_annotation import AnnotationTypes
 from openvariant.plugins.context import Context
 
@@ -19,19 +19,22 @@ class TestProcess(unittest.TestCase):
         static_dict: StaticBuilder = (AnnotationTypes.STATIC.name, 'WSG')
 
         res_expect = (AnnotationTypes.STATIC.name, 'WSG', str)
-        result = AnnotationTypesProcess[AnnotationTypes.STATIC.name].value(static_dict)
+        instance = STATIC()
+        result = instance(static_dict)
 
         self.assertEqual(result, res_expect)
 
     def test_process_no_exist_static(self):
         with self.assertRaises(TypeError):
             static_dict: StaticBuilder = None
-            AnnotationTypesProcess[AnnotationTypes.STATIC.name].value(static_dict)
+            instance = STATIC()
+            instance(static_dict)
 
     def test_process_none_static(self):
         static_dict: StaticBuilder = (AnnotationTypes.STATIC.name, None)
 
-        result = AnnotationTypesProcess[AnnotationTypes.STATIC.name].value(static_dict)
+        instance = STATIC() 
+        result = instance(static_dict)
 
         self.assertTrue(math.isnan(result[1]))
 
@@ -40,8 +43,8 @@ class TestProcess(unittest.TestCase):
                                           Builder("(lambda y: y)"), None)
         original_header = ['#CHROM', 'POS', 'ID', 'REF', 'ALT']
 
-        type_annot, value, func = AnnotationTypesProcess[AnnotationTypes.INTERNAL.name].value(internal_dict,
-                                                                                              original_header)
+        instance = INTERNAL()
+        type_annot, value, func = instance(internal_dict, original_header)
 
         self.assertEqual(type_annot, AnnotationTypes.INTERNAL.name)
         self.assertEqual(value, ({'POS': 1}, None))
@@ -53,8 +56,8 @@ class TestProcess(unittest.TestCase):
 
         original_header = ['#CHROM', 'POS', 'ID', 'REF', 'ALT']
 
-        type_annot, value, func = AnnotationTypesProcess[AnnotationTypes.INTERNAL.name].value(
-            internal_dict, original_header)
+        instance = INTERNAL()
+        type_annot, value, func = instance(internal_dict, original_header)
 
         self.assertEqual(type_annot, AnnotationTypes.INTERNAL.name)
         self.assertEqual(value, ({}, None))
@@ -66,14 +69,16 @@ class TestProcess(unittest.TestCase):
                                               Builder("(lambda y: y)"), None)
             original_header = ['#CHROM', 'POS', 'ID', 'REF', 'ALT']
 
-            AnnotationTypesProcess[AnnotationTypes.INTERNAL.name].value(internal_dict, original_header)
+            instance = INTERNAL()
+            instance(internal_dict, original_header)
 
     def test_process_dirname(self):
         dirname_dict: DirnameBuilder = (AnnotationTypes.DIRNAME.name, Builder("(lambda y: y)"), re.compile('(.*)'))
 
         res_expect = (AnnotationTypes.DIRNAME.name, 'dirname', str)
 
-        result = AnnotationTypesProcess[AnnotationTypes.DIRNAME.name].value(dirname_dict, [], '/dirname/filename.tsv')
+        instance = DIRNAME()
+        result = instance(dirname_dict, [], '/dirname/filename.tsv')
 
         self.assertEqual(result, res_expect)
 
@@ -81,20 +86,23 @@ class TestProcess(unittest.TestCase):
         dirname_dict: DirnameBuilder = (AnnotationTypes.DIRNAME.name, Builder("(lambda y: y)"), re.compile('(.*)'))
 
         with self.assertRaises(TypeError):
-            AnnotationTypesProcess[AnnotationTypes.FILENAME.name].value(dirname_dict, [], None)
+            instance = DIRNAME()
+            instance(dirname_dict, [], None)
 
     def test_process_invalid_regex_dirname(self):
         dirname_dict: DirnameBuilder = (AnnotationTypes.DIRNAME.name, Builder("(lambda y: y)"), None)
 
         with self.assertRaises(AttributeError):
-            AnnotationTypesProcess[AnnotationTypes.FILENAME.name].value(dirname_dict, [], '/dirname/filename.tsv')
+            instance = DIRNAME()
+            instance(dirname_dict, [], '/dirname/filename.tsv')
 
     def test_process_filename(self):
         filename_dict: FilenameBuilder = (AnnotationTypes.FILENAME.name, Builder("(lambda y: y)"), re.compile('(.*)'))
 
         res_expect = (AnnotationTypes.FILENAME.name, 'filename.tsv', str)
 
-        result = AnnotationTypesProcess[AnnotationTypes.FILENAME.name].value(filename_dict, [], '/dirname/filename.tsv')
+        instance = FILENAME()
+        result = instance(filename_dict, [], '/dirname/filename.tsv')
 
         self.assertEqual(result, res_expect)
 
@@ -102,13 +110,15 @@ class TestProcess(unittest.TestCase):
         filename_dict: FilenameBuilder = (AnnotationTypes.FILENAME.name, Builder("(lambda y: y)"), re.compile('(.*)'))
 
         with self.assertRaises(TypeError):
-            AnnotationTypesProcess[AnnotationTypes.FILENAME.name].value(filename_dict, [], None)
+            instance = FILENAME()
+            instance(filename_dict, [], None)
 
     def test_process_invalid_regex_filename(self):
         filename_dict: FilenameBuilder = (AnnotationTypes.FILENAME.name, Builder("(lambda y: y)"), None)
 
         with self.assertRaises(AttributeError):
-            AnnotationTypesProcess[AnnotationTypes.FILENAME.name].value(filename_dict, [], '/dirname/filename.tsv')
+            instance = FILENAME()
+            instance(filename_dict, [], '/dirname/filename.tsv')
 
     def test_process_mapping(self):
         mapping_dict: MappingBuilder = (AnnotationTypes.MAPPING.name, ['PROPERTY'], {'CANCER': 'BLCA'})
@@ -116,23 +126,10 @@ class TestProcess(unittest.TestCase):
 
         res_expect = (AnnotationTypes.MAPPING.name, ('MAPPING', ['PROPERTY'], {'CANCER': 'BLCA'}), str)
 
-        result = AnnotationTypesProcess[AnnotationTypes.MAPPING.name].value(mapping_dict, [], None, head_schema)
+        instance = MAPPING()
+        result = instance(mapping_dict, [], None, head_schema)
 
         self.assertEqual(result, res_expect)
-
-    #def test_process_invalid_mapping(self):
-    #    mapping_dict: MappingBuilder = (AnnotationTypes.MAPPING.name, None, None)
-    #    head_schema = {'PROPERTY': ('MAPPING', 'CANCER', str)}
-
-    #    with self.assertRaises(ValueError):
-    #        AnnotationTypesProcess[AnnotationTypes.MAPPING.name].value(mapping_dict, [], None, head_schema)
-
-    #def test_process_invalid_head_schema_mapping(self):
-    #    mapping_dict: MappingBuilder = (AnnotationTypes.MAPPING.name, ['PROPERTY'], {'CANCER': 'BLCA'})
-    #    head_schema = {}
-
-    #    with self.assertRaises(KeyError):
-    #        AnnotationTypesProcess[AnnotationTypes.MAPPING.name].value(mapping_dict, [], None, head_schema)
 
     def test_process_plugin(self):
         plugin_dict: PluginBuilder = (AnnotationTypes.PLUGIN.name, _func_plugin_example,
@@ -140,7 +137,8 @@ class TestProcess(unittest.TestCase):
 
         res_expect = (AnnotationTypes.PLUGIN.name, plugin_dict[2], plugin_dict[1])
 
-        result = AnnotationTypesProcess[AnnotationTypes.PLUGIN.name].value(plugin_dict)
+        instance = PLUGIN()
+        result = instance(plugin_dict)
 
         self.assertEqual(result, res_expect)
 
@@ -148,4 +146,5 @@ class TestProcess(unittest.TestCase):
         plugin_dict: PluginBuilder = (AnnotationTypes.PLUGIN.name, None)
 
         with self.assertRaises(ValueError):
-            AnnotationTypesProcess[AnnotationTypes.PLUGIN.name].value(plugin_dict)
+            instance = PLUGIN()
+            instance(plugin_dict)
