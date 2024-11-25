@@ -1,6 +1,4 @@
 <div align="center">
-    <br>
-    <br>
     <a href="https://openvariant.readthedocs.io/">
       <img src="https://github.com/bbglab/openvariant/raw/master/logo.png" width="590" height="350">
     </a>
@@ -70,6 +68,12 @@ For more details check our [Installation](https://openvariant.readthedocs.io/en/
 
 We provide a variety of [examples](https://github.com/bbglab/openvariant/tree/master/examples) to help to understand how OpenVariant can be applied. Explore the 
 [Examples](https://openvariant.readthedocs.io/en/latest/examples.html) section in OpenVariant's documentation for more details.
+
+As well, we present a small dataset for hands-on use with OpenVariant, allowing users to test the tool's functionalities. It may be found at [Zenodo](https://zenodo.org/records/14215914) and it can be downloaded using the following commands:
+```bash
+pip install zenodo_get                      
+zenodo_get 14215914
+```
 
 ## Contributing
 
