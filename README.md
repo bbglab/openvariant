@@ -84,3 +84,9 @@ Please review the guidelines outlined in the [Contributing](https://github.com/b
 ## License
 
 The software is licensed under [BSD-3-Clause](https://github.com/bbglab/openvariant/blob/master/LICENSE).
+
+## Reference
+
+If you use OpenVariant in your research, please cite:
+
+> David Martínez-Millán, Federica Brando, Miguel L. Grau, Mònica Sánchez-Guixé, Carlos López-Elorduy, Iker Reyes-Salazar, Jordi Deu-Pons, Núria López-Bigas, Abel González-Pérez, OpenVariant: a toolkit to parse and operate multiple input file formats, Bioinformatics, Volume 40, Issue 12, December 2024, btae714, [https://doi.org/10.1093/bioinformatics/btae714](https://doi.org/10.1093/bioinformatics/btae714)
