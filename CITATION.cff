@@ -16,9 +16,6 @@ authors:
     orcid: "https://orcid.org/0000-0002-9430-4413"
   - family-names: "López-Elorduy"
     given-names: "Carlos"
-    orcid: "https://orcid.org/0000-0002-9430-4413"
-  - family-names: "López-Elorduy"
-    given-names: "Carlos"
     orcid: "https://orcid.org/0000-0001-8971-9051"
   - family-names: "Reyes-Salazar"
     given-names: "Iker"
@@ -69,7 +66,6 @@ preferred-citation:
     given-names: "Abel"
     orcid: "https://orcid.org/0000-0002-8582-4660"
   title: "OpenVariant: a toolkit to parse and operate multiple input file formats"
-
   doi: "10.1093/bioinformatics/btae714"
   journal: "Bioinformatics"
   volume: "40"
