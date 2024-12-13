@@ -27,7 +27,7 @@ nbclient==0.6.6
 nbformat==5.4.0
 nbsphinx==0.8.9
 nest-asyncio==1.5.5
-open-variant==0.7.0
+open-variant==1.0.0
 packaging==21.3
 pandocfilters==1.5.0
 parso==0.8.3
@@ -71,3 +71,4 @@ webencodings==0.5.1
 ipython
 nbconvert==7.0.0rc0
 mistune==2.0.3
+sphinxcontrib-bibtex==2.6.3
