@@ -109,6 +109,7 @@ docs = [
     "nbconvert==7.0.0rc0",
     "mistune==2.0.3",
     "sphinxcontrib-bibtex==2.6.3",
+    "setuptools>=58.2.0",
 ]
 linting = [
     "flake8>=7.1.1",
