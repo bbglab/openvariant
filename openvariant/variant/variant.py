@@ -94,6 +94,12 @@ def _extract_header(file_path: str, original_header: list, annotation: Annotatio
 
     for field, ann in mapping_fields:
         ann_type = ann[0]
+        
+        class_name = ann_type
+        module_name = "openvariant.annotation.process"
+        ClassAnnotation = import_class_from_module(module_name, class_name)
+        instance = ClassAnnotation()
+        
         header_schema.update({field: instance(ann, original_header, file_path, header_schema)})
     return header_schema, annotation.columns
 
