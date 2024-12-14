@@ -94,13 +94,12 @@ def _extract_header(file_path: str, original_header: list, annotation: Annotatio
 
     for field, ann in mapping_fields:
         ann_type = ann[0]
-        header_schema.update({field: AnnotationTypesProcess[ann_type].value(ann, original_header, file_path,
-                                                                            header_schema)})
+        header_schema.update({field: instance(ann, original_header, file_path, header_schema)})
     return header_schema, annotation.columns
 
 
 @lru_cache(maxsize=256)
-def _parse_field(value: float or int or str, func: Callable) -> str:
+def _parse_field(value: float | int | str, func: Callable) -> str:
     """Getting the value of a specific annotation field. Cached with LRU policy"""
     result = func(value)
     return result if result is not None else str(float('nan'))
