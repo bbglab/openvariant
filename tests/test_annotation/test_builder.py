@@ -201,6 +201,8 @@ class TestBuilder(unittest.TestCase):
         self.assertTrue(issubclass(ctxt, Context))
 
     def test_builder_invalid_plugin(self):
+        os.environ['OPENVAR_PLUGIN'] = '/test/to/plugin/'
+
         plugin_dict = {'type': 'plugin', 'plugin': None, 'field': None}
 
         with self.assertRaises(FileNotFoundError):

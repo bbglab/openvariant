@@ -52,9 +52,9 @@ def _parse_where(where: str or None) -> List:
                         WhereAttributesKeys.FIELD.value: wh[0],
                         WhereAttributesKeys.VALUE.value: wh[2]}
             except KeyError:
-                raise ValueError(f"Unknown \"where\" syntax.")
+                raise ValueError("Unknown \"where\" syntax.")
         else:
-            raise ValueError(f"Unknown where syntax.")
+            raise ValueError("Unknown where syntax.")
     return [stmt]
 
 
