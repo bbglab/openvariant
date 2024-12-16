@@ -1,6 +1,4 @@
 <div align="center">
-    <br>
-    <br>
     <a href="https://openvariant.readthedocs.io/">
       <img src="https://github.com/bbglab/openvariant/raw/master/logo.png" width="590" height="350">
     </a>
@@ -68,16 +66,27 @@ For more details check our [Installation](https://openvariant.readthedocs.io/en/
 
 ## Examples
 
-We offer a bunch of [Examples](https://github.com/bbglab/openvariant/tree/master/examples) to we be able to understand how OpenVariant can be applied. Also, check 
-[Examples](https://openvariant.readthedocs.io/en/latest/examples.html) section in OpenVariant's documentation.
+We provide a variety of [examples](https://github.com/bbglab/openvariant/tree/master/examples) to help to understand how OpenVariant can be applied. Explore the 
+[Examples](https://openvariant.readthedocs.io/en/latest/examples.html) section in OpenVariant's documentation for more details.
+
+As well, we present a small dataset for hands-on use with OpenVariant, allowing users to test the tool's functionalities. It may be found at [Zenodo](https://zenodo.org/records/14215914) and it can be downloaded using the following commands:
+```bash
+pip install zenodo_get                      
+zenodo_get 14215914
+```
 
 ## Contributing
 
-Feel free to contribute as much as you want to the code.
+You're welcome to contribute to the code as much as you'd like!
 
-See [CONTRIBUTING](https://github.com/bbglab/openvariant/blob/master/CONTRIBUTING.md) for guidelines on contributing and respect your behaviour specified
-at [CODE OF CONDUCT](https://github.com/bbglab/openvariant/blob/master/CODE_OF_CONDUCT.md).
+Please review the guidelines outlined in the [Contributing](https://github.com/bbglab/openvariant/blob/master/CONTRIBUTING.md) document and adhere to the standards of conduct detailed in the [Code of Conduct](https://github.com/bbglab/openvariant/blob/master/CODE_OF_CONDUCT.md).
 
 ## License
 
 The software is licensed under [BSD-3-Clause](https://github.com/bbglab/openvariant/blob/master/LICENSE).
+
+## Reference
+
+If you use OpenVariant in your research, please cite:
+
+> David Martínez-Millán, Federica Brando, Miguel L. Grau, Mònica Sánchez-Guixé, Carlos López-Elorduy, Iker Reyes-Salazar, Jordi Deu-Pons, Núria López-Bigas, Abel González-Pérez, OpenVariant: a toolkit to parse and operate multiple input file formats, Bioinformatics, Volume 40, Issue 12, December 2024, btae714, [https://doi.org/10.1093/bioinformatics/btae714](https://doi.org/10.1093/bioinformatics/btae714)

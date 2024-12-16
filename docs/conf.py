@@ -14,6 +14,9 @@ import os
 import sys
 
 import openvariant
+from pybtex.plugin import register_plugin
+from pybtex.style.formatting.unsrt import Style as UnsrtStyle
+from pybtex.style.labels.alpha import BaseLabelStyle
 
 sys.path.insert(0, os.path.abspath('../'))
 
@@ -36,7 +39,7 @@ html_last_updated_fmt = "%d %b %Y"
 # ones.
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'sphinx.ext.coverage', 'sphinx.ext.napoleon',
               'sphinx_copybutton', 'sphinxcontrib.autoyaml', 'sphinx.ext.autosectionlabel', 'sphinx_panels', 'nbsphinx',
-              'sphinx_gallery.load_style']
+              'sphinx_gallery.load_style', 'sphinxcontrib.bibtex']
 
 
 numpydoc_show_class_members = False
@@ -52,6 +55,20 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '_templates', 
                     '**.ipynb_checkpoints']
 
+# -- Bibtex configuration ---------------------------------------------------
+
+bibtex_bibfiles = ["refs.bib"]
+
+class MyLabelStyle(BaseLabelStyle):
+    def format_labels(self, sorted_entries):
+        for entry in sorted_entries:
+            yield entry.key
+
+class MyStyle(UnsrtStyle):
+    default_label_style = MyLabelStyle
+
+
+register_plugin("pybtex.style.formatting", "mystyle", MyStyle)
 
 # -- Options for HTML output -------------------------------------------------
 

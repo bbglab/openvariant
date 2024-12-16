@@ -38,6 +38,15 @@ different multiple input file formats (e. g. ``tsv``, ``csv``, ``vcf``, ``maf``,
 These docs will guide you through the installation, different methods and some practical examples.
 For more information, check our `GitHub repository <https://github.com/bbglab/openvariant>`_.
 
+References
+----------
+
+Please reference :cite:empty:`2024:Martínez-Millán` the following when using OpenVariant:
+
+.. bibliography::
+   :style: mystyle
+
+
 
 .. toctree::
    :hidden:

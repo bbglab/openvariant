@@ -1,0 +1,142 @@
+[build-system]
+requires = ["hatchling", "setuptools"]
+build-backend = "hatchling.build"
+
+[project]
+name = "open-variant"
+version = "1.0.1"
+description = "OpenVariant provides different functionalities to read, parse and operate different multiple input file formats, being able to customize the output."
+authors = [
+    { name = "BBGLab (Barcelona Biomedical Genomics Lab)", email = "bbglab@irbbarcelona.org" }
+]
+dependencies = [
+    "pyyaml==6.0.1",
+    "tqdm==4.66.3",
+    "click==8.1.3",
+    "pyliftover==0.4.1",
+    "appdirs==1.4.4",
+]
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+keywords = ["bioinformatics", "openvariant", "openvar", "bbglab"]
+
+
+[project.urls]
+Homepage = "https://github.com/bbglab/openvariant"
+Documentation = "https://openvariant.readthedocs.io/"
+Repository = "https://github.com/bbglab/openvariant"
+Issues = "https://github.com/bbglab/openvariant/issues"
+
+
+[project.scripts]
+"openvar" = "openvariant.commands.openvar:openvar"
+
+[project.optional-dependencies]
+docs = [
+    "alabaster==0.7.12",
+    "asttokens==2.0.5",
+    "attrs==22.1.0",
+    "babel==2.10.3",
+    "backcall==0.2.0",
+    "beautifulsoup4==4.11.1",
+    "bleach==5.0.1",
+    "charset-normalizer==2.1.0",
+    "click==8.1.3",
+    "decorator==5.1.1",
+    "defusedxml==0.7.1",
+    "docutils==0.17.1",
+    "entrypoints==0.4",
+    "executing==0.9.1",
+    "fastjsonschema==2.16.1",
+    "idna==3.7",
+    "imagesize==1.4.1",
+    "jedi==0.18.1",
+    "jinja2==3.1.4",
+    "jsonschema==4.8.0",
+    "jupyter-client==7.3.4",
+    "jupyter-core==4.11.2",
+    "jupyterlab-pygments==0.2.2",
+    "markupsafe==2.1.1",
+    "matplotlib-inline==0.1.3",
+    "nbclient==0.6.6",
+    "nbformat==5.4.0",
+    "nbsphinx==0.8.9",
+    "nest-asyncio==1.5.5",
+    "open-variant==1.0.0",
+    "packaging==21.3",
+    "pandocfilters==1.5.0",
+    "parso==0.8.3",
+    "pexpect==4.8.0",
+    "pickleshare==0.7.5",
+    "prompt-toolkit==3.0.30",
+    "ptyprocess==0.7.0",
+    "pure-eval==0.2.2",
+    "pydata-sphinx-theme==0.8.1",
+    "pygments==2.15.0",
+    "pyparsing==3.0.9",
+    "pyrsistent==0.18.1",
+    "python-dateutil==2.8.2",
+    "pytz==2022.1",
+    "pyyaml==6.0.1",
+    "pyzmq==26.2.0",
+    "requests==2.32.2",
+    "ruamel-yaml==0.16.13",
+    "six==1.16.0",
+    "snowballstemmer==2.2.0",
+    "soupsieve==2.3.2.post1",
+    "sphinx-copybutton==0.5.0",
+    "sphinx==4.5.0",
+    "sphinx-gallery==0.10.1",
+    "sphinx-panels==0.6.0",
+    "sphinxcontrib-applehelp==1.0.2",
+    "sphinxcontrib-autoyaml==1.0.0",
+    "sphinxcontrib-devhelp==1.0.2",
+    "sphinxcontrib-htmlhelp==2.0.0",
+    "sphinxcontrib-jsmath==1.0.1",
+    "sphinxcontrib-qthelp==1.0.3",
+    "sphinxcontrib-serializinghtml==1.1.5",
+    "stack-data==0.3.0",
+    "tinycss2==1.1.1",
+    "tornado==6.4.2",
+    "tqdm==4.66.3",
+    "traitlets==5.3.0",
+    "urllib3==1.26.19",
+    "wcwidth==0.2.5",
+    "webencodings==0.5.1",
+    "ipython>=8.18.0",
+    "nbconvert==7.0.0rc0",
+    "mistune==2.0.3",
+    "sphinxcontrib-bibtex==2.6.3",
+    "setuptools>=58.2.0",
+]
+linting = [
+    "flake8>=7.1.1",
+    "ruff>=0.8.3",
+]
+tests = [
+    "coverage>=7.6.9",
+    "pytest-cov>=6.0.0",
+    "pytest>=8.3.4",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["openvariant"]
+
+[tool.uv.sources]
+open-variant = { workspace = true }
+
+[tool.ruff.lint]
+select = ["F"]
+ignore = ["F401"]
+
+[tool.ruff]
+line-length = 127
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+docstring-code-format = true
