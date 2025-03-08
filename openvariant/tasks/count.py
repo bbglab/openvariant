@@ -3,7 +3,7 @@ Count  task
 ====================================
 A core functionality to execute count task.
 """
-import functools
+from functools import partial
 from multiprocessing import Pool
 from os import cpu_count
 from typing import Tuple, Union
@@ -76,7 +76,7 @@ def count(base_path: str, annotation_path: str or None, group_by: str = None, wh
 
     with Pool(cores) as pool:
         groups = {}
-        task = functools.partial(_count_task, group_by=group_by, where=where)
+        task = partial(_count_task, group_by=group_by, where=where)
         map_method = pool.imap_unordered if len(selection) > 1 else map
         total = 0
         for c, g in tqdm(map_method(task, selection),

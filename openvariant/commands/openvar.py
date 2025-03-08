@@ -5,8 +5,7 @@ import openvariant
 from openvariant.tasks.cat import cat as cat_task
 from openvariant.tasks.count import count as count_task
 from openvariant.tasks.groupby import group_by as group_by_task
-from openvariant.tasks.plugin import PluginActions
-from openvariant.utils.utils import loadEnvironmentVariables
+from openvariant.utils.utils import loadEnvironmentVariables, import_class_from_module
 
 
 @click.group(context_settings={'help_option_names': ['-h', '--help']})
@@ -69,7 +68,7 @@ def count(input_path: str, where: str, group_by: str, cores: int, quite: bool, a
 @click.option('--where', '-w', type=click.STRING, default=None, help="Filter expression. eg: CHROMOSOME == 4")
 @click.option('--group_by', '-g', type=click.STRING, default=None, help="Key to group rows. eg: COUNTRY")
 @click.option('--script', '-s', type=click.STRING, default=None,
-              help="Filter expression. eg: gzip > \${GROUP_KEY}.parsed.tsv.gz")
+              help=r"Filter expression. eg: gzip > \${GROUP_KEY}.parsed.tsv.gz")
 @click.option('--annotations', '-a', default=None, type=click.Path(exists=True),
               help="Annotation path. eg: /path/annotation_vcf.yaml")
 @click.option('--cores', '-c', type=click.INT, default=cpu_count(), help='Maximum processes to run in parallel.')
@@ -110,7 +109,11 @@ def groupby(input_path: str, script: str, where: str, group_by: str, cores: int,
 @click.option('--name', '-n', type=click.STRING, help="Name of the plugin.")
 def plugin(action, name: str or None):
     """Actions to apply on the plugin system."""
-    PluginActions[action.upper()].value(name)
+    class_name = action.upper()
+    module_name = "openvariant.tasks.plugin"
+    ClassAnnotation = import_class_from_module(module_name, class_name)
+    instance = ClassAnnotation()
+    instance(name)
 
 
 if __name__ == "__main__":
