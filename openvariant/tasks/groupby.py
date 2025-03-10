@@ -41,7 +41,7 @@ def _group(base_path: str, annotation_path: str or None, key_by: str) -> List[Tu
         if isinstance(by_value, tuple):
             values, result_read = _get_unique_values(file, ann, key_by)
             for s in values:
-                results[s].append((file, ann))
+                results[s].append((file, ann.path))
 
     results_by_groups = []
     for key, group_select in results.items():
@@ -57,7 +57,9 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
     if script is None:
         try:
             for value in group_values:
-                result = Variant(value[0], value[1])
+                input_file = value[0]
+                annotation = Annotation(value[1])
+                result = Variant(input_file, annotation)
 
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
 
@@ -72,7 +74,6 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
         except BrokenPipeError:
             pass
         return group_key, output, False
-
     else:
         try:
             process = Popen(script, shell=True, stdin=PIPE, stdout=PIPE,
@@ -81,7 +82,9 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
             raise ChildProcessError(f"Unable to run '{script}': {e}")
         try:
             for value in group_values:
-                result = Variant(value[0], value[1])
+                input_file = value[0]
+                annotation = Annotation(value[1])
+                result = Variant(input_file, annotation)
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
 
                 if header:
@@ -147,6 +150,7 @@ def group_by(base_path: str, annotation_path: str or None, script: str or None, 
         A schema with separate groups and the numbers of rows for each.
     """
     selection = _group(base_path, annotation_path, key_by)
+    print(selection)
     with Pool(cores) as pool:
         task = partial(_group_by_task, where=where, key_by=key_by, script=script, header=header)
         map_method = map if cores == 1 or len(selection) <= 1 else pool.imap_unordered

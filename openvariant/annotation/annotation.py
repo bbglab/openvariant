@@ -171,8 +171,7 @@ class Annotation:
             ClassAnnotation = import_class_from_module(module_name, class_name)
             instance = ClassAnnotation()
 
-            self._annotations[k[AnnotationKeys.FIELD.value]] = \
-                instance(k, self._path)
+            self._annotations[k[AnnotationKeys.FIELD.value]] = instance(k, self._path)
 
         self._columns = raw_annotation.get(AnnotationGeneralKeys.COLUMNS.value, list(self.annotations.keys()))
         self._check_columns()

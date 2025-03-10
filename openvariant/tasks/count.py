@@ -16,16 +16,16 @@ from openvariant.find_files.find_files import findfiles
 from openvariant.variant.variant import Variant
 
 
-def _count_task(selection: Tuple[str, Annotation], group_by: str, where: str) -> Tuple[int, Union[dict, None]]:
+def _count_task(selection: [str, str], group_by: str, where: str) -> Tuple[int, Union[dict, None]]:
     """Main functionality for count task"""
 
     i = 0
     input_file, input_annotations = selection
-
-    result = Variant(input_file, input_annotations)
+    annotation = Annotation(input_annotations)
+    result = Variant(input_file, annotation)
 
     if group_by is None:
-        for r in result.read(where=where):
+        for _ in result.read(where=where):
             i += 1
         return i, None
     else:
@@ -72,7 +72,7 @@ def count(base_path: str, annotation_path: str or None, group_by: str = None, wh
     """
     selection = []
     for k, a in findfiles(base_path, annotation_path):
-        selection += [(k, a)]
+        selection += [(k, a.path)]
 
     with Pool(cores) as pool:
         groups = {}
