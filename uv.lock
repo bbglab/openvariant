@@ -594,7 +594,7 @@ wheels = [
 
 [[package]]
 name = "open-variant"
-version = "1.0.1"
+version = "1.0.2"
 source = { editable = "." }
 dependencies = [
     { name = "appdirs" },
