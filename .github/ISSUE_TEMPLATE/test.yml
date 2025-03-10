@@ -27,7 +27,7 @@ body:
       label: Why it should be implemented/changed?
       placeholder: Give us the reasons why this unit test should be implemented or modified.
     validations:
-      required: true
+      required: false
   - type: textarea
     id: suggest
     attributes:

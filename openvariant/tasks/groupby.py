@@ -41,7 +41,7 @@ def _group(base_path: str, annotation_path: str or None, key_by: str) -> List[Tu
         if isinstance(by_value, tuple):
             values, result_read = _get_unique_values(file, ann, key_by)
             for s in values:
-                results[s].append((file, ann))
+                results[s].append((file, ann.path))
 
     results_by_groups = []
     for key, group_select in results.items():
@@ -57,8 +57,9 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
     if script is None:
         try:
             for value in group_values:
-                result = Variant(value[0], value[1])
-
+                input_file = value[0]
+                annotation = Annotation(value[1])
+                result = Variant(input_file, annotation)
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
 
                 if header:
@@ -72,7 +73,6 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
         except BrokenPipeError:
             pass
         return group_key, output, False
-
     else:
         try:
             process = Popen(script, shell=True, stdin=PIPE, stdout=PIPE,
@@ -81,7 +81,9 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
             raise ChildProcessError(f"Unable to run '{script}': {e}")
         try:
             for value in group_values:
-                result = Variant(value[0], value[1])
+                input_file = value[0]
+                annotation = Annotation(value[1])
+                result = Variant(input_file, annotation)
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
 
                 if header:
