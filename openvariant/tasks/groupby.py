@@ -49,7 +49,7 @@ def _group(base_path: str, annotation_path: str or None, key_by: str) -> List[Tu
     return results_by_groups
 
 
-def _group_by_task(selection, where=None, key_by=None, script='', header=False) -> Tuple[str, List, bool]:
+def _group_by_task(selection, where=None, key_by=None, script='', header=False, skip_files=False) -> Tuple[str, List, bool]:
     """Main functionality for group by task"""
     group_key, group_values = selection
 
@@ -59,7 +59,7 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
             for value in group_values:
                 input_file = value[0]
                 annotation = Annotation(value[1])
-                result = Variant(input_file, annotation)
+                result = Variant(input_file, annotation, skip_files)
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
 
                 if header:
@@ -83,7 +83,7 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
             for value in group_values:
                 input_file = value[0]
                 annotation = Annotation(value[1])
-                result = Variant(input_file, annotation)
+                result = Variant(input_file, annotation, skip_files)
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
 
                 if header:
@@ -116,7 +116,7 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
 
 
 def group_by(base_path: str, annotation_path: str or None, script: str or None, key_by: str, where: str or None = None,
-             cores=cpu_count(), quite=False, header: bool = False) -> Generator[Tuple[str, List, bool], None, None]:
+             cores=cpu_count(), quite=False, header: bool = False, skip_files: bool = False) -> Generator[Tuple[str, List, bool], None, None]:
     """Print on the stdout the group by result.
 
     It'll parse the input files with its proper annotation schema, and it'll show the parsed result separated for each
@@ -141,6 +141,9 @@ def group_by(base_path: str, annotation_path: str or None, script: str or None, 
         Number of cores to parallelize the task.
     header : bool
         Number of cores to parallelize the task.
+    skip_files : bool
+        Skip unreadable files and directories.
+
     Returns
     ----------
     int
@@ -150,7 +153,7 @@ def group_by(base_path: str, annotation_path: str or None, script: str or None, 
     """
     selection = _group(base_path, annotation_path, key_by)
     with Pool(cores) as pool:
-        task = partial(_group_by_task, where=where, key_by=key_by, script=script, header=header)
+        task = partial(_group_by_task, where=where, key_by=key_by, script=script, header=header, skip_files=skip_files)
         map_method = map if cores == 1 or len(selection) <= 1 else pool.imap_unordered
 
         for group_key, group_result, command in tqdm(
