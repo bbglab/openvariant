@@ -54,9 +54,9 @@ def _scan_files(base_path: str, annotation: Annotation, fix: bool, skip_files: b
                 raise PermissionError(f"Permission denied on {file_path}")
     else:
         if skip_files:
-            warnings.warn(f"Unable to open {base_path}, it's not a file nor a directory.", UserWarning)
+            warnings.warn(f"Unable to open {base_path}, it is neither a file nor a directory, or it does not exist.", UserWarning)
         else:
-            raise PermissionError(f"Unable to open {base_path}, it's not a file nor a directory.")
+            raise FileNotFoundError(f"Unable to open {base_path}, it is neither a file nor a directory, or it does not exist.")
 
 
 
