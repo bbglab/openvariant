@@ -8,6 +8,7 @@ import csv
 import ctypes
 import gzip
 import lzma
+import warnings
 from fnmatch import fnmatch
 from functools import lru_cache
 import mmap
@@ -242,8 +243,15 @@ class Variant:
 
                     if row and not _exclude(line_dict, annotation.excludes):
                         yield row
-
-            except (ValueError, IndexError, KeyError) as e:
+            except IndexError as e:
+                if line == ['']:
+                    warnings.warn(f"Warning: empty line {lnum} on {file_path}.", UserWarning)
+                    pass
+                else:
+                    self.mm.close()
+                    self.file.close()
+                    raise ValueError(f"Error parsing line: {lnum} {file_path}: {e}")
+            except (ValueError, KeyError) as e:
                 self.mm.close()
                 self.file.close()
                 raise ValueError(f"Error parsing line: {lnum} {file_path}: {e}")
