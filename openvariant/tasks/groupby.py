@@ -17,10 +17,10 @@ from openvariant.find_files.find_files import findfiles
 from openvariant.variant.variant import Variant
 
 
-def _get_unique_values(file_path: str, annotation: Annotation, key: str) -> Tuple[set, List]:
+def _get_unique_values(file_path: str, annotation: Annotation, key: str, skip_files: bool) -> Tuple[set, List]:
     """Get unique values of the group by field"""
     values = set()
-    result = Variant(file_path, annotation)
+    result = Variant(file_path, annotation, skip_files)
     result_read = []
     try:
         for r in result.read(group_key=key):
@@ -32,14 +32,14 @@ def _get_unique_values(file_path: str, annotation: Annotation, key: str) -> Tupl
     return values, result_read
 
 
-def _group(base_path: str, annotation_path: str or None, key_by: str) -> List[Tuple[str, List]]:
+def _group(base_path: str, annotation_path: str or None, key_by: str, skip_files: bool) -> List[Tuple[str, List]]:
     """Group file and its annotation by the group value"""
     results = defaultdict(list)
     for file, ann in findfiles(base_path, annotation_path):
         by_value = ann.annotations.get(key_by, None)
 
         if isinstance(by_value, tuple):
-            values, result_read = _get_unique_values(file, ann, key_by)
+            values, result_read = _get_unique_values(file, ann, key_by, skip_files)
             for s in values:
                 results[s].append((file, ann.path))
 
@@ -151,7 +151,7 @@ def group_by(base_path: str, annotation_path: str or None, script: str or None, 
     dict
         A schema with separate groups and the numbers of rows for each.
     """
-    selection = _group(base_path, annotation_path, key_by)
+    selection = _group(base_path, annotation_path, key_by, skip_files)
     with Pool(cores) as pool:
         task = partial(_group_by_task, where=where, key_by=key_by, script=script, header=header, skip_files=skip_files)
         map_method = map if cores == 1 or len(selection) <= 1 else pool.imap_unordered
