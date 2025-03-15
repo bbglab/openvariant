@@ -159,7 +159,7 @@ class Variant:
             Save parsed files on specified location.
     """
 
-    def __init__(self, path: str, annotation: Annotation, skip_files: bool) -> None:
+    def __init__(self, path: str, annotation: Annotation, skip_files: bool = False) -> None:
         """
         Inits Variant with files path and Annotation object
 
