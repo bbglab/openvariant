@@ -17,10 +17,10 @@ from openvariant.find_files.find_files import findfiles
 from openvariant.variant.variant import Variant
 
 
-def _get_unique_values(file_path: str, annotation: Annotation, key: str) -> Tuple[set, List]:
+def _get_unique_values(file_path: str, annotation: Annotation, key: str, skip_files: bool) -> Tuple[set, List]:
     """Get unique values of the group by field"""
     values = set()
-    result = Variant(file_path, annotation)
+    result = Variant(file_path, annotation, skip_files)
     result_read = []
     try:
         for r in result.read(group_key=key):
@@ -32,14 +32,14 @@ def _get_unique_values(file_path: str, annotation: Annotation, key: str) -> Tupl
     return values, result_read
 
 
-def _group(base_path: str, annotation_path: str or None, key_by: str) -> List[Tuple[str, List]]:
+def _group(base_path: str, annotation_path: str or None, key_by: str, skip_files: bool) -> List[Tuple[str, List]]:
     """Group file and its annotation by the group value"""
     results = defaultdict(list)
     for file, ann in findfiles(base_path, annotation_path):
         by_value = ann.annotations.get(key_by, None)
 
         if isinstance(by_value, tuple):
-            values, result_read = _get_unique_values(file, ann, key_by)
+            values, result_read = _get_unique_values(file, ann, key_by, skip_files)
             for s in values:
                 results[s].append((file, ann.path))
 
@@ -49,7 +49,7 @@ def _group(base_path: str, annotation_path: str or None, key_by: str) -> List[Tu
     return results_by_groups
 
 
-def _group_by_task(selection, where=None, key_by=None, script='', header=False) -> Tuple[str, List, bool]:
+def _group_by_task(selection, where=None, key_by=None, script='', header=False, skip_files=False) -> Tuple[str, List, bool]:
     """Main functionality for group by task"""
     group_key, group_values = selection
 
@@ -59,7 +59,7 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
             for value in group_values:
                 input_file = value[0]
                 annotation = Annotation(value[1])
-                result = Variant(input_file, annotation)
+                result = Variant(input_file, annotation, skip_files)
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
 
                 if header:
@@ -83,7 +83,7 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
             for value in group_values:
                 input_file = value[0]
                 annotation = Annotation(value[1])
-                result = Variant(input_file, annotation)
+                result = Variant(input_file, annotation, skip_files)
                 columns = result.annotation.columns if len(result.annotation.columns) != 0 else result.header
 
                 if header:
@@ -116,7 +116,7 @@ def _group_by_task(selection, where=None, key_by=None, script='', header=False) 
 
 
 def group_by(base_path: str, annotation_path: str or None, script: str or None, key_by: str, where: str or None = None,
-             cores=cpu_count(), quite=False, header: bool = False) -> Generator[Tuple[str, List, bool], None, None]:
+             cores=cpu_count(), quite=False, header: bool = False, skip_files: bool = False) -> Generator[Tuple[str, List, bool], None, None]:
     """Print on the stdout the group by result.
 
     It'll parse the input files with its proper annotation schema, and it'll show the parsed result separated for each
@@ -141,6 +141,9 @@ def group_by(base_path: str, annotation_path: str or None, script: str or None, 
         Number of cores to parallelize the task.
     header : bool
         Number of cores to parallelize the task.
+    skip_files : bool
+        Skip unreadable files and directories.
+
     Returns
     ----------
     int
@@ -148,9 +151,9 @@ def group_by(base_path: str, annotation_path: str or None, script: str or None, 
     dict
         A schema with separate groups and the numbers of rows for each.
     """
-    selection = _group(base_path, annotation_path, key_by)
+    selection = _group(base_path, annotation_path, key_by, skip_files)
     with Pool(cores) as pool:
-        task = partial(_group_by_task, where=where, key_by=key_by, script=script, header=header)
+        task = partial(_group_by_task, where=where, key_by=key_by, script=script, header=header, skip_files=skip_files)
         map_method = map if cores == 1 or len(selection) <= 1 else pool.imap_unordered
 
         for group_key, group_result, command in tqdm(

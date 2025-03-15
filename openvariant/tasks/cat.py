@@ -16,7 +16,7 @@ def _format_line(line: List[str], out_format: str) -> str:
 
 
 def cat(base_path: str, annotation_path: str or None = None, where: str = None, header_show: bool = True,
-        output: str or None = None) -> None:
+        output: str or None = None, skip_files: bool = False) -> None:
     """Print on the stdout/"output" the parsed files.
 
     It will parse the input files with its proper annotation schema, and it'll show the result on the stdout.
@@ -34,12 +34,14 @@ def cat(base_path: str, annotation_path: str or None = None, where: str = None, 
         Shows header on the output.
     output : str or None
         Save output on a file.
+    skip_files : bool
+        Skip unreadable files and directories.
     """
     out_file = None
     if output:
         out_file = open(output, "w")
-    for file, annotation in findfiles(base_path, annotation_path):
-        result = Variant(file, annotation)
+    for file, annotation in findfiles(base_path, annotation_path, skip_files):
+        result = Variant(file, annotation, skip_files)
         header = result.header
         if header_show:
             if output:

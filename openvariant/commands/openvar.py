@@ -24,9 +24,10 @@ def openvar():
               help="Annotation path. eg: /path/annotation_vcf.yaml")
 @click.option('--header', is_flag=True, help="Show the result header.")
 @click.option('--output', '-o', default=None, help="File to write the output.")
-def cat(input_path: str, where: str or None, annotations: str or None, header: bool, output: str or None):
+@click.option('--skip', is_flag=True, help="Skip files and directories that are unreadable.")
+def cat(input_path: str, where: str or None, annotations: str or None, header: bool, output: str or None, skip: bool):
     """Print the parsed files on the stdout/"output"."""
-    cat_task(input_path, annotations, where, header, output)
+    cat_task(input_path, annotations, where, header, output, skip)
 
 
 @openvar.command(name="count", short_help='Number of rows that matches a specified criterion.')
@@ -38,10 +39,11 @@ def cat(input_path: str, where: str or None, annotations: str or None, header: b
 @click.option('--cores', '-c', type=click.INT, default=cpu_count(), help='Maximum processes to run in parallel.')
 @click.option('--quite', '-q', is_flag=True, help="Don't show the progress.")
 @click.option('--output', '-o', default=None, help="File to write the output.")
+@click.option('--skip', is_flag=True, help="Skip files and directories that are unreadable.")
 def count(input_path: str, where: str, group_by: str, cores: int, quite: bool, annotations: str or None,
-          output: str or None) -> None:
+          output: str or None, skip: bool) -> None:
     """Print on the stdout/"output" the number of rows that meets the criteria."""
-    result = count_task(input_path, annotations, group_by=group_by, where=where, cores=cores, quite=quite)
+    result = count_task(input_path, annotations, group_by=group_by, where=where, cores=cores, quite=quite, skip_files=skip)
     out_file = None
     if output:
         out_file = open(output, "w")
@@ -74,14 +76,15 @@ def count(input_path: str, where: str, group_by: str, cores: int, quite: bool, a
 @click.option('--cores', '-c', type=click.INT, default=cpu_count(), help='Maximum processes to run in parallel.')
 @click.option('--quite', '-q', is_flag=True, help="Don't show the progress.")
 @click.option('--output', '-o', help="File to write the output.", default=None)
+@click.option('--skip', is_flag=True, help="Skip files and directories that are unreadable.")
 def groupby(input_path: str, script: str, where: str, group_by: str, cores: int, quite: bool, annotations: str or None,
-            header: bool, show: bool, output: str or None):
+            header: bool, show: bool, output: str or None, skip: bool):
     """Print on the stdout/"output" the parsed files group by a specified field."""
     out_file = None
     if output:
         out_file = open(output, 'w')
     for group_key, group_result, command in group_by_task(input_path, annotations, script, key_by=group_by, where=where,
-                                                          cores=cores, quite=quite, header=header):
+                                                          cores=cores, quite=quite, header=header, skip_files=skip):
         for r in group_result:
             if command:
                 if output:
