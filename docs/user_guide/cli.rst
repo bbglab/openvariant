@@ -42,11 +42,12 @@ Concatenate parsed files on the standard output. For these options the parameter
 * ``-w,--where`` - Condition expression.
 * ``-a,--annotations`` - Annotation path.
 * ``--header`` - Show headers on the result.
+* ``--skip`` - Skip unreadable files and directories.
 
 .. code-block:: bash
 
     # Example
-    openvar cat /project/datasets -w "SCORE >= 5" -a /project/annotation.yaml  --header
+    openvar cat /project/datasets -w "SCORE >= 5" -a /project/annotation.yaml  --header --skip
 
 
 Count command
@@ -60,11 +61,12 @@ Number of rows that matches a specific condition. The parameters are the followi
 * ``-a,--annotations`` - Annotation path.
 * ``-c,--cores`` - Maximum processes to run in parallel.
 * ``-q,--quite`` - Don't show the progress.
+* ``--skip`` - Skip unreadable files and directories.
 
 .. code-block:: bash
 
     # Example
-    openvar count /project/datasets -w "REF >= 5034" -g COUNTRY -a /project/annotation.yaml -c 10 -q
+    openvar count /project/datasets -w "REF >= 5034" -g COUNTRY -a /project/annotation.yaml -c 10 -q --skip
 
 Group by command
 #################
@@ -77,11 +79,12 @@ Number of rows that matches a specific condition. The parameters are the followi
 * ``-a,--annotations`` - Annotation path.
 * ``-c,--cores`` - Maximum processes to run in parallel.
 * ``-q,--quite`` - Don't show the progress.
+* ``--skip`` - Skip unreadable files and directories.
 
 .. code-block:: bash
 
     # Example
-    openvar count /project/datasets -w "REF >= 5034" -g COUNTRY -a /project/annotation.yaml -c 10 -q
+    openvar count /project/datasets -w "REF >= 5034" -g COUNTRY -a /project/annotation.yaml -c 10 -q --skip
 
 Plugin command
 ################

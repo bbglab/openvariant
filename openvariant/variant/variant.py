@@ -159,7 +159,7 @@ class Variant:
             Save parsed files on specified location.
     """
 
-    def __init__(self, path: str, annotation: Annotation, skip_files: bool = False) -> None:
+    def __init__(self, path: str, annotation: Annotation, skip_files: bool) -> None:
         """
         Inits Variant with files path and Annotation object
 
@@ -169,6 +169,8 @@ class Variant:
             A string path where files to parse are located (could be directory or a single file).
         annotation : Annotation
             Object to describe the schema of parsed files.
+        skip_files : bool
+            Skip unreadable files and directories.
         """
         if path is None or path == '' or not isfile(path):
             raise ValueError('Invalid path, must be a file')
