@@ -96,7 +96,7 @@ html_context = {
 
 html_theme_options = {
     'use_edit_page_button': True,
-    "show_nav_level": 4,
+    "show_nav_level": 0,
     "icon_links": [
         {
             "name": "GitHub",

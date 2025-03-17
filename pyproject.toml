@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "open-variant"
-version = "1.0.2"
+version = "1.1.0"
 description = "OpenVariant provides different functionalities to read, parse and operate different multiple input file formats, being able to customize the output."
 authors = [
     { name = "BBGLab (Barcelona Biomedical Genomics Lab)", email = "bbglab@irbbarcelona.org" }
