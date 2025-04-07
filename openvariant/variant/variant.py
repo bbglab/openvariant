@@ -50,7 +50,7 @@ def _base_parser(mm_obj: mmap, file_path: str, delimiter: str, skip_files: bool)
         for l_num, line in enumerate(iter(mm_obj.readline, b'')):
             line = line.decode('utf-8')
             row_line = line.split(AnnotationDelimiter[delimiter].value)
-            row_line = list(map(lambda w: w.replace("\n", ""), row_line))
+            row_line = list(map(lambda w: w.rstrip("\r\n"), row_line))
 
             if len(row_line) == 0:
                 continue
