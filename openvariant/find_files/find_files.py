@@ -7,6 +7,7 @@ import glob
 from os import listdir
 from os.path import isfile, join, isdir, dirname
 from typing import Generator
+import warnings
 
 from openvariant.annotation.annotation import Annotation
 from openvariant.annotation.config_annotation import ANNOTATION_EXTENSION
@@ -23,7 +24,7 @@ def _get_annotation(file_path, annotation):
             raise AttributeError("Unable to parse annotation file, check its location.")
 
 
-def _scan_files(base_path: str, annotation: Annotation, fix: bool):
+def _scan_files(base_path: str, annotation: Annotation, fix: bool, skip_files: bool):
     """Recursive exploration from a base path"""
     if isdir(base_path):
         if not fix:
@@ -34,22 +35,32 @@ def _scan_files(base_path: str, annotation: Annotation, fix: bool):
         for file_name in list_files:
             file_path = join(base_path, file_name)
             try:
-                for f, a in _scan_files(file_path, annotation, fix):
+                for f, a in _scan_files(file_path, annotation, fix, skip_files):
                     yield f, a
-            except PermissionError as e:
-                raise PermissionError(f"Unable to open {file_name}: {e}")
+            except PermissionError:
+                if skip_files:
+                    warnings.warn(f"Permission denied on {file_path}", UserWarning)
+                else:
+                    raise PermissionError(f"Permission denied on {file_path}")
     elif isfile(base_path):
         file_path = base_path
         try:
             for f, a in _get_annotation(file_path, annotation):
                 yield f, a
-        except PermissionError as e:
-            raise PermissionError(f"Unable to open {base_path}: {e}")
+        except PermissionError:
+            if skip_files:
+                warnings.warn(f"Permission denied on {file_path}", UserWarning)
+            else:
+                raise PermissionError(f"Permission denied on {file_path}")
     else:
-        raise FileNotFoundError(f"Unable to open {base_path}, it's not a file nor a directory.")
+        if skip_files:
+            warnings.warn(f"Unable to open {base_path}, it is neither a file nor a directory, or it does not exist.", UserWarning)
+        else:
+            raise FileNotFoundError(f"Unable to open {base_path}, it is neither a file nor a directory, or it does not exist.")
 
 
-def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Generator[str, Annotation, None]:
+
+def _find_files(base_path: str, annotation: Annotation or None, fix: bool, skip_files: bool) -> Generator[str, Annotation, None]:
     """Recursive exploration from a base path distinct if there's a fix annotation or no"""
     if not fix:
         if isfile(base_path):
@@ -59,11 +70,11 @@ def _find_files(base_path: str, annotation: Annotation or None, fix: bool) -> Ge
         for annotation_file in glob.iglob(join(annotation_path, "*.{}".format(ANNOTATION_EXTENSION))):
             annotation = Annotation(annotation_file)
             
-    for f, a in _scan_files(base_path, annotation, fix):
+    for f, a in _scan_files(base_path, annotation, fix, skip_files):
         yield f, a
 
 
-def findfiles(base_path: str, annotation_path: str or None = None) -> Generator[str, Annotation, None]:
+def findfiles(base_path: str, annotation_path: str or None = None, skip_files: bool = False) -> Generator[str, Annotation, None]:
     """Get each file and its proper annotation object.
 
     Parameters
@@ -72,6 +83,8 @@ def findfiles(base_path: str, annotation_path: str or None = None) -> Generator[
         Base path of input folder/file.
     annotation_path : str or None
         Path of annotation file.
+    skip_files : bool
+        Skip unreadable files and directories.
 
     Yields
     -------
@@ -81,5 +94,5 @@ def findfiles(base_path: str, annotation_path: str or None = None) -> Generator[
         The proper schema of each input file.
     """
     annotation, fix = (Annotation(annotation_path), True) if annotation_path is not None else (None, False)
-    for f, a in _find_files(base_path, annotation, fix):
+    for f, a in _find_files(base_path, annotation, fix, skip_files):
         yield f, a

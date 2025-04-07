@@ -8,6 +8,7 @@ import csv
 import ctypes
 import gzip
 import lzma
+import warnings
 from fnmatch import fnmatch
 from functools import lru_cache
 import mmap
@@ -37,7 +38,7 @@ def _open_file(file_path: str, mode='r+b'):
     return mm, file
 
 
-def _base_parser(mm_obj: mmap, file_path: str, delimiter: str) -> Generator[int, str, None]:
+def _base_parser(mm_obj: mmap, file_path: str, delimiter: str, skip_files: bool) -> Generator[int, str, None]:
     """Cleaning comments and irrelevant data"""
     try:
         if file_path.endswith('gz') or file_path.endswith('bgz'):
@@ -45,20 +46,26 @@ def _base_parser(mm_obj: mmap, file_path: str, delimiter: str) -> Generator[int,
     except KeyError:
         raise KeyError(f"'{delimiter}' key not found.")
 
-    for l_num, line in enumerate(iter(mm_obj.readline, b'')):
-        line = line.decode('utf-8')
-        row_line = line.split(AnnotationDelimiter[delimiter].value)
-        row_line = list(map(lambda w: w.replace("\n", ""), row_line))
+    try:
+        for l_num, line in enumerate(iter(mm_obj.readline, b'')):
+            line = line.decode('utf-8')
+            row_line = line.split(AnnotationDelimiter[delimiter].value)
+            row_line = list(map(lambda w: w.rstrip("\r\n"), row_line))
 
-        if len(row_line) == 0:
-            continue
+            if len(row_line) == 0:
+                continue
 
-        # Skip comments
-        if (row_line[0].startswith('#') or row_line[0].startswith('##') or row_line[0].startswith('browser') or
-            row_line[0].startswith('track')) and not row_line[0].startswith('#CHROM'):
-            continue
+            # Skip comments
+            if (row_line[0].startswith('#') or row_line[0].startswith('##') or row_line[0].startswith('browser') or
+                row_line[0].startswith('track')) and not row_line[0].startswith('#CHROM'):
+                continue
 
-        yield l_num, row_line
+            yield l_num, row_line
+    except Exception as e:
+        if skip_files:
+            warnings.warn(f"Warning: unable to parse {file_path}: {e}.", UserWarning)
+        else:
+            raise e
 
 
 def _exclude(line: dict, excludes: dict) -> bool:
@@ -152,7 +159,7 @@ class Variant:
             Save parsed files on specified location.
     """
 
-    def __init__(self, path: str, annotation: Annotation) -> None:
+    def __init__(self, path: str, annotation: Annotation, skip_files: bool = False) -> None:
         """
         Inits Variant with files path and Annotation object
 
@@ -162,6 +169,8 @@ class Variant:
             A string path where files to parse are located (could be directory or a single file).
         annotation : Annotation
             Object to describe the schema of parsed files.
+        skip_files : bool
+            Skip unreadable files and directories.
         """
         if path is None or path == '' or not isfile(path):
             raise ValueError('Invalid path, must be a file')
@@ -173,6 +182,7 @@ class Variant:
         self._annotation: Annotation = annotation
         self._header: List[str] = list(annotation.annotations.keys()) if len(annotation.columns) == 0 \
             else annotation.columns
+        self.skip_files = skip_files
 
     def _unify(self, base_path: str, annotation: Annotation, group_by: str = None, display_header: bool = True) \
             -> Generator[dict, None, None]:
@@ -190,65 +200,79 @@ class Variant:
         if not any(matches):
             raise NameError("Annotation patterns don't match with input file.")
 
-        self.mm, self.file = _open_file(file_path, "rb")
-        for lnum, line in _base_parser(self.mm, file_path, annotation.delimiter):
-            try:
-                if header is None:
-                    header, row_header = _extract_header(file_path, line, annotation)
-                    if not display_header:
-                        continue
-                    row = row_header
-                    yield row
-                else:
-                    line_dict = {}
-                    row, plugin_values, mapping_values = {}, {}, {}
-                    for head in annotation.annotations.keys():
-                        type_ann, value, func = header[head]
-                        if type_ann == AnnotationTypes.PLUGIN.name:
-                            plugin_values[head] = header[head]
-                        elif type_ann == AnnotationTypes.MAPPING.name:
-                            mapping_values[head] = header[head]
-                        elif type_ann == AnnotationTypes.INTERNAL.name:
-                            if len(value[0]) == 1:
-                                pos = list(value[0].values())[0]
-                                value = line[pos] if value is not None else None
-                            elif len(value[0]) == 0:
-                                value = line[pos] if value[1] is not None else None 
-                            else:
-                                pos = {}
-                                for val, position in value[0].items():
-                                    pos.update({val: line[position]})
-                                value = value[1].format(**pos)
+        try:
+            self.mm, self.file = _open_file(file_path, "rb")
 
-                            line_dict[head] = _parse_field(value, func)
-                        else:
-                            line_dict[head] = _parse_field(value, func)
-
-                    for head, mapping in mapping_values.items():
-                        _, builder_mapping, func = mapping
-                        line_dict[head] = _parse_mapping_field(builder_mapping, line_dict, func)
-                    for head, plug in plugin_values.items():
-                        _, ctxt_plugin, func_plugin = plug
-                        line_dict[head] = _parse_plugin_field(line_dict, head, file_path, ctxt_plugin, func_plugin)
-
-                    for k in annotation.columns:
-                        row[k] = line_dict[k].format(**line_dict)
-
-                    if group_by is not None and group_by not in annotation.columns:
-                        try:
-                            row[group_by] = line_dict[group_by].format(**line_dict)
-                        except KeyError as e:
-                            raise KeyError(f"Unable to find group by: {e}. Check annotation for {file_path} file")
-
-                    if row and not _exclude(line_dict, annotation.excludes):
+            for lnum, line in _base_parser(self.mm, file_path, annotation.delimiter, self.skip_files):
+                try:
+                    if header is None:
+                        header, row_header = _extract_header(file_path, line, annotation)
+                        if not display_header:
+                            continue
+                        row = row_header
                         yield row
+                    else:
+                        line_dict = {}
+                        row, plugin_values, mapping_values = {}, {}, {}
+                        for head in annotation.annotations.keys():
+                            type_ann, value, func = header[head]
+                            if type_ann == AnnotationTypes.PLUGIN.name:
+                                plugin_values[head] = header[head]
+                            elif type_ann == AnnotationTypes.MAPPING.name:
+                                mapping_values[head] = header[head]
+                            elif type_ann == AnnotationTypes.INTERNAL.name:
+                                if len(value[0]) == 1:
+                                    pos = list(value[0].values())[0]
+                                    value = line[pos] if value is not None else None
+                                elif len(value[0]) == 0:
+                                    value = line[pos] if value[1] is not None else None
+                                else:
+                                    pos = {}
+                                    for val, position in value[0].items():
+                                        pos.update({val: line[position]})
+                                    value = value[1].format(**pos)
 
-            except (ValueError, IndexError, KeyError) as e:
-                self.mm.close()
-                self.file.close()
-                raise ValueError(f"Error parsing line: {lnum} {file_path}: {e}")
-        self.mm.close()
-        self.file.close()
+                                line_dict[head] = _parse_field(value, func)
+                            else:
+                                line_dict[head] = _parse_field(value, func)
+
+                        for head, mapping in mapping_values.items():
+                            _, builder_mapping, func = mapping
+                            line_dict[head] = _parse_mapping_field(builder_mapping, line_dict, func)
+                        for head, plug in plugin_values.items():
+                            _, ctxt_plugin, func_plugin = plug
+                            line_dict[head] = _parse_plugin_field(line_dict, head, file_path, ctxt_plugin, func_plugin)
+
+                        for k in annotation.columns:
+                            row[k] = line_dict[k].format(**line_dict)
+
+                        if group_by is not None and group_by not in annotation.columns:
+                            try:
+                                row[group_by] = line_dict[group_by].format(**line_dict)
+                            except KeyError as e:
+                                raise KeyError(f"Unable to find group by: {e}. Check annotation for {file_path} file")
+
+                        if row and not _exclude(line_dict, annotation.excludes):
+                            yield row
+                except IndexError as e:
+                    if line == ['']:
+                        warnings.warn(f"Warning: empty line {lnum} on {file_path}.", UserWarning)
+                        pass
+                    else:
+                        self.mm.close()
+                        self.file.close()
+                        raise ValueError(f"Error parsing line: {lnum} {file_path}: {e}")
+                except (ValueError, KeyError) as e:
+                    self.mm.close()
+                    self.file.close()
+                    raise ValueError(f"Error parsing line: {lnum} {file_path}: {e}")
+            self.mm.close()
+            self.file.close()
+        except PermissionError:
+            if self.skip_files:
+                warnings.warn(f"Permission denied on {file_path}", UserWarning)
+            else:
+                raise PermissionError(f"Permission denied on {file_path}")
 
     @property
     def path(self) -> str:

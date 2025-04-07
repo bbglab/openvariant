@@ -50,26 +50,26 @@ body:
     validations:
       required: true
   - type: input
-    id: installation
-    attributes:
-      label: Installation method
-      placeholder: e.g. pip, source code
-    validations:
-      required: true
-  - type: input
-    id: environment
-    attributes:
-      label: Environment
-      placeholder: e.g. Jupyter notebook, CLI, Nextflow, Docker/Singularity, Conda, script
-    validations:
-      required: true
-  - type: input
     id: os
     attributes:
       label: OS
       placeholder: e.g. Debian/Ubuntu, Arch Linux, macOS, Windows
     validations:
       required: true
+  - type: input
+    id: installation
+    attributes:
+      label: Installation method
+      placeholder: e.g. pip, source code
+    validations:
+      required: false
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: e.g. Jupyter notebook, CLI, Nextflow, Docker/Singularity, Conda, script
+    validations:
+      required: false
   - type: textarea
     id: comment
     attributes:

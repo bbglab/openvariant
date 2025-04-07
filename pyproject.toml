@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "open-variant"
-version = "1.0.1"
+dynamic = ["version"]
 description = "OpenVariant provides different functionalities to read, parse and operate different multiple input file formats, being able to customize the output."
 authors = [
     { name = "BBGLab (Barcelona Biomedical Genomics Lab)", email = "bbglab@irbbarcelona.org" }
@@ -21,6 +21,8 @@ requires-python = ">=3.10"
 license = { file = "LICENSE" }
 keywords = ["bioinformatics", "openvariant", "openvar", "bbglab"]
 
+[tool.hatch.version]
+path = "openvariant/__init__.py"
 
 [project.urls]
 Homepage = "https://github.com/bbglab/openvariant"

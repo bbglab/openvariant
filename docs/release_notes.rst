@@ -8,12 +8,25 @@ Version history
 +------------+----------+----------------------------------------+----------------------+
 |  **Date**  | **Ver.** |               **Author**               |      **Comment**     | 
 +============+==========+========================================+======================+
+| 2025-03-17 |   1.1.0  | `@bbglab <https://github.com/bbglab>`_ | Patch release        |
+|            |          |                                        |                      |
++------------+----------+----------------------------------------+----------------------+
 | 2024-12-12 |   1.0.1  | `@bbglab <https://github.com/bbglab>`_ | Patch release        |
 |            |          |                                        |                      |
 +------------+----------+----------------------------------------+----------------------+
 | 2024-07-25 |   1.0.0  | `@bbglab <https://github.com/bbglab>`_ | First stable release | 
 |            |          |                                        |                      | 
 +------------+----------+----------------------------------------+----------------------+
+
+OpenVariant v1.1.0
+==================
+
+This version includes the following features:
+
+* Fixed Python (**3.12 - 3.13**) incompatibilities on plugin creation command.
+* Replaced `error` for `warning` on empty line cases.
+* Be able to skip unreadable files and directories (added `--skip` flag on commands).
+* Fixed the handling of line endings in order to parse windows-based text correctly.
 
 OpenVariant v1.0.1
 ==================
