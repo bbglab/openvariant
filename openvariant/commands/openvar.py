@@ -24,8 +24,8 @@ def openvar():
               help="Annotation path. eg: /path/annotation_vcf.yaml")
 @click.option('--header', is_flag=True, help="Show the result header.")
 @click.option('--output', '-o', default=None, help="File to write the output.")
-@click.option('--skip', is_flag=True, help="Skip files and directories that are unreadable.")
-def cat(input_path: str, where: str or None, annotations: str or None, header: bool, output: str or None, skip: bool):
+@click.option('--skip', is_flag=True, help="Skip files and directories that are unreadable.",  default=False)
+def cat(input_path: str, where: str | None, annotations: str | None, header: bool, output: str | None, skip: bool):
     """Print the parsed files on the stdout/"output"."""
     cat_task(input_path, annotations, where, header, output, skip)
 
@@ -39,9 +39,9 @@ def cat(input_path: str, where: str or None, annotations: str or None, header: b
 @click.option('--cores', '-c', type=click.INT, default=cpu_count(), help='Maximum processes to run in parallel.')
 @click.option('--quite', '-q', is_flag=True, help="Don't show the progress.")
 @click.option('--output', '-o', default=None, help="File to write the output.")
-@click.option('--skip', is_flag=True, help="Skip files and directories that are unreadable.")
-def count(input_path: str, where: str, group_by: str, cores: int, quite: bool, annotations: str or None,
-          output: str or None, skip: bool) -> None:
+@click.option('--skip', is_flag=True, help="Skip files and directories that are unreadable.",  default=False)
+def count(input_path: str, where: str, group_by: str, cores: int, quite: bool, annotations: str | None,
+          output: str | None, skip: bool) -> None:
     """Print on the stdout/"output" the number of rows that meets the criteria."""
     result = count_task(input_path, annotations, group_by=group_by, where=where, cores=cores, quite=quite, skip_files=skip)
     out_file = None
@@ -76,9 +76,9 @@ def count(input_path: str, where: str, group_by: str, cores: int, quite: bool, a
 @click.option('--cores', '-c', type=click.INT, default=cpu_count(), help='Maximum processes to run in parallel.')
 @click.option('--quite', '-q', is_flag=True, help="Don't show the progress.")
 @click.option('--output', '-o', help="File to write the output.", default=None)
-@click.option('--skip', is_flag=True, help="Skip files and directories that are unreadable.")
-def groupby(input_path: str, script: str, where: str, group_by: str, cores: int, quite: bool, annotations: str or None,
-            header: bool, show: bool, output: str or None, skip: bool):
+@click.option('--skip', is_flag=True, help="Skip files and directories that are unreadable.", default=False)
+def groupby(input_path: str, script: str, where: str, group_by: str, cores: int, quite: bool, annotations: str | None,
+            header: bool, show: bool, output: str | None, skip: bool):
     """Print on the stdout/"output" the parsed files group by a specified field."""
     out_file = None
     if output:
@@ -110,7 +110,7 @@ def groupby(input_path: str, script: str, where: str, group_by: str, cores: int,
 @openvar.command(name="plugin", short_help='Actions to execute for a plugin: create.')
 @click.argument('action', type=click.Choice(['create']))
 @click.option('--name', '-n', type=click.STRING, help="Name of the plugin.")
-def plugin(action, name: str or None):
+def plugin(action, name: str | None):
     """Actions to apply on the plugin system."""
     class_name = action.upper()
     module_name = "openvariant.tasks.plugin"
