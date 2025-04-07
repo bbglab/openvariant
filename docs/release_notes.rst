@@ -25,7 +25,8 @@ This version includes the following features:
 
 * Fixed Python (**3.12 - 3.13**) incompatibilities on plugin creation command.
 * Replaced `error` for `warning` on empty line cases.
-* Be able to skip unreadable files and directories (added `--skip` flag on commands)
+* Be able to skip unreadable files and directories (added `--skip` flag on commands).
+* Fixed the handling of line endings in order to parse windows-based text correctly.
 
 OpenVariant v1.0.1
 ==================

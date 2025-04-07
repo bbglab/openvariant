@@ -595,7 +595,6 @@ wheels = [
 
 [[package]]
 name = "open-variant"
-version = "1.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "appdirs" },
@@ -730,7 +729,6 @@ requires-dist = [
     { name = "nbformat", marker = "extra == 'docs'", specifier = "==5.4.0" },
     { name = "nbsphinx", marker = "extra == 'docs'", specifier = "==0.8.9" },
     { name = "nest-asyncio", marker = "extra == 'docs'", specifier = "==1.5.5" },
-    { name = "open-variant", marker = "extra == 'docs'", editable = "." },
     { name = "packaging", marker = "extra == 'docs'", specifier = "==21.3" },
     { name = "pandocfilters", marker = "extra == 'docs'", specifier = "==1.5.0" },
     { name = "parso", marker = "extra == 'docs'", specifier = "==0.8.3" },
