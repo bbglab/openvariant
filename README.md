@@ -64,6 +64,15 @@ pip install open-variant
 
 For more details check our [Installation](https://openvariant.readthedocs.io/en/latest/installation.html) section.
 
+### Running with Docker
+
+You can quickly build and run OpenVariant using [Dockerfile](./Dockerfile) without installing dependencies locally:
+
+```bash
+docker build -t openvariant .
+docker run --rm openvariant openvar --help
+```
+
 ## Examples
 
 We provide a variety of [examples](https://github.com/bbglab/openvariant/tree/master/examples) to help to understand how OpenVariant can be applied. Explore the 
