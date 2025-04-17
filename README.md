@@ -66,7 +66,7 @@ For more details check our [Installation](https://openvariant.readthedocs.io/en/
 
 ### Running with Docker
 
-You can quickly build and run OpenVariant using Docker without installing dependencies locally using [Dockerfile](./Dockerfile):
+You can quickly build and run OpenVariant using [Dockerfile](./Dockerfile) without installing dependencies locally:
 
 ```bash
 docker build -t openvariant .
