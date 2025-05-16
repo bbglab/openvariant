@@ -176,7 +176,6 @@ class Annotation:
                 self._annotations[tuple(k[AnnotationKeys.FIELD.value])] = instance(k, self._path)
             else:
                 self._annotations[k[AnnotationKeys.FIELD.value]] = instance(k, self._path)
-
         self._columns = raw_annotation.get(AnnotationGeneralKeys.COLUMNS.value, self._clean_annotation_keys())
         self._check_columns()
 

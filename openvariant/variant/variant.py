@@ -204,7 +204,6 @@ class Variant:
 
         try:
             self.mm, self.file = _open_file(file_path, "rb")
-
             for lnum, line in _base_parser(self.mm, file_path, annotation.delimiter, self.skip_files):
                 try:
                     if header is None:
@@ -218,7 +217,6 @@ class Variant:
                         row, plugin_values, mapping_values = {}, {}, {}
                         for head in annotation.annotations.keys():
                             type_ann, value, func = header[head]
-
                             if type_ann == AnnotationTypes.PLUGIN.name:
                                 plugin_values[head] = header[head]
                             elif type_ann == AnnotationTypes.MAPPING.name:
