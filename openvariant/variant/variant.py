@@ -198,7 +198,7 @@ class Variant:
         header, row, row_header = None, {}, []
 
         matches = [check_extension(ext, file_path) for ext in annotation.patterns]
-        print(annotation._annotations)
+
         if not any(matches):
             raise NameError("Annotation patterns don't match with input file.")
 
