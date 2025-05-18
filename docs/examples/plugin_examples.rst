@@ -126,7 +126,7 @@ The *annotation* file with multiple fields can be described as:
 
     annotation:
         - type: plugin
-          plugin: multi_test
+          plugin: HGVS_decoder
           field:
             - TYPE
             - POSITION
