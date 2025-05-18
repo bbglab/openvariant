@@ -4,6 +4,7 @@ pattern:
 delimiter: C
 
 columns:
+- HGVS
 - TYPE
 - POSITION
 - VARIANT
