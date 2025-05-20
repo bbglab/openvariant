@@ -57,7 +57,8 @@ def _base_parser(mm_obj: mmap, file_path: str, delimiter: str, skip_files: bool)
     try:
         for l_num, line in enumerate(iter(mm_obj.readline, b'')):
             line = line.decode('utf-8')
-            delimiter = _detect_delimiter(line) if l_num == 0 else delimiter
+            if delimiter is None:
+                delimiter = _detect_delimiter(line) if l_num == 0 else delimiter
 
             row_line = re.split(delimiter, line)
             row_line = list(map(lambda w: w.rstrip("\r\n"), row_line))
@@ -69,7 +70,6 @@ def _base_parser(mm_obj: mmap, file_path: str, delimiter: str, skip_files: bool)
             if (row_line[0].startswith('#') or row_line[0].startswith('##') or row_line[0].startswith('browser') or
                 row_line[0].startswith('track')) and not row_line[0].startswith('#CHROM'):
                 continue
-
             yield l_num, row_line
     except Exception as e:
         if skip_files:
