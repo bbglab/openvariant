@@ -18,7 +18,7 @@ from typing import Generator, List, Callable, Any
 
 from openvariant.annotation.annotation import Annotation
 from openvariant.annotation.builder import MappingBuilder
-from openvariant.annotation.config_annotation import AnnotationFormat, AnnotationTypes, AnnotationDelimiter
+from openvariant.annotation.config_annotation import AnnotationFormat, AnnotationTypes
 from openvariant.utils.utils import check_extension, import_class_from_module
 from openvariant.variant.where import skip, parse_where
 
@@ -37,6 +37,14 @@ def _open_file(file_path: str, mode='r+b'):
 
     return mm, file
 
+def _detect_delimiter(line: str):
+    """Detects the dominant delimiter in a line"""
+    counts = {
+        '\t': line.count('\t'),
+        ',': line.count(','),
+        ';': line.count(';')
+    }
+    return max(counts, key=counts.get)
 
 def _base_parser(mm_obj: mmap, file_path: str, delimiter: str, skip_files: bool) -> Generator[int, str, None]:
     """Cleaning comments and irrelevant data"""
@@ -49,7 +57,9 @@ def _base_parser(mm_obj: mmap, file_path: str, delimiter: str, skip_files: bool)
     try:
         for l_num, line in enumerate(iter(mm_obj.readline, b'')):
             line = line.decode('utf-8')
-            row_line = line.split(AnnotationDelimiter[delimiter].value)
+            delimiter = _detect_delimiter(line) if l_num == 0 else delimiter
+
+            row_line = re.split(delimiter, line)
             row_line = list(map(lambda w: w.rstrip("\r\n"), row_line))
 
             if len(row_line) == 0:

@@ -1,8 +1,9 @@
 import unittest
 from os import getcwd
+import re
 
 from openvariant.annotation.annotation import Annotation
-from openvariant.annotation.config_annotation import DEFAULT_FORMAT, DEFAULT_DELIMITER
+from openvariant.annotation.config_annotation import DEFAULT_FORMAT
 
 
 class TestAnnotation(unittest.TestCase):
@@ -51,15 +52,8 @@ class TestAnnotation(unittest.TestCase):
 
     def test_annotation_delimiter(self):
         annotation = Annotation(f'{getcwd()}/tests/data/annotation/annotation.yaml')
-        self.assertEqual(annotation.delimiter, 'C')
-
-    def test_annotation_no_exist_delimiter(self):
-        annotation = Annotation(f'{getcwd()}/tests/data/annotation/no_exist_delimiter.yaml')
-        self.assertEqual(annotation.delimiter, DEFAULT_DELIMITER)
-
-    def test_annotation_invalid_delimiter(self):
-        with self.assertRaises(KeyError):
-            Annotation(f'{getcwd()}/tests/data/annotation/invalid_delimiter.yaml')
+        print(annotation.delimiter, '\t')
+        self.assertEqual(annotation.delimiter, '\t')
 
     def test_annotation_columns(self):
         res_expect = {'PLATFORM', 'DATASET'}

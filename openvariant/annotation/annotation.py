@@ -5,14 +5,14 @@ A core class to represent the schema which files will be parsed.
 """
 import logging
 import re
+import codecs
 
 from typing import List
 from yaml import safe_load, YAMLError
 
 from openvariant.utils.utils import import_class_from_module
 from openvariant.annotation.config_annotation import (AnnotationGeneralKeys, AnnotationKeys, AnnotationTypes,
-                                                      ExcludesKeys, DEFAULT_FORMAT, DEFAULT_DELIMITER,
-                                                      AnnotationFormat, AnnotationDelimiter)
+                                                      ExcludesKeys, DEFAULT_FORMAT, AnnotationFormat)
 
 
 def _check_general_keys(annot: dict) -> None:
@@ -35,9 +35,7 @@ def _check_general_keys(annot: dict) -> None:
         raise KeyError(f"'{AnnotationGeneralKeys.FORMAT.value}' key is not a string.")
 
     # Delimiter key
-    if AnnotationGeneralKeys.DELIMITER.value in annot and \
-            (not isinstance(annot[AnnotationGeneralKeys.DELIMITER.value], str) or
-             annot[AnnotationGeneralKeys.DELIMITER.value].upper() not in [e.name for e in AnnotationDelimiter]):
+    if AnnotationGeneralKeys.DELIMITER.value in annot and not isinstance(annot[AnnotationGeneralKeys.DELIMITER.value], str):
         raise KeyError(f"'{AnnotationGeneralKeys.DELIMITER.value}' key is not valid or is not a string.")
 
     # Columns key
@@ -151,7 +149,8 @@ class Annotation:
         patterns = raw_annotation[AnnotationGeneralKeys.PATTERN.value]
         self._patterns = patterns if isinstance(patterns, List) else [patterns]
         self._recursive = raw_annotation.get(AnnotationGeneralKeys.RECURSIVE.value, True)
-        self._delimiter = raw_annotation.get(AnnotationGeneralKeys.DELIMITER.value, DEFAULT_DELIMITER).upper()
+        delimiter = raw_annotation.get(AnnotationGeneralKeys.DELIMITER.value, None)
+        self._delimiter = None if delimiter is None else codecs.decode(delimiter, 'unicode_escape')
         self._format = raw_annotation.get(AnnotationGeneralKeys.FORMAT.value, DEFAULT_FORMAT).replace('.', '')
 
         self._excludes: dict = {}
