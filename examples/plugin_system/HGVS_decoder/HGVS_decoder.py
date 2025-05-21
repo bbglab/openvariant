@@ -101,6 +101,9 @@ def parse_hgvs_variant_protein(hgvs_str):
             variant += amino_acids_map.get(matches_amino_acid[0])
     return variant
 
+def parse_hgvs_unknow(hgvs_str):
+    return None
+
 def interpret_hgvs(hgvs_str):
     prefix_map = {
         "g.": ("gDNA", parse_hgvs_pos, parse_hgvs_variant),
@@ -113,7 +116,7 @@ def interpret_hgvs(hgvs_str):
 
     prefix = hgvs_str[:2]
    
-    result = prefix_map.get(prefix, ("Unknown", [], []))
+    result = prefix_map.get(prefix, ("Unknown", parse_hgvs_unknow, parse_hgvs_unknow))
     seq = hgvs_str[2:]
    
     type_variant = result[0]
