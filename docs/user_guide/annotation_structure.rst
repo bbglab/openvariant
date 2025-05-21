@@ -228,12 +228,12 @@ Plugin
 #############
 
 It will apply the plugin functionality to each row of the `input` file. The plugin can be internal, located into `plugin`
-folder or can be customized and created by the user. See further details in :ref:`Plugin system` section.
+folder or can be customized and created by the user.
 
 The parameters that `Plugin` needs are:
 
 * ``type``: type of annotation. (required)
-* ``field``: name that will appear as a head column of this annotation. (required)
+* ``field``: a single name or a list of fields that that will appear as a head column of this annotation. (required)
 * ``plugin``: name of plugin to apply (required)
 
 .. code-block:: yaml
@@ -243,6 +243,22 @@ The parameters that `Plugin` needs are:
           field: 'ALT_TYPE'
           plugin: 'alteration_type'
 
+The plugin system supports multiple fields, however, the order and number of fields must be consistent between the
+annotation and the plugin implementation.
+
+.. code-block:: yaml
+
+    # Example:
+        - type: 'plugin'
+          field:
+            - 'Chr'
+            - 'Start'
+            - 'End'
+            - 'Alt'
+            - 'Ref'
+          plugin: 'variant_decoder'
+
+See further details in :ref:`Plugin system` section.
 
 Exclude (optional)
 ^^^^^^^^^^^^^^^^^^^^^^^
