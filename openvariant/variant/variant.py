@@ -38,13 +38,9 @@ def _open_file(file_path: str, mode='r+b'):
     return mm, file
 
 def _detect_delimiter(line: str):
-    """Detects the dominant delimiter in a line"""
-    counts = {
-        '\t': line.count('\t'),
-        ',': line.count(','),
-        ';': line.count(';')
-    }
-    return max(counts, key=counts.get)
+    sniffer = csv.Sniffer()
+    dialect = sniffer.sniff(line, delimiters='\t,;')
+    return dialect.delimiter
 
 def _base_parser(mm_obj: mmap, file_path: str, delimiter: str, skip_files: bool) -> Generator[int, str, None]:
     """Cleaning comments and irrelevant data"""
