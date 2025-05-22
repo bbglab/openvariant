@@ -182,7 +182,7 @@ class Variant:
         self._path: str = path
         self._annotation: Annotation = annotation
 
-        #annotation_keys = [item for x in annotation.annotations.keys() for item in (list(x) if isinstance(x, tuple) else [x])]
+        
         self._header: List[str] = annotation.columns
         self.skip_files = skip_files
 
