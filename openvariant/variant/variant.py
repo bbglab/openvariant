@@ -25,7 +25,6 @@ from openvariant.variant.where import skip, parse_where
 
 def _open_file(file_path: str, mode='r+b'):
     """Open raw files or compressed files"""
-
     if file_path.endswith('xz'):
         open_method = lzma.open
         file = open_method(file_path, mode)
@@ -38,6 +37,7 @@ def _open_file(file_path: str, mode='r+b'):
     return mm, file
 
 def _detect_delimiter(line: str):
+    """Detects the dominant delimiter in a line"""
     sniffer = csv.Sniffer()
     try:
         dialect = sniffer.sniff(line, delimiters='\t,;')
