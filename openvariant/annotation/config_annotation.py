@@ -9,7 +9,6 @@ ANNOTATION_EXTENSION = "yaml"
 DEFAULT_FORMAT = 'TSV'
 DEFAULT_COLUMNS = []
 DEFAULT_RECURSIVE = False
-DEFAULT_DELIMITER = 'T'
 
 
 class AnnotationGeneralKeys(Enum):
@@ -47,11 +46,6 @@ class AnnotationTypes(Enum):
     FILENAME = 'filename'
     PLUGIN = 'plugin'
     MAPPING = 'mapping'
-
-
-class AnnotationDelimiter(Enum):
-    T = "\t"
-    C = ","
 
 
 class AnnotationFormat(Enum):
