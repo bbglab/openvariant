@@ -39,8 +39,14 @@ def _open_file(file_path: str, mode='r+b'):
 
 def _detect_delimiter(line: str):
     sniffer = csv.Sniffer()
-    dialect = sniffer.sniff(line, delimiters='\t,;')
-    return dialect.delimiter
+    try:
+        dialect = sniffer.sniff(line, delimiters='\t,;')
+        return dialect.delimiter
+    except csv.Error as e:
+        if "Could not determine delimiter" in str(e):
+            return '\t'
+        else:
+            raise e
 
 def _base_parser(mm_obj: mmap, file_path: str, delimiter: str, skip_files: bool) -> Generator[int, str, None]:
     """Cleaning comments and irrelevant data"""
