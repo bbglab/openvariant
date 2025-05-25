@@ -233,7 +233,7 @@ folder or can be customized and created by the user.
 The parameters that `Plugin` needs are:
 
 * ``type``: type of annotation. (required)
-* ``field``: a single name or a list of fields that that will appear as a head column of this annotation. (required)
+* ``field``: a single name or a list of fields that will appear as a head column of this annotation. (required)
 * ``plugin``: name of plugin to apply (required)
 
 .. code-block:: yaml
