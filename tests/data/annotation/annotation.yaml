@@ -3,7 +3,7 @@ pattern:
   - '*.vcf.gz'
 recursive: false
 format: 'CSV'
-delimiter: 'C'
+delimiter: \t
 
 columns:
   - 'PLATFORM'
