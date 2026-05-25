@@ -7,6 +7,11 @@ import os
 from enum import Enum
 from functools import partial
 
+
+def _to_pascal_case(name: str) -> str:
+    return "".join(word.capitalize() for word in name.split("_") if word)
+
+
 class CREATE:
     def __call__(self, name: str) -> None:
         """Create a new plugin
@@ -24,8 +29,9 @@ class CREATE:
         if os.path.exists(f"{path}/{name}"):
             raise FileExistsError(f"Directory {path}/{name} already exists.")
         os.mkdir(f"{path}/{name}")
-        plugin_name = f"{name.capitalize()}Plugin"
-        context_name = f"{name.capitalize()}Context"
+        class_prefix = _to_pascal_case(name)
+        plugin_name = f"{class_prefix}Plugin"
+        context_name = f"{class_prefix}Context"
         with open(f"{path}/{name}/__init__.py", 'w') as init_file:
             init_file.write(f"import .{name} from {plugin_name}\n")
             init_file.write(f"import .{name} from {context_name}\n")
