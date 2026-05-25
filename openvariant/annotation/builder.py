@@ -11,7 +11,7 @@ import glob
 import gzip
 import importlib
 import importlib.util
-from os.path import dirname
+from os.path import dirname, isabs, join
 from typing import Tuple, Any, List, Callable
 
 from openvariant.annotation.config_annotation import AnnotationKeys, AnnotationTypes
@@ -212,7 +212,11 @@ class MAPPING:
         """
         values: dict = {}
         mapping_files = x[AnnotationKeys.FILE_MAPPING.value]
-        files = list(glob.iglob(f"{dirname(base_path)}/{mapping_files}", recursive=True))
+        if mapping_files is None:
+            mapping_path = join(dirname(base_path), str(mapping_files))
+        else:
+            mapping_path = mapping_files if isabs(mapping_files) else join(dirname(base_path), mapping_files)
+        files = list(glob.iglob(mapping_path, recursive=True))
         if len(files) == 0:
             raise FileNotFoundError(f"Unable to find '{mapping_files}' file in '{dirname(base_path)}'")
         try:
