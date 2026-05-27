@@ -131,6 +131,16 @@ packages = ["openvariant"]
 [tool.uv.sources]
 open-variant = { workspace = true }
 
+[tool.hatch.envs.tests]
+features = ["tests"]
+
+[tool.hatch.envs.tests.scripts]
+run = "pytest tests/ {args}"
+run-cov = "pytest tests/ --cov=openvariant --cov-report=term-missing {args}"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
 [tool.ruff.lint]
 select = ["F"]
 ignore = ["F401"]
