@@ -213,9 +213,8 @@ class MAPPING:
         values: dict = {}
         mapping_files = x[AnnotationKeys.FILE_MAPPING.value]
         if mapping_files is None:
-            mapping_path = join(dirname(base_path), str(mapping_files))
-        else:
-            mapping_path = mapping_files if isabs(mapping_files) else join(dirname(base_path), mapping_files)
+            raise FileNotFoundError(f"'{AnnotationKeys.FILE_MAPPING.value}' must be provided for mapping annotations.")
+        mapping_path = mapping_files if isabs(mapping_files) else join(dirname(base_path), mapping_files)
         files = list(glob.iglob(mapping_path, recursive=True))
         if len(files) == 0:
             raise FileNotFoundError(f"Unable to find '{mapping_files}' file in '{dirname(base_path)}'")
