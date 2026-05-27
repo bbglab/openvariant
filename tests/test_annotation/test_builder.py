@@ -163,6 +163,22 @@ class TestBuilder(unittest.TestCase):
         self.assertEqual(field_sources, ['donor_id', 'id', 'Donor_Id'])
         self.assertEqual(mapping, expect_mapping)
 
+    def test_builder_mapping_with_absolute_file_mapping(self):
+        mapping_dict = {'type': 'mapping', 'field': 'CANCER_TYPE', 'fieldSource': ['donor_id', 'id', 'Donor_Id'],
+                        'fieldMapping': 'icgc_donor_id',
+                        'fileMapping': f'{os.getcwd()}/tests/data/builder/metadata.tsv',
+                        'fieldValue': 'cancer_type'}
+        annotation_path = f'{os.getcwd()}/tests/data/builder/metadata.yaml'
+
+        expect_mapping = {'DO48316': 'ESCA', 'DO48318': 'ESCA', 'DO48312': 'ESCA', 'DO50633': 'EWS'}
+
+        instance = MAPPING()
+        type_annot, field_sources, mapping = instance(mapping_dict, annotation_path)
+
+        self.assertEqual(type_annot, AnnotationTypes.MAPPING.name)
+        self.assertEqual(field_sources, ['donor_id', 'id', 'Donor_Id'])
+        self.assertEqual(mapping, expect_mapping)
+
     def test_builder_invalid_mapping(self):
         mapping_dict = {'type': 'mapping', 'field': 'CANCER_TYPE', 'fieldSource': None,
                         'fieldMapping': None, 'fileMapping': None, 'fieldValue': None}
