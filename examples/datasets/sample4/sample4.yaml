@@ -1,0 +1,22 @@
+pattern:
+  - '*.csv'
+
+delimiter: C
+
+columns:
+- TYPE
+- POSITION
+- VARIANT
+
+annotation:
+- type: plugin
+  plugin: HGVS_decoder
+  field: 
+  - TYPE
+  - POSITION
+  - VARIANT
+- type: internal
+  field: HGVS
+  fieldSource:
+  - 'HGVS Consequence'
+  - HGVSp

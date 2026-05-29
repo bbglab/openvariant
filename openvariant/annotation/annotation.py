@@ -65,7 +65,7 @@ def _check_annotation_keys(annot: dict) -> None:
         raise ValueError(f"'{AnnotationKeys.TYPE.value}' value is wrong.")
 
     # Field key
-    if AnnotationKeys.FIELD.value not in annot or not isinstance(annot[AnnotationKeys.FIELD.value], str):
+    if AnnotationKeys.FIELD.value not in annot or (not isinstance(annot[AnnotationKeys.FIELD.value], list) and  not isinstance(annot[AnnotationKeys.FIELD.value], str)):
         raise KeyError(f"'{AnnotationKeys.FIELD.value}' key not found or is not a str.")
 
     # Value key
@@ -123,10 +123,13 @@ class Annotation:
                 logging.error(exc)
             stream.close()
 
+    def _clean_annotation_keys(self):
+        return [item for x in self.annotations.keys() for item in (list(x) if isinstance(x, tuple) else [x])]
+
     def _check_columns(self) -> None:
         """Check if columns exists as annotation fields"""
         for col in self._columns:
-            if col not in self._annotations:
+            if col not in self._clean_annotation_keys():
                 raise KeyError(f"'{col}' column unable to find.")
 
     def __init__(self, annotation_path: str) -> None:
@@ -164,15 +167,15 @@ class Annotation:
 
         self._annotations: dict = {}
         for k in raw_annotation.get(AnnotationGeneralKeys.ANNOTATION.value, []):
-
             class_name = k[AnnotationKeys.TYPE.value].upper()
             module_name = "openvariant.annotation.builder"
             ClassAnnotation = import_class_from_module(module_name, class_name)
             instance = ClassAnnotation()
-
-            self._annotations[k[AnnotationKeys.FIELD.value]] = instance(k, self._path)
-
-        self._columns = raw_annotation.get(AnnotationGeneralKeys.COLUMNS.value, list(self.annotations.keys()))
+            if isinstance(k[AnnotationKeys.FIELD.value], list):
+                self._annotations[tuple(k[AnnotationKeys.FIELD.value])] = instance(k, self._path)
+            else:
+                self._annotations[k[AnnotationKeys.FIELD.value]] = instance(k, self._path)
+        self._columns = raw_annotation.get(AnnotationGeneralKeys.COLUMNS.value, self._clean_annotation_keys())
         self._check_columns()
 
     @property

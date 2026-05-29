@@ -20,7 +20,7 @@ visualize how the different classes are connected and composed with **OpenVarian
 |
 
 As we have mentioned before, the plugin has to be present on the `annotation` file in order to be used. Custom plugins will be placed in the 
-folder where the environment variable :bash:`OPENVAR_PLUGIN` points (:bash:`/home/user/.local/share/openvariant/` by default). 
+folder where the environment variable ``OPENVAR_PLUGIN`` points (``/home/user/.local/share/openvariant/`` by default).
 The `Builder` will manage to find them and apply the data transformation.
 Plugins will inherit `Context` and `Plugin` as base classes for each plugin. These classes are described as it follows:
 
@@ -61,6 +61,20 @@ Plugins will inherit `Context` and `Plugin` as base classes for each plugin. The
         described in an annotation file.
         """
         raise NotImplementedError
+
+A plugin can return either a single field or multiple fields. Both cases are handled as follows:
+
+*Returning a single field:*
+
+.. code-block:: python
+
+        return position
+
+*Returning multiple fields:*
+
+.. code-block:: python
+
+        return chromosome, start, end, alt, ref
 
 Check :ref:`Command-line interface` to know how to create a new plugin. Also, to check more examples on how plugins can be
 applied and written, see :ref:`Plugin examples`.

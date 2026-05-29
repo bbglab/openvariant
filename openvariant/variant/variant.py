@@ -122,6 +122,7 @@ def _extract_header(file_path: str, original_header: list, annotation: Annotatio
         instance = ClassAnnotation()
         
         header_schema.update({field: instance(ann, original_header, file_path, header_schema)})
+
     return header_schema, annotation.columns
 
 
@@ -194,8 +195,9 @@ class Variant:
         csv.field_size_limit(int(ctypes.c_ulong(-1).value // 2))
         self._path: str = path
         self._annotation: Annotation = annotation
-        self._header: List[str] = list(annotation.annotations.keys()) if len(annotation.columns) == 0 \
-            else annotation.columns
+
+        
+        self._header: List[str] = annotation.columns
         self.skip_files = skip_files
 
     def _unify(self, base_path: str, annotation: Annotation, group_by: str = None, display_header: bool = True) \
@@ -216,7 +218,6 @@ class Variant:
 
         try:
             self.mm, self.file = _open_file(file_path, "rb")
-
             for lnum, line in _base_parser(self.mm, file_path, annotation.delimiter, self.skip_files):
                 try:
                     if header is None:
@@ -253,9 +254,15 @@ class Variant:
                         for head, mapping in mapping_values.items():
                             _, builder_mapping, func = mapping
                             line_dict[head] = _parse_mapping_field(builder_mapping, line_dict, func)
+
                         for head, plug in plugin_values.items():
                             _, ctxt_plugin, func_plugin = plug
-                            line_dict[head] = _parse_plugin_field(line_dict, head, file_path, ctxt_plugin, func_plugin)
+                            value_plugin = _parse_plugin_field(line_dict, head, file_path, ctxt_plugin, func_plugin)
+                            if isinstance(head, tuple):
+                                for idx, x in enumerate(head):
+                                    line_dict[x] = value_plugin[idx]
+                            else:
+                                line_dict[head] = value_plugin
 
                         for k in annotation.columns:
                             row[k] = line_dict[k].format(**line_dict)
