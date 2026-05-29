@@ -33,6 +33,7 @@ Issues = "https://github.com/bbglab/openvariant/issues"
 
 [project.scripts]
 "openvar" = "openvariant.commands.openvar:openvar"
+"docs" = "openvariant._docs:build_docs"
 
 [project.optional-dependencies]
 docs = [

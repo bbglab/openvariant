@@ -1,6 +1,5 @@
 import unittest
 from os import getcwd
-import re
 
 from openvariant.annotation.annotation import Annotation
 from openvariant.annotation.config_annotation import DEFAULT_FORMAT

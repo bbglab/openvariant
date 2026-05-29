@@ -24,8 +24,8 @@ On the *annotation* file we described the field that we want to add on the *outp
     plugin: add_date
     field: DATE
 
-In addition, after generating the plugin template with the command-line, we overwrite the `Add_dateContext` class and
-`Add_datePlugin` class, in order to add the today's date on one field of the output.
+In addition, after generating the plugin template with the command-line, we overwrite the `AddDateContext` class and
+`AddDatePlugin` class, in order to add the today's date on one field of the output.
 
 .. code-block:: python
 
@@ -35,15 +35,15 @@ In addition, after generating the plugin template with the command-line, we over
     from openvariant.plugins.plugin import Plugin
 
     # Context subclass
-    class Add_dateContext(Context):
+    class AddDateContext(Context):
 
     	def __init__(self, row: dict, field_name: str, file_path: str) -> None:
     		super().__init__(row, field_name, file_path)
 
     # Plugin subclass
-    class Add_datePlugin(Plugin):
+    class AddDatePlugin(Plugin):
 
-    	def run(self, context: Add_dateContext) -> dict:
+    	def run(self, context: AddDateContext) -> dict:
     		context.row[context.field_name] = str(date.today())
 
     		return context.row[context.field_name]
@@ -80,15 +80,15 @@ extract the length between the two fields.
     from openvariant.plugins.plugin import Plugin
 
     # Context subclass
-    class Get_lengthContext(Context):
+    class GetLengthContext(Context):
 
     	def __init__(self, row: dict, field_name: str, file_path: str) -> None:
     		super().__init__(row, field_name, file_path)
 
     # Plugin subclass
-    class Get_lengthPlugin(Plugin):
+    class GetLengthPlugin(Plugin):
 
-    	def run(self, context: Get_lengthContext) -> dict:
+    	def run(self, context: GetLengthContext) -> dict:
     		context.row[context.field_name] = str(int(context.row['END']) - int(context.row['START']))
 
     		return context.row[context.field_name]

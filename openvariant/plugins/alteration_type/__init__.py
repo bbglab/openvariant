@@ -1,2 +1,2 @@
-from .alteration_type import Alteration_typePlugin
-from .alteration_type import Alteration_typeContext
+from .alteration_type import AlterationTypePlugin
+from .alteration_type import AlterationTypeContext

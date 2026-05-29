@@ -39,7 +39,7 @@ def _indel_postprocess(start: int, ref: str, alt: str) -> Tuple[str, str, str]:
     return str(start), str(ref), str(alt)
 
 
-class Alteration_typeContext(Context):
+class AlterationTypeContext(Context):
     """
     The context of this plugin will be the simplest one, without any added property or methods.
 
@@ -64,13 +64,13 @@ class Alteration_typeContext(Context):
         self.snv_value = 'snv'
 
 
-class Alteration_typePlugin(Plugin):
+class AlterationTypePlugin(Plugin):
     """
     This plugin identifies the alteration type.
     Classifies the alteration type: checking POSITION, REF and ALT fields.
     """
 
-    def run(self, context: Alteration_typeContext) -> str:
+    def run(self, context: AlterationTypeContext) -> str:
         """Extract alteration type from the input row.
 
         Parameters
