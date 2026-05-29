@@ -1,2 +1,2 @@
-from .get_AF import Get_afPlugin
-from .get_AF import Get_afContext
+from .get_AF import GetAfPlugin
+from .get_AF import GetAfContext

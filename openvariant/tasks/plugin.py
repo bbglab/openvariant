@@ -4,9 +4,6 @@ Plugin task
 A core functionality to execute different plugin tasks.
 """
 import os
-from enum import Enum
-from functools import partial
-
 
 def _to_pascal_case(name: str) -> str:
     return "".join(word.capitalize() for word in name.split("_") if word)
