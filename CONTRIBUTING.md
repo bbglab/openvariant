@@ -25,5 +25,24 @@ If you cloned from your fork, then it should point there. You can add the main r
 
 ### Commit messages
 
-For a good practise, it is recommended to follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) 
+For a good practise, it is recommended to follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 guidance with short and self-explanatory commits.
+
+## Development — Rust toolchain
+
+To set up the Rust environment for the latest release, ensure you have `rustup` installed. You can install it or update to the latest stable version with:
+
+```bash
+rustup update stable
+```
+
+### Compiling OpenVariant Rust version
+
+To compile the Rust core of OpenVariant, you can use `uv` to manage the Python interpreter during the build process:
+
+```bash
+uv sync
+uv run maturin develop
+```
+
+This command automatically locates the appropriate Python interpreter and builds the Rust components in `debug` mode. The resulting shared library will be located in `target/debug/`.
