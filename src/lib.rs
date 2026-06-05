@@ -14,8 +14,7 @@ fn hello() -> () {
 }
 
 #[pymodule]
-fn _core(py: Python<'_>, m: &Bound<'_, PyModule>) -> PyResult<()> {
-    println!("Initializing _core module");
+fn _core(_py: Python<'_>, m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(hello, m)?)?;
     //py_bindings::annotation::register(py, m)?;
     //py_bindings::variant::register(py, m)?;

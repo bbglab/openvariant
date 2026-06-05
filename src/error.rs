@@ -1,10 +1,6 @@
 use thiserror::Error;
 
 // Define a custom error type for the OpenVariant project
-// IO
-// BadAnnotation
-// BadRegex
-// PluginNotCompiled
 
 #[derive(Error, Debug)]
 pub enum OVError {
