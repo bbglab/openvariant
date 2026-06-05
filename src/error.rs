@@ -11,14 +11,14 @@ pub enum OVError {
     #[error("I/O error: {0}")]
     Io(#[from] std::io::Error),
 
-    #[error("configuration error: {0}")]
-    Config(String),
+    #[error("bad annotation: {0}")]
+    BadAnnotation(String),
 
-    #[error("invalid input: {0}")]
-    InvalidInput(String),
+    #[error("bad regex: {0}")]
+    BadRegex(String),
 
-    #[error("resource not found: {0}")]
-    NotFound(String),
+    #[error("plugin not compiled: {0}")]
+    PluginNotCompiled(String),
 
     #[error("operation failed: {0}")]
     Other(String),
