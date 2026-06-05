@@ -25,7 +25,7 @@ If you cloned from your fork, then it should point there. You can add the main r
 
 ### Commit messages
 
-For a good practise, it is recommended to follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+For a good practice, it is recommended to follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 guidance with short and self-explanatory commits.
 
 ## Development — Rust toolchain
