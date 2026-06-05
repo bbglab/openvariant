@@ -1,6 +1,11 @@
 [build-system]
-requires = ["hatchling", "setuptools"]
-build-backend = "hatchling.build"
+requires      = ["maturin>=1.5,<2"]
+build-backend = "maturin"
+
+[tool.maturin]
+python-source = "."
+module-name   = "openvariant._core"
+features      = ["pyo3/extension-module"]
 
 [project]
 name = "open-variant"

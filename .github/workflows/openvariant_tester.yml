@@ -36,11 +36,14 @@ jobs:
       with:
         python-version-file: "pyproject.toml"
 
+    - name: Install Rust toolchain
+      uses: actions-rust-lang/setup-rust-toolchain@v1
+
     - uses: astral-sh/setup-uv@v4
       
     - name: Lint with Ruff
       run: |
-        uv sync --extra linting --frozen
+        uv sync --extra linting --frozen --no-install-project
         uv run ruff check openvariant
 
     - name: Test

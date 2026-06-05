@@ -10,7 +10,7 @@ try:
 except ImportError:
     from importlib_metadata import version  # Backport for older versions
 
-__version__ = '1.1.0'
+__version__ = '2.0.0'
 
 # Set multiprocessing start method to 'spawn'
 try:
