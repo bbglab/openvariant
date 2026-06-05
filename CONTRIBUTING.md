@@ -42,7 +42,7 @@ To compile the Rust core of OpenVariant, you can use `uv` to manage the Python i
 
 ```bash
 uv sync
-uv run maturin develop
+uv tool run maturin develop
 ```
 
 This command automatically locates the appropriate Python interpreter and builds the Rust components in `debug` mode. The resulting shared library will be located in `target/debug/`.

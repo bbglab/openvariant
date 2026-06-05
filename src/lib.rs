@@ -9,7 +9,7 @@ use pyo3::prelude::*;
 pub mod error;
 
 #[pyfunction]
-fn hello() -> () {
+fn hello() {
     println!("Hello, OpenVariant!");
 }
 
