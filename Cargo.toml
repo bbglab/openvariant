@@ -1,12 +1,12 @@
 [package]
 name = "openvariant-core"
 version = "2.0.0"
-edition = "2021"
+edition = "2024"
 
 [lib]
 name = "_core"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = { version = "0.22", features = ["extension-module"] }
-thiserror = "1.0"
+pyo3 = { version = "0.28.3", features = ["extension-module"] }
+thiserror = "2"
