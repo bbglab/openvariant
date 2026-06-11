@@ -118,14 +118,14 @@ docs = [
     "sphinxcontrib-bibtex==2.6.3",
     "setuptools>=58.2.0",
 ]
-linting = [
-    "flake8>=7.1.1",
-    "ruff>=0.8.3",
-]
 tests = [
     "coverage>=7.6.9",
     "pytest-cov>=6.0.0",
     "pytest>=8.3.4",
+]
+linting = [
+    "flake8>=7.1.1",
+    "ruff>=0.8.3",
 ]
 
 [tool.hatch.metadata]

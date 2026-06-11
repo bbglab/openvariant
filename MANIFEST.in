@@ -1,2 +1,4 @@
+include Cargo.toml
+recursive-include src *
+recursive-include openvariant *
 recursive-exclude tests *
-recursive-exclude plugins *
