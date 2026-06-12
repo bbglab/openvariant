@@ -1,6 +1,7 @@
 use pyo3::prelude::*;
 
-//mod annotation;
+pub mod annotation;
+
 //mod filter;
 //mod reader;
 //mod walker;

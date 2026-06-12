@@ -1,7 +1,10 @@
 //! Core configuration types for OpenVariant annotation.
 //!
-//! This module provides serde-compatible Rust types that mirror the Python
-//! enabling round-trip serialisation through YAML annotation definition files.
+//! This file defines the core configuration types for OpenVariant annotation, including
+//! `AnnotationType`, `AnnotationDelimiter`, `AnnotationFormat`, `AnnotationEntry`,
+//! `ExcludeEntry`, and `AnnotationConfig`. These types are designed to be serde-compatible,
+//! allowing for easy serialisation and deserialisation to and from YAML annotation definition files. The structures defined here mirror the
+//! expected structure of the YAML files, enabling seamless integration with the OpenVariant annotation system.
 
 use serde::{Deserialize, Serialize};
 use std::fmt;
