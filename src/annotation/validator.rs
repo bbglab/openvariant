@@ -1,4 +1,3 @@
-
 //! Annotation validators for OpenVariant annotation.
 //!
 //! This module provides validation logic for ensuring that annotation configurations are valid and consistent.
@@ -7,8 +6,9 @@
 //! providing immediate feedback on any issues with the configuration. This helps maintain the integrity of the annotation system and
 //! prevents runtime errors due to misconfigurations.
 
-
 use std::fmt;
+
+use super::config::{AnnotationConfig, AnnotationEntry, AnnotationType};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ValidationError {
@@ -32,7 +32,7 @@ pub enum Severity {
 impl fmt::Display for ValidationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let tag = match self.severity {
-            Severity::Error   => "ERROR",
+            Severity::Error => "ERROR",
             Severity::Warning => "WARN ",
         };
         write!(f, "[{tag}] {}: {}", self.path, self.message)
@@ -60,11 +60,11 @@ impl fmt::Display for ValidationError {
 ///   included for context).
 pub fn parse_and_validate(yaml: &str) -> Result<AnnotationConfig, Vec<ValidationError>> {
     // Pass 1 — syntax + structural (serde)
-    let config: AnnotationConfig = serde_yaml::from_str(yaml).map_err(|e| {
+    let config: AnnotationConfig = yaml_serde::from_str(yaml).map_err(|e| {
         // serde_yaml errors include line/column information in their Display.
         vec![ValidationError {
-            message:  format!("YAML parse error — {e}"),
-            path:     "<document>".into(),
+            message: format!("YAML parse error — {e}"),
+            path: "<document>".into(),
             severity: Severity::Error,
         }]
     })?;
@@ -118,7 +118,12 @@ pub fn validate_config(config: &AnnotationConfig) -> Vec<ValidationError> {
 
             // Internal
             AnnotationType::Internal => {
-                check_required_str(&base, "fieldSource", entry.field_source.as_deref(), &mut diags);
+                check_required_str(
+                    &base,
+                    "fieldSource",
+                    entry.field_source.as_deref(),
+                    &mut diags,
+                );
                 //diags.extend(unused_warnings(&base, entry, &[
                 //    ("value",       entry.value.is_some()),
                 //    ("function",    entry.function.is_some()),
@@ -135,16 +140,36 @@ pub fn validate_config(config: &AnnotationConfig) -> Vec<ValidationError> {
 
             // Plugin
             AnnotationType::Plugin => {
-                check_required_str(&base, "plugin",   entry.plugin.as_deref(),   &mut diags);
+                check_required_str(&base, "plugin", entry.plugin.as_deref(), &mut diags);
                 check_required_str(&base, "function", entry.function.as_deref(), &mut diags);
             }
 
             // Mapping
             AnnotationType::Mapping => {
-                check_required_str(&base, "fieldSource", entry.field_source.as_deref(), &mut diags);
-                check_required_str(&base, "fileMapping",  entry.file_mapping.as_deref(),  &mut diags);
-                check_required_str(&base, "fieldMapping", entry.field_mapping.as_deref(), &mut diags);
-                check_required_str(&base, "fieldValue",   entry.field_value.as_deref(),   &mut diags);
+                check_required_str(
+                    &base,
+                    "fieldSource",
+                    entry.field_source.as_deref(),
+                    &mut diags,
+                );
+                check_required_str(
+                    &base,
+                    "fileMapping",
+                    entry.file_mapping.as_deref(),
+                    &mut diags,
+                );
+                check_required_str(
+                    &base,
+                    "fieldMapping",
+                    entry.field_mapping.as_deref(),
+                    &mut diags,
+                );
+                check_required_str(
+                    &base,
+                    "fieldValue",
+                    entry.field_value.as_deref(),
+                    &mut diags,
+                );
             }
         }
     }
@@ -152,10 +177,7 @@ pub fn validate_config(config: &AnnotationConfig) -> Vec<ValidationError> {
     // Validate Exclude entries
     for (i, excl) in config.exclude.iter().enumerate() {
         if excl.field.trim().is_empty() {
-            diags.push(err(
-                &format!("exclude[{i}]"),
-                "`field` must not be blank",
-            ));
+            diags.push(err(&format!("exclude[{i}]"), "`field` must not be blank"));
         }
     }
 
@@ -164,11 +186,11 @@ pub fn validate_config(config: &AnnotationConfig) -> Vec<ValidationError> {
     for entry in &config.annotation {
         if !seen_fields.insert(entry.field.as_str()) {
             diags.push(ValidationError {
-                message:  format!(
+                message: format!(
                     "duplicate `field` name `{}` — each annotation field must be unique",
                     entry.field
                 ),
-                path:     "<document>.annotation".into(),
+                path: "<document>.annotation".into(),
                 severity: Severity::Error,
             });
         }
@@ -179,37 +201,39 @@ pub fn validate_config(config: &AnnotationConfig) -> Vec<ValidationError> {
 
 fn err(path: &str, message: &str) -> ValidationError {
     ValidationError {
-        message:  message.into(),
-        path:     path.into(),
+        message: message.into(),
+        path: path.into(),
         severity: Severity::Error,
     }
 }
 
 fn warn(path: &str, message: &str) -> ValidationError {
     ValidationError {
-        message:  message.into(),
-        path:     path.into(),
+        message: message.into(),
+        path: path.into(),
         severity: Severity::Warning,
     }
 }
 
 /// Emit an error if `value` is `None` or blank.
 fn check_required_str(
-    base:   &str,
-    key:    &str,
-    value:  Option<&str>,
-    diags:  &mut Vec<ValidationError>,
+    base: &str,
+    key: &str,
+    value: Option<&str>,
+    diags: &mut Vec<ValidationError>,
 ) {
     match value {
-        None                        => diags.push(err(base, &format!("`{key}` is required but missing"))),
-        Some(v) if v.trim().is_empty() => diags.push(err(base, &format!("`{key}` must not be blank"))),
+        None => diags.push(err(base, &format!("`{key}` is required but missing"))),
+        Some(v) if v.trim().is_empty() => {
+            diags.push(err(base, &format!("`{key}` must not be blank")))
+        }
         _ => {}
     }
 }
 
 /// Emit a warning for every key in `fields` whose boolean flag is `true`.
 fn unused_warnings(
-    base:   &str,
+    base: &str,
     _entry: &AnnotationEntry,
     fields: &[(&str, bool)],
 ) -> Vec<ValidationError> {
@@ -219,9 +243,7 @@ fn unused_warnings(
         .map(|(key, _)| {
             warn(
                 &format!("{base}.{key}"),
-                &format!(
-                    "`{key}` is not used by this annotation type and will be ignored"
-                ),
+                &format!("`{key}` is not used by this annotation type and will be ignored"),
             )
         })
         .collect()

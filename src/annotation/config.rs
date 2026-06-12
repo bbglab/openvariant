@@ -10,9 +10,9 @@ use serde::{Deserialize, Serialize};
 use std::fmt;
 
 /// Constants
-pub const ANNOTATION_EXTENSION: &str = "yaml"
-pub const DEFAULT_COLUMNS: &[&str] = []
-pub const DEFAULT_RECURSIVE: bool = false
+pub const ANNOTATION_EXTENSION: &str = "yaml";
+pub const DEFAULT_COLUMNS: &[&str] = &[];
+pub const DEFAULT_RECURSIVE: bool = false;
 
 /// AnnotatioType
 
@@ -78,12 +78,12 @@ pub enum AnnotationType {
 impl fmt::Display for AnnotationType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let s = match self {
-            AnnotationType::Static   => "static",
+            AnnotationType::Static => "static",
             AnnotationType::Internal => "internal",
-            AnnotationType::Dirname  => "dirname",
+            AnnotationType::Dirname => "dirname",
             AnnotationType::Filename => "filename",
-            AnnotationType::Plugin   => "plugin",
-            AnnotationType::Mapping  => "mapping",
+            AnnotationType::Plugin => "plugin",
+            AnnotationType::Mapping => "mapping",
         };
         write!(f, "{s}")
     }
@@ -91,9 +91,10 @@ impl fmt::Display for AnnotationType {
 
 /// AnnotationDelimiter
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, Default)]
 pub enum AnnotationDelimiter {
     /// Tab character (`\t`).
+    #[default]
     T,
     /// Comma character (`,`).
     C,
@@ -109,12 +110,6 @@ impl AnnotationDelimiter {
     }
 }
 
-impl Default for AnnotationDelimiter {
-    fn default() -> Self {
-        AnnotationDelimiter::T
-    }
-}
-
 impl fmt::Display for AnnotationDelimiter {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.as_char())
@@ -123,10 +118,11 @@ impl fmt::Display for AnnotationDelimiter {
 
 /// AnnotationFormat
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, Default)]
 pub enum AnnotationFormat {
     /// Tab-Separated Values — field separator is `\t`.
     #[serde(rename = "TSV")]
+    #[default]
     Tsv,
     /// Comma-Separated Values — field separator is `,`.
     #[serde(rename = "CSV")]
@@ -140,12 +136,6 @@ impl AnnotationFormat {
             AnnotationFormat::Tsv => '\t',
             AnnotationFormat::Csv => ',',
         }
-    }
-}
-
-impl Default for AnnotationFormat {
-    fn default() -> Self {
-        AnnotationFormat::Tsv
     }
 }
 
@@ -173,7 +163,7 @@ pub struct AnnotationEntry {
     /// *(static, internal)* Literal value to assign. Accepts any YAML scalar or
     /// structure (`string`, `int`, `float`, `bool`, `null`).
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub value: Option<serde_yaml::Value>,
+    pub value: Option<yaml_serde::Value>,
 
     /// *(internal, mapping)* Name of the source column to copy from.
     #[serde(rename = "fieldSource", skip_serializing_if = "Option::is_none")]
@@ -212,9 +202,8 @@ pub struct ExcludeEntry {
     /// The column name to exclude values from.
     pub field: String,
     /// The value that triggers exclusion (any YAML scalar).
-    pub value: serde_yaml::Value,
+    pub value: yaml_serde::Value,
 }
-
 
 /// AnnotationConfig
 
