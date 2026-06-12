@@ -8,7 +8,7 @@
 
 use std::fmt;
 
-use super::config::{AnnotationConfig, AnnotationEntry, AnnotationType};
+use super::config::{AnnotationConfig, AnnotationType};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ValidationError {
@@ -231,7 +231,7 @@ fn check_required_str(
     }
 }
 
-/// Emit a warning for every key in `fields` whose boolean flag is `true`.
+// Emit a warning for every key in `fields` whose boolean flag is `true`.
 //fn unused_warnings(
     //base: &str,
     //_entry: &AnnotationEntry,
