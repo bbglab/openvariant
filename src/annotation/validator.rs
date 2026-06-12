@@ -207,13 +207,13 @@ fn err(path: &str, message: &str) -> ValidationError {
     }
 }
 
-fn warn(path: &str, message: &str) -> ValidationError {
-    ValidationError {
-        message: message.into(),
-        path: path.into(),
-        severity: Severity::Warning,
-    }
-}
+//fn warn(path: &str, message: &str) -> ValidationError {
+    //ValidationError {
+        //message: message.into(),
+        //path: path.into(),
+        //severity: Severity::Warning,
+    //}
+//}
 
 /// Emit an error if `value` is `None` or blank.
 fn check_required_str(
@@ -232,19 +232,19 @@ fn check_required_str(
 }
 
 /// Emit a warning for every key in `fields` whose boolean flag is `true`.
-fn unused_warnings(
-    base: &str,
-    _entry: &AnnotationEntry,
-    fields: &[(&str, bool)],
-) -> Vec<ValidationError> {
-    fields
-        .iter()
-        .filter(|(_, present)| *present)
-        .map(|(key, _)| {
-            warn(
-                &format!("{base}.{key}"),
-                &format!("`{key}` is not used by this annotation type and will be ignored"),
-            )
-        })
-        .collect()
-}
+//fn unused_warnings(
+    //base: &str,
+    //_entry: &AnnotationEntry,
+    //fields: &[(&str, bool)],
+//) -> Vec<ValidationError> {
+    //fields
+        //.iter()
+        //.filter(|(_, present)| *present)
+        //.map(|(key, _)| {
+            //warn(
+                //&format!("{base}.{key}"),
+                //&format!("`{key}` is not used by this annotation type and will be ignored"),
+            //)
+        //})
+        //.collect()
+//}
