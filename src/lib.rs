@@ -9,6 +9,10 @@ pub mod annotation;
 //mod py_bindings;
 pub mod error;
 
+
+#[cfg(test)]
+mod tests;
+
 #[pyfunction]
 fn hello() {
     println!("Hello, OpenVariant!");

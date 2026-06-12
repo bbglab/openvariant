@@ -40,16 +40,20 @@ jobs:
       uses: actions-rust-lang/setup-rust-toolchain@v1
 
     - uses: astral-sh/setup-uv@v4
-      
+
     - name: Lint with Ruff
       run: |
         uv sync --extra linting --frozen --no-install-project
         uv run ruff check openvariant
 
-    - name: Test
+    - name: Test Python-based code
       run: |
         uv sync --extra tests --frozen
-        uv run pytest --cov . 
+        uv run pytest --cov .
+
+    - name: Test Rust-based code
+      run: |
+        make test
 
     - name: Upload coverage reports to Codecov with GitHub Action
       uses: codecov/codecov-action@v3
