@@ -147,8 +147,8 @@ fn validate_syntax_error_returned_as_parse_error() {
 
 #[test]
 fn validate_unused_fields_not_errors() {
-    // `fieldSource` is irrelevant for `static`
-    // must not blo                //]));ck a config that is otherwise valid.
+    // `fieldSource` is irrelevant for `static` entries, but it should not make an
+    // otherwise-valid config fail validation.
     let yaml = r#"
 pattern:
   - "**/*.vcf.gz"
@@ -158,8 +158,6 @@ annotation:
     value: GRCh38
     fieldSource: SPURIOUS
 "#;
-    // The config has an error because warnings from unused fields come back.
-    // Let's check severity explicitly.
     assert!(parse_and_validate(yaml).is_ok());
 }
 

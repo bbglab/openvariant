@@ -14,7 +14,7 @@ pub const ANNOTATION_EXTENSION: &str = "yaml";
 pub const DEFAULT_COLUMNS: &[&str] = &[];
 pub const DEFAULT_RECURSIVE: bool = false;
 
-/// AnnotatioType
+/// AnnotationType
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
@@ -68,6 +68,7 @@ pub enum AnnotationType {
     /// ```yaml
     /// - type: mapping
     ///   field: GENE_NAME
+    ///   fieldSource: ENSEMBL_ID
     ///   fileMapping: /data/gene_map.tsv
     ///   fieldMapping: ENSEMBL_ID
     ///   fieldValue: GENE_SYMBOL
@@ -112,7 +113,11 @@ impl AnnotationDelimiter {
 
 impl fmt::Display for AnnotationDelimiter {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.as_char())
+        let s = match self {
+            AnnotationDelimiter::T => "T",
+            AnnotationDelimiter::C => "C",
+        };
+        write!(f, "{s}")
     }
 }
 
@@ -169,7 +174,7 @@ pub struct AnnotationEntry {
     #[serde(rename = "fieldSource", skip_serializing_if = "Option::is_none")]
     pub field_source: Option<String>,
 
-    /// *(internal, filename, dirname)* Dotted Python module path of the plugin (e.g. `my_pkg.scoring`).
+    /// *(plugin)* Dotted Python module path of the plugin (e.g. `my_pkg.scoring`).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub plugin: Option<String>,
 
