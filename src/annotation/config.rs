@@ -113,7 +113,11 @@ impl AnnotationDelimiter {
 
 impl fmt::Display for AnnotationDelimiter {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.as_char())
+        let s = match self {
+            AnnotationDelimiter::T => "T",
+            AnnotationDelimiter::C => "C",
+        };
+        write!(f, "{s}")
     }
 }
 
