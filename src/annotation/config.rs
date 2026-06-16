@@ -160,7 +160,7 @@ pub struct AnnotationEntry {
     /// Output column name that will receive the derived value (required, non-blank).
     pub field: String,
 
-    /// *(static, internal)* Literal value to assign. Accepts any YAML scalar or
+    /// *(static, optional - internal)* Literal value to assign. Accepts any YAML scalar or
     /// structure (`string`, `int`, `float`, `bool`, `null`).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub value: Option<yaml_serde::Value>,

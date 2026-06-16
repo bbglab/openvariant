@@ -48,8 +48,7 @@ impl fmt::Display for ValidationError {
 /// 2. **Structural** — missing or blank required fields (`field`, type-specific
 ///    keys) and an empty `annotation` list are flagged as errors.
 /// 3. **Semantic** — keys that exist but are irrelevant for the chosen
-///    annotation type are reported as warnings so users can clean up their
-///    YAML without being blocked.
+///    annotation type are not reported, and don't cause and error.
 ///
 /// # Returns
 ///
