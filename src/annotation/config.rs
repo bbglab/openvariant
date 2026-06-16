@@ -210,8 +210,8 @@ pub struct ExcludeEntry {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct AnnotationConfig {
     /// Glob pattern used to discover source files (e.g. `"**/*.vcf.gz"`).
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub pattern: Option<String>,
+    #[serde(default)]
+    pub pattern: Vec<String>,
 
     /// Recurse into sub-directories when scanning for source files.
     /// Default: `false`.

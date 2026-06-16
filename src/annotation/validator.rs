@@ -87,6 +87,15 @@ pub fn parse_and_validate(yaml: &str) -> Result<AnnotationConfig, Vec<Validation
 pub fn validate_config(config: &AnnotationConfig) -> Vec<ValidationError> {
     let mut diags: Vec<ValidationError> = Vec::new();
 
+    if config.pattern.is_empty() {
+        diags.push(err(
+            "<document>",
+            "`pattern` is empty — at least one entry is required",
+        ));
+        // Remaining checks are per-entry; bail early.
+        return diags;
+    }
+
     // Empty file check — this is technically valid YAML but not a valid annotation config.
     if config.annotation.is_empty() {
         diags.push(err(
@@ -207,14 +216,6 @@ fn err(path: &str, message: &str) -> ValidationError {
     }
 }
 
-//fn warn(path: &str, message: &str) -> ValidationError {
-    //ValidationError {
-        //message: message.into(),
-        //path: path.into(),
-        //severity: Severity::Warning,
-    //}
-//}
-
 /// Emit an error if `value` is `None` or blank.
 fn check_required_str(
     base: &str,
@@ -230,21 +231,3 @@ fn check_required_str(
         _ => {}
     }
 }
-
-// Emit a warning for every key in `fields` whose boolean flag is `true`.
-//fn unused_warnings(
-    //base: &str,
-    //_entry: &AnnotationEntry,
-    //fields: &[(&str, bool)],
-//) -> Vec<ValidationError> {
-    //fields
-        //.iter()
-        //.filter(|(_, present)| *present)
-        //.map(|(key, _)| {
-            //warn(
-                //&format!("{base}.{key}"),
-                //&format!("`{key}` is not used by this annotation type and will be ignored"),
-            //)
-        //})
-        //.collect()
-//}

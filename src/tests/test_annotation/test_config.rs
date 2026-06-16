@@ -118,14 +118,14 @@ fn format_lowercase_is_rejected() {
 // Annotation Defaults
 #[test]
 fn config_defaults_are_applied_when_absent() {
-    let yaml = "annotation:\n  - type: dirname\n    field: DIR\n";
+    let yaml = "pattern:\n  - \"**/*.vcf.gz\"\nannotation:\n  - type: dirname\n    field: DIR\n";
     let cfg: AnnotationConfig = yaml_serde::from_str(yaml).unwrap();
     assert_eq!(cfg.format,    AnnotationFormat::Tsv);
     assert_eq!(cfg.delimiter, AnnotationDelimiter::T);
     assert!(!cfg.recursive);
     assert!(cfg.columns.is_empty());
     assert!(cfg.exclude.is_empty());
-    assert!(cfg.pattern.is_none());
+    assert!(!cfg.pattern.is_empty());
 }
 
 
@@ -133,7 +133,8 @@ fn config_defaults_are_applied_when_absent() {
 #[test]
     fn full_config_round_trip() {
         let yaml = r#"
-pattern: "**/*.vcf.gz"
+pattern:
+  - "**/*.vcf.gz"
 recursive: true
 format: CSV
 delimiter: C
@@ -167,6 +168,8 @@ exclude:
     value: FAIL
 "#;
         let cfg = round_trip::<AnnotationConfig>(yaml);
+        assert_eq!(cfg.pattern.len(), 1);
+        assert_eq!(cfg.pattern[0], "**/*.vcf.gz");
         assert_eq!(cfg.annotation.len(), 6);
         assert_eq!(cfg.format, AnnotationFormat::Csv);
         assert_eq!(cfg.delimiter, AnnotationDelimiter::C);
