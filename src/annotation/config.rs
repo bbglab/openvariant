@@ -14,7 +14,7 @@ pub const ANNOTATION_EXTENSION: &str = "yaml";
 pub const DEFAULT_COLUMNS: &[&str] = &[];
 pub const DEFAULT_RECURSIVE: bool = false;
 
-/// AnnotatioType
+/// AnnotationType
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
