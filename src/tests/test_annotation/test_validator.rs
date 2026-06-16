@@ -168,9 +168,9 @@ fn validate_formatting_errors_returned_as_parse_errors_annotation_entry() {
 pattern:
   - "**/*.vcf.gz"
 annotation:
-            - type: dirname
+        - type: dirname
     field: DIR
 "#;
     let errs = parse_and_validate(yaml).unwrap_err();
-    assert!(errs[1].message.contains("YAML parse error"));
+    assert!(errs[0].message.contains("YAML parse error"));
 }

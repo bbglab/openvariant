@@ -133,19 +133,10 @@ pub fn validate_config(config: &AnnotationConfig) -> Vec<ValidationError> {
                     entry.field_source.as_deref(),
                     &mut diags,
                 );
-                //diags.extend(unused_warnings(&base, entry, &[
-                //    ("value",       entry.value.is_some()),
-                //    ("function",    entry.function.is_some()),
-                //]));
             }
 
             // Dirname / Filenanme
-            AnnotationType::Dirname | AnnotationType::Filename => {
-                //diags.extend(unused_warnings(&base, entry, &[
-                //    ("function",    entry.function.is_some()),
-                //    ("regex",  entry.regex.is_some()),
-                //]));
-            }
+            AnnotationType::Dirname | AnnotationType::Filename => { }
 
             // Plugin
             AnnotationType::Plugin => {
