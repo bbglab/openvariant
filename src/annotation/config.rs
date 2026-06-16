@@ -68,6 +68,7 @@ pub enum AnnotationType {
     /// ```yaml
     /// - type: mapping
     ///   field: GENE_NAME
+    ///   fieldSource: ENSEMBL_ID
     ///   fileMapping: /data/gene_map.tsv
     ///   fieldMapping: ENSEMBL_ID
     ///   fieldValue: GENE_SYMBOL
