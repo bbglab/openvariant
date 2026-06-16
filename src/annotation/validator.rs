@@ -136,7 +136,7 @@ pub fn validate_config(config: &AnnotationConfig) -> Vec<ValidationError> {
             }
 
             // Dirname / Filenanme
-            AnnotationType::Dirname | AnnotationType::Filename => { }
+            AnnotationType::Dirname | AnnotationType::Filename => {}
 
             // Plugin
             AnnotationType::Plugin => {

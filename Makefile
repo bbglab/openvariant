@@ -7,10 +7,16 @@ release:
 test:
 	PYO3_PYTHON=$$(uv python find) cargo test
 
+fmt:
+	PYO3_PYTHON=$$(uv python find) cargo fmt
+
 lint:
-	PYO3_PYTHON=$$(uv python find) cargo clippy
+	PYO3_PYTHON=$$(uv python find) cargo clippy -- -D warnings
 
-format:
+fix:
+	PYO3_PYTHON=$$(uv python find) cargo clippy --fix --allow-dirty --allow-staged
+	PYO3_PYTHON=$$(uv python find) cargo fmt
+
+check:
 	PYO3_PYTHON=$$(uv python find) cargo fmt --check
-
-check: lint format
+	PYO3_PYTHON=$$(uv python find) cargo clippy -- -D warnings

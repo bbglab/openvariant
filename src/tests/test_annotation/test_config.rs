@@ -1,8 +1,6 @@
-
-use crate::annotation::{AnnotationType, AnnotationDelimiter, AnnotationFormat, AnnotationConfig};
+use crate::annotation::{AnnotationConfig, AnnotationDelimiter, AnnotationFormat, AnnotationType};
 use serde::Serialize;
 use std::fmt;
-
 
 /// Deserialise from YAML, re-serialise, then deserialise again.
 /// Asserts the three values are equal and returns the first parsed value.
@@ -13,7 +11,10 @@ where
     let first: T = yaml_serde::from_str(yaml).expect("initial parse failed");
     let reserialized = yaml_serde::to_string(&first).expect("serialise failed");
     let second: T = yaml_serde::from_str(&reserialized).expect("re-parse failed");
-    assert_eq!(first, second, "round-trip mismatch:\noriginal = {first:?}\nre-parsed = {second:?}");
+    assert_eq!(
+        first, second,
+        "round-trip mismatch:\noriginal = {first:?}\nre-parsed = {second:?}"
+    );
     first
 }
 
@@ -22,32 +23,50 @@ where
 // AnnotationType, round-trip tests
 #[test]
 fn annotation_type_static_round_trip() {
-    assert_eq!(round_trip::<AnnotationType>("static"), AnnotationType::Static);
+    assert_eq!(
+        round_trip::<AnnotationType>("static"),
+        AnnotationType::Static
+    );
 }
 
 #[test]
 fn annotation_type_internal_round_trip() {
-    assert_eq!(round_trip::<AnnotationType>("internal"), AnnotationType::Internal);
+    assert_eq!(
+        round_trip::<AnnotationType>("internal"),
+        AnnotationType::Internal
+    );
 }
 
 #[test]
 fn annotation_type_dirname_round_trip() {
-    assert_eq!(round_trip::<AnnotationType>("dirname"), AnnotationType::Dirname);
+    assert_eq!(
+        round_trip::<AnnotationType>("dirname"),
+        AnnotationType::Dirname
+    );
 }
 
 #[test]
 fn annotation_type_filename_round_trip() {
-    assert_eq!(round_trip::<AnnotationType>("filename"), AnnotationType::Filename);
+    assert_eq!(
+        round_trip::<AnnotationType>("filename"),
+        AnnotationType::Filename
+    );
 }
 
 #[test]
 fn annotation_type_plugin_round_trip() {
-    assert_eq!(round_trip::<AnnotationType>("plugin"), AnnotationType::Plugin);
+    assert_eq!(
+        round_trip::<AnnotationType>("plugin"),
+        AnnotationType::Plugin
+    );
 }
 
 #[test]
 fn annotation_type_mapping_round_trip() {
-    assert_eq!(round_trip::<AnnotationType>("mapping"), AnnotationType::Mapping);
+    assert_eq!(
+        round_trip::<AnnotationType>("mapping"),
+        AnnotationType::Mapping
+    );
 }
 
 #[test]
@@ -60,12 +79,12 @@ fn annotation_type_unknown_variant_is_error() {
 fn annotation_type_display_matches_yaml_key() {
     // Display must produce the exact lowercase YAML key serde expects.
     let cases = [
-        (AnnotationType::Static,   "static"),
+        (AnnotationType::Static, "static"),
         (AnnotationType::Internal, "internal"),
-        (AnnotationType::Dirname,  "dirname"),
+        (AnnotationType::Dirname, "dirname"),
         (AnnotationType::Filename, "filename"),
-        (AnnotationType::Plugin,   "plugin"),
-        (AnnotationType::Mapping,  "mapping"),
+        (AnnotationType::Plugin, "plugin"),
+        (AnnotationType::Mapping, "mapping"),
     ];
     for (variant, expected) in cases {
         assert_eq!(variant.to_string(), expected);
@@ -120,7 +139,7 @@ fn format_lowercase_is_rejected() {
 fn config_defaults_are_applied_when_absent() {
     let yaml = "pattern:\n  - \"**/*.vcf.gz\"\nannotation:\n  - type: dirname\n    field: DIR\n";
     let cfg: AnnotationConfig = yaml_serde::from_str(yaml).unwrap();
-    assert_eq!(cfg.format,    AnnotationFormat::Tsv);
+    assert_eq!(cfg.format, AnnotationFormat::Tsv);
     assert_eq!(cfg.delimiter, AnnotationDelimiter::T);
     assert!(!cfg.recursive);
     assert!(cfg.columns.is_empty());
@@ -128,11 +147,10 @@ fn config_defaults_are_applied_when_absent() {
     assert!(!cfg.pattern.is_empty());
 }
 
-
 // Full config round-trip test
 #[test]
-    fn full_config_round_trip() {
-        let yaml = r#"
+fn full_config_round_trip() {
+    let yaml = r#"
 pattern:
   - "**/*.vcf.gz"
 recursive: true
@@ -167,13 +185,13 @@ exclude:
   - field: FILTER
     value: FAIL
 "#;
-        let cfg = round_trip::<AnnotationConfig>(yaml);
-        assert_eq!(cfg.pattern.len(), 1);
-        assert_eq!(cfg.pattern[0], "**/*.vcf.gz");
-        assert_eq!(cfg.annotation.len(), 6);
-        assert_eq!(cfg.format, AnnotationFormat::Csv);
-        assert_eq!(cfg.delimiter, AnnotationDelimiter::C);
-        assert_eq!(cfg.columns, vec!["CHROM", "POS", "REF", "ALT"]);
-        assert!(cfg.recursive);
-        assert_eq!(cfg.exclude.len(), 1);
-    }
+    let cfg = round_trip::<AnnotationConfig>(yaml);
+    assert_eq!(cfg.pattern.len(), 1);
+    assert_eq!(cfg.pattern[0], "**/*.vcf.gz");
+    assert_eq!(cfg.annotation.len(), 6);
+    assert_eq!(cfg.format, AnnotationFormat::Csv);
+    assert_eq!(cfg.delimiter, AnnotationDelimiter::C);
+    assert_eq!(cfg.columns, vec!["CHROM", "POS", "REF", "ALT"]);
+    assert!(cfg.recursive);
+    assert_eq!(cfg.exclude.len(), 1);
+}

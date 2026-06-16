@@ -1,4 +1,4 @@
-use crate::annotation::validator::{parse_and_validate, Severity};
+use crate::annotation::validator::{Severity, parse_and_validate};
 
 // Test parse_and_validate, non-error cases
 
@@ -48,7 +48,6 @@ annotation:
     assert!(parse_and_validate(yaml).is_ok());
 }
 
-
 // Test parse_and_validate, error cases
 #[test]
 fn validate_empty_pattern_list_is_error() {
@@ -75,21 +74,31 @@ fn validate_empty_annotation_list_is_error() {
 fn validate_static_missing_value_is_error() {
     let yaml = "pattern:\n  - \"**/*.vcf.gz\"\nannotation:\n  - type: static\n    field: BUILD\n";
     let errs = parse_and_validate(yaml).unwrap_err();
-    assert!(errs.iter().any(|e| e.message.contains("`value` is required")));    }
+    assert!(
+        errs.iter()
+            .any(|e| e.message.contains("`value` is required"))
+    );
+}
 
 #[test]
 #[allow(non_snake_case)]
 fn validate_internal_missing_fieldSource_is_error() {
     let yaml = "pattern:\n  - \"**/*.vcf.gz\"\nannotation:\n  - type: internal\n    field: X\n";
     let errs = parse_and_validate(yaml).unwrap_err();
-    assert!(errs.iter().any(|e| e.message.contains("`fieldSource` is required")));
+    assert!(
+        errs.iter()
+            .any(|e| e.message.contains("`fieldSource` is required"))
+    );
 }
 
 #[test]
 fn validate_plugin_missing_function_is_error() {
     let yaml = "pattern:\n  - \"**/*.vcf.gz\"\nannotation:\n  - type: plugin\n    field: S\n    plugin: mod\n";
     let errs = parse_and_validate(yaml).unwrap_err();
-    assert!(errs.iter().any(|e| e.message.contains("`function` is required")));
+    assert!(
+        errs.iter()
+            .any(|e| e.message.contains("`function` is required"))
+    );
 }
 
 #[test]
@@ -105,7 +114,10 @@ fn validate_mapping_missing_keys_are_errors() {
 fn validate_blank_field_is_error() {
     let yaml = "pattern:\n  - \"**/*.vcf.gz\"\nannotation:\n  - type: dirname\n    field: ''\n";
     let errs = parse_and_validate(yaml).unwrap_err();
-    assert!(errs.iter().any(|e| e.message.contains("`field` must not be blank")));
+    assert!(
+        errs.iter()
+            .any(|e| e.message.contains("`field` must not be blank"))
+    );
 }
 
 #[test]
@@ -120,7 +132,10 @@ annotation:
     field: DIR
 "#;
     let errs = parse_and_validate(yaml).unwrap_err();
-    assert!(errs.iter().any(|e| e.message.contains("duplicate `field` name")));
+    assert!(
+        errs.iter()
+            .any(|e| e.message.contains("duplicate `field` name"))
+    );
 }
 
 #[test]
@@ -147,7 +162,6 @@ annotation:
     // Let's check severity explicitly.
     assert!(parse_and_validate(yaml).is_ok());
 }
-
 
 #[test]
 fn validate_formatting_errors_returned_as_parse_errors() {
