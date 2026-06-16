@@ -174,7 +174,7 @@ pub struct AnnotationEntry {
     #[serde(rename = "fieldSource", skip_serializing_if = "Option::is_none")]
     pub field_source: Option<String>,
 
-    /// *(internal, filename, dirname)* Dotted Python module path of the plugin (e.g. `my_pkg.scoring`).
+    /// *(plugin)* Dotted Python module path of the plugin (e.g. `my_pkg.scoring`).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub plugin: Option<String>,
 
