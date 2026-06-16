@@ -43,7 +43,7 @@ impl fmt::Display for ValidationError {
 ///
 /// Validation runs in three passes:
 ///
-/// 1. **Syntax** — `serde_yaml` rejects malformed YAML and unknown enum
+/// 1. **Syntax** — `yaml_serde` rejects malformed YAML and unknown enum
 ///    variants, reporting the exact line/column of the problem.
 /// 2. **Structural** — missing or blank required fields (`field`, type-specific
 ///    keys) and an empty `annotation` list are flagged as errors.
