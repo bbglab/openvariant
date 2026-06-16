@@ -61,7 +61,7 @@ impl fmt::Display for ValidationError {
 pub fn parse_and_validate(yaml: &str) -> Result<AnnotationConfig, Vec<ValidationError>> {
     // Pass 1 — syntax + structural (serde)
     let config: AnnotationConfig = yaml_serde::from_str(yaml).map_err(|e| {
-        // serde_yaml errors include line/column information in their Display.
+        // yaml_serde errors include line/column information in their Display.
         vec![ValidationError {
             message: format!("YAML parse error — {e}"),
             path: "<document>".into(),
