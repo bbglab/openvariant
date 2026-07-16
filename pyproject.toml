@@ -100,7 +100,7 @@ docs = [
     "sphinxcontrib-serializinghtml==1.1.5",
     "stack-data==0.3.0",
     "tinycss2==1.1.1",
-    "tornado==6.4.2",
+    "tornado==6.5.7",
     "tqdm==4.66.3",
     "traitlets==5.3.0",
     "urllib3==1.26.19",
