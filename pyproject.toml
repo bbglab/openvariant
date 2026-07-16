@@ -108,7 +108,7 @@ docs = [
     "webencodings==0.5.1",
     "ipython>=8.18.0",
     "nbconvert==7.0.0rc0",
-    "mistune==2.0.3",
+    "mistune==3.3.0",
     "sphinxcontrib-bibtex==2.6.3",
     "setuptools>=58.2.0",
 ]
