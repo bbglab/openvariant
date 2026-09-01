@@ -1,4 +1,5 @@
-use crate::annotation::{AnnotationConfig, AnnotationDelimiter, AnnotationFormat, AnnotationType};
+use crate::annotation::{AnnotationConfig, AnnotationDelimiter, AnnotationEntry, AnnotationFormat};
+
 use serde::Serialize;
 use std::fmt;
 
@@ -20,76 +21,29 @@ where
 
 ///ENUMS
 
-// AnnotationType, round-trip tests
+// AnnotationEntry Display tests
 #[test]
-fn annotation_type_static_round_trip() {
-    assert_eq!(
-        round_trip::<AnnotationType>("static"),
-        AnnotationType::Static
-    );
+fn entry_display_static() {
+    let entry: AnnotationEntry =
+        yaml_serde::from_str("type: static\nfield: GENOME\nvalue: GRCh38\n").unwrap();
+    assert_eq!(entry.to_string(), "static(field=GENOME, value=GRCh38)");
+ }
+
+ #[test]
+fn entry_display_dirname_minimal() {
+    let entry: AnnotationEntry = yaml_serde::from_str("type: dirname\nfield: DIR\n").unwrap();
+    assert_eq!(entry.to_string(), "dirname(field=DIR)");
 }
 
-#[test]
-fn annotation_type_internal_round_trip() {
-    assert_eq!(
-        round_trip::<AnnotationType>("internal"),
-        AnnotationType::Internal
-    );
-}
-
-#[test]
-fn annotation_type_dirname_round_trip() {
-    assert_eq!(
-        round_trip::<AnnotationType>("dirname"),
-        AnnotationType::Dirname
-    );
-}
-
-#[test]
-fn annotation_type_filename_round_trip() {
-    assert_eq!(
-        round_trip::<AnnotationType>("filename"),
-        AnnotationType::Filename
-    );
-}
-
-#[test]
-fn annotation_type_plugin_round_trip() {
-    assert_eq!(
-        round_trip::<AnnotationType>("plugin"),
-        AnnotationType::Plugin
-    );
-}
-
-#[test]
-fn annotation_type_mapping_round_trip() {
-    assert_eq!(
-        round_trip::<AnnotationType>("mapping"),
-        AnnotationType::Mapping
-    );
-}
-
-#[test]
-fn annotation_type_unknown_variant_is_error() {
-    let result = yaml_serde::from_str::<AnnotationType>("INVALID_TYPE");
-    assert!(result.is_err(), "unknown variant must fail to parse");
-}
-
-#[test]
-fn annotation_type_display_matches_yaml_key() {
-    // Display must produce the exact lowercase YAML key serde expects.
-    let cases = [
-        (AnnotationType::Static, "static"),
-        (AnnotationType::Internal, "internal"),
-        (AnnotationType::Dirname, "dirname"),
-        (AnnotationType::Filename, "filename"),
-        (AnnotationType::Plugin, "plugin"),
-        (AnnotationType::Mapping, "mapping"),
-    ];
-    for (variant, expected) in cases {
-        assert_eq!(variant.to_string(), expected);
-    }
-}
+ #[test]
+fn entry_display_plugin() {
+    let entry: AnnotationEntry =
+        yaml_serde::from_str("type: plugin\nfield: SCORE\nplugin: scoring.module\n").unwrap();
+     assert_eq!(
+        entry.to_string(),
+        "plugin(field=SCORE, plugin=scoring.module)"
+     );
+ }
 
 // AnnotationDelimiter, round-trip tests
 #[test]
@@ -139,6 +93,7 @@ fn format_lowercase_is_rejected() {
 fn config_defaults_are_applied_when_absent() {
     let yaml = "pattern:\n  - \"**/*.vcf.gz\"\nannotation:\n  - type: dirname\n    field: DIR\n";
     let cfg: AnnotationConfig = yaml_serde::from_str(yaml).unwrap();
+    print!("{cfg:?}");
     assert_eq!(cfg.format, AnnotationFormat::Tsv);
     assert_eq!(cfg.delimiter, AnnotationDelimiter::T);
     assert!(!cfg.recursive);
@@ -175,9 +130,9 @@ annotation:
   - type: plugin
     field: SCORE
     plugin: scoring.module
-    function: compute
   - type: mapping
     field: GENE
+    fieldSource: ENSEMBL_ID
     fileMapping: /data/genes.tsv
     fieldMapping: ENSEMBL
     fieldValue: SYMBOL

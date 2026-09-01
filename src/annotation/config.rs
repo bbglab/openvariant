@@ -10,85 +10,11 @@ use serde::{Deserialize, Serialize};
 use std::fmt;
 
 /// Constants
+
 pub const ANNOTATION_EXTENSION: &str = "yaml";
 pub const DEFAULT_COLUMNS: &[&str] = &[];
 pub const DEFAULT_RECURSIVE: bool = false;
 
-/// AnnotationType
-
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase")]
-pub enum AnnotationType {
-    /// Assign a fixed literal value to every output record.
-    ///
-    /// ```yaml
-    /// - type: static
-    ///   field: GENOME_BUILD
-    ///   value: GRCh38
-    /// ```
-    Static,
-
-    /// Copy the value from another column already present in the same record.
-    ///
-    /// ```yaml
-    /// - type: internal
-    ///   field: ALT_ALLELE
-    ///   fieldSource: ALT
-    /// ```
-    Internal,
-
-    /// Set the field to the **directory name** of the source file being processed.
-    ///
-    /// ```yaml
-    /// - type: dirname
-    ///   field: STUDY_DIR
-    /// ```
-    Dirname,
-
-    /// Set the field to the **filename** (no path) of the source file being processed.
-    ///
-    /// ```yaml
-    /// - type: filename
-    ///   field: SOURCE_FILE
-    /// ```
-    Filename,
-
-    /// Delegate value computation to an external Python plugin function.
-    ///
-    /// ```yaml
-    /// - type: plugin
-    ///   field: COMPUTED_SCORE
-    ///   plugin: my_package.scoring
-    ///   function: compute_score
-    /// ```
-    Plugin,
-
-    /// Look up the value in an external delimited mapping file.
-    ///
-    /// ```yaml
-    /// - type: mapping
-    ///   field: GENE_NAME
-    ///   fieldSource: ENSEMBL_ID
-    ///   fileMapping: /data/gene_map.tsv
-    ///   fieldMapping: ENSEMBL_ID
-    ///   fieldValue: GENE_SYMBOL
-    /// ```
-    Mapping,
-}
-
-impl fmt::Display for AnnotationType {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let s = match self {
-            AnnotationType::Static => "static",
-            AnnotationType::Internal => "internal",
-            AnnotationType::Dirname => "dirname",
-            AnnotationType::Filename => "filename",
-            AnnotationType::Plugin => "plugin",
-            AnnotationType::Mapping => "mapping",
-        };
-        write!(f, "{s}")
-    }
-}
 
 /// AnnotationDelimiter
 
@@ -155,50 +81,190 @@ impl fmt::Display for AnnotationFormat {
 }
 
 /// AnnotationEntry
+/// A tagged enum: the YAML `type` key selects the variant, and each variant
+/// carries only the fields relevant to that annotation strategy. Required
+/// fields are enforced by serde at parse time — a missing required field
+/// produces a deserialization error immediately.
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(tag = "type", rename_all = "lowercase")]
+pub enum AnnotationEntry {
+    /// Assign a fixed literal value to every output record.
+    ///
+    /// ```yaml
+    /// - type: static
+    ///   field: GENOME_BUILD
+    ///   value: GRCh38
+    /// ```
+    Static {
+        /// Output column name that will receive the derived value.
+        field: String,
+        /// Literal value to assign (any YAML scalar or structure).
+        value: yaml_serde::Value,
+    },
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct AnnotationEntry {
-    /// The annotation strategy to apply (required).
-    #[serde(rename = "type")]
-    pub annotation_type: AnnotationType,
+    /// Copy the value from another column already present in the same record.
+    ///
+    /// ```yaml
+    /// - type: internal
+    ///   field: ALT_ALLELE
+    ///   fieldSource: ALT
+    /// ```
+    Internal {
+        field: String,
+        #[serde(rename = "fieldSource")]
+        field_source: String,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        value: Option<yaml_serde::Value>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        function: Option<String>,
+    },
 
-    /// Output column name that will receive the derived value (required, non-blank).
-    pub field: String,
+    /// Set the field to the **directory name** of the source file being processed.
+    ///
+    /// ```yaml
+    /// - type: dirname
+    ///   field: STUDY_DIR
+    /// ```
+    Dirname {
+        field: String,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        function: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        regex: Option<String>,
+    },
 
-    /// *(static, optional - internal)* Literal value to assign. Accepts any YAML scalar or
-    /// structure (`string`, `int`, `float`, `bool`, `null`).
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub value: Option<yaml_serde::Value>,
+    /// Set the field to the **filename** (no path) of the source file being processed.
+    ///
+    /// ```yaml
+    /// - type: filename
+    ///   field: SOURCE_FILE
+    /// ```
+    Filename {
+        field: String,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        function: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        regex: Option<String>,
+    },
 
-    /// *(internal, mapping)* Name of the source column to copy from.
-    #[serde(rename = "fieldSource", skip_serializing_if = "Option::is_none")]
-    pub field_source: Option<String>,
+    /// Delegate value computation to an external Python plugin function.
+    ///
+    /// ```yaml
+    /// - type: plugin
+    ///   field: COMPUTED_SCORE
+    ///   plugin: my_package.scoring
+    /// ```
+    Plugin {
+        field: String,
+        /// Dotted Python module path of the plugin (e.g. `my_pkg.scoring`).
+        plugin: String,
+    },
 
-    /// *(plugin)* Dotted Python module path of the plugin (e.g. `my_pkg.scoring`).
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub plugin: Option<String>,
-
-    /// *(plugin)* Lambda function that will be executed.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub function: Option<String>,
-
-    /// Optional regular-expression applied to the derived value before storage.
-    /// The first capture group is used when present.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub regex: Option<String>,
-
-    /// *(mapping)* Path to the external lookup file.
-    #[serde(rename = "fileMapping", skip_serializing_if = "Option::is_none")]
-    pub file_mapping: Option<String>,
-
-    /// *(mapping)* Column in the mapping file used as the lookup key.
-    #[serde(rename = "fieldMapping", skip_serializing_if = "Option::is_none")]
-    pub field_mapping: Option<String>,
-
-    /// *(mapping)* Column in the mapping file whose value is returned.
-    #[serde(rename = "fieldValue", skip_serializing_if = "Option::is_none")]
-    pub field_value: Option<String>,
+    /// Look up the value in an external delimited mapping file.
+    ///
+    /// ```yaml
+    /// - type: mapping
+    ///   field: GENE_NAME
+    ///   fieldSource: ENSEMBL_ID
+    ///   fileMapping: /data/gene_map.tsv
+    ///   fieldMapping: ENSEMBL_ID
+    ///   fieldValue: GENE_SYMBOL
+    /// ```
+    Mapping {
+        field: String,
+        #[serde(rename = "fieldSource")]
+        field_source: String,
+        #[serde(rename = "fileMapping")]
+        file_mapping: String,
+        #[serde(rename = "fieldMapping")]
+        field_mapping: String,
+        #[serde(rename = "fieldValue")]
+        field_value: String,
+    },
 }
+
+impl AnnotationEntry {
+    /// Returns the output column name for this entry, regardless of variant.
+    pub fn field(&self) -> &str {
+        match self {
+            AnnotationEntry::Static { field, .. }
+            | AnnotationEntry::Internal { field, .. }
+            | AnnotationEntry::Dirname { field, .. }
+            | AnnotationEntry::Filename { field, .. }
+            | AnnotationEntry::Plugin { field, .. }
+            | AnnotationEntry::Mapping { field, .. } => field,
+        }
+    }
+
+    /// Returns the annotation strategy name (e.g. `"static"`, `"mapping"`).
+    pub fn type_name(&self) -> &'static str {
+        match self {
+            AnnotationEntry::Static { .. } => "static",
+            AnnotationEntry::Internal { .. } => "internal",
+            AnnotationEntry::Dirname { .. } => "dirname",
+            AnnotationEntry::Filename { .. } => "filename",
+            AnnotationEntry::Plugin { .. } => "plugin",
+            AnnotationEntry::Mapping { .. } => "mapping",
+        }
+    }
+}
+
+impl fmt::Display for AnnotationEntry {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}(field={}", self.type_name(), self.field())?;
+        match self {
+            AnnotationEntry::Static { value, .. } => {
+                let v = yaml_serde::to_string(value).unwrap_or_default();
+                write!(f, ", value={})", v.trim())
+            }
+            AnnotationEntry::Internal {
+                field_source,
+                value,
+                function,
+                ..
+            } => {
+                write!(f, ", fieldSource={field_source}")?;
+                if let Some(v) = value {
+                    let s = yaml_serde::to_string(v).unwrap_or_default();
+                    write!(f, ", value={}", s.trim())?;
+                }
+                if let Some(func) = function {
+                    write!(f, ", function={func}")?;
+                }
+                write!(f, ")")
+            }
+            AnnotationEntry::Dirname {
+                function, regex, ..
+            }
+            | AnnotationEntry::Filename {
+                function, regex, ..
+            } => {
+                if let Some(func) = function {
+                    write!(f, ", function={func}")?;
+                }
+                if let Some(r) = regex {
+                    write!(f, ", regex={r}")?;
+                }
+                write!(f, ")")
+            }
+            AnnotationEntry::Plugin { plugin, .. } => {
+                write!(f, ", plugin={plugin})")
+            }
+            AnnotationEntry::Mapping {
+                field_source,
+                file_mapping,
+                field_mapping,
+                field_value,
+                ..
+            } => {
+                write!(
+                    f,
+                    ", fieldSource={field_source}, fileMapping={file_mapping}, fieldMapping={field_mapping}, fieldValue={field_value})"
+                )
+            }
+        }
+    }
+ }
 
 /// ExcludeEntry
 

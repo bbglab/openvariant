@@ -7,6 +7,9 @@ release:
 test:
 	PYO3_PYTHON=$$(uv python find) cargo test
 
+test-filter:
+	PYO3_PYTHON=$$(uv python find) cargo test $(FILTER)
+
 fmt:
 	PYO3_PYTHON=$$(uv python find) cargo fmt
 
