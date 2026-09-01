@@ -95,11 +95,20 @@ fn config_defaults_are_applied_when_absent() {
     let cfg: AnnotationConfig = yaml_serde::from_str(yaml).unwrap();
     print!("{cfg:?}");
     assert_eq!(cfg.format, AnnotationFormat::Tsv);
-    assert_eq!(cfg.delimiter, AnnotationDelimiter::T);
+    // `delimiter` is optional — omitting it yields `None`, not a default.
+    assert_eq!(cfg.delimiter, None);
     assert!(!cfg.recursive);
     assert!(cfg.columns.is_empty());
     assert!(cfg.exclude.is_empty());
     assert!(!cfg.pattern.is_empty());
+}
+
+// `delimiter` is optional — omitting it must parse fine and yield `None`.
+#[test]
+fn config_missing_delimiter_is_none() {
+    let yaml = "pattern:\n  - \"**/*.vcf.gz\"\nannotation:\n  - type: dirname\n    field: DIR\n";
+    let cfg: AnnotationConfig = yaml_serde::from_str(yaml).unwrap();
+    assert_eq!(cfg.delimiter, None);
 }
 
 // Full config round-trip test
@@ -145,7 +154,7 @@ exclude:
     assert_eq!(cfg.pattern[0], "**/*.vcf.gz");
     assert_eq!(cfg.annotation.len(), 6);
     assert_eq!(cfg.format, AnnotationFormat::Csv);
-    assert_eq!(cfg.delimiter, AnnotationDelimiter::C);
+    assert_eq!(cfg.delimiter, Some(AnnotationDelimiter::C));
     assert_eq!(cfg.columns, vec!["CHROM", "POS", "REF", "ALT"]);
     assert!(cfg.recursive);
     assert_eq!(cfg.exclude.len(), 1);

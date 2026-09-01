@@ -18,10 +18,9 @@ pub const DEFAULT_RECURSIVE: bool = false;
 
 /// AnnotationDelimiter
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, Default)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum AnnotationDelimiter {
     /// Tab character (`\t`).
-    #[default]
     T,
     /// Comma character (`,`).
     C,
@@ -49,7 +48,7 @@ impl fmt::Display for AnnotationDelimiter {
 
 /// AnnotationFormat
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, Default)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
 pub enum AnnotationFormat {
     /// Tab-Separated Values — field separator is `\t`.
     #[serde(rename = "TSV")]
@@ -293,9 +292,9 @@ pub struct AnnotationConfig {
     #[serde(default)]
     pub format: AnnotationFormat,
 
-    /// Field delimiter. Default: `T` (tab).
-    #[serde(default)]
-    pub delimiter: AnnotationDelimiter,
+    /// Field delimiter. Optional — when omitted in the YAML it is `None`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub delimiter: Option<AnnotationDelimiter>,
 
     /// Ordered list of columns to include in the output.
     /// Empty list means "all columns".
