@@ -6,7 +6,6 @@
 //! providing immediate feedback on any issues with the configuration. This helps maintain the integrity of the annotation system and
 //! prevents runtime errors due to misconfigurations.
 
-use pyo3::types::PyCodeInput::File;
 use regex::Regex;
 
 use std::path::Path;
