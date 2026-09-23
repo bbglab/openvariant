@@ -46,11 +46,8 @@ impl fmt::Display for ValidationError {
 /// Opens the file at `path`, parses it directly via [`yaml_serde::from_reader`]
 /// (no intermediate `String` allocated), and runs validation.
 ///
-/// The `base_dir` used to resolve relative `fileMapping` paths is derived from
-/// `path.parent()` — matching the Python OpenVariant behaviour where
-/// `fileMapping` is resolved relative to the annotation file's location. If
-/// `path` has no parent component (e.g. `"config.yaml"`), the current directory
-/// (`.`) is used.
+/// The `base_dir` used to resolve relative `fileMapping` paths is derived from `path.parent()`.
+/// If `path` has no parent component, the current directory (`.`) is used.
 ///
 /// Validation runs in two passes:
 ///
@@ -199,7 +196,7 @@ pub fn validate_config(config: &AnnotationConfig, base_dir: &Path) -> Vec<Valida
             if !is_lambda(f) {
                 diags.push(err(
                     &format!("{base}.function"),
-                    "`function` must be a lambda expression (e.g. \"lambda x: x.upper()\")",
+                    "`function` must be a Rhai closure expression (e.g. \"|x| x.to_upper()\")",
                 ));
              }
          }
@@ -223,19 +220,21 @@ fn err(path: &str, message: &str) -> ValidationError {
     }
 }
 
-/// Check that `s` looks like a Python lambda expression.
+/// Check that `s` looks like a Rhai closure expression.
 ///
-/// Accepts strings of the form `lambda <params>: <body>`, e.g.
-/// `lambda x: x.upper()` or `lambda c, d: c + d`.
+/// Accepts strings of the form `|<params>| <body>`, e.g. `|x| x.to_upper()`
+/// or `|x, y| x + y`. This is only a cheap syntactic sanity check — actual
+/// compilation (and the authoritative validity check) happens in
+/// [`crate::annotation::ir::CompiledLambda::compile`].
 fn is_lambda(s: &str) -> bool {
     let s = s.trim();
-    if !s.starts_with("lambda ") {
+    if !s.starts_with('|') {
         return false;
     }
-    let rest = &s[7..]; // after "lambda "
-    let colon_pos = match rest.find(':') {
+    let rest = &s[1..]; // after the opening '|'
+    let close_pos = match rest.find('|') {
         Some(pos) => pos,
         None => return false,
     };
-    !rest[..colon_pos].trim().is_empty() && !rest[colon_pos + 1..].trim().is_empty()
+    !rest[close_pos + 1..].trim().is_empty()
  }

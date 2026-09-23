@@ -127,25 +127,25 @@ fn validate_internal_missing_fieldSource_is_error() {
 
 #[test]
 fn validate_non_lambda_function_is_error() {
-    // `function` is a lambda field for Internal (not Plugin). A non-lambda
+    // `function` is a closure field for Internal. A non-closure
     // value should be rejected.
-    let yaml = "pattern:\n  - \"**/*.vcf.gz\"\nannotation:\n  - type: internal\n    field: S\n    fieldSource: REF\n    function: not_a_lambda\n";
+    let yaml = "pattern:\n  - \"**/*.vcf.gz\"\nannotation:\n  - type: internal\n    field: S\n    fieldSource: REF\n    function: not_a_closure\n";
     let errs = parse(yaml).unwrap_err();
      assert!(
-        errs.iter().any(|e| e.message.contains("must be a lambda")),
-        "expected a lambda error, got: {errs:?}"
+        errs.iter().any(|e| e.message.contains("must be a Rhai closure")),
+        "expected a closure error, got: {errs:?}"
      );
  }
 
 #[test]
 fn validate_lambda_function_in_internal_is_ok() {
-    let yaml = "pattern:\n  - \"**/*.vcf.gz\"\nannotation:\n  - type: internal\n    field: COPY\n    fieldSource: REF\n    function: \"lambda c: c.upper().replace('CHR', '')\"\n";
+    let yaml = "pattern:\n  - \"**/*.vcf.gz\"\nannotation:\n  - type: internal\n    field: COPY\n    fieldSource: REF\n    function: \"|c| c.to_upper()\"\n";
     assert!(parse(yaml).is_ok());
 }
 
 #[test]
 fn validate_lambda_function_in_filename_is_ok() {
-    let yaml = "pattern:\n  - \"**/*.vcf.gz\"\nannotation:\n  - type: filename\n    field: FILE\n    function: 'lambda x: \"{}\".format(x.lower()[:-4])'\n";
+    let yaml = "pattern:\n  - \"**/*.vcf.gz\"\nannotation:\n  - type: filename\n    field: FILE\n    function: '|x| x.to_lower()'\n";
     assert!(parse(yaml).is_ok());
 }
 
