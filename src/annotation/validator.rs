@@ -226,8 +226,8 @@ fn err(path: &str, message: &str) -> ValidationError {
 /// This is only a cheap syntactic sanity check — actual
 /// compilation (and the authoritative validity check) happens in
 /// [`crate::annotation::ir::CompiledLambda::compile`].
-fn is_closure(s: &str) -> bool {
-    let closure = s.trim();
+fn is_closure(closure: &str) -> bool {
+    let closure = closure.trim();
     if !closure.starts_with('|') {
         return false;
     }
