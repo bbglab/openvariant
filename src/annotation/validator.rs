@@ -183,7 +183,7 @@ pub fn validate_config(config: &AnnotationConfig, base_dir: &Path) -> Vec<Valida
             }
         }
 
-        // Check that `function` fields contain a lambda expression.
+        // Check that `function` fields contain a closure expression.
         let func: Option<&str> = match entry {
             AnnotationEntry::Internal { function, .. }
             | AnnotationEntry::Dirname { function, .. }
@@ -193,7 +193,7 @@ pub fn validate_config(config: &AnnotationConfig, base_dir: &Path) -> Vec<Valida
             | AnnotationEntry::Mapping { .. } => None,
         };
         if let Some(f) = func {
-            if !is_lambda(f) {
+            if !is_closure(f) {
                 diags.push(err(
                     &format!("{base}.function"),
                     "`function` must be a Rhai closure expression (e.g. \"|x| x.to_upper()\")",
@@ -220,18 +220,18 @@ fn err(path: &str, message: &str) -> ValidationError {
     }
 }
 
-/// Check that `s` looks like a Rhai closure expression.
+/// Check that `closure` looks like a Rhai closure expression.
 ///
-/// Accepts strings of the form `|<params>| <body>`, e.g. `|x| x.to_upper()`
-/// or `|x, y| x + y`. This is only a cheap syntactic sanity check — actual
+/// Accepts strings of the form `|<params>| <body>`, e.g. `|x| x.to_upper()`.
+/// This is only a cheap syntactic sanity check — actual
 /// compilation (and the authoritative validity check) happens in
 /// [`crate::annotation::ir::CompiledLambda::compile`].
-fn is_lambda(s: &str) -> bool {
-    let s = s.trim();
-    if !s.starts_with('|') {
+fn is_closure(s: &str) -> bool {
+    let closure = s.trim();
+    if !closure.starts_with('|') {
         return false;
     }
-    let rest = &s[1..]; // after the opening '|'
+    let rest = &closure[1..]; // after the opening '|'
     let close_pos = match rest.find('|') {
         Some(pos) => pos,
         None => return false,
