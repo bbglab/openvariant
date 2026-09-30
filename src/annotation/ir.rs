@@ -109,7 +109,7 @@ pub enum FieldOp {
 ///
 /// ```text
 /// |x| x.to_upper()
-/// |x| x.replace("old", "new");
+/// |x| x.replace("old", "new")
 /// |x| x.split("_")[1]
 /// ```
 ///
