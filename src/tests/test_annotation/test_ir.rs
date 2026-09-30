@@ -27,12 +27,17 @@ fn replace_chr() {
     assert_eq!(lambda.apply("CHR1").unwrap(), "1");
 }
 
+
 #[test]
 fn upper_then_replace() {
-    let lambda = CompiledLambda::compile(
-        r#"|y| y.make_upper() ?? y.replace("CHR", "") ?? y"#,
-    )
-    .unwrap();
+    let lambda = CompiledLambda::compile(r#"|y| y.make_upper() ?? y.replace("CHR", "") ?? y"#).unwrap();
+    assert_eq!(lambda.apply("chr1").unwrap(), "1");
+}
+
+#[test]
+fn crazy_upper_then_replace() {
+    // Use the `-` operator, which removes a sub-string and returns a new string.
+    let lambda = CompiledLambda::compile(r#"|y| y.to_upper() - "CHR""#).unwrap();
     assert_eq!(lambda.apply("chr1").unwrap(), "1");
 }
 
